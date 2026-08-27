@@ -1,11 +1,9 @@
-# Historical releases
+# Historical Archive
 
-This directory preserves superseded project records. The active implementation remains at the repository root.
+`releases/v34` through `releases/v47` are source-oriented historical release snapshots. Large generated SVG example payloads were removed from archived V40–V44 copies during the 2026-08-22 repository normalization. Small report JSON fixtures required by those historical release tests were retained so the snapshots remain testable without carrying megabytes of redundant SVG output.
 
-## Contents
+`LEGACY_CHANGELOGS_V4_V33.md` consolidates the older changelog-only history that predates the maintained source-snapshot archive.
 
-- `releases/v34/` through `releases/v38/` each contain the renderer, tests, design specification, changelog, README,
-  and verification summary for that release.
-- `history/` contains changelogs and verification records from releases earlier than v34.
+Historical files are evidence only. They never override the active root `AGENTS.md`, `CONTEXT.md`, or `chip_design_language.md`.
 
-These files are retained as immutable references and are not imported by v39.
+- `releases/v47/` — last promoted V47 authority immediately before V48 seed-total construction.

@@ -1,0 +1,7 @@
+Command: python pcb_v48_renderer.py --aspect-ratio 1:6 --scale 0.35 --count 2 --out-dir E:\Desktop
+Seed argument supplied: no
+Exit code: 1
+Elapsed seconds: 184.684
+Result: batch did not complete
+Captured artifact: raw console traceback in first_run_console.log
+Renderer-generated trace/log artifacts found on E:\Desktop: none

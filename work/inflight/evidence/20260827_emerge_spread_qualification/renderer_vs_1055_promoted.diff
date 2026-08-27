@@ -1,0 +1,647 @@
+--- /mnt/data/promoted_compare/pcb_v48_repo/pcb_v48_renderer.py	2026-08-27 05:02:32.000000000 +0000
++++ pcb_v48_renderer.py	2026-08-27 06:52:11.443116284 +0000
+@@ -982,18 +982,37 @@
+         return SplitMix64(self.rng.next_u64())
+ 
+     def _cohort_slices(self, count:int, rng:SplitMix64):
+-        """Partition a complete side launch into a few contiguous routing cohorts."""
+-        out=[]; start=0; remaining=count
+-        while remaining:
+-            if remaining<=5:
+-                take=remaining
++        """Partition a side bus into several contiguous, visually useful cohorts.
++
++        MAIN launches are normally 9--24 traces.  The old greedy 3--5 lane chunker could turn
++        a nine-line side into only two giant routing objects, which made the subsequent bus read
++        as one claustrophobic ribbon.  Choose a seeded 3--7 cohort count around four lanes per
++        cohort, then balance sizes.  This changes topology variety without changing trace count.
++        """
++        count=int(count)
++        if count<=1: return [list(range(max(0,count)))]
++        if count<6:
++            k=2
++        else:
++            base=max(3,min(7,int(round(count/4.0))))
++            wiggle=(-1,0,1)[int(rng.random()*3)]
++            k=max(3,min(7,count,base+wiggle))
++            k=max(k,int(math.ceil(count/5.0)))
++            # Keep ordinary MAIN cohorts at two or more lanes whenever the population permits.
++            if count>=2*k:
++                pass
+             else:
+-                take=3+int(rng.random()*3)
+-                if 0 < remaining-take < 3:
+-                    take=remaining-3
+-            take=max(1,min(remaining,take))
+-            out.append(list(range(start,start+take)))
+-            start+=take; remaining-=take
++                k=max(2,count//2)
++        q,rem=divmod(count,k)
++        sizes=[q]*k
++        order=list(range(k))
++        # Seed which cohorts receive the remainder without disturbing contiguity/order itself.
++        for i in range(len(order)-1,0,-1):
++            j=int(rng.random()*(i+1)); order[i],order[j]=order[j],order[i]
++        for i in order[:rem]: sizes[i]+=1
++        out=[]; start=0
++        for take in sizes:
++            out.append(list(range(start,start+take))); start+=take
+         return out
+ 
+     def _routing_horizon(self):
+@@ -1201,7 +1220,7 @@
+         if f.get('status')!='active': f['lifecycle']='TERMINAL'
+         elif f.get('round_connection_peer') is not None: f['lifecycle']='CONNECTION_PENDING'
+         elif self._source_egress_pending(f): f['lifecycle']='LAUNCHING'
+-        elif f.get('branch_stage') is not None or (f.get('fan_pending') and self._launch_egress_cleared(f)) or (f.get('recovery_fragment_child') and f.get('local_gestures',0)==0): f['lifecycle']='STRUCTURAL_TRANSITION'
++        elif f.get('branch_stage') is not None or self._launch_fan_ready(f) or (f.get('recovery_fragment_child') and f.get('local_gestures',0)==0): f['lifecycle']='STRUCTURAL_TRANSITION'
+         elif f.get('reroute_pending') or f.get('reroute_mode_rounds',0)>0 or f.get('quality_repair_pending'): f['lifecycle']='RECOVERING'
+         elif f.get('gestures',0)<3 or f.get('travel',0.0)<5*self.module: f['lifecycle']='LAUNCHING'
+         else: f['lifecycle']='NORMAL'
+@@ -1210,6 +1229,7 @@
+     def _needs_holistic(self,f):
+         life=self._refresh_lifecycle(f)
+         if life in ('LAUNCHING','STRUCTURAL_TRANSITION','CONNECTION_PENDING','RECOVERING'): return True
++        if self._main_side_progress_debt(f): return True
+         return f.get('failures',0)>0 or self._congestion_at(f['path'][-1])>=1.8
+ 
+     def _future_options(self,f,p,limit=5):
+@@ -1345,7 +1365,7 @@
+             m=(child.get('forced_turn_modules') or 2) if d!=child['dir'] else 2
+             c=point_along_dir(b,d,m*self.module); g2=self._corridor_geom(tf,b,c)
+             self.stats['pathway_lookahead_evaluation_count']+=1
+-            if self._gesture_clear(tf,b,c,g2,allow_outside=(allow or child.get('gestures',0)>=1),extra_segments=(g1,)):
++            if self._gesture_clear(tf,b,c,g2,allow_outside=(allow or child.get('gestures',0)>=1)):
+                 return True
+         return False
+ 
+@@ -1619,7 +1639,7 @@
+             end=point_along_dir(start,d,2.5*self.module); geom=self._corridor_geom(f,start,end)
+             probe=geom.difference(Point(start).buffer(self._front_half_width(f)+1.5*self.U,quad_segs=6))
+             for rec in self.path_index.query(expand_bounds(probe.bounds,self.r.pathway_interroute_keepout)):
+-                if rec['chip']==f['chip'] or rec['front']==f['id']: continue
++                if rec['front']==f['id'] or rec.get('root')==self._launch_family_key(f): continue
+                 if not (probe.intersects(rec['geom']) or probe.distance(rec['geom'])<self.r.pathway_interroute_keepout):
+                     continue
+                 other=self.fronts.get(rec['front'])
+@@ -1745,6 +1765,20 @@
+         if f.get('local_gap'): return True
+         return self._minimum_materialized_lane_length(f) >= self.launch_egress_modules*self.module-1e-7
+ 
++    def _launch_fan_ready(self,f):
++        """Whether a root side bus has completed its physical emergence gesture.
++
++        The four-module rule is a *lane-survival* floor, not a requirement that the complete
++        9-24 lane bus remain one unsplit corridor for four modules.  A root therefore becomes
++        eligible for its transactional fan immediately after one real perpendicular emergence
++        gesture.  `_fan_front()` proves the complete newborn child maneuver and will not commit
++        the fan unless every child lane reaches the ordinary four-module survival floor.
++        """
++        return (f.get('status')=='active' and f.get('parent') is None and
++                not f.get('local_gap') and bool(f.get('fan_pending')) and
++                int(f.get('gestures',0))>=1 and
++                self._minimum_materialized_lane_length(f)>=1.0*self.module-1e-7)
++
+     def _source_egress_pending(self,f):
+         return (f.get('parent') is None and not f.get('local_gap') and
+                 f.get('chip',len(self.chips))<len(self.chips) and not self._launch_egress_cleared(f))
+@@ -1753,6 +1787,57 @@
+         if f.get('local_gap') or f.get('chip',len(self.chips))>=len(self.chips): return False
+         return self._minimum_materialized_lane_length(f) < self.main_launch_maturity_modules*self.module-1e-7
+ 
++    def _maximum_materialized_lane_length(self,f):
++        paths=self._materialized_paths(f)
++        vals=[]
++        for tid in f.get('ids',()):
++            pts=paths.get(tid,())
++            if len(pts)>=2:
++                vals.append(sum(math.hypot(b[0]-a[0],b[1]-a[1]) for a,b in zip(pts,pts[1:])))
++        return max(vals) if vals else 0.0
++
++    def _main_side_progress_satisfied(self,side_key):
++        """True once one physical outcome from a launch side has genuinely progressed.
++
++        Materialization's stalled-side audit is intentionally side-level: a side is bad only
++        when every surviving outcome terminates below eight modules.  Keep the same predicate
++        available *during construction* so the planner can preserve useful space before that
++        condition becomes a late preflight surprise.
++        """
++        for fid in self.fronts_by_side.get(side_key,()):
++            f=self.fronts.get(fid)
++            if f is None or f.get('local_gap') or f.get('status')=='branched':
++                continue
++            if f.get('status') in ('escaped','connected'):
++                return True
++            if self._maximum_materialized_lane_length(f)>=8.0*self.module-1e-7:
++                return True
++        return False
++
++    def _main_side_progress_debt(self,f):
++        if (f.get('status')!='active' or f.get('local_gap') or
++                f.get('chip',len(self.chips))>=len(self.chips)):
++            return False
++        return not self._main_side_progress_satisfied(self._launch_family_key(f))
++
++    def _other_active_main_side_fronts(self,f):
++        key=self._launch_family_key(f)
++        return [self.fronts[fid] for fid in self.fronts_by_side.get(key,())
++                if fid!=f.get('id') and fid in self.fronts and
++                self.fronts[fid].get('status')=='active' and not self.fronts[fid].get('local_gap')]
++
++    def _connection_family_compatible(self,a,b):
++        """MAIN heads may connect across distinct launch families, even on one chip.
++
++        Siblings from the same emitted side are one routing family and must never silently merge.
++        Two different sides of the same chip, however, are genuinely foreign pathway networks;
++        treating them as forever non-connectable is what produced obvious head-to-head terminal
++        pairs with dots touching instead of one physical junction.
++        """
++        if a.get('local_gap') or b.get('local_gap'):
++            return False
++        return self._launch_family_key(a)!=self._launch_family_key(b)
++
+     def _release_source_egress(self,owner):
+         for rec in self.source_egress_by_owner.get(owner,()): rec['active']=False
+ 
+@@ -2659,7 +2744,7 @@
+         tf['gestures']=child.get('gestures',0)+1; tf['local_gestures']=child.get('local_gestures',0)+1
+         g2=self._corridor_geom(tf,b,c)
+         allow2=(allow or tf['gestures']>=2 or self._forward_frame_distance(b,d1)<=2.5*self.module)
+-        if not self._gesture_clear(tf,b,c,g2,allow_outside=allow2,extra_segments=(g1,)): return None
++        if not self._gesture_clear(tf,b,c,g2,allow_outside=allow2): return None
+         p2=dict(front=child['id'],start=b,end=c,dir=d1,modules=m2,geom=g2,score=0.0,atomic_structural=True)
+         return [p1,p2]
+ 
+@@ -2675,7 +2760,12 @@
+         parts.sort(key=lambda ids:sum(f['offsets'][i] for i in ids)/len(ids))
+         turn_modules=2+int(f['rng'].random()*2)
+         launch_fan=False
+-        rebase_modules=2
++        # Fan as soon as the perpendicular emergence gesture exists.  The child transaction
++        # carries the remainder of the ordinary four-module survival obligation.  Importantly,
++        # this is no longer an *unsplit root-bus* lock: ownership is already partitioned after
++        # the first emergence gesture, and each cohort's survival maneuver is solved separately.
++        root_min_modules=self._minimum_materialized_lane_length(f)/max(self.module,1e-9)
++        survival_remainder=max(2,min(4,int(math.ceil(max(0.0,self.main_launch_maturity_modules-root_min_modules)-1e-9))))
+         children=[]; middle=(len(parts)-1)/2
+         for rank,ids in enumerate(parts):
+             cx=sum(endpoints[i][0] for i in ids)/len(ids)
+@@ -2699,7 +2789,7 @@
+                                    thicknesses={i:f['thicknesses'][i] for i in ids},
+                                    prefixes={i:realised[i] for i in ids},rng=SplitMix64(f['rng'].next_u64()),
+                                    depth=0,intent=intent,target=target,parent=f['id'],branch_turn=turn,
+-                                   fan_group=(f['chip'],f['side_index']),forced_straight_modules=rebase_modules,
++                                   fan_group=(f['chip'],f['side_index']),forced_straight_modules=survival_remainder,
+                                    forced_turn_modules=turn_modules)
+             child['launch_fan_short_rebase']=launch_fan
+             child['gestures']=f['gestures']; child['travel']=f['travel']
+@@ -2716,58 +2806,121 @@
+                 child['local_gap_turn_due_straights']=int(f.get('local_gap_turn_due_straights',2))
+             children.append(child)
+         # Transactional fan: solve the short child maneuvers as one tiny local permutation.
+-        # The preferred visual fan is attempted first, but geometry may demand a different
+-        # non-crossing combination of straight / +/-45-degree child continuations.  This is
+-        # the bounded "permutational" layer: at most 3^3 structural combinations in normal
+-        # use, exact-checked before any topology or SVG geometry is committed.
++        # V48 used one fixed outward/straight pattern whenever it was merely legal and consulted
++        # the permutation layer only on failure.  That made launch topology look authored by a
++        # deterministic rule rather than sampled from the available space.  We now inspect a
++        # bounded seeded shortlist of legal non-crossing permutations on every launch and choose
++        # among their space-aware scores.  This remains a tiny local transaction, never routing
++        # search: at most four viable alternatives are scored.
+         preferred=tuple(child.get('branch_turn',0) for child in children)
+         def solve_turns(turns):
+-            seqs=[]
++            seqs=[]; physical_tails={}
+             for child,turn in zip(children,turns):
+                 child['branch_turn']=turn; child['branch_stage']=0
++                child['forced_straight_modules']=survival_remainder
++                child['forced_turn_modules']=turn_modules
+                 seq=self._structural_birth_sequence(child)
+                 if seq is None: return None
++                # Early fan is legal only if the complete newborn maneuver itself proves the
++                # hard per-lane survival floor.  Simulate materialized offset lanes before any
++                # parent topology is mutated.
++                tf=dict(child)
++                tf['path']=list(child.get('path',()))+[p['end'] for p in seq]
++                tf['dir']=seq[-1]['dir'] if seq else child['dir']
++                paths=self._materialized_paths(tf)
++                for tid in child.get('ids',()):
++                    pts=paths.get(tid,())
++                    L=sum(math.hypot(b[0]-a[0],b[1]-a[1]) for a,b in zip(pts,pts[1:]))
++                    if L<self.main_launch_maturity_modules*self.module-1e-7:
++                        return None
++                # Coarse cohort envelopes intentionally overlap near a fan split, so using the
++                # generic bundle-envelope conflict predicate here falsely rejected every turning
++                # fan.  Validate the actual rendered lanes instead.  The local offset tails begin
++                # at the inherited split endpoints and contain only this newborn transaction.
++                physical_tails[child['id']]={
++                    tid:self._offset_points(tf['path'],child['offsets'][tid])
++                    for tid in child.get('ids',())}
+                 seqs.append((child,seq))
+-            flat=[p for _c,seq in seqs for p in seq]
+-            for i,a in enumerate(flat):
+-                for b in flat[i+1:]:
+-                    if a['front']==b['front']: continue
+-                    if self._proposal_pair_conflicts(a,b): return None
++            for i,(ca,_sa) in enumerate(seqs):
++                for cb,_sb in seqs[i+1:]:
++                    for ta,pa in physical_tails[ca['id']].items():
++                        if len(pa)<2: continue
++                        la=LineString(pa)
++                        for tb,pb in physical_tails[cb['id']].items():
++                            if len(pb)<2: continue
++                            required=.5*(ca['thicknesses'][ta]+cb['thicknesses'][tb])+self.r.pathway_interroute_keepout
++                            lb=LineString(pb)
++                            if la.intersects(lb) or la.distance(lb)<required-1e-7:
++                                return None
+             return seqs
+-        sequences=solve_turns(preferred)
+-        used_fallback=False
+-        if sequences is None:
+-            import itertools
+-            best=None
+-            # Keep the search strictly tiny even if a future profile creates four cohorts.
+-            # For >3 cohorts, only vary the two outermost children and keep interiors straight.
+-            if len(children)<=3:
+-                turn_sets=itertools.product((1,0,-1),repeat=len(children))
+-            else:
+-                turn_sets=((a,)+tuple(0 for _ in children[1:-1])+(b,) for a in (1,0,-1) for b in (1,0,-1))
+-            for turns in turn_sets:
+-                if tuple(turns)==preferred: continue
+-                seqs=solve_turns(tuple(turns))
+-                if seqs is None: continue
+-                # Prefer the original design intent, then visible separation, then fewer turns.
+-                match=sum(1 for a,b in zip(turns,preferred) if a==b)
+-                separation=len(set(turns)); turning=sum(1 for t in turns if t)
+-                score=4.0*match+1.2*separation-.25*turning
+-                # Same-direction adjacent turns are legal but aesthetically secondary.
+-                score-=.35*sum(1 for a,b in zip(turns,turns[1:]) if a==b and a!=0)
+-                if best is None or score>best[0]: best=(score,tuple(turns),seqs)
+-            if best is not None:
+-                _score,turns,sequences=best; used_fallback=True
+-                for child,turn in zip(children,turns): child['branch_turn']=turn; child['branch_stage']=0
++        # A fan is an ordered family, so useful spread permutations are monotone rather than
++        # arbitrary 3^N turn tuples: some number of cohorts may peel outward from each edge
++        # while interior cohorts continue straight.  This gives 3-way visual spread without
++        # making siblings cross through each other.  Even an eight-cohort bus has only 25 such
++        # layouts, so we can inspect a seeded bounded sample on every launch.
++        n=len(children); mid=(n-1)/2
++        top=[i for i in range(n) if i<mid]
++        bottom=[i for i in range(n) if i>mid]
++        turn_sets=[]
++        for nt in range(len(top)+1):
++            for nb in range(len(bottom)+1):
++                turns=[0]*n
++                for i in top[:nt]: turns[i]=1
++                for i in bottom[len(bottom)-nb:]: turns[i]=-1
++                turn_sets.append(tuple(turns))
++        if preferred not in turn_sets:
++            turn_sets.append(preferred)
++        # Stable per-launch randomization: this does not consume the downstream route RNG.
++        # Geometry remains the dominant score, but equally-open fan layouts genuinely vary by
++        # seed instead of a fixed outward/straight recipe always winning merely because legal.
++        prng=SplitMix64(mix_once(self.sseed ^ 0x6A09E667F3BCC909 ^ ((f['id']+1)<<23)))
++        decorated=[]
++        for turns in dict.fromkeys(turn_sets):
++            diversity=len(set(turns)); turning=sum(1 for t in turns if t)
++            all_straight=(turning==0)
++            order_key=prng.random()-.10*diversity+(.18 if all_straight else 0.0)
++            decorated.append((order_key,tuple(turns)))
++        decorated.sort(key=lambda x:(x[0],x[1]))
++        viable=[]
++        for _order,turns in decorated:
++            seqs=solve_turns(turns)
++            if seqs is None: continue
++            # Rank the *space after the fan*, not just whether the first two gestures fit.
++            caps=[]
++            for child,seq in seqs:
++                last=seq[-1]
++                caps.append(self._local_space_capacity(child,last['end'],last['dir']))
++            diversity=len(set(turns)); turning=sum(1 for t in turns if t)
++            all_straight=(turning==0)
++            mean_cap=sum(caps)/max(1,len(caps)); min_cap=min(caps,default=0.0)
++            score=mean_cap+0.35*min_cap+0.30*diversity-0.06*turning-(0.85 if all_straight else 0.0)
++            score+=prng.uniform(-.70,.70)
++            viable.append((score,tuple(turns),seqs))
++            if len(viable)>=min(10,len(decorated)):
++                break
++        sequences=None; chosen_turns=None
++        if viable:
++            viable.sort(key=lambda x:(-x[0],x[1]))
++            _score,chosen_turns,sequences=viable[0]
++            for child,turn in zip(children,chosen_turns):
++                child['branch_turn']=turn; child['branch_stage']=0; child['fan_birth_turn']=turn
+         if sequences is None:
+             for child in children: self._drop_front(child['id'])
+             f['fan_pending']=True
+             self.stats['pathway_branch_preflight_reject_count']+=1
+             self.stats['pathway_transactional_birth_reject_count']+=1
+             return []
+-        if used_fallback:
++        if chosen_turns!=preferred:
+             self.stats.setdefault('pathway_fan_permutation_fallback_count',0)
+             self.stats['pathway_fan_permutation_fallback_count']+=1
++        self.stats.setdefault('pathway_fan_permutation_viable_option_count',0)
++        self.stats['pathway_fan_permutation_viable_option_count']+=len(viable)
++        self.stats.setdefault('pathway_fan_birth_turning_cohort_count',0)
++        self.stats.setdefault('pathway_fan_birth_straight_cohort_count',0)
++        self.stats.setdefault('pathway_fan_birth_direction_diversity_sum',0)
++        self.stats['pathway_fan_birth_turning_cohort_count']+=sum(1 for t in chosen_turns if t)
++        self.stats['pathway_fan_birth_straight_cohort_count']+=sum(1 for t in chosen_turns if not t)
++        self.stats['pathway_fan_birth_direction_diversity_sum']+=len(set(chosen_turns))
+         f['status']='branched'; f['fan_pending']=False
+         self.stats['pathway_split_count']+=1
+         if f.get('local_gap'): self.stats['pathway_local_gap_split_count']+=1
+@@ -2775,6 +2928,15 @@
+             for proposal in seq:
+                 if child.get('status')!='active': break
+                 self._accept(child,proposal)
++        # The fan transaction itself discharged every child's four-module survival debt, so the
++        # old straight source-ray reservations are no longer needed and must not occupy empty
++        # space after the children have visibly peeled away.
++        if all(self._minimum_materialized_lane_length(child)>=self.main_launch_maturity_modules*self.module-1e-7
++               for child in children):
++            self._release_source_egress(self._launch_family_key(f))
++            f['launch_egress_pending']=False
++        else:
++            raise RuntimeError(f'launch fan survival transaction invariant failed (sample_seed={self.sseed}, front={f["id"]})')
+         return children
+ 
+     def _front_half_width(self,f):
+@@ -3084,7 +3246,7 @@
+         return None
+ 
+     def _assign_round_connection_targets(self,active,round_index):
+-        """Pair compatible cross-chip fronts from one immutable round snapshot via a local broad phase."""
++        """Pair compatible MAIN launch families from one immutable round snapshot via a local broad phase."""
+         for f in active:
+             f['round_connection_peer']=None; f['round_connection_target']=None
+         self._refresh_active_head_snapshot(active)
+@@ -3098,7 +3260,7 @@
+             nearby=(self._active_head_index.query((pa[0]-max_global,pa[1]-max_global,pa[0]+max_global,pa[1]+max_global))
+                     if self._active_head_index is not None else ordered)
+             for b in nearby:
+-                if b['id']<=a['id'] or b['id'] not in eligible or a['chip']==b['chip']:
++                if b['id']<=a['id'] or b['id'] not in eligible or not self._connection_family_compatible(a,b):
+                     continue
+                 pb=b['path'][-1]; d=math.hypot(pb[0]-pa[0],pb[1]-pa[1])
+                 desire=(a['intent']=='connect')+(b['intent']=='connect')
+@@ -3205,6 +3367,12 @@
+                 for d in dirs:
+                     if d not in out and (d-f['dir'])%8 in (0,1,7): out.append(d)
+                 return out
++        # A root side bus should read as one perpendicular emergence followed by a fan.  If the
++        # transactional fan is not yet viable, keep advancing that *same emergence corridor*
++        # rather than allowing the complete unsplit bus to make an ordinary aesthetic bend.
++        # This is geometry-driven fan deferral, not a four-module straight lock.
++        if f.get('parent') is None and f.get('fan_pending') and not f.get('local_gap'):
++            return [f['dir']]
+         # Structural rebase runs come before recovery freedom.  Turning a newly split child
+         # before it has moved straight would shift its offset lanes and create a tiny hook.
+         if f.get('branch_stage')==0:
+@@ -3536,7 +3704,7 @@
+                             od=nearest_dir_index(rec['end'][0]-rec['start'][0],rec['end'][1]-rec['start'][1])
+                             if od==f['dir']:
+                                 continue
+-                    if self._same_fan_rebase_compatible(f,rec['front'],rec):
++                    if nd_exact==f['dir'] and self._same_fan_rebase_compatible(f,rec['front'],rec):
+                         continue
+                     candidate_probe=trimmed_probe() if own_history else geom
+                     gap=self._interroute_gap_for_fronts(f,other_thickness=rec.get('max_thickness'),other_local=rec.get('local_gap',False))
+@@ -3742,10 +3910,13 @@
+                         score-=3.9+.65*min(3,run-due)
+                     if turn_count==0 and f.get('gestures',0)>=2:
+                         score-=1.25
+-            elif turn and f['straight_since_turn']>=2:
+-                score+=2.2*self.profile['turn_appetite']
+             elif not turn:
+-                score+=.45
++                # Ordinary MAIN does not receive a synthetic "time to bend" reward.  A bend
++                # still wins naturally when target progress, open-space capacity, connection
++                # geometry or seeded proposal noise makes it the better local continuation.
++                # Keep only mild directional inertia so open straight corridors remain visually
++                # plausible instead of every route articulating on a fixed cadence.
++                score+=.30
+             score-=.16*abs(modules-self.profile['preferred_run_modules'])
+             base=score
+             cache[skey]=base
+@@ -4396,7 +4567,7 @@
+     def _near_foreign_corridor(self,f):
+         point=Point(f['path'][-1]); radius=2.15*self.module+self._front_half_width(f)
+         for rec in self.path_index.query(expand_bounds(point.bounds,radius)):
+-            if rec['front']==f['id'] or rec['chip']==f['chip']:
++            if rec['front']==f['id'] or rec.get('root')==self._launch_family_key(f):
+                 continue
+             if point.distance(rec['geom'])<=2.15*self.module:
+                 return True
+@@ -4844,26 +5015,21 @@
+             nearby=sorted((rec for rec in nearby if head_order[(rec[0]['id'],rec[1])]>i),
+                           key=lambda rec:head_order[(rec[0]['id'],rec[1])])
+             for b,tb,pb in nearby:
+-                if a.get('local_gap') or b.get('local_gap'):
++                if not self._connection_family_compatible(a,b):
++                    continue
++                if (a['chip']==b['chip'] and
++                        (self._source_egress_pending(a) or self._source_egress_pending(b))):
+                     continue
+                 d=math.hypot(pb[0]-pa[0],pb[1]-pa[1])
+                 radius=base_radius
+-                if a['chip']!=b['chip']:
+-                    ux=(pb[0]-pa[0])/max(d,1e-9); uy=(pb[1]-pa[1])/max(d,1e-9)
+-                    va=dir_vec(a['dir']); vb=dir_vec(b['dir'])
+-                    facing=(va[0]*ux+va[1]*uy>.18 and vb[0]*(-ux)+vb[1]*(-uy)>.18)
+-                    if (facing and
+-                            (a.get('travel',0.0)<4.0*self.module or b.get('travel',0.0)<4.0*self.module or
+-                             self._refresh_lifecycle(a) in ('LAUNCHING','RECOVERING') or
+-                             self._refresh_lifecycle(b) in ('LAUNCHING','RECOVERING'))):
+-                        radius=max_radius
+-                if a['chip']==b['chip']:
+-                    if not include_terminated or a.get('status')!='terminated' or b.get('status')!='terminated':
+-                        continue
+-                    ra=self.r._termination_dot_radius(a['thicknesses'][ta])+.5*self.r.termination_dot_hollow_stroke
+-                    rb=self.r._termination_dot_radius(b['thicknesses'][tb])+.5*self.r.termination_dot_hollow_stroke
+-                    if d>ra+rb+self.r.termination_dot_min_gap:
+-                        continue
++                ux=(pb[0]-pa[0])/max(d,1e-9); uy=(pb[1]-pa[1])/max(d,1e-9)
++                va=dir_vec(a['dir']); vb=dir_vec(b['dir'])
++                facing=(va[0]*ux+va[1]*uy>.18 and vb[0]*(-ux)+vb[1]*(-uy)>.18)
++                if (facing and
++                        (a.get('travel',0.0)<4.0*self.module or b.get('travel',0.0)<4.0*self.module or
++                         self._refresh_lifecycle(a) in ('LAUNCHING','RECOVERING') or
++                         self._refresh_lifecycle(b) in ('LAUNCHING','RECOVERING'))):
++                    radius=max_radius
+                 if d<=radius:
+                     pairs.append((d,a['id'],ta,b['id'],tb,a,b,pa,pb))
+         pairs.sort(key=lambda x:(x[0],x[1],x[2],x[3],x[4]))
+@@ -4916,8 +5082,12 @@
+                 f['status']='connected'; f['lifecycle']='TERMINAL'
+             self.connection_pairs[tuple(sorted((ta,tb)))]=meet
+             self.connected_trace_ids.update((ta,tb))
+-            self.cross_chip_connected_trace_ids.update((ta,tb))
+-            self.stats['pathway_cross_chip_connection_count']+=1
++            if ra['chip']!=rb['chip']:
++                self.cross_chip_connected_trace_ids.update((ta,tb))
++                self.stats['pathway_cross_chip_connection_count']+=1
++            else:
++                self.stats.setdefault('pathway_same_chip_head_connection_count',0)
++                self.stats['pathway_same_chip_head_connection_count']+=1
+             self.stats['pathway_cross_chip_connected_trace_count']=len(self.cross_chip_connected_trace_ids)
+             self.stats['pathway_forced_close_head_connection_count']+=1
+             used.update((ta,tb))
+@@ -4943,7 +5113,7 @@
+             for b in nearby:
+                 if a.get('local_gap') or b.get('local_gap'):
+                     continue
+-                if a['chip']==b['chip']:
++                if not self._connection_family_compatible(a,b):
+                     continue
+                 ta,tb=a['ids'][0],b['ids'][0]
+                 if ta in self.connected_trace_ids or tb in self.connected_trace_ids:
+@@ -5506,6 +5676,22 @@
+             f['quality_repair_reason']='bundle_middle_persistence'
+             return
+         min_lane=self._minimum_materialized_lane_length(f)
++        # Side-totality is a construction obligation, not a materialization-time rejection.
++        # If this is the last live outcome from a chip side and no sibling outcome has yet made
++        # eight visible modules (or escaped/connected), ordinary exhaustion may not kill it.
++        # Give that survivor fresh local planning room; other sibling fronts remain free to die
++        # independently, so this is not an all-lanes-must-be-long rule.
++        if (not f.get('local_gap') and self._main_side_progress_debt(f) and
++                not self._other_active_main_side_fronts(f)):
++            self.stats.setdefault('pathway_side_progress_termination_deferral_count',0)
++            self.stats['pathway_side_progress_termination_deferral_count']+=len(f.get('ids',()))
++            f['max_gestures']=max(f['max_gestures'],f['gestures']+4)
++            f['failures']=0
++            f['reroute_attempts']=min(f.get('reroute_attempts',0),max(0,self.profile['reroute_budget']-3))
++            f['quality_repair_pending']=True
++            f['quality_repair_reason']='side_progress_persistence'
++            f['lifecycle']='RECOVERING'
++            return
+         # V34: if a main front is about to die while a genuinely open local corridor still
+         # exists, termination is not legal yet. Rewind/replan once or twice instead of turning
+         # available space into a dead stub. This is bounded and local, not global search.
+@@ -6926,6 +7112,8 @@
+         if f.get('status')!='active' or f.get('local_gap') or f.get('chip',len(self.chips))>=len(self.chips):
+             return False
+         min_lane=self._minimum_materialized_lane_length(f)
++        if self._main_side_progress_debt(f):
++            return True
+         if min_lane < self.main_launch_preferred_terminal_modules*self.module-1e-7:
+             return True
+         if self._source_egress_pending(f) or f.get('fan_pending') or f.get('fragment_pending'):
+@@ -6949,6 +7137,8 @@
+         if f.get('status')!='active' or f.get('local_gap') or f.get('chip',len(self.chips))>=len(self.chips):
+             return False
+         min_lane=self._minimum_materialized_lane_length(f)
++        if self._main_side_progress_debt(f):
++            return True
+         if min_lane < self.main_launch_maturity_modules*self.module-1e-7:
+             return True
+         if self._source_egress_pending(f) or f.get('fan_pending') or f.get('fragment_pending'):
+@@ -6962,7 +7152,7 @@
+         return False
+ 
+     def _assign_persistence_connection_targets(self,active,debt,round_index):
+-        """Refresh cross-chip connection targets while scoring only pairs touching hard debt.
++        """Refresh compatible MAIN-family connection targets while scoring only pairs touching hard debt.
+ 
+         Every live head remains visible in the shared snapshot, but mature unrelated families do
+         not re-enter the expensive late proposal campaign.  A mature head can still become the
+@@ -6979,7 +7169,7 @@
+             pa=a['path'][-1]
+             nearby=self._active_head_index.query((pa[0]-max_global,pa[1]-max_global,pa[0]+max_global,pa[1]+max_global))
+             for b in nearby:
+-                if b['id']==a['id'] or b['id'] not in eligible or a['chip']==b['chip']:
++                if b['id']==a['id'] or b['id'] not in eligible or not self._connection_family_compatible(a,b):
+                     continue
+                 pair=tuple(sorted((a['id'],b['id'])))
+                 if pair in seen: continue
+@@ -7069,9 +7259,8 @@
+             if len(active)>1:
+                 self.stats['pathway_rounds_with_multiple_fronts']+=1
+             for f in sorted(active,key=lambda x:x['id']):
+-                if (f['status']=='active' and f.get('fan_pending') and self._launch_egress_cleared(f) and
++                if (f['status']=='active' and self._launch_fan_ready(f) and
+                         (not self._in_shared_persistence or f['id'] in debt_ids)):
+-                    f['launch_egress_pending']=False
+                     self._fan_front(f)
+ 
+             # V33 TRANSACTIONAL ROUND PREPARATION.
+@@ -7151,8 +7340,7 @@
+             for f in blocked:
+                 if self._request_local_yield(f,round_index):
+                     continue
+-                if f.get('fan_pending') and self._launch_egress_cleared(f):
+-                    f['launch_egress_pending']=False
++                if self._launch_fan_ready(f):
+                     self._fan_front(f)
+                     if f['status']!='active': continue
+                 f['failures']+=1; self.stats['pathway_blocked_gesture_count']+=1
+@@ -7477,6 +7665,7 @@
+         if f.get('status')!='active' or f.get('local_gap') or f.get('chip',len(self.chips))>=len(self.chips):
+             return ()
+         out=[]
++        if self._main_side_progress_debt(f): out.append('side_progress')
+         if self._minimum_materialized_lane_length(f) < self.main_launch_maturity_modules*self.module-1e-7:
+             out.append('under_survival_floor')
+         if self._source_egress_pending(f): out.append('source_egress')
+@@ -7488,18 +7677,25 @@
+         return tuple(out)
+ 
+     def _final_relational_persistence_residue(self):
+-        """Mature singleton MAIN lanes whose only remaining hard debt is sibling embedding."""
++        """Mature MAIN fronts with genuine relational/side-level validity debt.
++
++        This used to reopen only singleton sibling-embedding residue.  A side whose entire
++        family is still below the eight-module progress certificate is the same kind of live
++        construction debt and must be settled before coordinated terminal arbitration.
++        """
+         residue=[]
+         for f in sorted(self.fronts.values(),key=lambda x:x['id']):
+             if (f.get('status')!='active' or f.get('local_gap') or
+-                    f.get('chip',len(self.chips))>=len(self.chips) or len(f.get('ids',()))!=1):
++                    f.get('chip',len(self.chips))>=len(self.chips)):
+                 continue
+             if self._minimum_materialized_lane_length(f) < self.main_launch_maturity_modules*self.module-1e-7:
+                 continue
+             if (self._source_egress_pending(f) or f.get('fan_pending') or f.get('fragment_pending') or
+                     f.get('branch_stage') is not None):
+                 continue
+-            if self._fragment_singleton_still_embedded(f) or self._singleton_between_live_siblings(f):
++            relational=(len(f.get('ids',()))==1 and
++                        (self._fragment_singleton_still_embedded(f) or self._singleton_between_live_siblings(f)))
++            if relational or self._main_side_progress_debt(f):
+                 residue.append(f)
+         return residue
+ 
+@@ -8900,7 +9096,7 @@
+         return False
+ 
+     def _connect_near_main_terminals(self,max_pairs=8):
+-        """Bounded spatial sweep for obvious cross-chip terminal joins."""
++        """Bounded spatial sweep for obvious compatible MAIN-family terminal joins."""
+         terms=[]
+         for f in self.fronts.values():
+             if (f.get('status')=='terminated' and not f.get('local_gap') and f.get('chip',9999)<len(self.chips)
+@@ -8917,7 +9113,7 @@
+             nearby=index.query((ax-max_d,ay-max_d,ax+max_d,ay+max_d))
+             nearby=sorted((b for b in nearby if order[(b[0]['id'],b[1])]>i),key=lambda b:order[(b[0]['id'],b[1])])
+             for b in nearby:
+-                if a[0]['chip']==b[0]['chip']: continue
++                if not self._connection_family_compatible(a[0],b[0]): continue
+                 d=math.hypot(b[2][0]-a[2][0],b[2][1]-a[2][1])
+                 if d>max_d or d<.35*self.module: continue
+                 ux=(b[2][0]-a[2][0])/d; uy=(b[2][1]-a[2][1])/d
+@@ -9817,6 +10013,11 @@
+                 'pathway_unmarked_stroke_overlap_count','pathway_unmarked_clearance_violation_count','pathway_unmarked_overlap_count',
+                 'pathway_static_intersection_count','pathway_zigzag_trace_cleanup_count',
+                 'pathway_intersection_trace_cleanup_count','pathway_duplicate_trace_cleanup_count')}
++            diag['sample_seed']=int(self.sseed)
++            diag['canvas']=[float(self.W),float(self.H)]
++            diag['scale']=float(getattr(self.r,'scale',1.0))
++            diag['aspect_ratio']=list(getattr(self.r,'aspect_ratio',(1.0,1.0)))
++            diag['module_U']=float(self.U)
+             diag['zigzag_details']=_pre_stats.get('pathway_zigzag_cleanup_details',[])[:3]
+             diag['intersection_cleanup_pairs']=_pre_stats.get('pathway_intersection_cleanup_pairs',[])[:8]
+             diag['preflight_causal_repairs']=self.stats.get('pathway_preflight_causal_repair_count',0)

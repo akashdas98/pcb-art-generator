@@ -1,0 +1,65 @@
+{
+  "runs": [
+    {
+      "aspect_ratio": "1:6",
+      "max_rss_kib": 802392,
+      "output_geometry_sha256": "2ebbd5a2dd699c9f704fc15e6e8528d24a5bd2051cef4765027bf8466ac870a1",
+      "phase_times": {
+        "component_place": {
+          "calls": 1,
+          "cpu_s": 51.22952282199998,
+          "wall_s": 51.236820721000186
+        },
+        "component_prepare": {
+          "calls": 1,
+          "cpu_s": 4.0601671339999825,
+          "wall_s": 4.060769444000016
+        },
+        "final_clearance_audits": {
+          "calls": 4,
+          "cpu_s": 6.4456076250000365,
+          "wall_s": 6.4462327010010085
+        },
+        "final_validation": {
+          "calls": 2,
+          "cpu_s": 0.7569879440000022,
+          "wall_s": 0.7570123110008353
+        },
+        "local_gap_routing": {
+          "calls": 1,
+          "cpu_s": 238.63012881100002,
+          "wall_s": 238.65252219300055
+        },
+        "main_routing": {
+          "calls": 1,
+          "cpu_s": 427.370586237,
+          "wall_s": 427.41705523400014
+        }
+      },
+      "report": {
+        "chip_count": 98,
+        "collection_count": 808,
+        "component_residual_gap_fill_actual": 0.5853818943977747,
+        "component_residual_gap_total_component_count": 2047,
+        "pathway_gesture_clear_check_count": 873543,
+        "pathway_launch_trace_count": 4124,
+        "pathway_local_gap_fill_actual": 0.8000222762819545,
+        "pathway_local_gap_source_count": 7869,
+        "pathway_local_gap_trace_count": 7869,
+        "pathway_lookahead_evaluation_count": 801235,
+        "pathway_main_short_termination_trace_count": 0,
+        "pathway_main_stalled_side_count": 0,
+        "pathway_visible_launch_trace_count": 4124
+      },
+      "sample_index": 0,
+      "scale": 0.35,
+      "seed": 0,
+      "source": "pcb_v48_renderer.py",
+      "source_sha256": "3100503d27110c2bcd4b680ab65b6f9d50b344660fd43106cedbabe62ff03ebb",
+      "status": "PASS",
+      "total_cpu_s": 729.7855486779999,
+      "total_wall_s": 729.8631820610003,
+      "unattributed_wall_s": 1.2927694569975756
+    }
+  ]
+}

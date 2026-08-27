@@ -1,0 +1,13 @@
+{
+  "seed": 2231933914823899592,
+  "chip_count": 2,
+  "pathway_launch_trace_count": 80,
+  "pathway_visible_launch_trace_count": 80,
+  "pathway_main_stalled_side_count": 0,
+  "pathway_main_short_termination_trace_count": 0,
+  "pathway_main_unaccounted_launch_trace_count": 0,
+  "pathway_cross_chip_connection_count": 7,
+  "pathway_cross_chip_connected_trace_count": 14,
+  "pathway_mean_geometric_length": 450.0085961359754,
+  "wall_s": 10.32044847599991
+}

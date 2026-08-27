@@ -1,0 +1,9 @@
+{
+  "sample_seed": 3524258640260304746,
+  "aspect_ratio": "1:6",
+  "scale": 0.35,
+  "status": "FAIL",
+  "elapsed_s": 342.176874494,
+  "exception": "RuntimeError(\"MAIN persistence horizon unresolved (sample_seed=3524258640260304746, aspect_ratio=1:6, scale=0.35, reasons={'under_survival_floor': 4, 'branch_stage': 4}, front_ids=[527])\")",
+  "traceback": "Traceback (most recent call last):\n  File \"/mnt/data/v48_resume/pcb_v48_repo/work/inflight/evidence/20260827_persistence_totality_birth_fix/exact_seed_replays/replay_main_seed.py\", line 44, in replay\n    groups,stats=r.generate_main_pathways(cur_seed,placed_chips)\n                 ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/mnt/data/v48_resume/pcb_v48_repo/pcb_v48_renderer.py\", line 12087, in generate_main_pathways\n    groups,stats=planner.run_main_only()\n                 ~~~~~~~~~~~~~~~~~~~~~^^\n  File \"/mnt/data/v48_resume/pcb_v48_repo/pcb_v48_renderer.py\", line 10116, in run_main_only\n    self._run_main_core_and_preflight()\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"/mnt/data/v48_resume/pcb_v48_repo/pcb_v48_renderer.py\", line 10042, in _run_main_core_and_preflight\n    self._run_rounds()\n    ~~~~~~~~~~~~~~~~^^\n  File \"/mnt/data/v48_resume/pcb_v48_repo/pcb_v48_renderer.py\", line 7643, in _run_rounds\n    raise RuntimeError(\n    ...<3 lines>...\n        f'front_ids={[f[\"id\"] for f in unresolved[:12]]})')\nRuntimeError: MAIN persistence horizon unresolved (sample_seed=3524258640260304746, aspect_ratio=1:6, scale=0.35, reasons={'under_survival_floor': 4, 'branch_stage': 4}, front_ids=[527])\n"
+}

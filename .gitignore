@@ -18,3 +18,18 @@ dist/
 
 output/
 output_*/
+
+# Transient optimization/forensic output belongs outside canonical repo.
+bench_results/
+bench_variants/
+forensics/
+experiments/
+acceptance_*/
+review_samples/
+review_sample_*/
+*.prof
+*.pstats
+*.log
+*.time
+*.stdout
+*.stderr

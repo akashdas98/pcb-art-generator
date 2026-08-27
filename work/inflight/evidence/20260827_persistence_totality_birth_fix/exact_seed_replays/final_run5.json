@@ -1,0 +1,16 @@
+{
+  "sample_seed": 3524258640260304746,
+  "aspect_ratio": "1:6",
+  "scale": 0.35,
+  "status": "PASS",
+  "elapsed_s": 441.90975215000003,
+  "chip_count": 98,
+  "launch_trace_count": 4084,
+  "visible_launch_trace_count": 4084,
+  "unresolved": 0,
+  "stalled_sides": 0,
+  "short_terminations": 0,
+  "unaccounted": 0,
+  "underfloor_fragment_rejects": 0,
+  "young_branch_survival_transactions": 0
+}

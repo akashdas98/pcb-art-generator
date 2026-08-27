@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "renderer_version": "V41",
+  "release_rule": "Every test listed here is active and mandatory. The discovered active test set must match this manifest exactly. Zero failures, errors, skips, or expected failures are permitted.",
+  "tests": {
+    "test_batch_deadlock_skip_preserves_one_renderer_domain": {
+      "intent": "Synthetic current-policy batch fixture: a dead logical sample is skipped without changing renderer instance, base seed, or batch uniqueness domain.",
+      "migration": "V39 legacy intent reconciled for V40"
+    },
+    "test_bundle_gesture_pathways_are_direct_modular_and_collision_clean": {
+      "intent": "Current bundle/network hard contract: transactional-parallel routing, modular gesture lengths, cross-chip connectivity, octilinear legality, and zero collision/clearance violations.",
+      "migration": "V39 legacy intent reconciled for V40"
+    },
+    "test_capacitor_circle_family_is_available_and_varied": {
+      "intent": "capacitor circle family is available and varied",
+      "migration": "current retained contract"
+    },
+    "test_component_fallback_reuses_precomputed_route_keepout": {
+      "intent": "component fallback reuses precomputed route keepout",
+      "migration": "current retained contract"
+    },
+    "test_dense_dimensions_and_diamond_stagger_are_procedural": {
+      "intent": "dense dimensions and diamond stagger are procedural",
+      "migration": "current retained contract"
+    },
+    "test_escaped_trace_is_clipped_at_first_frame_crossing": {
+      "intent": "escaped trace is clipped at first frame crossing",
+      "migration": "current retained contract"
+    },
+    "test_exact_quota_assignment": {
+      "intent": "exact quota assignment",
+      "migration": "current retained contract"
+    },
+    "test_foreign_path_inside_head_disk_is_not_invisible": {
+      "intent": "foreign path inside head disk is not invisible",
+      "migration": "current retained contract"
+    },
+    "test_hard_stops_use_deferred_reroute_before_forced_termination": {
+      "intent": "Controlled live router state: hard stop schedules reroute while budget remains, performs real multi-segment traceback/deep repair, and only refuses reroute after budget exhaustion.",
+      "migration": "V39 legacy intent reconciled for V40"
+    },
+    "test_holistic_connections_loop_guard_and_extended_repair_are_active": {
+      "intent": "Maintained holistic-network contract plus bounded live connection pairing and loop-risk rejection.",
+      "migration": "V39 legacy intent reconciled for V40"
+    },
+    "test_ic_arrays_are_procedural_and_connected": {
+      "intent": "ic arrays are procedural and connected",
+      "migration": "current retained contract"
+    },
+    "test_isolated_capacitor_occurrence_path": {
+      "intent": "isolated capacitor occurrence path",
+      "migration": "current retained contract"
+    },
+    "test_joint_conflict_solution_is_insertion_order_invariant": {
+      "intent": "joint conflict solution is insertion order invariant",
+      "migration": "current retained contract"
+    },
+    "test_main_chip_density_is_canvas_gated_and_scale_independent": {
+      "intent": "main chip density is canvas gated and scale independent",
+      "migration": "current retained contract"
+    },
+    "test_main_chip_scalar_variation_is_continuous": {
+      "intent": "main chip scalar variation is continuous",
+      "migration": "current retained contract"
+    },
+    "test_main_scale_is_independent_of_canvas_size": {
+      "intent": "main scale is independent of canvas size",
+      "migration": "current retained contract"
+    },
+    "test_multiple_isolated_capacitors_are_independent_and_clear": {
+      "intent": "multiple isolated capacitors are independent and clear",
+      "migration": "current retained contract"
+    },
+    "test_pathways_are_deterministic_without_pathway_seed_search": {
+      "intent": "pathways are deterministic without pathway seed search",
+      "migration": "current retained contract"
+    },
+    "test_post_route_component_failure_never_restarts_routing_internally": {
+      "intent": "post route component failure never restarts routing internally",
+      "migration": "current retained contract"
+    },
+    "test_reference_seed_residual_completion_is_compound_dominant": {
+      "intent": "reference seed residual completion is compound dominant",
+      "migration": "current retained contract"
+    },
+    "test_residual_filler_uses_compound_assemblies_outside_micro_rooms": {
+      "intent": "residual filler uses compound assemblies outside micro rooms",
+      "migration": "current retained contract"
+    },
+    "test_residual_micro_tokens_are_region_gated_and_capped": {
+      "intent": "residual micro tokens are region gated and capped",
+      "migration": "current retained contract"
+    },
+    "test_root_bundle_cannot_structurally_split_before_physical_egress": {
+      "intent": "root bundle cannot structurally split before physical egress",
+      "migration": "current retained contract"
+    },
+    "test_root_main_launch_can_trace_back_to_emergence_anchor": {
+      "intent": "root main launch can trace back to emergence anchor",
+      "migration": "current retained contract"
+    },
+    "test_root_traceback_reactivates_source_egress_reservation": {
+      "intent": "root traceback reactivates source egress reservation",
+      "migration": "current retained contract"
+    },
+    "test_routes_before_secondary_components_exist": {
+      "intent": "routes before secondary components exist",
+      "migration": "current retained contract"
+    },
+    "test_same_family_conflict_can_atomically_hold_sibling": {
+      "intent": "same family conflict can atomically hold sibling",
+      "migration": "current retained contract"
+    },
+    "test_secondary_components_keep_main_chip_breathing_room": {
+      "intent": "Direct current component-candidate gate: post-main components cannot enter the 42U main-chip clearance moat.",
+      "migration": "V39 legacy intent reconciled for V40"
+    },
+    "test_single_cohort_root_is_straight_until_source_egress": {
+      "intent": "single cohort root is straight until source egress",
+      "migration": "current retained contract"
+    },
+    "test_single_sample_invariants": {
+      "intent": "Current non-spatial Phase-A/template fixture: quotas, scale distribution, component-template validation, and within-sample fingerprint uniqueness without invoking residual routing.",
+      "migration": "V39 legacy intent reconciled for V40"
+    },
+    "test_source_has_no_ic_or_dense_shape_lookup_table": {
+      "intent": "source has no ic or dense shape lookup table",
+      "migration": "current retained contract"
+    },
+    "test_two_sample_cross_sample_uniqueness": {
+      "intent": "Current batch fingerprint domain tested at the component-template stage across two deterministic logical populations, with first-population records registered before the second is prepared.",
+      "migration": "V39 legacy intent reconciled for V40"
+    },
+    "test_unsolved_same_round_group_defers_instead_of_choosing_winner": {
+      "intent": "unsolved same round group defers instead of choosing winner",
+      "migration": "current retained contract"
+    },
+    "test_v38_connection_leg_rejects_visible_90_degree_terminal_kink": {
+      "intent": "v38 connection leg rejects visible 90 degree terminal kink",
+      "migration": "current retained contract"
+    },
+    "test_v38_default_scale_is_canvas_over_1600_and_default_canvas_is_two_chip_only": {
+      "intent": "v38 default scale is canvas over 1600 and default canvas is two chip only",
+      "migration": "current retained contract"
+    },
+    "test_v38_nonzero_offset_singleton_rebases_to_exact_materialized_head_before_connection": {
+      "intent": "v38 nonzero offset singleton rebases to exact materialized head before connection",
+      "migration": "current retained contract"
+    },
+    "test_v38_space_aware_causal_contract": {
+      "intent": "v38 space aware causal contract",
+      "migration": "current retained contract"
+    },
+    "test_v38_traceback_blacklists_actual_replayed_corridor_at_rollback_junction": {
+      "intent": "v38 traceback blacklists actual replayed corridor at rollback junction",
+      "migration": "current retained contract"
+    },
+    "test_v39_commit_rejects_direct_90_degree_turn": {
+      "intent": "v39 commit rejects direct 90 degree turn",
+      "migration": "current retained contract"
+    },
+    "test_v39_connection_junction_rejects_90_allows_45": {
+      "intent": "v39 connection junction rejects 90 allows 45",
+      "migration": "current retained contract"
+    },
+    "test_v39_exact_dir8_rejects_non_octilinear_segment": {
+      "intent": "v39 exact dir8 rejects non octilinear segment",
+      "migration": "current retained contract"
+    },
+    "test_young_blocked_launch_requests_causal_blocker_rollback": {
+      "intent": "young blocked launch requests causal blocker rollback",
+      "migration": "current retained contract"
+    },
+    "test_v41_reference_local_fill_is_bent_dominant_and_45_degree_only": {
+      "intent": "Fresh V41 production reference preserves bent-dominant 45-degree-only local fill, hard geometry, and source-marker contracts.",
+      "migration": "V41 fresh acceptance snapshot after behavioral escape-clipping fix"
+    },
+    "test_tall_canvas_micro_escape_cleanup_preserves_octilinear_previous_leg": {
+      "intent": "Tall-canvas regression: microscopic final frame crossings collapse by extending the previous legal octilinear leg, never by skewing that leg to the next segment crossing.",
+      "migration": "V41 regression for 1200x6248\u20138046 non-octilinear escape-clipping defect"
+    }
+  }
+}

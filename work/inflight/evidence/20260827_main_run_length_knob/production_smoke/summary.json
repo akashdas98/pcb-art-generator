@@ -1,0 +1,50 @@
+[
+  {
+    "multiplier": 0.2,
+    "status": "PASS",
+    "wall_s": 6.075102685000047,
+    "seed": 12565985740840879884,
+    "chip_count": 1,
+    "launch": 39,
+    "visible": 39,
+    "stalled": 0,
+    "short": 0,
+    "unaccounted": 0,
+    "mean_geometric_length": 449.7880738668336,
+    "cross_chip_connections": 0,
+    "termination_count": 19,
+    "svg_sha256": "138742bb8b22d8f49d5ea1f2bf2ea80f57756dc38749485f0f7129933ff313ee"
+  },
+  {
+    "multiplier": 1.0,
+    "status": "PASS",
+    "wall_s": 5.212007567000001,
+    "seed": 12565985740840879884,
+    "chip_count": 1,
+    "launch": 39,
+    "visible": 39,
+    "stalled": 0,
+    "short": 0,
+    "unaccounted": 0,
+    "mean_geometric_length": 487.3780248174843,
+    "cross_chip_connections": 0,
+    "termination_count": 15,
+    "svg_sha256": "5d93ca33ea89de32902e872695ebaf1ae359b6931ac2edda114aeedfed25c7c8"
+  },
+  {
+    "multiplier": 3.0,
+    "status": "PASS",
+    "wall_s": 5.913603880999972,
+    "seed": 12565985740840879884,
+    "chip_count": 1,
+    "launch": 39,
+    "visible": 39,
+    "stalled": 0,
+    "short": 0,
+    "unaccounted": 0,
+    "mean_geometric_length": 504.9840456418207,
+    "cross_chip_connections": 0,
+    "termination_count": 14,
+    "svg_sha256": "0ce2a44ae2ce8f92827900c0a7484d5a9dfe0e1070b9a04a08bf6651607aae54"
+  }
+]

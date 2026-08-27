@@ -1,0 +1,3225 @@
+{
+  "aspect": "1:1",
+  "cpu_s": 34.067427646,
+  "geom": "eb9b52606a97f35820db76ee58bfba3a65c8a8dd66c13da21658e08020fedc92",
+  "phases": {
+    "component_place": {
+      "calls": 1,
+      "cpu_s": 2.348920176,
+      "wall_s": 2.3489560590005567
+    },
+    "component_prepare": {
+      "calls": 1,
+      "cpu_s": 0.25011512100000033,
+      "wall_s": 0.2501282439998249
+    },
+    "local": {
+      "calls": 1,
+      "cpu_s": 12.604227796000004,
+      "wall_s": 12.604342319999887
+    },
+    "main": {
+      "calls": 1,
+      "cpu_s": 18.446524001,
+      "wall_s": 18.446888266000315
+    }
+  },
+  "report": {
+    "IC_required_contact_count": 232,
+    "IC_required_contact_failure_count": 0,
+    "aspect_ratio": [
+      1.0,
+      1.0
+    ],
+    "base_seed": 104,
+    "canonical_short_side": 1200.0,
+    "canvas_territory_scale": 1.0,
+    "chip_count": 8,
+    "chip_count_expected": 8.0,
+    "chip_count_fractional_territory_probability": 0.0,
+    "chip_count_population_basis": "logical_viewbox_area_divided_by_canonical_square_area",
+    "chip_count_probability_3": 0.0,
+    "chip_motifs": [
+      [
+        "M1",
+        "M6"
+      ],
+      [
+        "M3"
+      ],
+      [
+        "M2",
+        "M6",
+        "M8"
+      ],
+      [
+        "M3",
+        "M4",
+        "M6"
+      ],
+      [
+        "M1",
+        "M3",
+        "M8"
+      ],
+      [
+        "M2",
+        "M5"
+      ],
+      [
+        "M1",
+        "M4"
+      ],
+      [
+        "M3",
+        "M5"
+      ]
+    ],
+    "chip_q": [
+      115.39696236420112,
+      102.20639374513189,
+      100.97591252742617,
+      106.21743189122789,
+      112.63128062669975,
+      103.10666417440635,
+      108.9390411840886,
+      109.88703593537939
+    ],
+    "clearance_violation_count": 0,
+    "collection_capacitor_entity_count": 26,
+    "collection_capacitor_group_count": 26,
+    "collection_count": 66,
+    "collection_long": [
+      82.77874930826283,
+      85.59302324011196,
+      84.14925670144885,
+      58.71578713117401,
+      54.64915017569092,
+      76.63019026638881,
+      56.98592705556797,
+      52.574334505406114,
+      56.7812060921824,
+      51.6467142961892,
+      48.095554102852475,
+      57.49293087434353,
+      58.84806569116113,
+      53.962437496939174,
+      47.486049616619766,
+      59.83476086317569,
+      52.81467722226262,
+      45.54638672589226,
+      39.79159815246521,
+      52.04777945844717,
+      55.49312807018282,
+      56.08967757256596,
+      55.0214933584009,
+      33.96741644086637,
+      58.47458083575788,
+      36.82123149241795,
+      43.12262851463902,
+      45.92665803750401,
+      39.498001641850806,
+      18.528387703642693,
+      85.26015378376133,
+      68.35965948517878,
+      64.35855711893464,
+      66.35378719946357,
+      68.03871718908977,
+      73.35359768403396,
+      63.36023663536389,
+      83.61936457792444,
+      70.92091564082602,
+      79.50440697794443,
+      57.53896808138728,
+      71.34037796502844,
+      53.45695659601466,
+      54.95183994706986,
+      54.39781049927956,
+      56.83182458384158,
+      55.51894628707396,
+      52.22219202365454,
+      69.39089278740857,
+      50.76456367202684,
+      50.98630562923876,
+      55.320258702238334,
+      59.5270808636792,
+      56.95015899759301,
+      49.366019073159805,
+      49.21923400828045,
+      50.10508823470437,
+      52.76946592832064,
+      55.86778928074091,
+      51.42642276078465,
+      55.00534706847111,
+      48.24300899570517,
+      48.04343534492364,
+      40.20479734815035,
+      59.03126496740566,
+      52.22874783735779
+    ],
+    "component_chip_clearance": 31.5,
+    "component_component_clearance": 9.0,
+    "component_gap_scheduler_exact_candidate_count": 246,
+    "component_gap_scheduler_local_attempt_count": 2816,
+    "component_gap_scheduler_metadata_probe_count": 246,
+    "component_gap_scheduler_mode": "territory_first_bounded_local_tokens",
+    "component_gap_scheduler_prepared_object_count": 73,
+    "component_gap_scheduler_recovery_attempt_count": 409,
+    "component_gap_scheduler_recovery_object_count": 38,
+    "component_gap_scheduler_site_success_count": 35,
+    "component_gap_scheduler_site_token_count": 85,
+    "component_layout_attempt_count": 1,
+    "component_layout_attempt_index": 0,
+    "component_long_axis_quarter_counts": [
+      37,
+      38,
+      40,
+      42
+    ],
+    "component_long_axis_span_fraction": 0.9715846285300641,
+    "component_pathway_attachment_count": 0,
+    "component_pathway_attachment_probability": 0.24,
+    "component_pathway_clearance": 7.5,
+    "component_pathway_unauthorized_overlap_count": 0,
+    "component_placement_mode": "post_main_pre_local_residual_gap_fill",
+    "component_residual_gap_claimed_area_fraction": 0.1294148655772272,
+    "component_residual_gap_claimed_cell_count": 982,
+    "component_residual_gap_completion_remaining_open_cell_count": 6149,
+    "component_residual_gap_completion_uses_legacy_filler_cap": false,
+    "component_residual_gap_compound_filler_count": 81,
+    "component_residual_gap_compound_filler_fraction": 0.9642857142857143,
+    "component_residual_gap_density_target_count": 73,
+    "component_residual_gap_extra_filler_count": 84,
+    "component_residual_gap_extra_filler_limit": 384,
+    "component_residual_gap_fill_actual": 0.5313515642507161,
+    "component_residual_gap_fill_definition": "50_60_percent_of_post_main_residual_capacity_with_gap_sized_quantity",
+    "component_residual_gap_fill_target": 0.5310118012064095,
+    "component_residual_gap_grid_shape": [
+      112,
+      112
+    ],
+    "component_residual_gap_mandatory_region_count": 73,
+    "component_residual_gap_micro_filler_count": 0,
+    "component_residual_gap_micro_filler_limit": 32,
+    "component_residual_gap_open_cell_count": 7588,
+    "component_residual_gap_optional_region_count": 71,
+    "component_residual_gap_placed_count": 157,
+    "component_residual_gap_region_capacity_fraction": 0.5313515642507161,
+    "component_residual_gap_region_component_counts": {
+      "0": 7,
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 0,
+      "5": 2,
+      "6": 7,
+      "7": 0,
+      "8": 0,
+      "9": 1,
+      "10": 1,
+      "11": 0,
+      "12": 0,
+      "13": 0,
+      "14": 0,
+      "15": 1,
+      "16": 0,
+      "17": 0,
+      "18": 0,
+      "19": 8,
+      "20": 0,
+      "21": 2,
+      "22": 0,
+      "23": 0,
+      "24": 0,
+      "25": 0,
+      "26": 0,
+      "27": 0,
+      "28": 0,
+      "29": 1,
+      "30": 0,
+      "31": 7,
+      "32": 4,
+      "33": 0,
+      "34": 2,
+      "35": 3,
+      "36": 2,
+      "37": 1,
+      "38": 1,
+      "39": 1,
+      "40": 12,
+      "41": 0,
+      "42": 0,
+      "43": 0,
+      "44": 0,
+      "45": 0,
+      "46": 1,
+      "47": 0,
+      "48": 0,
+      "49": 8,
+      "50": 3,
+      "51": 0,
+      "52": 2,
+      "53": 0,
+      "54": 0,
+      "55": 0,
+      "56": 0,
+      "57": 1,
+      "58": 0,
+      "59": 0,
+      "60": 8,
+      "61": 0,
+      "62": 4,
+      "63": 1,
+      "64": 1,
+      "65": 0,
+      "66": 0,
+      "67": 2,
+      "68": 0,
+      "69": 2,
+      "70": 0,
+      "71": 0,
+      "72": 0,
+      "73": 0,
+      "74": 0,
+      "75": 1,
+      "76": 2,
+      "77": 0,
+      "78": 0,
+      "79": 1,
+      "80": 2,
+      "81": 2,
+      "82": 2,
+      "83": 7,
+      "84": 1,
+      "85": 3,
+      "86": 3,
+      "87": 0,
+      "88": 0,
+      "89": 1,
+      "90": 0,
+      "91": 0,
+      "92": 0,
+      "93": 0,
+      "94": 0,
+      "95": 1,
+      "96": 0,
+      "97": 0,
+      "98": 3,
+      "99": 1,
+      "100": 0,
+      "101": 0,
+      "102": 1,
+      "103": 0,
+      "104": 1,
+      "105": 0,
+      "106": 0,
+      "107": 0,
+      "108": 0,
+      "109": 1,
+      "110": 0,
+      "111": 0,
+      "112": 9,
+      "113": 0,
+      "114": 0,
+      "115": 4,
+      "116": 0,
+      "117": 0,
+      "118": 0,
+      "119": 0,
+      "120": 0,
+      "121": 1,
+      "122": 0,
+      "123": 1,
+      "124": 1,
+      "125": 0,
+      "126": 0,
+      "127": 1,
+      "128": 0,
+      "129": 0,
+      "130": 1,
+      "131": 1,
+      "132": 0,
+      "133": 0,
+      "134": 1,
+      "135": 1,
+      "136": 0,
+      "137": 0,
+      "138": 1,
+      "139": 1,
+      "140": 1,
+      "141": 1,
+      "142": 0,
+      "143": 0
+    },
+    "component_residual_gap_region_count": 144,
+    "component_residual_gap_region_quota_units": {
+      "0": 29,
+      "1": 2,
+      "2": 3,
+      "3": 3,
+      "4": 1.0,
+      "5": 9,
+      "6": 21,
+      "7": 0.0,
+      "8": 0.0,
+      "9": 3,
+      "10": 1.0,
+      "11": 0.0,
+      "12": 0.0,
+      "13": 0.0,
+      "14": 0.0,
+      "15": 2,
+      "16": 0.0,
+      "17": 0.0,
+      "18": 0.0,
+      "19": 40,
+      "20": 0.0,
+      "21": 8,
+      "22": 0.0,
+      "23": 0.0,
+      "24": 0.0,
+      "25": 1.0,
+      "26": 0.0,
+      "27": 0.0,
+      "28": 0.0,
+      "29": 4,
+      "30": 0.0,
+      "31": 34,
+      "32": 20,
+      "33": 0.0,
+      "34": 5,
+      "35": 15,
+      "36": 7,
+      "37": 5,
+      "38": 1.0,
+      "39": 1.0,
+      "40": 62,
+      "41": 0.0,
+      "42": 0.0,
+      "43": 2,
+      "44": 0.0,
+      "45": 2,
+      "46": 1.0,
+      "47": 0.0,
+      "48": 0.0,
+      "49": 36,
+      "50": 14,
+      "51": 0.0,
+      "52": 6,
+      "53": 0.0,
+      "54": 0.0,
+      "55": 0.0,
+      "56": 1.0,
+      "57": 2,
+      "58": 0.0,
+      "59": 0.0,
+      "60": 24,
+      "61": 0.0,
+      "62": 15,
+      "63": 4,
+      "64": 1.0,
+      "65": 0.0,
+      "66": 0.0,
+      "67": 7,
+      "68": 3,
+      "69": 9,
+      "70": 0.0,
+      "71": 0.0,
+      "72": 0.0,
+      "73": 0.0,
+      "74": 0.0,
+      "75": 3,
+      "76": 5,
+      "77": 0.0,
+      "78": 0.0,
+      "79": 2,
+      "80": 5,
+      "81": 4,
+      "82": 7,
+      "83": 32,
+      "84": 3,
+      "85": 11,
+      "86": 10,
+      "87": 1.0,
+      "88": 0.0,
+      "89": 1.0,
+      "90": 1.0,
+      "91": 4,
+      "92": 0.0,
+      "93": 0.0,
+      "94": 0.0,
+      "95": 2,
+      "96": 0.0,
+      "97": 0.0,
+      "98": 14,
+      "99": 1.0,
+      "100": 0.0,
+      "101": 0.0,
+      "102": 3,
+      "103": 0.0,
+      "104": 1.0,
+      "105": 0.0,
+      "106": 0.0,
+      "107": 0.0,
+      "108": 0.0,
+      "109": 6,
+      "110": 0.0,
+      "111": 0.0,
+      "112": 39,
+      "113": 0.0,
+      "114": 0.0,
+      "115": 17,
+      "116": 0.0,
+      "117": 0.0,
+      "118": 0.0,
+      "119": 0.0,
+      "120": 0.0,
+      "121": 2,
+      "122": 0.0,
+      "123": 4,
+      "124": 1.0,
+      "125": 1.0,
+      "126": 0.0,
+      "127": 1.0,
+      "128": 0.0,
+      "129": 0.0,
+      "130": 1.0,
+      "131": 3,
+      "132": 0.0,
+      "133": 0.0,
+      "134": 4,
+      "135": 3,
+      "136": 0.0,
+      "137": 0.0,
+      "138": 2,
+      "139": 2,
+      "140": 2,
+      "141": 3,
+      "142": 0.0,
+      "143": 0.0
+    },
+    "component_residual_gap_served_region_area_fraction": 0.9750033417992247,
+    "component_residual_gap_served_region_count": 66,
+    "component_residual_gap_singleton_filler_count": 3,
+    "component_residual_gap_site_count": 137,
+    "component_residual_gap_site_fill_actual": 1.0,
+    "component_residual_gap_site_requested_count": 137,
+    "component_residual_gap_size_counts": {
+      "large": 57,
+      "medium": 18,
+      "small": 9
+    },
+    "component_residual_gap_size_mean_spans": {
+      "large": 66.14097758662443,
+      "medium": 54.253211437559244,
+      "small": 19.900029050524886
+    },
+    "component_residual_gap_static_clearance_certificate_hits": 68,
+    "component_residual_gap_total_component_count": 157,
+    "component_templates_prepared_before_routing": false,
+    "component_unplaced_count": 0,
+    "design_detail_area_scale": 4.0,
+    "design_distance_scale": 2.0,
+    "design_scale_basis": 1200.0,
+    "design_unit_divisor": 1600,
+    "design_unit_viewbox_fraction": 0.0003125,
+    "forbidden_intersection_count": 0,
+    "forbidden_touch_count": 0,
+    "generation_order": "main_chips -> primary_pathways -> residual_components_50_60 -> local_gap_pathways_80_90_of_remaining",
+    "ic_array_count": 27,
+    "ic_array_shapes": [
+      [
+        5,
+        1
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        5,
+        1
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        5,
+        1
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        6,
+        1
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "isolated_capacitor_count": 91,
+    "isolated_capacitor_radii": [
+      9.238365288261821,
+      9.707139749398735,
+      5.301494390230932,
+      7.572103845762954,
+      6.944997651407391,
+      14.160901139815675,
+      12.368733895199766,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      10.82861055764243,
+      12.98412546375518,
+      null,
+      null,
+      null,
+      null,
+      11.68466736413132,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "isolated_capacitor_states": [
+      "concentric",
+      "filled",
+      "concentric",
+      "filled",
+      "concentric",
+      "concentric",
+      "hollow",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      "hollow",
+      "filled",
+      null,
+      null,
+      null,
+      null,
+      "hollow",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "local_component_clearance_violation_count": 0,
+    "logical_sample_index": 0,
+    "logical_viewbox": [
+      2400.0,
+      2400.0
+    ],
+    "main_chip_long_axis_quarter_counts": [
+      3,
+      1,
+      2,
+      2
+    ],
+    "main_chip_long_axis_span_fraction": 0.8487038654726397,
+    "main_chip_pair_min_clearance": 395.88035399450706,
+    "main_chip_pair_required_clearance": 322.5,
+    "pathway_abandoned_short_bundle_count": 0,
+    "pathway_abandoned_short_trace_count": 0,
+    "pathway_atomic_conflict_group_defer_count": 410,
+    "pathway_atomic_conflict_group_repair_front_count": 1134,
+    "pathway_atomic_round_commit_count": 64,
+    "pathway_blocked_gesture_count": 1748,
+    "pathway_blocker_yield_count": 0,
+    "pathway_board_scale_trace_count": 6,
+    "pathway_board_scale_trace_fraction": 0.01764705882352941,
+    "pathway_branch_preflight_reject_count": 56,
+    "pathway_bundle_count": 32,
+    "pathway_bundle_middle_termination_deferral_count": 26,
+    "pathway_bundled_forced_termination_trace_count": 29,
+    "pathway_bundled_hard_stop_deferral_count": 75,
+    "pathway_bundled_journey_deferral_count": 1,
+    "pathway_bundled_termination_suppression_intent": 0.97,
+    "pathway_candidate_seed_retry_count": 0,
+    "pathway_canvas_quartiles_touched": 4,
+    "pathway_causal_blocker_rollback_request_count": 0,
+    "pathway_causal_terminal_reopen_count": 0,
+    "pathway_chip_launch_gap": 16.875,
+    "pathway_close_head_lane_detach_count": 7,
+    "pathway_collapsed_overlap_count": 0,
+    "pathway_collection_approach_count": 0,
+    "pathway_collection_approached_trace_count": 0,
+    "pathway_collection_connected_trace_count": 0,
+    "pathway_collection_connection_count": 0,
+    "pathway_compensating_zigzag_count": 0,
+    "pathway_conflict_combination_count": 14516,
+    "pathway_conflict_region_count": 1397,
+    "pathway_conflict_region_front_count": 4595,
+    "pathway_conflict_repair_scheduled_count": 1134,
+    "pathway_connection_count": 49,
+    "pathway_coordinated_fragment_terminal_group_count": 20,
+    "pathway_coordinated_persistence_terminal_trace_count": 108,
+    "pathway_coordinated_root_terminal_group_count": 22,
+    "pathway_coverage_cell_fraction": 0.6805555555555556,
+    "pathway_cross_chip_connected_trace_count": 98,
+    "pathway_cross_chip_connection_count": 49,
+    "pathway_curved_primitive_count": 0,
+    "pathway_decision_round_count": 64,
+    "pathway_deep_traceback_count": 295,
+    "pathway_detached_prefix_lock_count": 7,
+    "pathway_duplicate_trace_cleanup_count": 0,
+    "pathway_early_reroute_scheduled_count": 0,
+    "pathway_embedded_singleton_separation_repair_count": 15,
+    "pathway_escape_count": 28,
+    "pathway_escape_trace_count": 83,
+    "pathway_exhausted_embedded_terminal_trace_count": 29,
+    "pathway_family_hold_front_count": 269,
+    "pathway_family_hold_round_count": 156,
+    "pathway_fan_permutation_fallback_count": 28,
+    "pathway_final_escape_repair_count": 11,
+    "pathway_final_relational_geometric_exhaustion_trace_count": 31,
+    "pathway_final_relational_progress_move_count": 24,
+    "pathway_final_relational_progress_tick_count": 6,
+    "pathway_forced_close_head_connection_count": 18,
+    "pathway_fragment_short_future_reject_count": 80,
+    "pathway_future_failure_certificate_hit_count": 5233,
+    "pathway_future_failure_certificate_store_count": 10694,
+    "pathway_future_local_visible_failure_certificate_hit_count": 907,
+    "pathway_future_local_visible_failure_certificate_store_count": 1396,
+    "pathway_future_local_visible_preflight_reject_count": 1396,
+    "pathway_general_repair_scheduled_count": 1237,
+    "pathway_gesture_clear_check_budget": 208000,
+    "pathway_gesture_clear_check_count": 77945,
+    "pathway_hard_stop_count": 579,
+    "pathway_holistic_connection_guided_round_count": 133,
+    "pathway_holistic_connection_pair_count": 4830,
+    "pathway_holistic_front_round_count": 10210,
+    "pathway_illegal_connection_junction_turn_count": 0,
+    "pathway_illegal_turn_count": 0,
+    "pathway_incremental_rollback_batch_count": 62,
+    "pathway_incremental_rollback_compacted_segment_count": 2279,
+    "pathway_incremental_rollback_segment_remove_count": 2279,
+    "pathway_intersection_marker_count": 0,
+    "pathway_intersection_trace_cleanup_count": 0,
+    "pathway_late_life_branch_attempt_count": 37,
+    "pathway_launch_cohort_count": 90,
+    "pathway_launch_coverage_intent_range": [
+      0.72,
+      0.9
+    ],
+    "pathway_launch_coverage_max": 0.8973061099728472,
+    "pathway_launch_coverage_min": 0.7215506594063802,
+    "pathway_launch_egress_reservation_reject_count": 0,
+    "pathway_launch_min_lane_edge_gap_ratio": 3.509072969203606,
+    "pathway_launch_spacing_max": 18.542993765433476,
+    "pathway_launch_spacing_min": 10.298423883059025,
+    "pathway_launch_trace_count": 340,
+    "pathway_leaf_bundle_count": 266,
+    "pathway_local_gap_abandoned_segment_prune_count": 387,
+    "pathway_local_gap_absolute_target_fraction": 0.3991710358928591,
+    "pathway_local_gap_bundle_pair_count": 25,
+    "pathway_local_gap_bundle_release_count": 40,
+    "pathway_local_gap_component_marker_backoff_count": 8,
+    "pathway_local_gap_component_marker_backoff_distance": 254.9436999575062,
+    "pathway_local_gap_component_marker_prune_count": 2,
+    "pathway_local_gap_covered_cell_count": 1664,
+    "pathway_local_gap_curved_primitive_count": 0,
+    "pathway_local_gap_denominator": "canonical_post_main_residual_service_field",
+    "pathway_local_gap_direct_failure_cert_hit_count": 1256,
+    "pathway_local_gap_direct_run_family_attempt_count": 2188,
+    "pathway_local_gap_direct_run_family_quarantine_count": 653,
+    "pathway_local_gap_direct_run_family_quarantine_skip_count": 1118,
+    "pathway_local_gap_direct_run_family_retired_count": 653,
+    "pathway_local_gap_direct_run_family_unique_attempted_count": 836,
+    "pathway_local_gap_escape_trace_count": 16,
+    "pathway_local_gap_exit_probability_factor": 0.5,
+    "pathway_local_gap_fast_round_count": 84,
+    "pathway_local_gap_fill_actual": 0.8053932713568714,
+    "pathway_local_gap_fill_actual_absolute_service": 0.3774462967843964,
+    "pathway_local_gap_fill_definition": "80_90_percent_of_post_component_remaining_field_by_visible_stroke_plus_legitimate_perimeter",
+    "pathway_local_gap_fill_target_fraction": 0.8517494254614484,
+    "pathway_local_gap_fill_target_range": [
+      0.8,
+      0.9
+    ],
+    "pathway_local_gap_fragment_candidate_work_cap": 2000,
+    "pathway_local_gap_fragment_candidate_work_cap_hit_count": 2,
+    "pathway_local_gap_fragment_candidate_work_token_count": 4000,
+    "pathway_local_gap_fragment_mopup_trace_count": 38,
+    "pathway_local_gap_fragment_mopup_work_cap": 160,
+    "pathway_local_gap_frozen_main_render_primitive_count": 340,
+    "pathway_local_gap_frozen_main_retained_segment_buffer_count": 0,
+    "pathway_local_gap_frozen_main_segment_count": 2098,
+    "pathway_local_gap_hard_floor_absolute": 0.3749187485994272,
+    "pathway_local_gap_hard_floor_rescue_wave_cap": 2,
+    "pathway_local_gap_hard_floor_rescue_wave_count": 2,
+    "pathway_local_gap_hold_front_count": 10,
+    "pathway_local_gap_hold_round_count": 10,
+    "pathway_local_gap_illegal_connection_junction_turn_count": 0,
+    "pathway_local_gap_illegal_turn_count": 0,
+    "pathway_local_gap_independent_source_count": 740,
+    "pathway_local_gap_late_wave_work_cap": 2,
+    "pathway_local_gap_max_single_vertex_turn_degrees": 45,
+    "pathway_local_gap_mean_turns_per_visible_trace": 1.2506738544474394,
+    "pathway_local_gap_mopup_bent_rescue_trace_count": 2,
+    "pathway_local_gap_mopup_bent_trace_count": 160,
+    "pathway_local_gap_mopup_straight_trace_count": 4,
+    "pathway_local_gap_mopup_trace_count": 164,
+    "pathway_local_gap_mopup_work_cap": 216,
+    "pathway_local_gap_non_octilinear_segment_count": 0,
+    "pathway_local_gap_normal_branch_boost_range": [
+      3.0,
+      5.0
+    ],
+    "pathway_local_gap_open_cell_count": 6037,
+    "pathway_local_gap_partial_service_candidate_work_cap_per_wave": 2400,
+    "pathway_local_gap_partial_service_candidate_work_token_count": 2400,
+    "pathway_local_gap_partial_service_rescue_wave_cap": 3,
+    "pathway_local_gap_partial_service_rescue_wave_count": 1,
+    "pathway_local_gap_phase": "after_components",
+    "pathway_local_gap_physical_post_component_service_fraction": 0.46514204074871623,
+    "pathway_local_gap_post_component_open_cell_count": 6037,
+    "pathway_local_gap_post_main_service_cell_count": 7588,
+    "pathway_local_gap_region_count": 115,
+    "pathway_local_gap_remaining_service_fraction": 0.46864843574928394,
+    "pathway_local_gap_round_budget": 12,
+    "pathway_local_gap_sampled_target_shortfall": 0.02172473910846273,
+    "pathway_local_gap_service_debt_direct_trace_count": 34,
+    "pathway_local_gap_service_debt_fragment_trace_count": 7,
+    "pathway_local_gap_service_debt_mopup_work_cap": 96,
+    "pathway_local_gap_service_definition": "visible_stroke_plus_legitimate_exclusion_perimeter",
+    "pathway_local_gap_source_count": 740,
+    "pathway_local_gap_spawn_attempt_count": 25888,
+    "pathway_local_gap_spawn_reject_count": 354,
+    "pathway_local_gap_special_hollow_cap_count": 29,
+    "pathway_local_gap_special_probability_range": [
+      0.15,
+      0.3
+    ],
+    "pathway_local_gap_special_ratio": 0.16486486486486487,
+    "pathway_local_gap_special_thick_trace_count": 122,
+    "pathway_local_gap_split_count": 0,
+    "pathway_local_gap_static_intersection_count": 0,
+    "pathway_local_gap_straight_visible_trace_count": 47,
+    "pathway_local_gap_straight_visible_trace_fraction": 0.12668463611859837,
+    "pathway_local_gap_target_call_count": 3438,
+    "pathway_local_gap_target_cell_count": 3029,
+    "pathway_local_gap_target_cell_evaluation_count": 71860,
+    "pathway_local_gap_target_chunk_evaluation_count": 18114,
+    "pathway_local_gap_target_chunk_fallback_count": 2,
+    "pathway_local_gap_trace_count": 740,
+    "pathway_local_gap_unmarked_clearance_violation_count": 0,
+    "pathway_local_gap_unmarked_overlap_count": 0,
+    "pathway_local_gap_visible_trace_count": 371,
+    "pathway_local_gap_wave_count": 8,
+    "pathway_local_gap_wave_work_cap": 3,
+    "pathway_local_space_capacity_evaluation_count": 28861,
+    "pathway_local_visible_failure_certificate_hit_count": 306,
+    "pathway_local_visible_failure_certificate_store_count": 537,
+    "pathway_local_visible_preflight_reject_count": 537,
+    "pathway_lookahead_evaluation_count": 64287,
+    "pathway_loop_candidate_reject_count": 7029,
+    "pathway_main_active_unmaterialized_launch_trace_count": 0,
+    "pathway_main_active_unmaterialized_launch_trace_ids": [],
+    "pathway_main_connected_trace_count": 98,
+    "pathway_main_floor_hugging_terminal_trace_count": 0,
+    "pathway_main_frame_exit_trace_count": 96,
+    "pathway_main_free_terminal_under_preferred_visible_trace_count": 0,
+    "pathway_main_horizon_under_preferred_visible_trace_count": 0,
+    "pathway_main_launch_survival_count": 340,
+    "pathway_main_local_clearance_violation_count": 0,
+    "pathway_main_outcome_by_trace": {
+      "0": [
+        "terminated",
+        "coordinated_persistence_limit",
+        22.838703
+      ],
+      "1": [
+        "terminated",
+        "coordinated_persistence_limit",
+        10.302661
+      ],
+      "10": [
+        "terminated",
+        "coordinated_persistence_limit",
+        20.997761
+      ],
+      "100": [
+        "terminated",
+        "hard_stop_exhausted",
+        20.139686
+      ],
+      "101": [
+        "terminated",
+        "round_limit",
+        20.594836
+      ],
+      "102": [
+        "escaped",
+        null,
+        2.804797
+      ],
+      "103": [
+        "escaped",
+        null,
+        2.804797
+      ],
+      "104": [
+        "escaped",
+        null,
+        2.804797
+      ],
+      "105": [
+        "escaped",
+        null,
+        2.804797
+      ],
+      "106": [
+        "escaped",
+        null,
+        2.804797
+      ],
+      "107": [
+        "escaped",
+        null,
+        2.804797
+      ],
+      "108": [
+        "escaped",
+        null,
+        2.804797
+      ],
+      "109": [
+        "escaped",
+        null,
+        2.804797
+      ],
+      "11": [
+        "connected",
+        null,
+        19.374812
+      ],
+      "110": [
+        "terminated",
+        "round_limit",
+        31.48902
+      ],
+      "111": [
+        "connected",
+        null,
+        30.879034
+      ],
+      "112": [
+        "connected",
+        null,
+        17.931693
+      ],
+      "113": [
+        "connected",
+        null,
+        23.961383
+      ],
+      "114": [
+        "connected",
+        null,
+        29.507624
+      ],
+      "115": [
+        "terminated",
+        "coordinated_persistence_limit",
+        27.528181
+      ],
+      "116": [
+        "terminated",
+        "coordinated_persistence_limit",
+        21.88649
+      ],
+      "117": [
+        "terminated",
+        "coordinated_persistence_limit",
+        23.642935
+      ],
+      "118": [
+        "connected",
+        null,
+        25.27763
+      ],
+      "119": [
+        "connected",
+        null,
+        27.944756
+      ],
+      "12": [
+        "terminated",
+        "round_limit",
+        18.693383
+      ],
+      "120": [
+        "connected",
+        null,
+        33.546646
+      ],
+      "121": [
+        "connected",
+        null,
+        30.752032
+      ],
+      "122": [
+        "terminated",
+        "hard_stop_exhausted",
+        38.164075
+      ],
+      "123": [
+        "connected",
+        null,
+        19.050951
+      ],
+      "124": [
+        "terminated",
+        "round_limit",
+        15.739251
+      ],
+      "125": [
+        "connected",
+        null,
+        16.934328
+      ],
+      "126": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.014157
+      ],
+      "127": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.23599
+      ],
+      "128": [
+        "escaped",
+        null,
+        28.761418
+      ],
+      "129": [
+        "escaped",
+        null,
+        24.367039
+      ],
+      "13": [
+        "terminated",
+        "round_limit",
+        14.051846
+      ],
+      "130": [
+        "escaped",
+        null,
+        20.888889
+      ],
+      "131": [
+        "escaped",
+        null,
+        20.014425
+      ],
+      "132": [
+        "escaped",
+        null,
+        19.515246
+      ],
+      "133": [
+        "escaped",
+        null,
+        19.208329
+      ],
+      "134": [
+        "escaped",
+        null,
+        18.484067
+      ],
+      "135": [
+        "connected",
+        null,
+        24.651202
+      ],
+      "136": [
+        "terminated",
+        "coordinated_persistence_limit",
+        22.592818
+      ],
+      "137": [
+        "terminated",
+        "journey_limit",
+        29.840303
+      ],
+      "138": [
+        "connected",
+        null,
+        26.05482
+      ],
+      "139": [
+        "connected",
+        null,
+        18.091178
+      ],
+      "14": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.211751
+      ],
+      "140": [
+        "connected",
+        null,
+        17.148207
+      ],
+      "141": [
+        "connected",
+        null,
+        16.830008
+      ],
+      "142": [
+        "terminated",
+        "coordinated_persistence_limit",
+        8.645992
+      ],
+      "143": [
+        "connected",
+        null,
+        9.492889
+      ],
+      "144": [
+        "escaped",
+        null,
+        2.682529
+      ],
+      "145": [
+        "escaped",
+        null,
+        2.682529
+      ],
+      "146": [
+        "escaped",
+        null,
+        2.682529
+      ],
+      "147": [
+        "escaped",
+        null,
+        2.682529
+      ],
+      "148": [
+        "escaped",
+        null,
+        2.682529
+      ],
+      "149": [
+        "escaped",
+        null,
+        2.682529
+      ],
+      "15": [
+        "connected",
+        null,
+        15.22344
+      ],
+      "150": [
+        "escaped",
+        null,
+        2.682529
+      ],
+      "151": [
+        "escaped",
+        null,
+        2.682529
+      ],
+      "152": [
+        "connected",
+        null,
+        16.348551
+      ],
+      "153": [
+        "terminated",
+        "round_limit",
+        12.165498
+      ],
+      "154": [
+        "connected",
+        null,
+        16.016575
+      ],
+      "155": [
+        "connected",
+        null,
+        17.732175
+      ],
+      "156": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.845993
+      ],
+      "157": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.854223
+      ],
+      "158": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.852694
+      ],
+      "159": [
+        "terminated",
+        "coordinated_persistence_limit",
+        11.43129
+      ],
+      "16": [
+        "terminated",
+        "coordinated_persistence_limit",
+        8.834481
+      ],
+      "160": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.0
+      ],
+      "161": [
+        "connected",
+        null,
+        23.074525
+      ],
+      "162": [
+        "escaped",
+        null,
+        14.718304
+      ],
+      "163": [
+        "terminated",
+        "round_limit",
+        17.538258
+      ],
+      "164": [
+        "terminated",
+        "coordinated_persistence_limit",
+        20.643497
+      ],
+      "165": [
+        "connected",
+        null,
+        19.818287
+      ],
+      "166": [
+        "connected",
+        null,
+        19.705988
+      ],
+      "167": [
+        "connected",
+        null,
+        20.467569
+      ],
+      "168": [
+        "connected",
+        null,
+        23.133717
+      ],
+      "169": [
+        "connected",
+        null,
+        14.840982
+      ],
+      "17": [
+        "connected",
+        null,
+        11.417122
+      ],
+      "170": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.312103
+      ],
+      "171": [
+        "terminated",
+        "coordinated_persistence_limit",
+        13.22497
+      ],
+      "172": [
+        "terminated",
+        "round_limit",
+        18.841113
+      ],
+      "173": [
+        "connected",
+        null,
+        23.346853
+      ],
+      "174": [
+        "terminated",
+        "coordinated_persistence_limit",
+        25.670461
+      ],
+      "175": [
+        "connected",
+        null,
+        22.473057
+      ],
+      "176": [
+        "terminated",
+        "coordinated_persistence_limit",
+        20.472207
+      ],
+      "177": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.852862
+      ],
+      "178": [
+        "terminated",
+        "coordinated_persistence_limit",
+        20.867488
+      ],
+      "179": [
+        "connected",
+        null,
+        12.680197
+      ],
+      "18": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.832382
+      ],
+      "180": [
+        "connected",
+        null,
+        19.595099
+      ],
+      "181": [
+        "connected",
+        null,
+        17.440283
+      ],
+      "182": [
+        "terminated",
+        "coordinated_persistence_limit",
+        20.0
+      ],
+      "183": [
+        "terminated",
+        "hard_stop_exhausted",
+        15.677858
+      ],
+      "184": [
+        "connected",
+        null,
+        16.229581
+      ],
+      "185": [
+        "terminated",
+        "round_limit",
+        8.903622
+      ],
+      "186": [
+        "connected",
+        null,
+        13.282776
+      ],
+      "187": [
+        "connected",
+        null,
+        14.471541
+      ],
+      "188": [
+        "terminated",
+        "marker_clearance_nudge",
+        8.0
+      ],
+      "189": [
+        "terminated",
+        "round_limit",
+        26.671493
+      ],
+      "19": [
+        "terminated",
+        "coordinated_persistence_limit",
+        11.849049
+      ],
+      "190": [
+        "terminated",
+        "journey_limit",
+        20.450685
+      ],
+      "191": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.642439
+      ],
+      "192": [
+        "connected",
+        null,
+        13.22269
+      ],
+      "193": [
+        "connected",
+        null,
+        13.55239
+      ],
+      "194": [
+        "connected",
+        null,
+        22.366393
+      ],
+      "195": [
+        "connected",
+        null,
+        21.58242
+      ],
+      "196": [
+        "connected",
+        null,
+        19.098843
+      ],
+      "197": [
+        "terminated",
+        "coordinated_persistence_limit",
+        21.161703
+      ],
+      "198": [
+        "connected",
+        null,
+        23.041496
+      ],
+      "199": [
+        "terminated",
+        "round_limit",
+        18.858698
+      ],
+      "2": [
+        "connected",
+        null,
+        12.697702
+      ],
+      "20": [
+        "terminated",
+        "coordinated_persistence_limit",
+        10.478666
+      ],
+      "200": [
+        "terminated",
+        "coordinated_persistence_limit",
+        18.318892
+      ],
+      "201": [
+        "connected",
+        null,
+        24.39145
+      ],
+      "202": [
+        "terminated",
+        "round_limit",
+        9.845273
+      ],
+      "203": [
+        "terminated",
+        "coordinated_persistence_limit",
+        9.724524
+      ],
+      "204": [
+        "terminated",
+        "coordinated_persistence_limit",
+        9.021446
+      ],
+      "205": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.0
+      ],
+      "206": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.185934
+      ],
+      "207": [
+        "terminated",
+        "coordinated_persistence_limit",
+        11.417133
+      ],
+      "208": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.693647
+      ],
+      "209": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.957903
+      ],
+      "21": [
+        "connected",
+        null,
+        16.428937
+      ],
+      "210": [
+        "terminated",
+        "marker_clearance_shorten",
+        11.417706
+      ],
+      "211": [
+        "terminated",
+        "coordinated_persistence_limit",
+        16.697076
+      ],
+      "212": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.298076
+      ],
+      "213": [
+        "terminated",
+        "coordinated_persistence_limit",
+        9.619859
+      ],
+      "214": [
+        "escaped",
+        null,
+        7.10741
+      ],
+      "215": [
+        "escaped",
+        null,
+        7.191558
+      ],
+      "216": [
+        "escaped",
+        null,
+        6.932013
+      ],
+      "217": [
+        "escaped",
+        null,
+        7.095234
+      ],
+      "218": [
+        "escaped",
+        null,
+        7.191558
+      ],
+      "219": [
+        "escaped",
+        null,
+        6.948871
+      ],
+      "22": [
+        "connected",
+        null,
+        16.10703
+      ],
+      "220": [
+        "terminated",
+        "hard_stop_exhausted",
+        8.321836
+      ],
+      "221": [
+        "terminated",
+        "hard_stop_exhausted",
+        8.443594
+      ],
+      "222": [
+        "terminated",
+        "hard_stop_exhausted",
+        9.188484
+      ],
+      "223": [
+        "connected",
+        null,
+        9.540516
+      ],
+      "224": [
+        "terminated",
+        "round_limit",
+        9.5727
+      ],
+      "225": [
+        "connected",
+        null,
+        11.21655
+      ],
+      "226": [
+        "connected",
+        null,
+        11.085233
+      ],
+      "227": [
+        "terminated",
+        "hard_stop_exhausted",
+        14.212736
+      ],
+      "228": [
+        "connected",
+        null,
+        22.946383
+      ],
+      "229": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.0
+      ],
+      "23": [
+        "connected",
+        null,
+        31.139336
+      ],
+      "230": [
+        "terminated",
+        "coordinated_persistence_limit",
+        13.228419
+      ],
+      "231": [
+        "connected",
+        null,
+        18.622663
+      ],
+      "232": [
+        "connected",
+        null,
+        18.281406
+      ],
+      "233": [
+        "terminated",
+        "coordinated_persistence_limit",
+        16.551183
+      ],
+      "234": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.641762
+      ],
+      "235": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.928026
+      ],
+      "236": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.840265
+      ],
+      "237": [
+        "terminated",
+        "coordinated_persistence_limit",
+        11.882602
+      ],
+      "238": [
+        "connected",
+        null,
+        10.133097
+      ],
+      "239": [
+        "connected",
+        null,
+        10.106508
+      ],
+      "24": [
+        "escaped",
+        null,
+        27.964071
+      ],
+      "240": [
+        "connected",
+        null,
+        10.223352
+      ],
+      "241": [
+        "connected",
+        null,
+        10.764037
+      ],
+      "242": [
+        "connected",
+        null,
+        10.822638
+      ],
+      "243": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.565308
+      ],
+      "244": [
+        "connected",
+        null,
+        9.920291
+      ],
+      "245": [
+        "connected",
+        null,
+        15.745207
+      ],
+      "246": [
+        "terminated",
+        "coordinated_persistence_limit",
+        28.329932
+      ],
+      "247": [
+        "terminated",
+        "journey_limit",
+        36.0
+      ],
+      "248": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.999848
+      ],
+      "249": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.465609
+      ],
+      "25": [
+        "terminated",
+        "coordinated_persistence_limit",
+        10.389582
+      ],
+      "250": [
+        "terminated",
+        "coordinated_persistence_limit",
+        20.33979
+      ],
+      "251": [
+        "terminated",
+        "coordinated_persistence_limit",
+        17.162688
+      ],
+      "252": [
+        "terminated",
+        "round_limit",
+        39.481504
+      ],
+      "253": [
+        "terminated",
+        "coordinated_persistence_limit",
+        41.511937
+      ],
+      "254": [
+        "connected",
+        null,
+        11.408553
+      ],
+      "255": [
+        "terminated",
+        "coordinated_persistence_limit",
+        6.688344
+      ],
+      "256": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.606671
+      ],
+      "257": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.690798
+      ],
+      "258": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.827066
+      ],
+      "259": [
+        "terminated",
+        "coordinated_persistence_limit",
+        6.632767
+      ],
+      "26": [
+        "escaped",
+        null,
+        28.257075
+      ],
+      "260": [
+        "terminated",
+        "coordinated_persistence_limit",
+        6.0
+      ],
+      "261": [
+        "terminated",
+        "coordinated_persistence_limit",
+        11.838842
+      ],
+      "262": [
+        "connected",
+        null,
+        12.00542
+      ],
+      "263": [
+        "escaped",
+        null,
+        11.241334
+      ],
+      "264": [
+        "escaped",
+        null,
+        12.088189
+      ],
+      "265": [
+        "escaped",
+        null,
+        12.765237
+      ],
+      "266": [
+        "escaped",
+        null,
+        15.058837
+      ],
+      "267": [
+        "escaped",
+        null,
+        15.735885
+      ],
+      "268": [
+        "terminated",
+        "journey_limit",
+        25.715658
+      ],
+      "269": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.297681
+      ],
+      "27": [
+        "terminated",
+        "coordinated_persistence_limit",
+        24.681976
+      ],
+      "270": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.25
+      ],
+      "271": [
+        "terminated",
+        "coordinated_persistence_limit",
+        18.857672
+      ],
+      "272": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.772331
+      ],
+      "273": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.825901
+      ],
+      "274": [
+        "connected",
+        null,
+        12.288252
+      ],
+      "275": [
+        "connected",
+        null,
+        11.383164
+      ],
+      "276": [
+        "connected",
+        null,
+        11.119733
+      ],
+      "277": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.867855
+      ],
+      "278": [
+        "terminated",
+        "coordinated_persistence_limit",
+        8.48967
+      ],
+      "279": [
+        "escaped",
+        null,
+        10.043242
+      ],
+      "28": [
+        "terminated",
+        "coordinated_persistence_limit",
+        9.9015
+      ],
+      "280": [
+        "escaped",
+        null,
+        10.80285
+      ],
+      "281": [
+        "escaped",
+        null,
+        11.704252
+      ],
+      "282": [
+        "escaped",
+        null,
+        15.685326
+      ],
+      "283": [
+        "escaped",
+        null,
+        16.34857
+      ],
+      "284": [
+        "escaped",
+        null,
+        17.175898
+      ],
+      "285": [
+        "terminated",
+        "journey_limit",
+        33.007428
+      ],
+      "286": [
+        "connected",
+        null,
+        22.971583
+      ],
+      "287": [
+        "terminated",
+        "coordinated_persistence_limit",
+        39.280377
+      ],
+      "288": [
+        "terminated",
+        "coordinated_persistence_limit",
+        37.867932
+      ],
+      "289": [
+        "terminated",
+        "coordinated_persistence_limit",
+        38.65826
+      ],
+      "29": [
+        "escaped",
+        null,
+        27.707164
+      ],
+      "290": [
+        "terminated",
+        "coordinated_persistence_limit",
+        25.634839
+      ],
+      "291": [
+        "escaped",
+        null,
+        2.683039
+      ],
+      "292": [
+        "escaped",
+        null,
+        2.683039
+      ],
+      "293": [
+        "escaped",
+        null,
+        2.683039
+      ],
+      "294": [
+        "escaped",
+        null,
+        2.683039
+      ],
+      "295": [
+        "escaped",
+        null,
+        2.683039
+      ],
+      "296": [
+        "escaped",
+        null,
+        2.683039
+      ],
+      "297": [
+        "escaped",
+        null,
+        2.683039
+      ],
+      "298": [
+        "escaped",
+        null,
+        2.683039
+      ],
+      "299": [
+        "escaped",
+        null,
+        16.54601
+      ],
+      "3": [
+        "connected",
+        null,
+        12.166967
+      ],
+      "30": [
+        "escaped",
+        null,
+        27.41427
+      ],
+      "300": [
+        "escaped",
+        null,
+        16.623257
+      ],
+      "301": [
+        "terminated",
+        "round_limit",
+        16.201259
+      ],
+      "302": [
+        "escaped",
+        null,
+        15.001894
+      ],
+      "303": [
+        "escaped",
+        null,
+        15.037386
+      ],
+      "304": [
+        "escaped",
+        null,
+        14.814834
+      ],
+      "305": [
+        "escaped",
+        null,
+        14.766032
+      ],
+      "306": [
+        "escaped",
+        null,
+        15.001894
+      ],
+      "307": [
+        "escaped",
+        null,
+        15.072878
+      ],
+      "308": [
+        "escaped",
+        null,
+        17.03747
+      ],
+      "309": [
+        "escaped",
+        null,
+        16.795368
+      ],
+      "31": [
+        "escaped",
+        null,
+        27.121377
+      ],
+      "310": [
+        "escaped",
+        null,
+        22.608352
+      ],
+      "311": [
+        "terminated",
+        "coordinated_persistence_limit",
+        25.135219
+      ],
+      "312": [
+        "terminated",
+        "coordinated_persistence_limit",
+        16.842145
+      ],
+      "313": [
+        "terminated",
+        "coordinated_persistence_limit",
+        22.813875
+      ],
+      "314": [
+        "terminated",
+        "round_limit",
+        8.319073
+      ],
+      "315": [
+        "terminated",
+        "round_limit",
+        9.006439
+      ],
+      "316": [
+        "connected",
+        null,
+        10.572435
+      ],
+      "317": [
+        "connected",
+        null,
+        11.877545
+      ],
+      "318": [
+        "connected",
+        null,
+        10.863034
+      ],
+      "319": [
+        "connected",
+        null,
+        15.004714
+      ],
+      "32": [
+        "escaped",
+        null,
+        25.192166
+      ],
+      "320": [
+        "escaped",
+        null,
+        20.873276
+      ],
+      "321": [
+        "terminated",
+        "journey_limit",
+        24.845497
+      ],
+      "322": [
+        "connected",
+        null,
+        25.120781
+      ],
+      "323": [
+        "connected",
+        null,
+        17.733234
+      ],
+      "324": [
+        "connected",
+        null,
+        19.698029
+      ],
+      "325": [
+        "connected",
+        null,
+        15.862347
+      ],
+      "326": [
+        "terminated",
+        "hard_stop_exhausted",
+        13.437074
+      ],
+      "327": [
+        "terminated",
+        "coordinated_persistence_limit",
+        13.830693
+      ],
+      "328": [
+        "connected",
+        null,
+        11.707265
+      ],
+      "329": [
+        "connected",
+        null,
+        13.655126
+      ],
+      "33": [
+        "connected",
+        null,
+        20.904729
+      ],
+      "330": [
+        "terminated",
+        "coordinated_persistence_limit",
+        10.484556
+      ],
+      "331": [
+        "terminated",
+        "coordinated_persistence_limit",
+        16.171906
+      ],
+      "332": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.012909
+      ],
+      "333": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.160069
+      ],
+      "334": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.985728
+      ],
+      "335": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.128277
+      ],
+      "336": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.041337
+      ],
+      "337": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.388275
+      ],
+      "338": [
+        "connected",
+        null,
+        12.866185
+      ],
+      "339": [
+        "connected",
+        null,
+        15.151683
+      ],
+      "34": [
+        "terminated",
+        "coordinated_persistence_limit",
+        27.647782
+      ],
+      "35": [
+        "terminated",
+        "coordinated_persistence_limit",
+        18.482414
+      ],
+      "36": [
+        "connected",
+        null,
+        20.383807
+      ],
+      "37": [
+        "connected",
+        null,
+        14.537751
+      ],
+      "38": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.454527
+      ],
+      "39": [
+        "connected",
+        null,
+        12.650547
+      ],
+      "4": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.60682
+      ],
+      "40": [
+        "connected",
+        null,
+        12.011392
+      ],
+      "41": [
+        "connected",
+        null,
+        10.658941
+      ],
+      "42": [
+        "terminated",
+        "coordinated_persistence_limit",
+        18.097088
+      ],
+      "43": [
+        "terminated",
+        "coordinated_persistence_limit",
+        23.502539
+      ],
+      "44": [
+        "escaped",
+        null,
+        9.928838
+      ],
+      "45": [
+        "escaped",
+        null,
+        9.867868
+      ],
+      "46": [
+        "escaped",
+        null,
+        9.941401
+      ],
+      "47": [
+        "escaped",
+        null,
+        13.018036
+      ],
+      "48": [
+        "escaped",
+        null,
+        12.173157
+      ],
+      "49": [
+        "escaped",
+        null,
+        11.664052
+      ],
+      "5": [
+        "terminated",
+        "hard_stop_exhausted",
+        23.012702
+      ],
+      "50": [
+        "terminated",
+        "round_limit",
+        6.0
+      ],
+      "51": [
+        "terminated",
+        "round_limit",
+        6.0
+      ],
+      "52": [
+        "terminated",
+        "round_limit",
+        6.0
+      ],
+      "53": [
+        "terminated",
+        "coordinated_persistence_limit",
+        22.804041
+      ],
+      "54": [
+        "terminated",
+        "coordinated_persistence_limit",
+        21.399858
+      ],
+      "55": [
+        "terminated",
+        "round_limit",
+        13.0
+      ],
+      "56": [
+        "terminated",
+        "round_limit",
+        12.186729
+      ],
+      "57": [
+        "connected",
+        null,
+        14.203551
+      ],
+      "58": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.85632
+      ],
+      "59": [
+        "connected",
+        null,
+        15.934328
+      ],
+      "6": [
+        "connected",
+        null,
+        25.382201
+      ],
+      "60": [
+        "escaped",
+        null,
+        3.560781
+      ],
+      "61": [
+        "escaped",
+        null,
+        3.560781
+      ],
+      "62": [
+        "escaped",
+        null,
+        3.560781
+      ],
+      "63": [
+        "escaped",
+        null,
+        3.560781
+      ],
+      "64": [
+        "escaped",
+        null,
+        3.560781
+      ],
+      "65": [
+        "escaped",
+        null,
+        3.560781
+      ],
+      "66": [
+        "escaped",
+        null,
+        3.560781
+      ],
+      "67": [
+        "escaped",
+        null,
+        3.560781
+      ],
+      "68": [
+        "escaped",
+        null,
+        3.560781
+      ],
+      "69": [
+        "escaped",
+        null,
+        3.560781
+      ],
+      "7": [
+        "connected",
+        null,
+        17.630277
+      ],
+      "70": [
+        "escaped",
+        null,
+        3.560781
+      ],
+      "71": [
+        "escaped",
+        null,
+        3.560781
+      ],
+      "72": [
+        "terminated",
+        "coordinated_persistence_limit",
+        8.0
+      ],
+      "73": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.386317
+      ],
+      "74": [
+        "terminated",
+        "coordinated_persistence_limit",
+        6.987987
+      ],
+      "75": [
+        "terminated",
+        "coordinated_persistence_limit",
+        8.82739
+      ],
+      "76": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.981948
+      ],
+      "77": [
+        "connected",
+        null,
+        10.90686
+      ],
+      "78": [
+        "connected",
+        null,
+        10.927441
+      ],
+      "79": [
+        "connected",
+        null,
+        10.77809
+      ],
+      "8": [
+        "connected",
+        null,
+        17.273792
+      ],
+      "80": [
+        "terminated",
+        "coordinated_persistence_limit",
+        9.67666
+      ],
+      "81": [
+        "connected",
+        null,
+        10.5657
+      ],
+      "82": [
+        "connected",
+        null,
+        10.332001
+      ],
+      "83": [
+        "connected",
+        null,
+        10.873426
+      ],
+      "84": [
+        "escaped",
+        null,
+        4.614881
+      ],
+      "85": [
+        "escaped",
+        null,
+        4.614881
+      ],
+      "86": [
+        "escaped",
+        null,
+        4.614881
+      ],
+      "87": [
+        "escaped",
+        null,
+        4.614881
+      ],
+      "88": [
+        "escaped",
+        null,
+        4.614881
+      ],
+      "89": [
+        "escaped",
+        null,
+        4.614881
+      ],
+      "9": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.634884
+      ],
+      "90": [
+        "escaped",
+        null,
+        4.614881
+      ],
+      "91": [
+        "escaped",
+        null,
+        4.614881
+      ],
+      "92": [
+        "escaped",
+        null,
+        4.614881
+      ],
+      "93": [
+        "escaped",
+        null,
+        21.019631
+      ],
+      "94": [
+        "escaped",
+        null,
+        21.737916
+      ],
+      "95": [
+        "connected",
+        null,
+        32.719714
+      ],
+      "96": [
+        "connected",
+        null,
+        25.241586
+      ],
+      "97": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.620842
+      ],
+      "98": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.035299
+      ],
+      "99": [
+        "terminated",
+        "hard_stop_exhausted",
+        21.941369
+      ]
+    },
+    "pathway_main_preferred_visible_modules": 6.0,
+    "pathway_main_short_termination_trace_count": 0,
+    "pathway_main_source_marker_count": 340,
+    "pathway_main_stalled_side_count": 0,
+    "pathway_main_stalled_side_details": [],
+    "pathway_main_unaccounted_launch_trace_count": 0,
+    "pathway_main_unaccounted_launch_trace_ids": [],
+    "pathway_main_under_preferred_root_count": 0,
+    "pathway_main_under_preferred_root_max_fraction": 0.0,
+    "pathway_main_under_preferred_visible_details": [],
+    "pathway_main_visible_length_modules_by_trace": {
+      "0": 22.838703,
+      "1": 10.302661,
+      "10": 20.997761,
+      "100": 20.139686,
+      "101": 20.594836,
+      "102": 2.804797,
+      "103": 2.804797,
+      "104": 2.804797,
+      "105": 2.804797,
+      "106": 2.804797,
+      "107": 2.804797,
+      "108": 2.804797,
+      "109": 2.804797,
+      "11": 19.374812,
+      "110": 31.48902,
+      "111": 30.879034,
+      "112": 17.931693,
+      "113": 23.961383,
+      "114": 29.507624,
+      "115": 27.528181,
+      "116": 21.88649,
+      "117": 23.642935,
+      "118": 25.27763,
+      "119": 27.944756,
+      "12": 18.693383,
+      "120": 33.546646,
+      "121": 30.752032,
+      "122": 38.164075,
+      "123": 19.050951,
+      "124": 15.739251,
+      "125": 16.934328,
+      "126": 15.014157,
+      "127": 12.23599,
+      "128": 28.761418,
+      "129": 24.367039,
+      "13": 14.051846,
+      "130": 20.888889,
+      "131": 20.014425,
+      "132": 19.515246,
+      "133": 19.208329,
+      "134": 18.484067,
+      "135": 24.651202,
+      "136": 22.592818,
+      "137": 29.840303,
+      "138": 26.05482,
+      "139": 18.091178,
+      "14": 14.211751,
+      "140": 17.148207,
+      "141": 16.830008,
+      "142": 8.645992,
+      "143": 9.492889,
+      "144": 2.682529,
+      "145": 2.682529,
+      "146": 2.682529,
+      "147": 2.682529,
+      "148": 2.682529,
+      "149": 2.682529,
+      "15": 15.22344,
+      "150": 2.682529,
+      "151": 2.682529,
+      "152": 16.348551,
+      "153": 12.165498,
+      "154": 16.016575,
+      "155": 17.732175,
+      "156": 19.845993,
+      "157": 15.854223,
+      "158": 14.852694,
+      "159": 11.43129,
+      "16": 8.834481,
+      "160": 12.0,
+      "161": 23.074525,
+      "162": 14.718304,
+      "163": 17.538258,
+      "164": 20.643497,
+      "165": 19.818287,
+      "166": 19.705988,
+      "167": 20.467569,
+      "168": 23.133717,
+      "169": 14.840982,
+      "17": 11.417122,
+      "170": 14.312103,
+      "171": 13.22497,
+      "172": 18.841113,
+      "173": 23.346853,
+      "174": 25.670461,
+      "175": 22.473057,
+      "176": 20.472207,
+      "177": 12.852862,
+      "178": 20.867488,
+      "179": 12.680197,
+      "18": 12.832382,
+      "180": 19.595099,
+      "181": 17.440283,
+      "182": 20.0,
+      "183": 15.677858,
+      "184": 16.229581,
+      "185": 8.903622,
+      "186": 13.282776,
+      "187": 14.471541,
+      "188": 8.0,
+      "189": 26.671493,
+      "19": 11.849049,
+      "190": 20.450685,
+      "191": 12.642439,
+      "192": 13.22269,
+      "193": 13.55239,
+      "194": 22.366393,
+      "195": 21.58242,
+      "196": 19.098843,
+      "197": 21.161703,
+      "198": 23.041496,
+      "199": 18.858698,
+      "2": 12.697702,
+      "20": 10.478666,
+      "200": 18.318892,
+      "201": 24.39145,
+      "202": 9.845273,
+      "203": 9.724524,
+      "204": 9.021446,
+      "205": 15.0,
+      "206": 14.185934,
+      "207": 11.417133,
+      "208": 14.693647,
+      "209": 15.957903,
+      "21": 16.428937,
+      "210": 11.417706,
+      "211": 16.697076,
+      "212": 15.298076,
+      "213": 9.619859,
+      "214": 7.10741,
+      "215": 7.191558,
+      "216": 6.932013,
+      "217": 7.095234,
+      "218": 7.191558,
+      "219": 6.948871,
+      "22": 16.10703,
+      "220": 8.321836,
+      "221": 8.443594,
+      "222": 9.188484,
+      "223": 9.540516,
+      "224": 9.5727,
+      "225": 11.21655,
+      "226": 11.085233,
+      "227": 14.212736,
+      "228": 22.946383,
+      "229": 15.0,
+      "23": 31.139336,
+      "230": 13.228419,
+      "231": 18.622663,
+      "232": 18.281406,
+      "233": 16.551183,
+      "234": 19.641762,
+      "235": 15.928026,
+      "236": 7.840265,
+      "237": 11.882602,
+      "238": 10.133097,
+      "239": 10.106508,
+      "24": 27.964071,
+      "240": 10.223352,
+      "241": 10.764037,
+      "242": 10.822638,
+      "243": 7.565308,
+      "244": 9.920291,
+      "245": 15.745207,
+      "246": 28.329932,
+      "247": 36.0,
+      "248": 19.999848,
+      "249": 19.465609,
+      "25": 10.389582,
+      "250": 20.33979,
+      "251": 17.162688,
+      "252": 39.481504,
+      "253": 41.511937,
+      "254": 11.408553,
+      "255": 6.688344,
+      "256": 7.606671,
+      "257": 7.690798,
+      "258": 12.827066,
+      "259": 6.632767,
+      "26": 28.257075,
+      "260": 6.0,
+      "261": 11.838842,
+      "262": 12.00542,
+      "263": 11.241334,
+      "264": 12.088189,
+      "265": 12.765237,
+      "266": 15.058837,
+      "267": 15.735885,
+      "268": 25.715658,
+      "269": 15.297681,
+      "27": 24.681976,
+      "270": 12.25,
+      "271": 18.857672,
+      "272": 12.772331,
+      "273": 14.825901,
+      "274": 12.288252,
+      "275": 11.383164,
+      "276": 11.119733,
+      "277": 7.867855,
+      "278": 8.48967,
+      "279": 10.043242,
+      "28": 9.9015,
+      "280": 10.80285,
+      "281": 11.704252,
+      "282": 15.685326,
+      "283": 16.34857,
+      "284": 17.175898,
+      "285": 33.007428,
+      "286": 22.971583,
+      "287": 39.280377,
+      "288": 37.867932,
+      "289": 38.65826,
+      "29": 27.707164,
+      "290": 25.634839,
+      "291": 2.683039,
+      "292": 2.683039,
+      "293": 2.683039,
+      "294": 2.683039,
+      "295": 2.683039,
+      "296": 2.683039,
+      "297": 2.683039,
+      "298": 2.683039,
+      "299": 16.54601,
+      "3": 12.166967,
+      "30": 27.41427,
+      "300": 16.623257,
+      "301": 16.201259,
+      "302": 15.001894,
+      "303": 15.037386,
+      "304": 14.814834,
+      "305": 14.766032,
+      "306": 15.001894,
+      "307": 15.072878,
+      "308": 17.03747,
+      "309": 16.795368,
+      "31": 27.121377,
+      "310": 22.608352,
+      "311": 25.135219,
+      "312": 16.842145,
+      "313": 22.813875,
+      "314": 8.319073,
+      "315": 9.006439,
+      "316": 10.572435,
+      "317": 11.877545,
+      "318": 10.863034,
+      "319": 15.004714,
+      "32": 25.192166,
+      "320": 20.873276,
+      "321": 24.845497,
+      "322": 25.120781,
+      "323": 17.733234,
+      "324": 19.698029,
+      "325": 15.862347,
+      "326": 13.437074,
+      "327": 13.830693,
+      "328": 11.707265,
+      "329": 13.655126,
+      "33": 20.904729,
+      "330": 10.484556,
+      "331": 16.171906,
+      "332": 15.012909,
+      "333": 15.160069,
+      "334": 7.985728,
+      "335": 15.128277,
+      "336": 15.041337,
+      "337": 15.388275,
+      "338": 12.866185,
+      "339": 15.151683,
+      "34": 27.647782,
+      "35": 18.482414,
+      "36": 20.383807,
+      "37": 14.537751,
+      "38": 7.454527,
+      "39": 12.650547,
+      "4": 14.60682,
+      "40": 12.011392,
+      "41": 10.658941,
+      "42": 18.097088,
+      "43": 23.502539,
+      "44": 9.928838,
+      "45": 9.867868,
+      "46": 9.941401,
+      "47": 13.018036,
+      "48": 12.173157,
+      "49": 11.664052,
+      "5": 23.012702,
+      "50": 6.0,
+      "51": 6.0,
+      "52": 6.0,
+      "53": 22.804041,
+      "54": 21.399858,
+      "55": 13.0,
+      "56": 12.186729,
+      "57": 14.203551,
+      "58": 12.85632,
+      "59": 15.934328,
+      "6": 25.382201,
+      "60": 3.560781,
+      "61": 3.560781,
+      "62": 3.560781,
+      "63": 3.560781,
+      "64": 3.560781,
+      "65": 3.560781,
+      "66": 3.560781,
+      "67": 3.560781,
+      "68": 3.560781,
+      "69": 3.560781,
+      "7": 17.630277,
+      "70": 3.560781,
+      "71": 3.560781,
+      "72": 8.0,
+      "73": 7.386317,
+      "74": 6.987987,
+      "75": 8.82739,
+      "76": 7.981948,
+      "77": 10.90686,
+      "78": 10.927441,
+      "79": 10.77809,
+      "8": 17.273792,
+      "80": 9.67666,
+      "81": 10.5657,
+      "82": 10.332001,
+      "83": 10.873426,
+      "84": 4.614881,
+      "85": 4.614881,
+      "86": 4.614881,
+      "87": 4.614881,
+      "88": 4.614881,
+      "89": 4.614881,
+      "9": 19.634884,
+      "90": 4.614881,
+      "91": 4.614881,
+      "92": 4.614881,
+      "93": 21.019631,
+      "94": 21.737916,
+      "95": 32.719714,
+      "96": 25.241586,
+      "97": 15.620842,
+      "98": 19.035299,
+      "99": 21.941369
+    },
+    "pathway_max_connection_junction_turn_degrees": 45,
+    "pathway_max_segments_per_trace": 15,
+    "pathway_mean_geometric_length": 414.3270895647029,
+    "pathway_mean_segments_per_trace": 6.170588235294118,
+    "pathway_mean_turns_per_trace": 1.4764705882352942,
+    "pathway_median_geometric_length": 408.6565634834862,
+    "pathway_midline_connection_count": 0,
+    "pathway_min_actual_segment": 4.1948730892944885,
+    "pathway_min_foreign_main_chip_clearance": 23.12106772832587,
+    "pathway_min_foreign_static_clearance": 23.12106772832587,
+    "pathway_min_normal_center_segment": 55.62357125589349,
+    "pathway_min_segments_per_trace": 1,
+    "pathway_min_unconnected_stroke_clearance_margin": 1.580486305367287,
+    "pathway_minimum_segment_exception_count": 1011,
+    "pathway_module_U": 37.08238083726241,
+    "pathway_module_canvas_units": 27.81178562794681,
+    "pathway_multiply_connected_trace_count": 0,
+    "pathway_non_octilinear_segment_count": 0,
+    "pathway_outcome_policy": "hard_invariants_soft_best_effort_targets",
+    "pathway_overlap_event_count": 0,
+    "pathway_persistence_hard_debt_peak": 116,
+    "pathway_persistence_horizon_unresolved_trace_count": 0,
+    "pathway_persistence_shared_rebuild_count": 0,
+    "pathway_persistence_shared_tick_budget": 11,
+    "pathway_persistence_shared_tick_count": 11,
+    "pathway_phase": "main_chip_network_frozen_before_residual_fill",
+    "pathway_planner_mode": "route_first_family_protected_transactional_parallel",
+    "pathway_post_main_terminal_connection_count": 0,
+    "pathway_primary_path_clear_proof_hit_count": 13492,
+    "pathway_profile": {
+      "branch_appetite": 0.364695,
+      "branch_multiplier": 1.664109,
+      "connection_appetite": 0.920284,
+      "exit_inclination": 0.29868,
+      "late_life_branch_multiplier": 1.5,
+      "late_life_branch_start": 0.6,
+      "max_rounds": 53,
+      "module_U": 37.082381,
+      "outward_bias": 0.50273,
+      "persistence_shared_ticks": 11,
+      "persistence_tail_rounds": 0,
+      "preferred_run_modules": 4,
+      "reroute_budget": 7,
+      "turn_appetite": 0.442338
+    },
+    "pathway_progress_repair_scheduled_count": 18,
+    "pathway_proposal_failure_certificate_hit_count": 11850,
+    "pathway_proposal_failure_certificate_store_count": 11951,
+    "pathway_proposal_replay_draw_count": 10677,
+    "pathway_protected_launch_unresolved_count": 0,
+    "pathway_recovery_fragment_count": 29,
+    "pathway_render_pair_audit_pass_count": 1,
+    "pathway_required_main_chip_keepout": 18.0,
+    "pathway_required_static_keepout": 6.0,
+    "pathway_reroute_exhausted_count": 2859,
+    "pathway_reroute_recovery_count": 2455,
+    "pathway_reroute_scheduled_count": 1622,
+    "pathway_reroute_short_rebase_count": 924,
+    "pathway_root_emergence_traceback_count": 0,
+    "pathway_rounds_with_multiple_fronts": 64,
+    "pathway_route_search_count": 0,
+    "pathway_same_round_conflict_count": 3198,
+    "pathway_short_termination_fraction": 0.0,
+    "pathway_short_termination_trace_count": 0,
+    "pathway_short_trace_count": 49,
+    "pathway_short_trace_fraction": 0.14411764705882352,
+    "pathway_source_marker_count": 340,
+    "pathway_space_available_replan_count": 173,
+    "pathway_split_count": 201,
+    "pathway_static_intersection_count": 0,
+    "pathway_structural_persistence_atomic_round_count": 2,
+    "pathway_structural_persistence_atomic_tick_count": 2,
+    "pathway_structural_persistence_conflict_combination_count": 155,
+    "pathway_structural_persistence_exhausted_count": 17,
+    "pathway_structural_persistence_hold_front_count": 15,
+    "pathway_structural_persistence_repair_count": 28,
+    "pathway_terminal_alignment_exception_count": 0,
+    "pathway_terminal_head_backoff_count": 143,
+    "pathway_terminal_head_backoff_distance": 8687.66481170076,
+    "pathway_terminal_head_keepout": 3.375,
+    "pathway_terminal_separation_repair_count": 0,
+    "pathway_termination_count": 130,
+    "pathway_termination_dot_hollow_stroke": 2.0250000000000004,
+    "pathway_termination_dot_scale": 2.0,
+    "pathway_termination_marker_overlap_count": 0,
+    "pathway_termination_trace_count": 146,
+    "pathway_tiny_termination_trace_count": 0,
+    "pathway_trace_count": 340,
+    "pathway_trace_thickness_max": 5.0441876220804165,
+    "pathway_trace_thickness_mean": 1.8959673239407242,
+    "pathway_trace_thickness_min": 1.5092903575637406,
+    "pathway_traceback_count": 1145,
+    "pathway_traceback_segment_count": 2279,
+    "pathway_transactional_birth_reject_count": 136,
+    "pathway_turn_count": 502,
+    "pathway_turns_per_100U": 0.2672653970899825,
+    "pathway_unmarked_clearance_violation_count": 0,
+    "pathway_unmarked_overlap_count": 0,
+    "pathway_unmarked_stroke_overlap_count": 0,
+    "pathway_visible_launch_coverage_max": 0.8973061099728453,
+    "pathway_visible_launch_coverage_min": 0.7215506594063812,
+    "pathway_visible_launch_trace_count": 340,
+    "pathway_young_survival_repair_count": 0,
+    "pathway_young_survival_repair_trace_count": 0,
+    "pathway_zigzag_trace_cleanup_count": 0,
+    "population_area_scale": 4.0,
+    "population_long_axis": "x",
+    "quotas": {
+      "N_border": 46,
+      "N_dense": 56,
+      "N_ic": 41
+    },
+    "renderer_version": "V48",
+    "restart_index": 0,
+    "route_restarted_for_component_failure": false,
+    "scale": 0.5,
+    "seed": 5530594186682607813,
+    "service_grid_scale_basis": "canonical_design_units_over_logical_viewbox"
+  },
+  "rss_kib": 186628,
+  "scale": 0.5,
+  "seed": 104,
+  "sha": "d58ee1bf5073dd479e954b922a5fbdec56ef879de10394bf804094752af9c9b0",
+  "src": "/mnt/data/local2_candidate4.py",
+  "wall_s": 34.06795402999978
+}

@@ -1,0 +1,121 @@
+{
+  "authority_sha256": "5d8624de9d2b5ec5b5ba7dac7fed169653074d7301751f8b1b1558e870dba98b",
+  "candidate_sha256": "158836e40b1be4cfc43608acfb93e298ad2b7709a55b23ced561fd6d4d3564c8",
+  "scales": [
+    0.75,
+    0.5
+  ],
+  "seeds": [
+    102,
+    104
+  ],
+  "territory_growth": 2.25,
+  "variants": {
+    "after": {
+      "growth": {
+        "components": {
+          "cpu_growth": 2.523691291417386,
+          "cpu_per_work_growth": 1.0704420927079363,
+          "work_growth": 2.357615894039735
+        },
+        "local": {
+          "cpu_growth": 2.297347605941369,
+          "cpu_per_work_growth": 0.9978856955016805,
+          "work_growth": 2.3022151898734178
+        },
+        "residual_composite": {
+          "cpu_growth": 2.3251778258351568,
+          "cpu_per_work_growth": 1.0044778953560223,
+          "work_growth": 2.3148123384149057
+        },
+        "whole_renderer_composite": {
+          "cpu_growth": 2.3164241531477745,
+          "cpu_per_work_growth": 1.0035684700196112,
+          "work_growth": 2.3081874554134885
+        }
+      },
+      "scale_0.5": {
+        "all_ops": 420621,
+        "component_count": 356,
+        "component_cpu_s": 4.898556418999998,
+        "component_ops": 6046,
+        "local_cpu_s": 31.807675409999998,
+        "local_ops": 305537,
+        "local_source_count": 1455,
+        "main_ops": 109038,
+        "residual_cpu_s": 36.706231829,
+        "residual_ops": 311583,
+        "total_cpu_s": 55.014353688
+      },
+      "scale_0.75": {
+        "all_ops": 182230,
+        "component_count": 151,
+        "component_cpu_s": 1.9410283800000006,
+        "component_ops": 3293,
+        "local_cpu_s": 13.845390800999999,
+        "local_ops": 131311,
+        "local_source_count": 632,
+        "main_ops": 47626,
+        "residual_cpu_s": 15.786419181,
+        "residual_ops": 134604,
+        "total_cpu_s": 23.749689198000002
+      }
+    },
+    "before": {
+      "growth": {
+        "components": {
+          "cpu_growth": 2.7075061868920973,
+          "cpu_per_work_growth": 1.1408031686343105,
+          "work_growth": 2.3733333333333335
+        },
+        "local": {
+          "cpu_growth": 2.486777716025998,
+          "cpu_per_work_growth": 1.127682066203813,
+          "work_growth": 2.205211726384365
+        },
+        "residual_composite": {
+          "cpu_growth": 2.5306559003553093,
+          "cpu_per_work_growth": 1.141118159046184,
+          "work_growth": 2.2176983867039546
+        },
+        "whole_renderer_composite": {
+          "cpu_growth": 2.551063623022748,
+          "cpu_per_work_growth": 1.1397826754173588,
+          "work_growth": 2.2382017888529626
+        }
+      },
+      "scale_0.5": {
+        "all_ops": 373106,
+        "component_count": 356,
+        "component_cpu_s": 7.020944838,
+        "component_ops": 9035,
+        "local_cpu_s": 25.990832460999997,
+        "local_ops": 255033,
+        "local_source_count": 1354,
+        "main_ops": 109038,
+        "residual_cpu_s": 33.011777298999995,
+        "residual_ops": 264068,
+        "total_cpu_s": 52.310092094
+      },
+      "scale_0.75": {
+        "all_ops": 166699,
+        "component_count": 150,
+        "component_cpu_s": 2.5931408289999993,
+        "component_ops": 3789,
+        "local_cpu_s": 10.45161065,
+        "local_ops": 115284,
+        "local_source_count": 614,
+        "main_ops": 47626,
+        "residual_cpu_s": 13.044751478999999,
+        "residual_ops": 119073,
+        "total_cpu_s": 20.505208738
+      }
+    }
+  },
+  "work_definitions": {
+    "components": "actual placed residual component count (useful generated geometry)",
+    "local": "independent LOCAL source count (useful routing workload)",
+    "residual_composite": "sum of explicit component scheduler operations and LOCAL target/spawn/service work counters",
+    "whole_renderer_composite": "residual composite plus MAIN gesture-clear and lookahead evaluation counters"
+  }
+}

@@ -1,0 +1,1515 @@
+{
+  "aspect": "1:1",
+  "cpu_s": 11.747523276999999,
+  "geom": "444dccf6081e21fe0daaa2c68606212fc59b6febbc5afcbe5639595aaf750e7d",
+  "phases": {
+    "component_place": {
+      "calls": 1,
+      "cpu_s": 1.2784990560000002,
+      "wall_s": 1.2791624080000474
+    },
+    "component_prepare": {
+      "calls": 1,
+      "cpu_s": 0.2072789119999996,
+      "wall_s": 0.20728175899967027
+    },
+    "local": {
+      "calls": 1,
+      "cpu_s": 5.342783449000001,
+      "wall_s": 5.344035011999949
+    },
+    "main": {
+      "calls": 1,
+      "cpu_s": 4.7878063090000005,
+      "wall_s": 4.790050974999758
+    }
+  },
+  "report": {
+    "IC_required_contact_count": 126,
+    "IC_required_contact_failure_count": 0,
+    "aspect_ratio": [
+      1.0,
+      1.0
+    ],
+    "base_seed": 104,
+    "canonical_short_side": 1200.0,
+    "canvas_territory_scale": 1.0,
+    "chip_count": 3,
+    "chip_count_expected": 3.5555555555555554,
+    "chip_count_fractional_territory_probability": 0.7777777777777777,
+    "chip_count_population_basis": "logical_viewbox_area_divided_by_canonical_square_area",
+    "chip_count_probability_3": 0.7777777777777777,
+    "chip_motifs": [
+      [
+        "M1",
+        "M6"
+      ],
+      [
+        "M3"
+      ],
+      [
+        "M2",
+        "M6",
+        "M8"
+      ]
+    ],
+    "chip_q": [
+      115.39696236420112,
+      102.20639374513189,
+      100.97591252742617
+    ],
+    "clearance_violation_count": 0,
+    "collection_capacitor_entity_count": 10,
+    "collection_capacitor_group_count": 10,
+    "collection_count": 28,
+    "collection_long": [
+      115.00039750005408,
+      50.40691373807567,
+      53.34935472383631,
+      48.991237380576194,
+      53.91118807586963,
+      48.01593151715451,
+      50.13703052763118,
+      53.78734193949913,
+      55.34390890632926,
+      50.83300523193384,
+      36.62380024985168,
+      20.187697068515718,
+      37.12394985742992,
+      82.77874930826283,
+      62.90636400027006,
+      96.95133112630765,
+      70.31423747194611,
+      61.54100714670403,
+      62.460833585719456,
+      52.69308760479271,
+      55.174881410936564,
+      94.66789333829729,
+      93.82189897316857,
+      50.39103024603446,
+      50.96746050046863,
+      50.35695143684188,
+      52.313741731933305,
+      35.29143328779685
+    ],
+    "component_chip_clearance": 31.5,
+    "component_component_clearance": 9.0,
+    "component_gap_scheduler_exact_candidate_count": 105,
+    "component_gap_scheduler_local_attempt_count": 1129,
+    "component_gap_scheduler_metadata_probe_count": 105,
+    "component_gap_scheduler_mode": "territory_first_bounded_local_tokens",
+    "component_gap_scheduler_prepared_object_count": 31,
+    "component_gap_scheduler_recovery_attempt_count": 143,
+    "component_gap_scheduler_recovery_object_count": 15,
+    "component_gap_scheduler_site_success_count": 16,
+    "component_gap_scheduler_site_token_count": 37,
+    "component_layout_attempt_count": 1,
+    "component_layout_attempt_index": 0,
+    "component_long_axis_quarter_counts": [
+      24,
+      15,
+      18,
+      20
+    ],
+    "component_long_axis_span_fraction": 0.9638275109293386,
+    "component_pathway_attachment_count": 0,
+    "component_pathway_attachment_probability": 0.24,
+    "component_pathway_clearance": 7.5,
+    "component_pathway_unauthorized_overlap_count": 0,
+    "component_placement_mode": "post_main_pre_local_residual_gap_fill",
+    "component_residual_gap_claimed_area_fraction": 0.13311600108666125,
+    "component_residual_gap_claimed_cell_count": 490,
+    "component_residual_gap_completion_remaining_open_cell_count": 2899,
+    "component_residual_gap_completion_uses_legacy_filler_cap": false,
+    "component_residual_gap_compound_filler_count": 43,
+    "component_residual_gap_compound_filler_fraction": 0.9347826086956522,
+    "component_residual_gap_density_target_count": 31,
+    "component_residual_gap_extra_filler_count": 46,
+    "component_residual_gap_extra_filler_limit": 171,
+    "component_residual_gap_fill_actual": 0.5366980636717952,
+    "component_residual_gap_fill_definition": "50_60_percent_of_post_main_residual_capacity_with_gap_sized_quantity",
+    "component_residual_gap_fill_target": 0.5310118012064095,
+    "component_residual_gap_grid_shape": [
+      75,
+      75
+    ],
+    "component_residual_gap_mandatory_region_count": 33,
+    "component_residual_gap_micro_filler_count": 0,
+    "component_residual_gap_micro_filler_limit": 15,
+    "component_residual_gap_open_cell_count": 3681,
+    "component_residual_gap_optional_region_count": 19,
+    "component_residual_gap_placed_count": 77,
+    "component_residual_gap_region_capacity_fraction": 0.5366980636717952,
+    "component_residual_gap_region_component_counts": {
+      "0": 7,
+      "1": 2,
+      "2": 4,
+      "3": 1,
+      "4": 4,
+      "5": 2,
+      "6": 1,
+      "7": 0,
+      "8": 1,
+      "9": 1,
+      "10": 1,
+      "11": 3,
+      "12": 2,
+      "13": 0,
+      "14": 0,
+      "15": 2,
+      "16": 0,
+      "17": 0,
+      "18": 0,
+      "19": 0,
+      "20": 0,
+      "21": 0,
+      "22": 0,
+      "23": 0,
+      "24": 0,
+      "25": 0,
+      "26": 1,
+      "27": 0,
+      "28": 1,
+      "29": 1,
+      "30": 8,
+      "31": 1,
+      "32": 1,
+      "33": 0,
+      "34": 0,
+      "35": 0,
+      "36": 6,
+      "37": 8,
+      "38": 0,
+      "39": 1,
+      "40": 0,
+      "41": 10,
+      "42": 3,
+      "43": 0,
+      "44": 0,
+      "45": 0,
+      "46": 0,
+      "47": 0,
+      "48": 1,
+      "49": 2,
+      "50": 0,
+      "51": 2
+    },
+    "component_residual_gap_region_count": 52,
+    "component_residual_gap_region_quota_units": {
+      "0": 31,
+      "1": 9,
+      "2": 15,
+      "3": 3,
+      "4": 18,
+      "5": 6,
+      "6": 2,
+      "7": 0.0,
+      "8": 1.0,
+      "9": 1.0,
+      "10": 1.0,
+      "11": 14,
+      "12": 3,
+      "13": 0.0,
+      "14": 0.0,
+      "15": 8,
+      "16": 0.0,
+      "17": 0.0,
+      "18": 0.0,
+      "19": 0.0,
+      "20": 1.0,
+      "21": 0.0,
+      "22": 0.0,
+      "23": 0.0,
+      "24": 0.0,
+      "25": 0.0,
+      "26": 3,
+      "27": 0.0,
+      "28": 2,
+      "29": 6,
+      "30": 35,
+      "31": 1.0,
+      "32": 1.0,
+      "33": 1.0,
+      "34": 1.0,
+      "35": 4,
+      "36": 19,
+      "37": 30,
+      "38": 0.0,
+      "39": 6,
+      "40": 1.0,
+      "41": 48,
+      "42": 11,
+      "43": 0.0,
+      "44": 2,
+      "45": 0.0,
+      "46": 0.0,
+      "47": 0.0,
+      "48": 2,
+      "49": 7,
+      "50": 0.0,
+      "51": 1.0
+    },
+    "component_residual_gap_served_region_area_fraction": 0.9723741794310722,
+    "component_residual_gap_served_region_count": 27,
+    "component_residual_gap_singleton_filler_count": 3,
+    "component_residual_gap_site_count": 58,
+    "component_residual_gap_site_fill_actual": 1.0,
+    "component_residual_gap_site_requested_count": 58,
+    "component_residual_gap_size_counts": {
+      "large": 32,
+      "medium": 9,
+      "small": 5
+    },
+    "component_residual_gap_size_mean_spans": {
+      "large": 72.95438954060806,
+      "medium": 42.93412240106139,
+      "small": 17.33270411344688
+    },
+    "component_residual_gap_static_clearance_certificate_hits": 39,
+    "component_residual_gap_total_component_count": 77,
+    "component_templates_prepared_before_routing": false,
+    "component_unplaced_count": 0,
+    "design_detail_area_scale": 1.7777777777777777,
+    "design_distance_scale": 1.3333333333333333,
+    "design_scale_basis": 1200.0,
+    "design_unit_divisor": 1600,
+    "design_unit_viewbox_fraction": 0.00046875,
+    "forbidden_intersection_count": 0,
+    "forbidden_touch_count": 0,
+    "generation_order": "main_chips -> primary_pathways -> residual_components_50_60 -> local_gap_pathways_80_90_of_remaining",
+    "ic_array_count": 12,
+    "ic_array_shapes": [
+      [
+        3,
+        3
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        5,
+        1
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        6,
+        1
+      ],
+      [
+        2,
+        1
+      ]
+    ],
+    "isolated_capacitor_count": 49,
+    "isolated_capacitor_radii": [
+      14.160901139815675,
+      12.368733895199766,
+      7.572103845762954,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      5.180490413074698,
+      5.789212320376173,
+      10.59471038390797,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "isolated_capacitor_states": [
+      "concentric",
+      "hollow",
+      "filled",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      "filled",
+      "hollow",
+      "hollow",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "local_component_clearance_violation_count": 0,
+    "logical_sample_index": 0,
+    "logical_viewbox": [
+      1600.0,
+      1600.0
+    ],
+    "main_chip_long_axis_quarter_counts": [
+      1,
+      1,
+      0,
+      1
+    ],
+    "main_chip_long_axis_span_fraction": 0.7201662092544922,
+    "main_chip_pair_min_clearance": 616.4232373105712,
+    "main_chip_pair_required_clearance": 322.5,
+    "pathway_abandoned_short_bundle_count": 0,
+    "pathway_abandoned_short_trace_count": 0,
+    "pathway_atomic_conflict_group_defer_count": 96,
+    "pathway_atomic_conflict_group_repair_front_count": 220,
+    "pathway_atomic_round_commit_count": 63,
+    "pathway_blocked_gesture_count": 652,
+    "pathway_blocker_yield_count": 0,
+    "pathway_board_scale_trace_count": 22,
+    "pathway_board_scale_trace_fraction": 0.18181818181818182,
+    "pathway_branch_preflight_reject_count": 15,
+    "pathway_bundle_count": 12,
+    "pathway_bundle_middle_termination_deferral_count": 7,
+    "pathway_bundled_forced_termination_trace_count": 6,
+    "pathway_bundled_hard_stop_deferral_count": 45,
+    "pathway_bundled_journey_deferral_count": 0,
+    "pathway_bundled_termination_suppression_intent": 0.97,
+    "pathway_candidate_seed_retry_count": 0,
+    "pathway_canvas_quartiles_touched": 4,
+    "pathway_causal_blocker_rollback_request_count": 0,
+    "pathway_causal_terminal_reopen_count": 0,
+    "pathway_chip_launch_gap": 16.875,
+    "pathway_close_head_lane_detach_count": 4,
+    "pathway_collapsed_overlap_count": 0,
+    "pathway_collection_approach_count": 0,
+    "pathway_collection_approached_trace_count": 0,
+    "pathway_collection_connected_trace_count": 0,
+    "pathway_collection_connection_count": 0,
+    "pathway_compensating_zigzag_count": 0,
+    "pathway_conflict_combination_count": 1349,
+    "pathway_conflict_region_count": 316,
+    "pathway_conflict_region_front_count": 730,
+    "pathway_conflict_repair_scheduled_count": 220,
+    "pathway_connection_count": 16,
+    "pathway_coordinated_fragment_terminal_group_count": 2,
+    "pathway_coordinated_persistence_terminal_trace_count": 24,
+    "pathway_coordinated_root_terminal_group_count": 6,
+    "pathway_coverage_cell_fraction": 0.66796875,
+    "pathway_cross_chip_connected_trace_count": 32,
+    "pathway_cross_chip_connection_count": 16,
+    "pathway_curved_primitive_count": 0,
+    "pathway_decision_round_count": 64,
+    "pathway_deep_traceback_count": 112,
+    "pathway_detached_prefix_lock_count": 4,
+    "pathway_duplicate_trace_cleanup_count": 0,
+    "pathway_early_reroute_scheduled_count": 0,
+    "pathway_embedded_singleton_separation_repair_count": 1,
+    "pathway_escape_count": 12,
+    "pathway_escape_trace_count": 44,
+    "pathway_exhausted_embedded_terminal_trace_count": 1,
+    "pathway_family_hold_front_count": 22,
+    "pathway_family_hold_round_count": 13,
+    "pathway_fan_permutation_fallback_count": 9,
+    "pathway_final_escape_repair_count": 3,
+    "pathway_final_relational_geometric_exhaustion_trace_count": 1,
+    "pathway_forced_close_head_connection_count": 5,
+    "pathway_fragment_short_future_reject_count": 46,
+    "pathway_future_failure_certificate_hit_count": 690,
+    "pathway_future_failure_certificate_store_count": 2433,
+    "pathway_future_local_visible_failure_certificate_hit_count": 48,
+    "pathway_future_local_visible_failure_certificate_store_count": 410,
+    "pathway_future_local_visible_preflight_reject_count": 410,
+    "pathway_general_repair_scheduled_count": 264,
+    "pathway_gesture_clear_check_budget": 92445,
+    "pathway_gesture_clear_check_count": 18713,
+    "pathway_hard_stop_count": 241,
+    "pathway_holistic_connection_guided_round_count": 126,
+    "pathway_holistic_connection_pair_count": 1045,
+    "pathway_holistic_front_round_count": 2331,
+    "pathway_illegal_connection_junction_turn_count": 0,
+    "pathway_illegal_turn_count": 0,
+    "pathway_incremental_rollback_batch_count": 58,
+    "pathway_incremental_rollback_compacted_segment_count": 699,
+    "pathway_incremental_rollback_segment_remove_count": 699,
+    "pathway_intersection_marker_count": 0,
+    "pathway_intersection_trace_cleanup_count": 0,
+    "pathway_late_life_branch_attempt_count": 16,
+    "pathway_launch_cohort_count": 31,
+    "pathway_launch_coverage_intent_range": [
+      0.72,
+      0.9
+    ],
+    "pathway_launch_coverage_max": 0.8953891948638221,
+    "pathway_launch_coverage_min": 0.7452576934571047,
+    "pathway_launch_egress_reservation_reject_count": 0,
+    "pathway_launch_min_lane_edge_gap_ratio": 4.212060065578136,
+    "pathway_launch_spacing_max": 13.214231349882114,
+    "pathway_launch_spacing_min": 10.79067254691834,
+    "pathway_launch_trace_count": 121,
+    "pathway_leaf_bundle_count": 82,
+    "pathway_local_gap_abandoned_segment_prune_count": 135,
+    "pathway_local_gap_absolute_target_fraction": 0.394617158082725,
+    "pathway_local_gap_bundle_pair_count": 17,
+    "pathway_local_gap_bundle_release_count": 24,
+    "pathway_local_gap_component_marker_backoff_count": 2,
+    "pathway_local_gap_component_marker_backoff_distance": 7.161339886446811,
+    "pathway_local_gap_covered_cell_count": 2028,
+    "pathway_local_gap_curved_primitive_count": 0,
+    "pathway_local_gap_denominator": "canonical_post_main_residual_service_field",
+    "pathway_local_gap_direct_failure_cert_hit_count": 647,
+    "pathway_local_gap_direct_run_family_attempt_count": 1125,
+    "pathway_local_gap_direct_run_family_quarantine_count": 325,
+    "pathway_local_gap_direct_run_family_quarantine_skip_count": 570,
+    "pathway_local_gap_direct_run_family_retired_count": 325,
+    "pathway_local_gap_direct_run_family_unique_attempted_count": 438,
+    "pathway_local_gap_escape_trace_count": 11,
+    "pathway_local_gap_exit_probability_factor": 0.5,
+    "pathway_local_gap_fast_round_count": 69,
+    "pathway_local_gap_fill_actual": 0.8032871528526425,
+    "pathway_local_gap_fill_actual_absolute_service": 0.37216449334419993,
+    "pathway_local_gap_fill_definition": "80_90_percent_of_post_component_remaining_field_by_visible_stroke_plus_legitimate_perimeter",
+    "pathway_local_gap_fill_target_fraction": 0.8517494254614484,
+    "pathway_local_gap_fill_target_range": [
+      0.8,
+      0.9
+    ],
+    "pathway_local_gap_fragment_candidate_work_cap": 889,
+    "pathway_local_gap_fragment_candidate_work_cap_hit_count": 1,
+    "pathway_local_gap_fragment_candidate_work_token_count": 998,
+    "pathway_local_gap_fragment_mopup_trace_count": 14,
+    "pathway_local_gap_fragment_mopup_work_cap": 72,
+    "pathway_local_gap_frozen_main_render_primitive_count": 121,
+    "pathway_local_gap_frozen_main_retained_segment_buffer_count": 0,
+    "pathway_local_gap_frozen_main_segment_count": 740,
+    "pathway_local_gap_hard_floor_absolute": 0.37064154906256386,
+    "pathway_local_gap_hard_floor_rescue_wave_cap": 2,
+    "pathway_local_gap_hard_floor_rescue_wave_count": 2,
+    "pathway_local_gap_hold_front_count": 4,
+    "pathway_local_gap_hold_round_count": 4,
+    "pathway_local_gap_illegal_connection_junction_turn_count": 0,
+    "pathway_local_gap_illegal_turn_count": 0,
+    "pathway_local_gap_independent_source_count": 310,
+    "pathway_local_gap_late_wave_work_cap": 2,
+    "pathway_local_gap_max_single_vertex_turn_degrees": 45,
+    "pathway_local_gap_mean_turns_per_visible_trace": 1.2233502538071066,
+    "pathway_local_gap_mopup_bent_rescue_trace_count": 5,
+    "pathway_local_gap_mopup_bent_trace_count": 98,
+    "pathway_local_gap_mopup_straight_trace_count": 1,
+    "pathway_local_gap_mopup_trace_count": 99,
+    "pathway_local_gap_mopup_work_cap": 96,
+    "pathway_local_gap_non_octilinear_segment_count": 0,
+    "pathway_local_gap_normal_branch_boost_range": [
+      3.0,
+      5.0
+    ],
+    "pathway_local_gap_open_cell_count": 2917,
+    "pathway_local_gap_partial_service_candidate_work_cap_per_wave": 1067,
+    "pathway_local_gap_partial_service_candidate_work_token_count": 0,
+    "pathway_local_gap_partial_service_rescue_wave_cap": 3,
+    "pathway_local_gap_partial_service_rescue_wave_count": 0,
+    "pathway_local_gap_phase": "after_components",
+    "pathway_local_gap_physical_post_component_service_fraction": 0.4684607473431608,
+    "pathway_local_gap_post_component_open_cell_count": 2917,
+    "pathway_local_gap_post_main_service_cell_count": 3681,
+    "pathway_local_gap_region_count": 49,
+    "pathway_local_gap_remaining_service_fraction": 0.4633019363282048,
+    "pathway_local_gap_round_budget": 12,
+    "pathway_local_gap_sampled_target_shortfall": 0.022452664738525085,
+    "pathway_local_gap_service_debt_direct_trace_count": 28,
+    "pathway_local_gap_service_debt_fragment_trace_count": 1,
+    "pathway_local_gap_service_debt_mopup_work_cap": 43,
+    "pathway_local_gap_service_definition": "visible_stroke_plus_legitimate_exclusion_perimeter",
+    "pathway_local_gap_singleton_branch_count": 9,
+    "pathway_local_gap_source_count": 310,
+    "pathway_local_gap_spawn_attempt_count": 11104,
+    "pathway_local_gap_spawn_reject_count": 79,
+    "pathway_local_gap_special_hollow_cap_count": 9,
+    "pathway_local_gap_special_probability_range": [
+      0.15,
+      0.3
+    ],
+    "pathway_local_gap_special_ratio": 0.11379310344827587,
+    "pathway_local_gap_special_thick_trace_count": 33,
+    "pathway_local_gap_split_count": 9,
+    "pathway_local_gap_static_intersection_count": 0,
+    "pathway_local_gap_straight_visible_trace_count": 16,
+    "pathway_local_gap_straight_visible_trace_fraction": 0.08121827411167512,
+    "pathway_local_gap_target_call_count": 1622,
+    "pathway_local_gap_target_cell_count": 1453,
+    "pathway_local_gap_target_cell_evaluation_count": 37986,
+    "pathway_local_gap_target_chunk_evaluation_count": 8597,
+    "pathway_local_gap_trace_count": 319,
+    "pathway_local_gap_unmarked_clearance_violation_count": 0,
+    "pathway_local_gap_unmarked_overlap_count": 0,
+    "pathway_local_gap_visible_trace_count": 197,
+    "pathway_local_gap_wave_count": 6,
+    "pathway_local_gap_wave_work_cap": 3,
+    "pathway_local_space_capacity_evaluation_count": 6547,
+    "pathway_local_visible_failure_certificate_hit_count": 142,
+    "pathway_local_visible_failure_certificate_store_count": 369,
+    "pathway_local_visible_preflight_reject_count": 369,
+    "pathway_lookahead_evaluation_count": 14956,
+    "pathway_loop_candidate_reject_count": 1589,
+    "pathway_main_active_unmaterialized_launch_trace_count": 0,
+    "pathway_main_active_unmaterialized_launch_trace_ids": [],
+    "pathway_main_connected_trace_count": 32,
+    "pathway_main_floor_hugging_terminal_trace_count": 0,
+    "pathway_main_frame_exit_trace_count": 51,
+    "pathway_main_free_terminal_under_preferred_visible_trace_count": 0,
+    "pathway_main_horizon_under_preferred_visible_trace_count": 0,
+    "pathway_main_launch_survival_count": 121,
+    "pathway_main_local_clearance_violation_count": 0,
+    "pathway_main_outcome_by_trace": {
+      "0": [
+        "escaped",
+        null,
+        26.965618
+      ],
+      "1": [
+        "escaped",
+        null,
+        26.812132
+      ],
+      "10": [
+        "terminated",
+        "marker_clearance_shorten",
+        19.165438
+      ],
+      "100": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.418583
+      ],
+      "101": [
+        "terminated",
+        "coordinated_persistence_limit",
+        16.53112
+      ],
+      "102": [
+        "escaped",
+        null,
+        2.736532
+      ],
+      "103": [
+        "escaped",
+        null,
+        2.736532
+      ],
+      "104": [
+        "escaped",
+        null,
+        2.736532
+      ],
+      "105": [
+        "escaped",
+        null,
+        2.736532
+      ],
+      "106": [
+        "escaped",
+        null,
+        2.736532
+      ],
+      "107": [
+        "escaped",
+        null,
+        2.736532
+      ],
+      "108": [
+        "escaped",
+        null,
+        2.736532
+      ],
+      "109": [
+        "escaped",
+        null,
+        2.736532
+      ],
+      "11": [
+        "terminated",
+        "coordinated_persistence_limit",
+        22.816139
+      ],
+      "110": [
+        "terminated",
+        "coordinated_persistence_limit",
+        16.659347
+      ],
+      "111": [
+        "terminated",
+        "coordinated_persistence_limit",
+        16.060135
+      ],
+      "112": [
+        "connected",
+        null,
+        18.512103
+      ],
+      "113": [
+        "connected",
+        null,
+        27.166411
+      ],
+      "114": [
+        "terminated",
+        "round_limit",
+        35.007656
+      ],
+      "115": [
+        "connected",
+        null,
+        18.591769
+      ],
+      "116": [
+        "connected",
+        null,
+        19.98941
+      ],
+      "117": [
+        "terminated",
+        "coordinated_persistence_limit",
+        16.235107
+      ],
+      "118": [
+        "escaped",
+        null,
+        26.886942
+      ],
+      "119": [
+        "escaped",
+        null,
+        23.470995
+      ],
+      "12": [
+        "connected",
+        null,
+        22.579037
+      ],
+      "120": [
+        "escaped",
+        null,
+        22.727265
+      ],
+      "13": [
+        "connected",
+        null,
+        25.027636
+      ],
+      "14": [
+        "terminated",
+        "coordinated_persistence_limit",
+        21.682714
+      ],
+      "15": [
+        "terminated",
+        "coordinated_persistence_limit",
+        26.16071
+      ],
+      "16": [
+        "connected",
+        null,
+        21.350281
+      ],
+      "17": [
+        "connected",
+        null,
+        25.098057
+      ],
+      "18": [
+        "terminated",
+        "round_limit",
+        38.314513
+      ],
+      "19": [
+        "connected",
+        null,
+        32.891589
+      ],
+      "2": [
+        "escaped",
+        null,
+        26.965618
+      ],
+      "20": [
+        "terminated",
+        "journey_limit",
+        42.1446
+      ],
+      "21": [
+        "connected",
+        null,
+        41.722828
+      ],
+      "22": [
+        "connected",
+        null,
+        40.030191
+      ],
+      "23": [
+        "escaped",
+        null,
+        18.264281
+      ],
+      "24": [
+        "escaped",
+        null,
+        18.192262
+      ],
+      "25": [
+        "connected",
+        null,
+        22.222531
+      ],
+      "26": [
+        "connected",
+        null,
+        21.42634
+      ],
+      "27": [
+        "terminated",
+        "hard_stop_exhausted",
+        17.203579
+      ],
+      "28": [
+        "terminated",
+        "hard_stop_exhausted",
+        16.05561
+      ],
+      "29": [
+        "terminated",
+        "hard_stop_exhausted",
+        17.826132
+      ],
+      "3": [
+        "connected",
+        null,
+        21.364112
+      ],
+      "30": [
+        "terminated",
+        "hard_stop_exhausted",
+        16.670123
+      ],
+      "31": [
+        "connected",
+        null,
+        16.92623
+      ],
+      "32": [
+        "terminated",
+        "round_limit",
+        16.004033
+      ],
+      "33": [
+        "connected",
+        null,
+        17.794154
+      ],
+      "34": [
+        "connected",
+        null,
+        15.673046
+      ],
+      "35": [
+        "connected",
+        null,
+        12.810235
+      ],
+      "36": [
+        "terminated",
+        "coordinated_persistence_limit",
+        18.817022
+      ],
+      "37": [
+        "terminated",
+        "coordinated_persistence_limit",
+        17.021529
+      ],
+      "38": [
+        "terminated",
+        "journey_limit",
+        25.634475
+      ],
+      "39": [
+        "terminated",
+        "coordinated_persistence_limit",
+        10.644019
+      ],
+      "4": [
+        "terminated",
+        "coordinated_persistence_limit",
+        34.661603
+      ],
+      "40": [
+        "connected",
+        null,
+        13.387079
+      ],
+      "41": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.454805
+      ],
+      "42": [
+        "connected",
+        null,
+        15.628052
+      ],
+      "43": [
+        "terminated",
+        "hard_stop_exhausted",
+        12.319562
+      ],
+      "44": [
+        "escaped",
+        null,
+        6.504993
+      ],
+      "45": [
+        "escaped",
+        null,
+        6.74925
+      ],
+      "46": [
+        "escaped",
+        null,
+        6.682573
+      ],
+      "47": [
+        "escaped",
+        null,
+        6.658796
+      ],
+      "48": [
+        "escaped",
+        null,
+        6.490909
+      ],
+      "49": [
+        "escaped",
+        null,
+        6.658796
+      ],
+      "5": [
+        "terminated",
+        "coordinated_persistence_limit",
+        34.031383
+      ],
+      "50": [
+        "escaped",
+        null,
+        6.658796
+      ],
+      "51": [
+        "escaped",
+        null,
+        6.508219
+      ],
+      "52": [
+        "escaped",
+        null,
+        6.507646
+      ],
+      "53": [
+        "connected",
+        null,
+        18.991787
+      ],
+      "54": [
+        "connected",
+        null,
+        19.057892
+      ],
+      "55": [
+        "connected",
+        null,
+        35.129902
+      ],
+      "56": [
+        "escaped",
+        null,
+        14.791245
+      ],
+      "57": [
+        "escaped",
+        null,
+        11.830945
+      ],
+      "58": [
+        "escaped",
+        null,
+        10.925223
+      ],
+      "59": [
+        "escaped",
+        null,
+        10.306861
+      ],
+      "6": [
+        "terminated",
+        "round_limit",
+        6.7827
+      ],
+      "60": [
+        "escaped",
+        null,
+        3.208506
+      ],
+      "61": [
+        "escaped",
+        null,
+        3.208506
+      ],
+      "62": [
+        "escaped",
+        null,
+        3.208506
+      ],
+      "63": [
+        "escaped",
+        null,
+        3.208506
+      ],
+      "64": [
+        "escaped",
+        null,
+        3.208506
+      ],
+      "65": [
+        "escaped",
+        null,
+        3.208506
+      ],
+      "66": [
+        "escaped",
+        null,
+        3.208506
+      ],
+      "67": [
+        "escaped",
+        null,
+        3.208506
+      ],
+      "68": [
+        "escaped",
+        null,
+        3.208506
+      ],
+      "69": [
+        "escaped",
+        null,
+        3.208506
+      ],
+      "7": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.176339
+      ],
+      "70": [
+        "escaped",
+        null,
+        3.208506
+      ],
+      "71": [
+        "escaped",
+        null,
+        3.208506
+      ],
+      "72": [
+        "escaped",
+        null,
+        23.42794
+      ],
+      "73": [
+        "connected",
+        null,
+        40.01241
+      ],
+      "74": [
+        "terminated",
+        "coordinated_persistence_limit",
+        27.972857
+      ],
+      "75": [
+        "terminated",
+        "coordinated_persistence_limit",
+        30.82739
+      ],
+      "76": [
+        "terminated",
+        "coordinated_persistence_limit",
+        29.666223
+      ],
+      "77": [
+        "connected",
+        null,
+        12.555254
+      ],
+      "78": [
+        "terminated",
+        "coordinated_persistence_limit",
+        9.727196
+      ],
+      "79": [
+        "connected",
+        null,
+        9.676251
+      ],
+      "8": [
+        "terminated",
+        "round_limit",
+        15.127974
+      ],
+      "80": [
+        "terminated",
+        "hard_stop_exhausted",
+        8.67666
+      ],
+      "81": [
+        "terminated",
+        "coordinated_persistence_limit",
+        20.165304
+      ],
+      "82": [
+        "terminated",
+        "coordinated_persistence_limit",
+        22.833426
+      ],
+      "83": [
+        "terminated",
+        "round_limit",
+        20.509301
+      ],
+      "84": [
+        "escaped",
+        null,
+        3.862232
+      ],
+      "85": [
+        "escaped",
+        null,
+        3.862232
+      ],
+      "86": [
+        "escaped",
+        null,
+        3.862232
+      ],
+      "87": [
+        "escaped",
+        null,
+        3.862232
+      ],
+      "88": [
+        "escaped",
+        null,
+        3.862232
+      ],
+      "89": [
+        "escaped",
+        null,
+        3.862232
+      ],
+      "9": [
+        "terminated",
+        "coordinated_persistence_limit",
+        17.188626
+      ],
+      "90": [
+        "escaped",
+        null,
+        3.862232
+      ],
+      "91": [
+        "escaped",
+        null,
+        3.862232
+      ],
+      "92": [
+        "escaped",
+        null,
+        3.862232
+      ],
+      "93": [
+        "connected",
+        null,
+        16.885943
+      ],
+      "94": [
+        "connected",
+        null,
+        16.920147
+      ],
+      "95": [
+        "connected",
+        null,
+        15.332233
+      ],
+      "96": [
+        "connected",
+        null,
+        12.794398
+      ],
+      "97": [
+        "connected",
+        null,
+        12.539747
+      ],
+      "98": [
+        "connected",
+        null,
+        14.07319
+      ],
+      "99": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.829036
+      ]
+    },
+    "pathway_main_preferred_visible_modules": 6.0,
+    "pathway_main_short_termination_trace_count": 0,
+    "pathway_main_source_marker_count": 121,
+    "pathway_main_stalled_side_count": 0,
+    "pathway_main_stalled_side_details": [],
+    "pathway_main_unaccounted_launch_trace_count": 0,
+    "pathway_main_unaccounted_launch_trace_ids": [],
+    "pathway_main_under_preferred_root_count": 0,
+    "pathway_main_under_preferred_root_max_fraction": 0.0,
+    "pathway_main_under_preferred_visible_details": [],
+    "pathway_main_visible_length_modules_by_trace": {
+      "0": 26.965618,
+      "1": 26.812132,
+      "10": 19.165438,
+      "100": 12.418583,
+      "101": 16.53112,
+      "102": 2.736532,
+      "103": 2.736532,
+      "104": 2.736532,
+      "105": 2.736532,
+      "106": 2.736532,
+      "107": 2.736532,
+      "108": 2.736532,
+      "109": 2.736532,
+      "11": 22.816139,
+      "110": 16.659347,
+      "111": 16.060135,
+      "112": 18.512103,
+      "113": 27.166411,
+      "114": 35.007656,
+      "115": 18.591769,
+      "116": 19.98941,
+      "117": 16.235107,
+      "118": 26.886942,
+      "119": 23.470995,
+      "12": 22.579037,
+      "120": 22.727265,
+      "13": 25.027636,
+      "14": 21.682714,
+      "15": 26.16071,
+      "16": 21.350281,
+      "17": 25.098057,
+      "18": 38.314513,
+      "19": 32.891589,
+      "2": 26.965618,
+      "20": 42.1446,
+      "21": 41.722828,
+      "22": 40.030191,
+      "23": 18.264281,
+      "24": 18.192262,
+      "25": 22.222531,
+      "26": 21.42634,
+      "27": 17.203579,
+      "28": 16.05561,
+      "29": 17.826132,
+      "3": 21.364112,
+      "30": 16.670123,
+      "31": 16.92623,
+      "32": 16.004033,
+      "33": 17.794154,
+      "34": 15.673046,
+      "35": 12.810235,
+      "36": 18.817022,
+      "37": 17.021529,
+      "38": 25.634475,
+      "39": 10.644019,
+      "4": 34.661603,
+      "40": 13.387079,
+      "41": 7.454805,
+      "42": 15.628052,
+      "43": 12.319562,
+      "44": 6.504993,
+      "45": 6.74925,
+      "46": 6.682573,
+      "47": 6.658796,
+      "48": 6.490909,
+      "49": 6.658796,
+      "5": 34.031383,
+      "50": 6.658796,
+      "51": 6.508219,
+      "52": 6.507646,
+      "53": 18.991787,
+      "54": 19.057892,
+      "55": 35.129902,
+      "56": 14.791245,
+      "57": 11.830945,
+      "58": 10.925223,
+      "59": 10.306861,
+      "6": 6.7827,
+      "60": 3.208506,
+      "61": 3.208506,
+      "62": 3.208506,
+      "63": 3.208506,
+      "64": 3.208506,
+      "65": 3.208506,
+      "66": 3.208506,
+      "67": 3.208506,
+      "68": 3.208506,
+      "69": 3.208506,
+      "7": 19.176339,
+      "70": 3.208506,
+      "71": 3.208506,
+      "72": 23.42794,
+      "73": 40.01241,
+      "74": 27.972857,
+      "75": 30.82739,
+      "76": 29.666223,
+      "77": 12.555254,
+      "78": 9.727196,
+      "79": 9.676251,
+      "8": 15.127974,
+      "80": 8.67666,
+      "81": 20.165304,
+      "82": 22.833426,
+      "83": 20.509301,
+      "84": 3.862232,
+      "85": 3.862232,
+      "86": 3.862232,
+      "87": 3.862232,
+      "88": 3.862232,
+      "89": 3.862232,
+      "9": 17.188626,
+      "90": 3.862232,
+      "91": 3.862232,
+      "92": 3.862232,
+      "93": 16.885943,
+      "94": 16.920147,
+      "95": 15.332233,
+      "96": 12.794398,
+      "97": 12.539747,
+      "98": 14.07319,
+      "99": 19.829036
+    },
+    "pathway_max_connection_junction_turn_degrees": 45,
+    "pathway_max_segments_per_trace": 15,
+    "pathway_mean_geometric_length": 428.9737930913838,
+    "pathway_mean_segments_per_trace": 6.115702479338843,
+    "pathway_mean_turns_per_trace": 1.462809917355372,
+    "pathway_median_geometric_length": 445.10072129374214,
+    "pathway_midline_connection_count": 0,
+    "pathway_min_actual_segment": 4.184009742129178,
+    "pathway_min_foreign_main_chip_clearance": 30.968233554208588,
+    "pathway_min_foreign_static_clearance": 30.968233554208588,
+    "pathway_min_normal_center_segment": 55.62357125589356,
+    "pathway_min_segments_per_trace": 1,
+    "pathway_min_unconnected_stroke_clearance_margin": 1.8027675216490984,
+    "pathway_minimum_segment_exception_count": 277,
+    "pathway_module_U": 37.08238083726241,
+    "pathway_module_canvas_units": 27.81178562794681,
+    "pathway_multiply_connected_trace_count": 0,
+    "pathway_non_octilinear_segment_count": 0,
+    "pathway_outcome_policy": "hard_invariants_soft_best_effort_targets",
+    "pathway_overlap_event_count": 0,
+    "pathway_persistence_hard_debt_peak": 13,
+    "pathway_persistence_horizon_unresolved_trace_count": 0,
+    "pathway_persistence_shared_rebuild_count": 0,
+    "pathway_persistence_shared_tick_budget": 11,
+    "pathway_persistence_shared_tick_count": 11,
+    "pathway_phase": "main_chip_network_frozen_before_residual_fill",
+    "pathway_planner_mode": "route_first_family_protected_transactional_parallel",
+    "pathway_post_main_terminal_connection_count": 0,
+    "pathway_primary_path_clear_proof_hit_count": 1773,
+    "pathway_profile": {
+      "branch_appetite": 0.364695,
+      "branch_multiplier": 1.664109,
+      "connection_appetite": 0.920284,
+      "exit_inclination": 0.29868,
+      "late_life_branch_multiplier": 1.5,
+      "late_life_branch_start": 0.6,
+      "max_rounds": 53,
+      "module_U": 37.082381,
+      "outward_bias": 0.50273,
+      "persistence_shared_ticks": 11,
+      "persistence_tail_rounds": 0,
+      "preferred_run_modules": 4,
+      "reroute_budget": 7,
+      "turn_appetite": 0.442338
+    },
+    "pathway_progress_repair_scheduled_count": 7,
+    "pathway_proposal_failure_certificate_hit_count": 3624,
+    "pathway_proposal_failure_certificate_store_count": 2996,
+    "pathway_proposal_replay_draw_count": 2778,
+    "pathway_protected_launch_unresolved_count": 0,
+    "pathway_recovery_fragment_count": 3,
+    "pathway_render_pair_audit_pass_count": 1,
+    "pathway_required_main_chip_keepout": 18.0,
+    "pathway_required_static_keepout": 6.0,
+    "pathway_reroute_exhausted_count": 479,
+    "pathway_reroute_recovery_count": 663,
+    "pathway_reroute_scheduled_count": 428,
+    "pathway_reroute_short_rebase_count": 252,
+    "pathway_root_emergence_traceback_count": 0,
+    "pathway_rounds_with_multiple_fronts": 64,
+    "pathway_route_search_count": 0,
+    "pathway_same_round_conflict_count": 414,
+    "pathway_short_termination_fraction": 0.0,
+    "pathway_short_termination_trace_count": 0,
+    "pathway_short_trace_count": 20,
+    "pathway_short_trace_fraction": 0.1652892561983471,
+    "pathway_source_marker_count": 121,
+    "pathway_space_available_replan_count": 57,
+    "pathway_split_count": 60,
+    "pathway_static_intersection_count": 0,
+    "pathway_structural_persistence_atomic_round_count": 2,
+    "pathway_structural_persistence_atomic_tick_count": 2,
+    "pathway_structural_persistence_conflict_combination_count": 20,
+    "pathway_structural_persistence_exhausted_count": 3,
+    "pathway_structural_persistence_hold_front_count": 1,
+    "pathway_structural_persistence_repair_count": 4,
+    "pathway_terminal_alignment_exception_count": 0,
+    "pathway_terminal_head_backoff_count": 25,
+    "pathway_terminal_head_backoff_distance": 1446.8944502461434,
+    "pathway_terminal_head_keepout": 3.375,
+    "pathway_terminal_separation_repair_count": 0,
+    "pathway_termination_count": 35,
+    "pathway_termination_dot_hollow_stroke": 2.0250000000000004,
+    "pathway_termination_dot_scale": 2.0,
+    "pathway_termination_marker_overlap_count": 0,
+    "pathway_termination_trace_count": 38,
+    "pathway_tiny_termination_trace_count": 0,
+    "pathway_trace_count": 121,
+    "pathway_trace_thickness_max": 2.301208001610017,
+    "pathway_trace_thickness_mean": 1.8902769110651474,
+    "pathway_trace_thickness_min": 1.5092903575637406,
+    "pathway_traceback_count": 276,
+    "pathway_traceback_segment_count": 699,
+    "pathway_transactional_birth_reject_count": 61,
+    "pathway_turn_count": 177,
+    "pathway_turns_per_100U": 0.25575162298616533,
+    "pathway_unmarked_clearance_violation_count": 0,
+    "pathway_unmarked_overlap_count": 0,
+    "pathway_unmarked_stroke_overlap_count": 0,
+    "pathway_visible_launch_coverage_max": 0.8953891948638221,
+    "pathway_visible_launch_coverage_min": 0.7452576934571045,
+    "pathway_visible_launch_trace_count": 121,
+    "pathway_young_survival_repair_count": 0,
+    "pathway_young_survival_repair_trace_count": 0,
+    "pathway_zigzag_trace_cleanup_count": 0,
+    "population_area_scale": 1.7777777777777777,
+    "population_long_axis": "x",
+    "quotas": {
+      "N_border": 20,
+      "N_dense": 24,
+      "N_ic": 18
+    },
+    "renderer_version": "V48",
+    "restart_index": 0,
+    "route_restarted_for_component_failure": false,
+    "scale": 0.75,
+    "seed": 5530594186682607813,
+    "service_grid_scale_basis": "canonical_design_units_over_logical_viewbox"
+  },
+  "rss_kib": 151200,
+  "scale": 0.75,
+  "seed": 104,
+  "sha": "d58ee1bf5073dd479e954b922a5fbdec56ef879de10394bf804094752af9c9b0",
+  "src": "/mnt/data/local2_candidate4.py",
+  "wall_s": 11.751900391999698
+}

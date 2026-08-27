@@ -1,0 +1,15 @@
+{
+  "base_seed": 20260827,
+  "aspect_ratio": "1:1",
+  "scale": 1.0,
+  "count": 3,
+  "candidate_batch_elapsed_s": 20.23,
+  "baseline_1055_batch_elapsed_s": 20.54,
+  "candidate_maxrss_kb": 143584,
+  "baseline_1055_maxrss_kb": 181024,
+  "samples": [
+    {"sample_seed": 12565985740840879884, "launch": 82, "visible": 82, "stalled_sides": 0, "main_short": 0, "unaccounted": 0, "connections": 8, "fan_viable_options": 44},
+    {"sample_seed": 15721168286875887018, "launch": 84, "visible": 84, "stalled_sides": 0, "main_short": 0, "unaccounted": 0, "connections": 11, "fan_viable_options": 37},
+    {"sample_seed": 2688448046438059489, "launch": 84, "visible": 84, "stalled_sides": 0, "main_short": 0, "unaccounted": 0, "connections": 10, "fan_viable_options": 31}
+  ]
+}

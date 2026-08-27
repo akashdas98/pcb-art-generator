@@ -1,0 +1,23 @@
+	Command being timed: "python tools/exact_sample_phase_perf_harness.py work/inflight/v48_longfine_totality_v2_renderer.py --aspect-ratio 1:6 --scale 0.35 --seed 0 --sample-index 0 --out /mnt/data/v48_seed0_main_v2.json"
+	User time (seconds): 616.87
+	System time (seconds): 2.85
+	Percent of CPU this job got: 100%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 10:19.38
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 804192
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 216936
+	Voluntary context switches: 11
+	Involuntary context switches: 1208
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 16
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

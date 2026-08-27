@@ -1,0 +1,65 @@
+{
+  "runs": [
+    {
+      "aspect_ratio": "1:1",
+      "max_rss_kib": 193292,
+      "output_geometry_sha256": "c670274e923a736a67035c46f7e610c00ce2fdd0f9b31aa9094589a70d816a31",
+      "phase_times": {
+        "component_place": {
+          "calls": 1,
+          "cpu_s": 3.202099091000001,
+          "wall_s": 3.202204459999848
+        },
+        "component_prepare": {
+          "calls": 1,
+          "cpu_s": 0.20807617300000025,
+          "wall_s": 0.2080854079999881
+        },
+        "final_clearance_audits": {
+          "calls": 4,
+          "cpu_s": 0.4510731489999973,
+          "wall_s": 0.451063738000812
+        },
+        "final_validation": {
+          "calls": 2,
+          "cpu_s": 0.019142435999999208,
+          "wall_s": 0.019139439999889873
+        },
+        "local_gap_routing": {
+          "calls": 1,
+          "cpu_s": 12.872270140000001,
+          "wall_s": 12.872809983000025
+        },
+        "main_routing": {
+          "calls": 1,
+          "cpu_s": 9.071079364000001,
+          "wall_s": 9.071445030999712
+        }
+      },
+      "report": {
+        "chip_count": 4,
+        "collection_count": 66,
+        "component_residual_gap_fill_actual": 0.514774601917018,
+        "component_residual_gap_total_component_count": 175,
+        "pathway_gesture_clear_check_count": 31138,
+        "pathway_launch_trace_count": 168,
+        "pathway_local_gap_fill_actual": 0.8007699039373786,
+        "pathway_local_gap_source_count": 683,
+        "pathway_local_gap_trace_count": 683,
+        "pathway_lookahead_evaluation_count": 26518,
+        "pathway_main_short_termination_trace_count": 0,
+        "pathway_main_stalled_side_count": 0,
+        "pathway_visible_launch_trace_count": 168
+      },
+      "sample_index": 0,
+      "scale": 0.5,
+      "seed": 102,
+      "source": "work/inflight/evidence/20260827_residual_mosaic/perf/authority_1805_renderer.py",
+      "source_sha256": "5d8624de9d2b5ec5b5ba7dac7fed169653074d7301751f8b1b1558e870dba98b",
+      "status": "PASS",
+      "total_cpu_s": 25.842772766,
+      "total_wall_s": 25.843809278000208,
+      "unattributed_wall_s": 0.019061217999933433
+    }
+  ]
+}

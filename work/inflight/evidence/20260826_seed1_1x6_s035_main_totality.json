@@ -1,0 +1,16 @@
+{
+  "aspect": "1:6",
+  "cpu_s": 385.93929550999997,
+  "exhausted_branch": 0,
+  "exhausted_fan": 0,
+  "exhausted_fragment": 0,
+  "final_egress": 0,
+  "launches": 4104,
+  "protected": 0,
+  "scale": 0.35,
+  "seed": 1,
+  "status": "PASS",
+  "unresolved": 0,
+  "visible": 4104,
+  "wall_s": 389.69453978538513
+}

@@ -1,0 +1,18 @@
+{
+  "main_cpu_s": 17.307618776,
+  "pathway_conflict_combination_count": 7510,
+  "pathway_conflict_region_count": 1149,
+  "pathway_future_failure_certificate_hit_count": 5749,
+  "pathway_future_failure_certificate_store_count": 7628,
+  "pathway_future_local_visible_failure_certificate_hit_count": 667,
+  "pathway_future_local_visible_failure_certificate_store_count": 1209,
+  "pathway_gesture_clear_check_count": 62899,
+  "pathway_holistic_front_round_count": 8488,
+  "pathway_local_visible_failure_certificate_hit_count": 345,
+  "pathway_local_visible_failure_certificate_store_count": 781,
+  "pathway_lookahead_evaluation_count": 53385,
+  "pathway_primary_path_clear_proof_hit_count": 12248,
+  "pathway_proposal_failure_certificate_hit_count": 11529,
+  "pathway_proposal_failure_certificate_store_count": 10192,
+  "pathway_proposal_replay_draw_count": 9406
+}

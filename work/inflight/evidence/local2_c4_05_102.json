@@ -1,0 +1,3219 @@
+{
+  "aspect": "1:1",
+  "cpu_s": 40.193165557,
+  "geom": "eeb8e090646272fba445dfa37513fc08751034a460185db60a1cf5aa4b5b244d",
+  "phases": {
+    "component_place": {
+      "calls": 1,
+      "cpu_s": 2.5182237880000002,
+      "wall_s": 2.5184018990003096
+    },
+    "component_prepare": {
+      "calls": 1,
+      "cpu_s": 0.2160761409999985,
+      "wall_s": 0.21607973400023184
+    },
+    "local": {
+      "calls": 1,
+      "cpu_s": 15.421810819999997,
+      "wall_s": 15.423201501999756
+    },
+    "main": {
+      "calls": 1,
+      "cpu_s": 20.929992067999997,
+      "wall_s": 20.944178468000246
+    }
+  },
+  "report": {
+    "IC_required_contact_count": 283,
+    "IC_required_contact_failure_count": 0,
+    "aspect_ratio": [
+      1.0,
+      1.0
+    ],
+    "base_seed": 102,
+    "canonical_short_side": 1200.0,
+    "canvas_territory_scale": 1.0,
+    "chip_count": 8,
+    "chip_count_expected": 8.0,
+    "chip_count_fractional_territory_probability": 0.0,
+    "chip_count_population_basis": "logical_viewbox_area_divided_by_canonical_square_area",
+    "chip_count_probability_3": 0.0,
+    "chip_motifs": [
+      [
+        "M3",
+        "M6",
+        "M8"
+      ],
+      [
+        "M3",
+        "M4",
+        "M6",
+        "M8"
+      ],
+      [
+        "M2",
+        "M8"
+      ],
+      [
+        "M2"
+      ],
+      [
+        "M1",
+        "M6",
+        "M7",
+        "M8"
+      ],
+      [
+        "M2",
+        "M6"
+      ],
+      [
+        "M4",
+        "M7"
+      ],
+      [
+        "M1",
+        "M3"
+      ]
+    ],
+    "chip_q": [
+      115.78748649107882,
+      105.17487163115737,
+      113.70008042641304,
+      111.0299792466215,
+      109.22065836613064,
+      111.24715714144813,
+      111.15938844421515,
+      106.39687194323845
+    ],
+    "clearance_violation_count": 0,
+    "collection_capacitor_entity_count": 29,
+    "collection_capacitor_group_count": 29,
+    "collection_count": 66,
+    "collection_long": [
+      83.56266817576488,
+      60.07267014743229,
+      64.6661761858536,
+      59.1504700055109,
+      83.01040273983381,
+      55.470640886601245,
+      76.36960159544196,
+      62.11813152765171,
+      51.776598688227295,
+      51.027332779483345,
+      63.4944461451401,
+      56.77493164286636,
+      67.91009264936838,
+      52.35233281222418,
+      49.95177683017994,
+      52.88500216782177,
+      45.307710481637514,
+      40.84580068147352,
+      37.973615027744586,
+      32.00042269412461,
+      48.122771414918134,
+      34.026818666205145,
+      31.376931578763106,
+      55.616879352061005,
+      44.55731085910247,
+      38.12157687189418,
+      110.06246657114781,
+      83.2202654664975,
+      76.59137928697496,
+      106.99877266536896,
+      100.95873811885849,
+      81.73735845384908,
+      86.81719973694538,
+      77.45419803640016,
+      59.11274652681166,
+      60.287278640767,
+      55.370204600671514,
+      58.63468284100691,
+      55.08698820160771,
+      61.871414864803455,
+      86.68091524259125,
+      81.91512144177682,
+      59.202952542577805,
+      73.045849015449,
+      56.785165614884235,
+      74.77852561090344,
+      56.98677873263614,
+      52.696476827944934,
+      57.777332222048244,
+      52.71827612908466,
+      51.060741413026335,
+      49.45748178256781,
+      51.95200301562909,
+      52.80282235868185,
+      51.47315923198448,
+      53.91103395263417,
+      59.07427415399411,
+      50.45280961868366,
+      51.38671460726937,
+      50.32726521320819,
+      57.548386747594805,
+      53.597385364928414,
+      48.92821119208304,
+      54.61102385490483,
+      47.2670073924437,
+      45.12326209298752
+    ],
+    "component_chip_clearance": 31.5,
+    "component_component_clearance": 9.0,
+    "component_gap_scheduler_exact_candidate_count": 238,
+    "component_gap_scheduler_local_attempt_count": 2827,
+    "component_gap_scheduler_metadata_probe_count": 238,
+    "component_gap_scheduler_mode": "territory_first_bounded_local_tokens",
+    "component_gap_scheduler_prepared_object_count": 74,
+    "component_gap_scheduler_recovery_attempt_count": 435,
+    "component_gap_scheduler_recovery_object_count": 40,
+    "component_gap_scheduler_site_success_count": 34,
+    "component_gap_scheduler_site_token_count": 81,
+    "component_layout_attempt_count": 1,
+    "component_layout_attempt_index": 0,
+    "component_long_axis_quarter_counts": [
+      38,
+      43,
+      36,
+      38
+    ],
+    "component_long_axis_span_fraction": 0.9732142857142856,
+    "component_pathway_attachment_count": 0,
+    "component_pathway_attachment_probability": 0.24,
+    "component_pathway_clearance": 7.5,
+    "component_pathway_unauthorized_overlap_count": 0,
+    "component_placement_mode": "post_main_pre_local_residual_gap_fill",
+    "component_residual_gap_claimed_area_fraction": 0.12602847068042314,
+    "component_residual_gap_claimed_cell_count": 965,
+    "component_residual_gap_completion_remaining_open_cell_count": 6306,
+    "component_residual_gap_completion_uses_legacy_filler_cap": false,
+    "component_residual_gap_compound_filler_count": 79,
+    "component_residual_gap_compound_filler_fraction": 0.9753086419753086,
+    "component_residual_gap_density_target_count": 74,
+    "component_residual_gap_extra_filler_count": 81,
+    "component_residual_gap_extra_filler_limit": 384,
+    "component_residual_gap_fill_actual": 0.5171842262770527,
+    "component_residual_gap_fill_definition": "50_60_percent_of_post_main_residual_capacity_with_gap_sized_quantity",
+    "component_residual_gap_fill_target": 0.5133850220054946,
+    "component_residual_gap_grid_shape": [
+      112,
+      112
+    ],
+    "component_residual_gap_mandatory_region_count": 83,
+    "component_residual_gap_micro_filler_count": 0,
+    "component_residual_gap_micro_filler_limit": 32,
+    "component_residual_gap_open_cell_count": 7657,
+    "component_residual_gap_optional_region_count": 69,
+    "component_residual_gap_placed_count": 155,
+    "component_residual_gap_region_capacity_fraction": 0.5171842262770527,
+    "component_residual_gap_region_component_counts": {
+      "0": 2,
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 4,
+      "5": 2,
+      "6": 7,
+      "7": 7,
+      "8": 1,
+      "9": 0,
+      "10": 3,
+      "11": 7,
+      "12": 1,
+      "13": 7,
+      "14": 7,
+      "15": 3,
+      "16": 1,
+      "17": 0,
+      "18": 3,
+      "19": 0,
+      "20": 0,
+      "21": 0,
+      "22": 1,
+      "23": 0,
+      "24": 0,
+      "25": 0,
+      "26": 0,
+      "27": 0,
+      "28": 0,
+      "29": 1,
+      "30": 0,
+      "31": 0,
+      "32": 0,
+      "33": 0,
+      "34": 0,
+      "35": 0,
+      "36": 2,
+      "37": 2,
+      "38": 0,
+      "39": 0,
+      "40": 0,
+      "41": 0,
+      "42": 0,
+      "43": 0,
+      "44": 0,
+      "45": 0,
+      "46": 2,
+      "47": 0,
+      "48": 0,
+      "49": 0,
+      "50": 0,
+      "51": 0,
+      "52": 0,
+      "53": 1,
+      "54": 0,
+      "55": 1,
+      "56": 0,
+      "57": 0,
+      "58": 2,
+      "59": 3,
+      "60": 0,
+      "61": 1,
+      "62": 1,
+      "63": 0,
+      "64": 1,
+      "65": 0,
+      "66": 0,
+      "67": 0,
+      "68": 0,
+      "69": 2,
+      "70": 3,
+      "71": 0,
+      "72": 0,
+      "73": 0,
+      "74": 0,
+      "75": 1,
+      "76": 1,
+      "77": 0,
+      "78": 1,
+      "79": 1,
+      "80": 0,
+      "81": 0,
+      "82": 7,
+      "83": 0,
+      "84": 0,
+      "85": 0,
+      "86": 2,
+      "87": 0,
+      "88": 1,
+      "89": 0,
+      "90": 0,
+      "91": 0,
+      "92": 1,
+      "93": 0,
+      "94": 6,
+      "95": 2,
+      "96": 0,
+      "97": 1,
+      "98": 1,
+      "99": 3,
+      "100": 1,
+      "101": 1,
+      "102": 1,
+      "103": 3,
+      "104": 1,
+      "105": 0,
+      "106": 0,
+      "107": 2,
+      "108": 0,
+      "109": 1,
+      "110": 10,
+      "111": 1,
+      "112": 1,
+      "113": 2,
+      "114": 0,
+      "115": 0,
+      "116": 0,
+      "117": 0,
+      "118": 0,
+      "119": 1,
+      "120": 0,
+      "121": 1,
+      "122": 1,
+      "123": 1,
+      "124": 0,
+      "125": 1,
+      "126": 0,
+      "127": 0,
+      "128": 0,
+      "129": 0,
+      "130": 1,
+      "131": 0,
+      "132": 0,
+      "133": 2,
+      "134": 0,
+      "135": 0,
+      "136": 1,
+      "137": 0,
+      "138": 1,
+      "139": 3,
+      "140": 0,
+      "141": 1,
+      "142": 1,
+      "143": 1,
+      "144": 3,
+      "145": 1,
+      "146": 1,
+      "147": 1,
+      "148": 0,
+      "149": 0,
+      "150": 0,
+      "151": 0
+    },
+    "component_residual_gap_region_count": 152,
+    "component_residual_gap_region_quota_units": {
+      "0": 9,
+      "1": 5,
+      "2": 4,
+      "3": 4,
+      "4": 15,
+      "5": 9,
+      "6": 24,
+      "7": 43,
+      "8": 1.0,
+      "9": 3,
+      "10": 11,
+      "11": 35,
+      "12": 3,
+      "13": 19,
+      "14": 36,
+      "15": 12,
+      "16": 2,
+      "17": 0.0,
+      "18": 14,
+      "19": 0.0,
+      "20": 0.0,
+      "21": 1.0,
+      "22": 3,
+      "23": 0.0,
+      "24": 0.0,
+      "25": 0.0,
+      "26": 0.0,
+      "27": 0.0,
+      "28": 0.0,
+      "29": 4,
+      "30": 0.0,
+      "31": 0.0,
+      "32": 0.0,
+      "33": 0.0,
+      "34": 0.0,
+      "35": 0.0,
+      "36": 10,
+      "37": 6,
+      "38": 0.0,
+      "39": 0.0,
+      "40": 0.0,
+      "41": 0.0,
+      "42": 0.0,
+      "43": 0.0,
+      "44": 0.0,
+      "45": 0.0,
+      "46": 5,
+      "47": 0.0,
+      "48": 0.0,
+      "49": 0.0,
+      "50": 0.0,
+      "51": 0.0,
+      "52": 0.0,
+      "53": 1.0,
+      "54": 0.0,
+      "55": 2,
+      "56": 0.0,
+      "57": 0.0,
+      "58": 9,
+      "59": 15,
+      "60": 0.0,
+      "61": 2,
+      "62": 1.0,
+      "63": 1.0,
+      "64": 1.0,
+      "65": 0.0,
+      "66": 0.0,
+      "67": 0.0,
+      "68": 0.0,
+      "69": 12,
+      "70": 12,
+      "71": 0.0,
+      "72": 2,
+      "73": 0.0,
+      "74": 0.0,
+      "75": 1.0,
+      "76": 4,
+      "77": 0.0,
+      "78": 1.0,
+      "79": 4,
+      "80": 2.0,
+      "81": 0.0,
+      "82": 23,
+      "83": 0.0,
+      "84": 0.0,
+      "85": 0.0,
+      "86": 10,
+      "87": 0.0,
+      "88": 1.0,
+      "89": 1.0,
+      "90": 0.0,
+      "91": 0.0,
+      "92": 2,
+      "93": 0.0,
+      "94": 29,
+      "95": 9,
+      "96": 0.0,
+      "97": 2,
+      "98": 2.0,
+      "99": 15,
+      "100": 3,
+      "101": 2,
+      "102": 2,
+      "103": 10,
+      "104": 3,
+      "105": 0.0,
+      "106": 0.0,
+      "107": 9,
+      "108": 1.0,
+      "109": 3,
+      "110": 62,
+      "111": 2,
+      "112": 1.0,
+      "113": 11,
+      "114": 0.0,
+      "115": 0.0,
+      "116": 0.0,
+      "117": 1.0,
+      "118": 0.0,
+      "119": 2,
+      "120": 1.0,
+      "121": 3,
+      "122": 2,
+      "123": 2,
+      "124": 0.0,
+      "125": 1.0,
+      "126": 1.0,
+      "127": 0.0,
+      "128": 0.0,
+      "129": 0.0,
+      "130": 2,
+      "131": 0.0,
+      "132": 0.0,
+      "133": 7,
+      "134": 0.0,
+      "135": 0.0,
+      "136": 2,
+      "137": 0.0,
+      "138": 2,
+      "139": 14,
+      "140": 1.0,
+      "141": 2,
+      "142": 4,
+      "143": 6,
+      "144": 11,
+      "145": 4,
+      "146": 1.0,
+      "147": 1.0,
+      "148": 0.0,
+      "149": 0.0,
+      "150": 0.0,
+      "151": 0.0
+    },
+    "component_residual_gap_served_region_area_fraction": 0.9812243818590506,
+    "component_residual_gap_served_region_count": 77,
+    "component_residual_gap_singleton_filler_count": 2,
+    "component_residual_gap_site_count": 144,
+    "component_residual_gap_site_fill_actual": 1.0,
+    "component_residual_gap_site_requested_count": 144,
+    "component_residual_gap_size_counts": {
+      "large": 53,
+      "medium": 25,
+      "small": 3
+    },
+    "component_residual_gap_size_mean_spans": {
+      "large": 74.03589397133383,
+      "medium": 43.77816684371386,
+      "small": 20.26818221310384
+    },
+    "component_residual_gap_static_clearance_certificate_hits": 53,
+    "component_residual_gap_total_component_count": 155,
+    "component_templates_prepared_before_routing": false,
+    "component_unplaced_count": 0,
+    "design_detail_area_scale": 4.0,
+    "design_distance_scale": 2.0,
+    "design_scale_basis": 1200.0,
+    "design_unit_divisor": 1600,
+    "design_unit_viewbox_fraction": 0.0003125,
+    "forbidden_intersection_count": 0,
+    "forbidden_touch_count": 0,
+    "generation_order": "main_chips -> primary_pathways -> residual_components_50_60 -> local_gap_pathways_80_90_of_remaining",
+    "ic_array_count": 39,
+    "ic_array_shapes": [
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        6,
+        1
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        6,
+        1
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        6,
+        1
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        5,
+        2
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        6,
+        1
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "isolated_capacitor_count": 89,
+    "isolated_capacitor_radii": [
+      13.349568055432965,
+      11.72265350599724,
+      11.479609497524788,
+      10.948981337314944,
+      11.615477951989345,
+      11.559587125166722,
+      6.5488195708062555,
+      5.551863201636211,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      9.225844497907305,
+      null,
+      10.525699674915423,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "isolated_capacitor_states": [
+      "filled",
+      "filled",
+      "hollow",
+      "concentric",
+      "filled",
+      "filled",
+      "filled",
+      "concentric",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      "concentric",
+      null,
+      "filled",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "local_component_clearance_violation_count": 0,
+    "logical_sample_index": 0,
+    "logical_viewbox": [
+      2400.0,
+      2400.0
+    ],
+    "main_chip_long_axis_quarter_counts": [
+      1,
+      2,
+      3,
+      2
+    ],
+    "main_chip_long_axis_span_fraction": 0.8176366408539902,
+    "main_chip_pair_min_clearance": 367.3996821159106,
+    "main_chip_pair_required_clearance": 322.5,
+    "pathway_abandoned_short_bundle_count": 0,
+    "pathway_abandoned_short_trace_count": 0,
+    "pathway_atomic_conflict_group_defer_count": 367,
+    "pathway_atomic_conflict_group_repair_front_count": 836,
+    "pathway_atomic_round_commit_count": 66,
+    "pathway_blocked_gesture_count": 2145,
+    "pathway_blocker_yield_count": 0,
+    "pathway_board_scale_trace_count": 2,
+    "pathway_board_scale_trace_fraction": 0.006097560975609756,
+    "pathway_branch_preflight_reject_count": 50,
+    "pathway_bundle_count": 32,
+    "pathway_bundle_middle_termination_deferral_count": 28,
+    "pathway_bundled_forced_termination_trace_count": 22,
+    "pathway_bundled_hard_stop_deferral_count": 93,
+    "pathway_bundled_journey_deferral_count": 5,
+    "pathway_bundled_termination_suppression_intent": 0.97,
+    "pathway_candidate_seed_retry_count": 0,
+    "pathway_canvas_quartiles_touched": 4,
+    "pathway_causal_blocker_rollback_request_count": 0,
+    "pathway_causal_terminal_reopen_count": 0,
+    "pathway_chip_launch_gap": 16.875,
+    "pathway_close_head_lane_detach_count": 12,
+    "pathway_collapsed_overlap_count": 0,
+    "pathway_collection_approach_count": 0,
+    "pathway_collection_approached_trace_count": 0,
+    "pathway_collection_connected_trace_count": 0,
+    "pathway_collection_connection_count": 0,
+    "pathway_compensating_zigzag_count": 0,
+    "pathway_conflict_combination_count": 6882,
+    "pathway_conflict_region_count": 1190,
+    "pathway_conflict_region_front_count": 3035,
+    "pathway_conflict_repair_scheduled_count": 836,
+    "pathway_connection_count": 50,
+    "pathway_coordinated_fragment_terminal_group_count": 11,
+    "pathway_coordinated_persistence_terminal_trace_count": 94,
+    "pathway_coordinated_root_terminal_group_count": 23,
+    "pathway_coverage_cell_fraction": 0.7534722222222222,
+    "pathway_cross_chip_connected_trace_count": 100,
+    "pathway_cross_chip_connection_count": 50,
+    "pathway_curved_primitive_count": 0,
+    "pathway_decision_round_count": 66,
+    "pathway_deep_traceback_count": 433,
+    "pathway_detached_prefix_lock_count": 12,
+    "pathway_duplicate_trace_cleanup_count": 0,
+    "pathway_early_reroute_scheduled_count": 0,
+    "pathway_embedded_singleton_separation_repair_count": 9,
+    "pathway_escape_count": 51,
+    "pathway_escape_trace_count": 78,
+    "pathway_exhausted_embedded_terminal_trace_count": 11,
+    "pathway_family_hold_front_count": 115,
+    "pathway_family_hold_round_count": 89,
+    "pathway_fan_permutation_fallback_count": 32,
+    "pathway_final_escape_repair_count": 8,
+    "pathway_final_relational_geometric_exhaustion_trace_count": 11,
+    "pathway_final_relational_progress_move_count": 10,
+    "pathway_final_relational_progress_tick_count": 4,
+    "pathway_forced_close_head_connection_count": 25,
+    "pathway_fragment_short_future_reject_count": 93,
+    "pathway_future_failure_certificate_hit_count": 2446,
+    "pathway_future_failure_certificate_store_count": 9799,
+    "pathway_future_local_visible_failure_certificate_hit_count": 381,
+    "pathway_future_local_visible_failure_certificate_store_count": 1919,
+    "pathway_future_local_visible_preflight_reject_count": 1919,
+    "pathway_general_repair_scheduled_count": 1015,
+    "pathway_gesture_clear_check_budget": 208000,
+    "pathway_gesture_clear_check_count": 71956,
+    "pathway_hard_stop_count": 739,
+    "pathway_holistic_connection_guided_round_count": 135,
+    "pathway_holistic_connection_pair_count": 4835,
+    "pathway_holistic_front_round_count": 9128,
+    "pathway_illegal_connection_junction_turn_count": 0,
+    "pathway_illegal_turn_count": 0,
+    "pathway_incremental_rollback_batch_count": 64,
+    "pathway_incremental_rollback_compacted_segment_count": 2797,
+    "pathway_incremental_rollback_segment_remove_count": 2797,
+    "pathway_intersection_marker_count": 0,
+    "pathway_intersection_trace_cleanup_count": 0,
+    "pathway_late_life_branch_attempt_count": 73,
+    "pathway_launch_cohort_count": 89,
+    "pathway_launch_coverage_intent_range": [
+      0.72,
+      0.9
+    ],
+    "pathway_launch_coverage_max": 0.8822499996445491,
+    "pathway_launch_coverage_min": 0.7201190021773698,
+    "pathway_launch_egress_reservation_reject_count": 0,
+    "pathway_launch_min_lane_edge_gap_ratio": 3.9526027734753075,
+    "pathway_launch_spacing_max": 14.22488920326238,
+    "pathway_launch_spacing_min": 9.87467300634286,
+    "pathway_launch_trace_count": 328,
+    "pathway_leaf_bundle_count": 288,
+    "pathway_local_gap_abandoned_segment_prune_count": 549,
+    "pathway_local_gap_absolute_target_fraction": 0.4304705821633681,
+    "pathway_local_gap_bundle_pair_count": 42,
+    "pathway_local_gap_bundle_release_count": 78,
+    "pathway_local_gap_component_marker_backoff_count": 3,
+    "pathway_local_gap_component_marker_backoff_distance": 28.329976985173627,
+    "pathway_local_gap_component_marker_prune_count": 2,
+    "pathway_local_gap_covered_cell_count": 1564,
+    "pathway_local_gap_curved_primitive_count": 0,
+    "pathway_local_gap_denominator": "canonical_post_main_residual_service_field",
+    "pathway_local_gap_deterministic_debt_completion_candidate_count": 22886,
+    "pathway_local_gap_deterministic_debt_completion_trace_count": 37,
+    "pathway_local_gap_deterministic_debt_first_leg_cache_hit_count": 5287,
+    "pathway_local_gap_deterministic_debt_first_leg_cache_miss_count": 2604,
+    "pathway_local_gap_direct_failure_cert_hit_count": 1400,
+    "pathway_local_gap_direct_run_family_attempt_count": 2251,
+    "pathway_local_gap_direct_run_family_quarantine_count": 665,
+    "pathway_local_gap_direct_run_family_quarantine_skip_count": 989,
+    "pathway_local_gap_direct_run_family_retired_count": 665,
+    "pathway_local_gap_direct_run_family_unique_attempted_count": 843,
+    "pathway_local_gap_escape_trace_count": 21,
+    "pathway_local_gap_exit_probability_factor": 0.5,
+    "pathway_local_gap_fast_round_count": 90,
+    "pathway_local_gap_fill_actual": 0.8006495126311339,
+    "pathway_local_gap_fill_actual_absolute_service": 0.38656621392190155,
+    "pathway_local_gap_fill_definition": "80_90_percent_of_post_component_remaining_field_by_visible_stroke_plus_legitimate_perimeter",
+    "pathway_local_gap_fill_target_fraction": 0.8915835098842146,
+    "pathway_local_gap_fill_target_range": [
+      0.8,
+      0.9
+    ],
+    "pathway_local_gap_fragment_candidate_work_cap": 2000,
+    "pathway_local_gap_fragment_candidate_work_cap_hit_count": 2,
+    "pathway_local_gap_fragment_candidate_work_token_count": 4000,
+    "pathway_local_gap_fragment_mopup_trace_count": 37,
+    "pathway_local_gap_fragment_mopup_work_cap": 160,
+    "pathway_local_gap_frozen_main_render_primitive_count": 328,
+    "pathway_local_gap_frozen_main_retained_segment_buffer_count": 0,
+    "pathway_local_gap_frozen_main_segment_count": 2512,
+    "pathway_local_gap_hard_floor_absolute": 0.38625261897835783,
+    "pathway_local_gap_hard_floor_rescue_wave_cap": 2,
+    "pathway_local_gap_hard_floor_rescue_wave_count": 2,
+    "pathway_local_gap_hold_front_count": 19,
+    "pathway_local_gap_hold_round_count": 19,
+    "pathway_local_gap_illegal_connection_junction_turn_count": 0,
+    "pathway_local_gap_illegal_turn_count": 0,
+    "pathway_local_gap_independent_source_count": 924,
+    "pathway_local_gap_late_wave_work_cap": 2,
+    "pathway_local_gap_max_single_vertex_turn_degrees": 45,
+    "pathway_local_gap_mean_turns_per_visible_trace": 1.1834451901565997,
+    "pathway_local_gap_mopup_bent_rescue_trace_count": 8,
+    "pathway_local_gap_mopup_bent_trace_count": 174,
+    "pathway_local_gap_mopup_straight_trace_count": 2,
+    "pathway_local_gap_mopup_trace_count": 176,
+    "pathway_local_gap_mopup_work_cap": 216,
+    "pathway_local_gap_non_octilinear_segment_count": 0,
+    "pathway_local_gap_normal_branch_boost_range": [
+      3.0,
+      5.0
+    ],
+    "pathway_local_gap_open_cell_count": 6010,
+    "pathway_local_gap_partial_service_candidate_work_cap_per_wave": 2400,
+    "pathway_local_gap_partial_service_candidate_work_token_count": 2400,
+    "pathway_local_gap_partial_service_rescue_wave_cap": 3,
+    "pathway_local_gap_partial_service_rescue_wave_count": 1,
+    "pathway_local_gap_phase": "after_components",
+    "pathway_local_gap_physical_post_component_service_fraction": 0.48239392678868553,
+    "pathway_local_gap_post_component_open_cell_count": 6010,
+    "pathway_local_gap_post_main_service_cell_count": 7657,
+    "pathway_local_gap_region_count": 129,
+    "pathway_local_gap_remaining_service_fraction": 0.48281577372294726,
+    "pathway_local_gap_round_budget": 12,
+    "pathway_local_gap_sampled_target_shortfall": 0.04390436824146654,
+    "pathway_local_gap_service_debt_direct_trace_count": 36,
+    "pathway_local_gap_service_debt_fragment_trace_count": 7,
+    "pathway_local_gap_service_debt_mopup_work_cap": 96,
+    "pathway_local_gap_service_definition": "visible_stroke_plus_legitimate_exclusion_perimeter",
+    "pathway_local_gap_source_count": 924,
+    "pathway_local_gap_spawn_attempt_count": 26534,
+    "pathway_local_gap_spawn_reject_count": 504,
+    "pathway_local_gap_special_hollow_cap_count": 28,
+    "pathway_local_gap_special_probability_range": [
+      0.15,
+      0.3
+    ],
+    "pathway_local_gap_special_ratio": 0.12175873731679819,
+    "pathway_local_gap_special_thick_trace_count": 108,
+    "pathway_local_gap_split_count": 0,
+    "pathway_local_gap_static_intersection_count": 0,
+    "pathway_local_gap_straight_visible_trace_count": 54,
+    "pathway_local_gap_straight_visible_trace_fraction": 0.12080536912751678,
+    "pathway_local_gap_target_call_count": 4579,
+    "pathway_local_gap_target_cell_count": 3296,
+    "pathway_local_gap_target_cell_evaluation_count": 110187,
+    "pathway_local_gap_target_chunk_evaluation_count": 23407,
+    "pathway_local_gap_target_chunk_fallback_count": 4,
+    "pathway_local_gap_trace_count": 924,
+    "pathway_local_gap_unmarked_clearance_violation_count": 0,
+    "pathway_local_gap_unmarked_overlap_count": 0,
+    "pathway_local_gap_visible_trace_count": 447,
+    "pathway_local_gap_wave_count": 8,
+    "pathway_local_gap_wave_work_cap": 3,
+    "pathway_local_space_capacity_evaluation_count": 23877,
+    "pathway_local_visible_failure_certificate_hit_count": 643,
+    "pathway_local_visible_failure_certificate_store_count": 1173,
+    "pathway_local_visible_preflight_reject_count": 1173,
+    "pathway_lookahead_evaluation_count": 57550,
+    "pathway_loop_candidate_reject_count": 10825,
+    "pathway_main_active_unmaterialized_launch_trace_count": 0,
+    "pathway_main_active_unmaterialized_launch_trace_ids": [],
+    "pathway_main_connected_trace_count": 100,
+    "pathway_main_floor_hugging_terminal_trace_count": 0,
+    "pathway_main_frame_exit_trace_count": 82,
+    "pathway_main_free_terminal_under_preferred_visible_trace_count": 0,
+    "pathway_main_horizon_under_preferred_visible_trace_count": 0,
+    "pathway_main_launch_survival_count": 328,
+    "pathway_main_local_clearance_violation_count": 0,
+    "pathway_main_outcome_by_trace": {
+      "0": [
+        "connected",
+        null,
+        15.682567
+      ],
+      "1": [
+        "connected",
+        null,
+        12.749006
+      ],
+      "10": [
+        "escaped",
+        null,
+        46.110747
+      ],
+      "100": [
+        "terminated",
+        "coordinated_persistence_limit",
+        13.086916
+      ],
+      "101": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.167931
+      ],
+      "102": [
+        "connected",
+        null,
+        15.78031
+      ],
+      "103": [
+        "connected",
+        null,
+        19.72415
+      ],
+      "104": [
+        "connected",
+        null,
+        15.620488
+      ],
+      "105": [
+        "connected",
+        null,
+        16.318721
+      ],
+      "106": [
+        "escaped",
+        null,
+        24.284542
+      ],
+      "107": [
+        "escaped",
+        null,
+        26.01957
+      ],
+      "108": [
+        "terminated",
+        "coordinated_persistence_limit",
+        22.191628
+      ],
+      "109": [
+        "escaped",
+        null,
+        25.985775
+      ],
+      "11": [
+        "terminated",
+        "round_limit",
+        22.173538
+      ],
+      "110": [
+        "escaped",
+        null,
+        26.354408
+      ],
+      "111": [
+        "escaped",
+        null,
+        24.47617
+      ],
+      "112": [
+        "escaped",
+        null,
+        22.675553
+      ],
+      "113": [
+        "connected",
+        null,
+        19.533659
+      ],
+      "114": [
+        "connected",
+        null,
+        24.312563
+      ],
+      "115": [
+        "connected",
+        null,
+        16.214332
+      ],
+      "116": [
+        "terminated",
+        "round_limit",
+        16.742956
+      ],
+      "117": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.789123
+      ],
+      "118": [
+        "terminated",
+        "coordinated_persistence_limit",
+        11.400012
+      ],
+      "119": [
+        "terminated",
+        "hard_stop_exhausted",
+        16.249602
+      ],
+      "12": [
+        "terminated",
+        "hard_stop_exhausted",
+        28.572965
+      ],
+      "120": [
+        "terminated",
+        "hard_stop_exhausted",
+        17.416973
+      ],
+      "121": [
+        "escaped",
+        null,
+        17.71479
+      ],
+      "122": [
+        "terminated",
+        "journey_limit",
+        24.993841
+      ],
+      "123": [
+        "escaped",
+        null,
+        27.726517
+      ],
+      "124": [
+        "terminated",
+        "journey_limit",
+        26.994471
+      ],
+      "125": [
+        "terminated",
+        "journey_limit",
+        43.371261
+      ],
+      "126": [
+        "terminated",
+        "coordinated_persistence_limit",
+        17.189227
+      ],
+      "127": [
+        "terminated",
+        "coordinated_persistence_limit",
+        25.599074
+      ],
+      "128": [
+        "terminated",
+        "coordinated_persistence_limit",
+        26.634905
+      ],
+      "129": [
+        "connected",
+        null,
+        28.043193
+      ],
+      "13": [
+        "terminated",
+        "journey_limit",
+        26.234937
+      ],
+      "130": [
+        "escaped",
+        null,
+        11.978115
+      ],
+      "131": [
+        "escaped",
+        null,
+        13.137717
+      ],
+      "132": [
+        "connected",
+        null,
+        26.590966
+      ],
+      "133": [
+        "connected",
+        null,
+        32.302541
+      ],
+      "134": [
+        "terminated",
+        "coordinated_persistence_limit",
+        29.003128
+      ],
+      "135": [
+        "terminated",
+        "coordinated_persistence_limit",
+        28.72481
+      ],
+      "136": [
+        "connected",
+        null,
+        16.112373
+      ],
+      "137": [
+        "connected",
+        null,
+        22.334979
+      ],
+      "138": [
+        "connected",
+        null,
+        19.908951
+      ],
+      "139": [
+        "terminated",
+        "coordinated_persistence_limit",
+        18.810301
+      ],
+      "14": [
+        "escaped",
+        null,
+        28.818432
+      ],
+      "140": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.563454
+      ],
+      "141": [
+        "terminated",
+        "journey_limit",
+        32.422861
+      ],
+      "142": [
+        "terminated",
+        "coordinated_persistence_limit",
+        23.574227
+      ],
+      "143": [
+        "terminated",
+        "round_limit",
+        14.0
+      ],
+      "144": [
+        "connected",
+        null,
+        30.93448
+      ],
+      "145": [
+        "terminated",
+        "hard_stop_exhausted",
+        34.238573
+      ],
+      "146": [
+        "connected",
+        null,
+        20.445342
+      ],
+      "147": [
+        "connected",
+        null,
+        19.81483
+      ],
+      "148": [
+        "escaped",
+        null,
+        4.171937
+      ],
+      "149": [
+        "escaped",
+        null,
+        4.171937
+      ],
+      "15": [
+        "escaped",
+        null,
+        28.493633
+      ],
+      "150": [
+        "escaped",
+        null,
+        4.171937
+      ],
+      "151": [
+        "escaped",
+        null,
+        4.171937
+      ],
+      "152": [
+        "escaped",
+        null,
+        4.171937
+      ],
+      "153": [
+        "escaped",
+        null,
+        4.171937
+      ],
+      "154": [
+        "escaped",
+        null,
+        4.171937
+      ],
+      "155": [
+        "escaped",
+        null,
+        4.171937
+      ],
+      "156": [
+        "escaped",
+        null,
+        4.171937
+      ],
+      "157": [
+        "escaped",
+        null,
+        4.171937
+      ],
+      "158": [
+        "escaped",
+        null,
+        4.171937
+      ],
+      "159": [
+        "escaped",
+        null,
+        4.171937
+      ],
+      "16": [
+        "terminated",
+        "round_limit",
+        27.379305
+      ],
+      "160": [
+        "escaped",
+        null,
+        4.171937
+      ],
+      "161": [
+        "terminated",
+        "coordinated_persistence_limit",
+        11.005726
+      ],
+      "162": [
+        "terminated",
+        "coordinated_persistence_limit",
+        17.787885
+      ],
+      "163": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.219229
+      ],
+      "164": [
+        "connected",
+        null,
+        19.371792
+      ],
+      "165": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.847118
+      ],
+      "166": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.617299
+      ],
+      "167": [
+        "connected",
+        null,
+        17.09661
+      ],
+      "168": [
+        "connected",
+        null,
+        17.437755
+      ],
+      "169": [
+        "terminated",
+        "coordinated_persistence_limit",
+        6.0
+      ],
+      "17": [
+        "connected",
+        null,
+        19.654124
+      ],
+      "170": [
+        "terminated",
+        "round_limit",
+        6.0
+      ],
+      "171": [
+        "terminated",
+        "round_limit",
+        6.0
+      ],
+      "172": [
+        "terminated",
+        "coordinated_persistence_limit",
+        17.609214
+      ],
+      "173": [
+        "terminated",
+        "round_limit",
+        16.987488
+      ],
+      "174": [
+        "connected",
+        null,
+        14.938097
+      ],
+      "175": [
+        "terminated",
+        "coordinated_persistence_limit",
+        6.0
+      ],
+      "176": [
+        "terminated",
+        "coordinated_persistence_limit",
+        6.0
+      ],
+      "177": [
+        "terminated",
+        "coordinated_persistence_limit",
+        6.0
+      ],
+      "178": [
+        "connected",
+        null,
+        17.735264
+      ],
+      "179": [
+        "connected",
+        null,
+        20.835726
+      ],
+      "18": [
+        "connected",
+        null,
+        17.766941
+      ],
+      "180": [
+        "connected",
+        null,
+        18.504944
+      ],
+      "181": [
+        "connected",
+        null,
+        13.345354
+      ],
+      "182": [
+        "terminated",
+        "coordinated_persistence_limit",
+        24.820563
+      ],
+      "183": [
+        "connected",
+        null,
+        16.399068
+      ],
+      "184": [
+        "connected",
+        null,
+        17.996382
+      ],
+      "185": [
+        "connected",
+        null,
+        16.077636
+      ],
+      "186": [
+        "connected",
+        null,
+        11.700874
+      ],
+      "187": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.169809
+      ],
+      "188": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.776553
+      ],
+      "189": [
+        "terminated",
+        "coordinated_persistence_limit",
+        18.633431
+      ],
+      "19": [
+        "connected",
+        null,
+        11.459481
+      ],
+      "190": [
+        "connected",
+        null,
+        18.367592
+      ],
+      "191": [
+        "connected",
+        null,
+        20.485344
+      ],
+      "192": [
+        "connected",
+        null,
+        14.803433
+      ],
+      "193": [
+        "terminated",
+        "coordinated_persistence_limit",
+        17.052538
+      ],
+      "194": [
+        "connected",
+        null,
+        18.032479
+      ],
+      "195": [
+        "terminated",
+        "round_limit",
+        16.227861
+      ],
+      "196": [
+        "connected",
+        null,
+        16.783313
+      ],
+      "197": [
+        "connected",
+        null,
+        11.399079
+      ],
+      "198": [
+        "terminated",
+        "coordinated_persistence_limit",
+        8.811848
+      ],
+      "199": [
+        "connected",
+        null,
+        9.085598
+      ],
+      "2": [
+        "connected",
+        null,
+        11.15607
+      ],
+      "20": [
+        "terminated",
+        "coordinated_persistence_limit",
+        10.783898
+      ],
+      "200": [
+        "connected",
+        null,
+        9.380384
+      ],
+      "201": [
+        "terminated",
+        "journey_limit",
+        24.823415
+      ],
+      "202": [
+        "terminated",
+        "round_limit",
+        20.616535
+      ],
+      "203": [
+        "connected",
+        null,
+        20.108439
+      ],
+      "204": [
+        "terminated",
+        "coordinated_persistence_limit",
+        24.801068
+      ],
+      "205": [
+        "connected",
+        null,
+        23.886484
+      ],
+      "206": [
+        "terminated",
+        "journey_limit",
+        36.372269
+      ],
+      "207": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.425894
+      ],
+      "208": [
+        "terminated",
+        "round_limit",
+        18.801414
+      ],
+      "209": [
+        "escaped",
+        null,
+        29.042605
+      ],
+      "21": [
+        "terminated",
+        "round_limit",
+        8.125021
+      ],
+      "210": [
+        "escaped",
+        null,
+        28.830652
+      ],
+      "211": [
+        "escaped",
+        null,
+        11.443323
+      ],
+      "212": [
+        "escaped",
+        null,
+        11.402194
+      ],
+      "213": [
+        "escaped",
+        null,
+        11.294836
+      ],
+      "214": [
+        "escaped",
+        null,
+        11.634474
+      ],
+      "215": [
+        "escaped",
+        null,
+        11.801414
+      ],
+      "216": [
+        "escaped",
+        null,
+        11.816408
+      ],
+      "217": [
+        "escaped",
+        null,
+        11.898665
+      ],
+      "218": [
+        "escaped",
+        null,
+        11.994777
+      ],
+      "219": [
+        "escaped",
+        null,
+        12.27175
+      ],
+      "22": [
+        "connected",
+        null,
+        8.447521
+      ],
+      "220": [
+        "escaped",
+        null,
+        12.354007
+      ],
+      "221": [
+        "escaped",
+        null,
+        22.48312
+      ],
+      "222": [
+        "terminated",
+        "journey_limit",
+        28.487806
+      ],
+      "223": [
+        "connected",
+        null,
+        14.588708
+      ],
+      "224": [
+        "terminated",
+        "coordinated_persistence_limit",
+        11.764785
+      ],
+      "225": [
+        "connected",
+        null,
+        14.421223
+      ],
+      "226": [
+        "terminated",
+        "coordinated_persistence_limit",
+        11.596144
+      ],
+      "227": [
+        "terminated",
+        "round_limit",
+        13.458304
+      ],
+      "228": [
+        "terminated",
+        "round_limit",
+        14.622063
+      ],
+      "229": [
+        "terminated",
+        "journey_limit",
+        37.176767
+      ],
+      "23": [
+        "connected",
+        null,
+        13.595541
+      ],
+      "230": [
+        "connected",
+        null,
+        31.985555
+      ],
+      "231": [
+        "connected",
+        null,
+        21.593607
+      ],
+      "232": [
+        "terminated",
+        "coordinated_persistence_limit",
+        11.61397
+      ],
+      "233": [
+        "terminated",
+        "coordinated_persistence_limit",
+        11.826937
+      ],
+      "234": [
+        "terminated",
+        "coordinated_persistence_limit",
+        18.81871
+      ],
+      "235": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.899
+      ],
+      "236": [
+        "connected",
+        null,
+        11.650537
+      ],
+      "237": [
+        "terminated",
+        "round_limit",
+        14.059096
+      ],
+      "238": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.425775
+      ],
+      "239": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.623231
+      ],
+      "24": [
+        "connected",
+        null,
+        15.889048
+      ],
+      "240": [
+        "terminated",
+        "coordinated_persistence_limit",
+        9.401893
+      ],
+      "241": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.789032
+      ],
+      "242": [
+        "escaped",
+        null,
+        23.870146
+      ],
+      "243": [
+        "connected",
+        null,
+        27.484959
+      ],
+      "244": [
+        "terminated",
+        "round_limit",
+        17.557278
+      ],
+      "245": [
+        "terminated",
+        "round_limit",
+        15.236241
+      ],
+      "246": [
+        "terminated",
+        "round_limit",
+        29.236241
+      ],
+      "247": [
+        "connected",
+        null,
+        21.077269
+      ],
+      "248": [
+        "connected",
+        null,
+        24.710688
+      ],
+      "249": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.398097
+      ],
+      "25": [
+        "connected",
+        null,
+        15.544961
+      ],
+      "250": [
+        "terminated",
+        "coordinated_persistence_limit",
+        16.110233
+      ],
+      "251": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.194825
+      ],
+      "252": [
+        "connected",
+        null,
+        15.060567
+      ],
+      "253": [
+        "connected",
+        null,
+        15.206883
+      ],
+      "254": [
+        "terminated",
+        "round_limit",
+        11.046248
+      ],
+      "255": [
+        "terminated",
+        "coordinated_persistence_limit",
+        18.796378
+      ],
+      "256": [
+        "connected",
+        null,
+        26.502399
+      ],
+      "257": [
+        "terminated",
+        "round_limit",
+        25.010717
+      ],
+      "258": [
+        "terminated",
+        "round_limit",
+        25.528844
+      ],
+      "259": [
+        "connected",
+        null,
+        10.251418
+      ],
+      "26": [
+        "terminated",
+        "journey_limit",
+        32.054102
+      ],
+      "260": [
+        "connected",
+        null,
+        21.500311
+      ],
+      "261": [
+        "terminated",
+        "coordinated_persistence_limit",
+        21.472701
+      ],
+      "262": [
+        "terminated",
+        "coordinated_persistence_limit",
+        17.821372
+      ],
+      "263": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.009853
+      ],
+      "264": [
+        "connected",
+        null,
+        19.849225
+      ],
+      "265": [
+        "connected",
+        null,
+        21.089376
+      ],
+      "266": [
+        "terminated",
+        "coordinated_persistence_limit",
+        13.076771
+      ],
+      "267": [
+        "terminated",
+        "coordinated_persistence_limit",
+        10.834744
+      ],
+      "268": [
+        "connected",
+        null,
+        17.257305
+      ],
+      "269": [
+        "terminated",
+        "coordinated_persistence_limit",
+        21.406665
+      ],
+      "27": [
+        "escaped",
+        null,
+        27.474269
+      ],
+      "270": [
+        "terminated",
+        "coordinated_persistence_limit",
+        22.042198
+      ],
+      "271": [
+        "terminated",
+        "round_limit",
+        22.542853
+      ],
+      "272": [
+        "connected",
+        null,
+        22.61849
+      ],
+      "273": [
+        "connected",
+        null,
+        24.863726
+      ],
+      "274": [
+        "connected",
+        null,
+        24.132542
+      ],
+      "275": [
+        "connected",
+        null,
+        20.552029
+      ],
+      "276": [
+        "connected",
+        null,
+        31.025327
+      ],
+      "277": [
+        "connected",
+        null,
+        31.695235
+      ],
+      "278": [
+        "terminated",
+        "round_limit",
+        17.889393
+      ],
+      "279": [
+        "terminated",
+        "hard_stop_exhausted",
+        14.064267
+      ],
+      "28": [
+        "escaped",
+        null,
+        16.729082
+      ],
+      "280": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.799222
+      ],
+      "281": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.317404
+      ],
+      "282": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.430563
+      ],
+      "283": [
+        "connected",
+        null,
+        11.936108
+      ],
+      "284": [
+        "connected",
+        null,
+        12.553504
+      ],
+      "285": [
+        "connected",
+        null,
+        12.34938
+      ],
+      "286": [
+        "terminated",
+        "round_limit",
+        17.900617
+      ],
+      "287": [
+        "connected",
+        null,
+        20.651685
+      ],
+      "288": [
+        "connected",
+        null,
+        21.017919
+      ],
+      "289": [
+        "connected",
+        null,
+        24.141951
+      ],
+      "29": [
+        "escaped",
+        null,
+        16.785973
+      ],
+      "290": [
+        "connected",
+        null,
+        10.419363
+      ],
+      "291": [
+        "terminated",
+        "coordinated_persistence_limit",
+        6.0
+      ],
+      "292": [
+        "terminated",
+        "coordinated_persistence_limit",
+        6.607975
+      ],
+      "293": [
+        "terminated",
+        "coordinated_persistence_limit",
+        13.8424
+      ],
+      "294": [
+        "terminated",
+        "coordinated_persistence_limit",
+        6.39902
+      ],
+      "295": [
+        "terminated",
+        "coordinated_persistence_limit",
+        13.24252
+      ],
+      "296": [
+        "terminated",
+        "round_limit",
+        12.713591
+      ],
+      "297": [
+        "connected",
+        null,
+        7.391969
+      ],
+      "298": [
+        "terminated",
+        "coordinated_persistence_limit",
+        13.019318
+      ],
+      "299": [
+        "terminated",
+        "coordinated_persistence_limit",
+        13.065549
+      ],
+      "3": [
+        "terminated",
+        "coordinated_persistence_limit",
+        11.58417
+      ],
+      "30": [
+        "escaped",
+        null,
+        17.0
+      ],
+      "300": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.775472
+      ],
+      "301": [
+        "terminated",
+        "round_limit",
+        17.806132
+      ],
+      "302": [
+        "terminated",
+        "coordinated_persistence_limit",
+        17.336483
+      ],
+      "303": [
+        "terminated",
+        "coordinated_persistence_limit",
+        13.806595
+      ],
+      "304": [
+        "terminated",
+        "coordinated_persistence_limit",
+        16.969061
+      ],
+      "305": [
+        "connected",
+        null,
+        11.521172
+      ],
+      "306": [
+        "connected",
+        null,
+        11.341691
+      ],
+      "307": [
+        "terminated",
+        "hard_stop_exhausted",
+        9.586397
+      ],
+      "308": [
+        "connected",
+        null,
+        12.45015
+      ],
+      "309": [
+        "connected",
+        null,
+        11.502809
+      ],
+      "31": [
+        "escaped",
+        null,
+        15.618055
+      ],
+      "310": [
+        "terminated",
+        "coordinated_persistence_limit",
+        6.0
+      ],
+      "311": [
+        "terminated",
+        "coordinated_persistence_limit",
+        9.543069
+      ],
+      "312": [
+        "terminated",
+        "journey_limit",
+        28.427441
+      ],
+      "313": [
+        "terminated",
+        "coordinated_persistence_limit",
+        21.829789
+      ],
+      "314": [
+        "terminated",
+        "coordinated_persistence_limit",
+        18.572559
+      ],
+      "315": [
+        "terminated",
+        "round_limit",
+        24.611474
+      ],
+      "316": [
+        "terminated",
+        "round_limit",
+        19.185169
+      ],
+      "317": [
+        "connected",
+        null,
+        31.334769
+      ],
+      "318": [
+        "escaped",
+        null,
+        17.86206
+      ],
+      "319": [
+        "escaped",
+        null,
+        16.705913
+      ],
+      "32": [
+        "escaped",
+        null,
+        15.875479
+      ],
+      "320": [
+        "escaped",
+        null,
+        16.61298
+      ],
+      "321": [
+        "escaped",
+        null,
+        16.814855
+      ],
+      "322": [
+        "escaped",
+        null,
+        16.895676
+      ],
+      "323": [
+        "escaped",
+        null,
+        17.047861
+      ],
+      "324": [
+        "escaped",
+        null,
+        17.247699
+      ],
+      "325": [
+        "escaped",
+        null,
+        17.040104
+      ],
+      "326": [
+        "connected",
+        null,
+        30.211748
+      ],
+      "327": [
+        "connected",
+        null,
+        25.435291
+      ],
+      "33": [
+        "escaped",
+        null,
+        15.598753
+      ],
+      "34": [
+        "escaped",
+        null,
+        15.875479
+      ],
+      "35": [
+        "connected",
+        null,
+        15.51801
+      ],
+      "36": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.024357
+      ],
+      "37": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.161187
+      ],
+      "38": [
+        "terminated",
+        "coordinated_persistence_limit",
+        17.568108
+      ],
+      "39": [
+        "connected",
+        null,
+        15.254028
+      ],
+      "4": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.318128
+      ],
+      "40": [
+        "terminated",
+        "hard_stop_exhausted",
+        10.386679
+      ],
+      "41": [
+        "connected",
+        null,
+        15.392432
+      ],
+      "42": [
+        "connected",
+        null,
+        16.354669
+      ],
+      "43": [
+        "connected",
+        null,
+        14.995828
+      ],
+      "44": [
+        "terminated",
+        "coordinated_persistence_limit",
+        9.458354
+      ],
+      "45": [
+        "connected",
+        null,
+        14.282237
+      ],
+      "46": [
+        "terminated",
+        "hard_stop_exhausted",
+        21.042692
+      ],
+      "47": [
+        "terminated",
+        "coordinated_persistence_limit",
+        17.773358
+      ],
+      "48": [
+        "terminated",
+        "coordinated_persistence_limit",
+        25.335044
+      ],
+      "49": [
+        "escaped",
+        null,
+        20.507725
+      ],
+      "5": [
+        "connected",
+        null,
+        11.325045
+      ],
+      "50": [
+        "escaped",
+        null,
+        13.303421
+      ],
+      "51": [
+        "escaped",
+        null,
+        13.547145
+      ],
+      "52": [
+        "escaped",
+        null,
+        19.456676
+      ],
+      "53": [
+        "escaped",
+        null,
+        18.687173
+      ],
+      "54": [
+        "escaped",
+        null,
+        18.004664
+      ],
+      "55": [
+        "terminated",
+        "journey_limit",
+        10.506004
+      ],
+      "56": [
+        "terminated",
+        "hard_stop_exhausted",
+        6.0
+      ],
+      "57": [
+        "terminated",
+        "hard_stop_exhausted",
+        6.0
+      ],
+      "58": [
+        "terminated",
+        "hard_stop_exhausted",
+        6.0
+      ],
+      "59": [
+        "escaped",
+        null,
+        8.612785
+      ],
+      "6": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.158119
+      ],
+      "60": [
+        "escaped",
+        null,
+        8.332087
+      ],
+      "61": [
+        "escaped",
+        null,
+        8.456804
+      ],
+      "62": [
+        "escaped",
+        null,
+        8.159576
+      ],
+      "63": [
+        "escaped",
+        null,
+        7.884268
+      ],
+      "64": [
+        "escaped",
+        null,
+        8.120581
+      ],
+      "65": [
+        "escaped",
+        null,
+        8.456804
+      ],
+      "66": [
+        "escaped",
+        null,
+        22.534794
+      ],
+      "67": [
+        "escaped",
+        null,
+        22.424499
+      ],
+      "68": [
+        "terminated",
+        "coordinated_persistence_limit",
+        11.325199
+      ],
+      "69": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.775066
+      ],
+      "7": [
+        "terminated",
+        "coordinated_persistence_limit",
+        18.150156
+      ],
+      "70": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.049241
+      ],
+      "71": [
+        "connected",
+        null,
+        15.599026
+      ],
+      "72": [
+        "connected",
+        null,
+        17.437506
+      ],
+      "73": [
+        "connected",
+        null,
+        22.320088
+      ],
+      "74": [
+        "escaped",
+        null,
+        22.34969
+      ],
+      "75": [
+        "escaped",
+        null,
+        27.373628
+      ],
+      "76": [
+        "escaped",
+        null,
+        21.65643
+      ],
+      "77": [
+        "escaped",
+        null,
+        14.426507
+      ],
+      "78": [
+        "escaped",
+        null,
+        14.414876
+      ],
+      "79": [
+        "escaped",
+        null,
+        13.150785
+      ],
+      "8": [
+        "terminated",
+        "coordinated_persistence_limit",
+        18.576785
+      ],
+      "80": [
+        "escaped",
+        null,
+        13.029497
+      ],
+      "81": [
+        "escaped",
+        null,
+        12.908783
+      ],
+      "82": [
+        "escaped",
+        null,
+        12.456786
+      ],
+      "83": [
+        "escaped",
+        null,
+        12.456786
+      ],
+      "84": [
+        "escaped",
+        null,
+        14.11364
+      ],
+      "85": [
+        "connected",
+        null,
+        25.672816
+      ],
+      "86": [
+        "terminated",
+        "round_limit",
+        32.655913
+      ],
+      "87": [
+        "terminated",
+        "hard_stop_exhausted",
+        15.298969
+      ],
+      "88": [
+        "connected",
+        null,
+        19.456654
+      ],
+      "89": [
+        "terminated",
+        "coordinated_persistence_limit",
+        20.499939
+      ],
+      "9": [
+        "connected",
+        null,
+        33.925721
+      ],
+      "90": [
+        "terminated",
+        "coordinated_persistence_limit",
+        24.839071
+      ],
+      "91": [
+        "terminated",
+        "coordinated_persistence_limit",
+        9.328431
+      ],
+      "92": [
+        "terminated",
+        "coordinated_persistence_limit",
+        8.790992
+      ],
+      "93": [
+        "terminated",
+        "coordinated_persistence_limit",
+        22.0
+      ],
+      "94": [
+        "connected",
+        null,
+        17.26714
+      ],
+      "95": [
+        "terminated",
+        "coordinated_persistence_limit",
+        17.672647
+      ],
+      "96": [
+        "terminated",
+        "coordinated_persistence_limit",
+        9.504828
+      ],
+      "97": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.783269
+      ],
+      "98": [
+        "connected",
+        null,
+        24.338782
+      ],
+      "99": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.850233
+      ]
+    },
+    "pathway_main_preferred_visible_modules": 6.0,
+    "pathway_main_short_termination_trace_count": 0,
+    "pathway_main_source_marker_count": 328,
+    "pathway_main_stalled_side_count": 0,
+    "pathway_main_stalled_side_details": [],
+    "pathway_main_unaccounted_launch_trace_count": 0,
+    "pathway_main_unaccounted_launch_trace_ids": [],
+    "pathway_main_under_preferred_root_count": 0,
+    "pathway_main_under_preferred_root_max_fraction": 0.0,
+    "pathway_main_under_preferred_visible_details": [],
+    "pathway_main_visible_length_modules_by_trace": {
+      "0": 15.682567,
+      "1": 12.749006,
+      "10": 46.110747,
+      "100": 13.086916,
+      "101": 14.167931,
+      "102": 15.78031,
+      "103": 19.72415,
+      "104": 15.620488,
+      "105": 16.318721,
+      "106": 24.284542,
+      "107": 26.01957,
+      "108": 22.191628,
+      "109": 25.985775,
+      "11": 22.173538,
+      "110": 26.354408,
+      "111": 24.47617,
+      "112": 22.675553,
+      "113": 19.533659,
+      "114": 24.312563,
+      "115": 16.214332,
+      "116": 16.742956,
+      "117": 14.789123,
+      "118": 11.400012,
+      "119": 16.249602,
+      "12": 28.572965,
+      "120": 17.416973,
+      "121": 17.71479,
+      "122": 24.993841,
+      "123": 27.726517,
+      "124": 26.994471,
+      "125": 43.371261,
+      "126": 17.189227,
+      "127": 25.599074,
+      "128": 26.634905,
+      "129": 28.043193,
+      "13": 26.234937,
+      "130": 11.978115,
+      "131": 13.137717,
+      "132": 26.590966,
+      "133": 32.302541,
+      "134": 29.003128,
+      "135": 28.72481,
+      "136": 16.112373,
+      "137": 22.334979,
+      "138": 19.908951,
+      "139": 18.810301,
+      "14": 28.818432,
+      "140": 14.563454,
+      "141": 32.422861,
+      "142": 23.574227,
+      "143": 14.0,
+      "144": 30.93448,
+      "145": 34.238573,
+      "146": 20.445342,
+      "147": 19.81483,
+      "148": 4.171937,
+      "149": 4.171937,
+      "15": 28.493633,
+      "150": 4.171937,
+      "151": 4.171937,
+      "152": 4.171937,
+      "153": 4.171937,
+      "154": 4.171937,
+      "155": 4.171937,
+      "156": 4.171937,
+      "157": 4.171937,
+      "158": 4.171937,
+      "159": 4.171937,
+      "16": 27.379305,
+      "160": 4.171937,
+      "161": 11.005726,
+      "162": 17.787885,
+      "163": 14.219229,
+      "164": 19.371792,
+      "165": 14.847118,
+      "166": 12.617299,
+      "167": 17.09661,
+      "168": 17.437755,
+      "169": 6.0,
+      "17": 19.654124,
+      "170": 6.0,
+      "171": 6.0,
+      "172": 17.609214,
+      "173": 16.987488,
+      "174": 14.938097,
+      "175": 6.0,
+      "176": 6.0,
+      "177": 6.0,
+      "178": 17.735264,
+      "179": 20.835726,
+      "18": 17.766941,
+      "180": 18.504944,
+      "181": 13.345354,
+      "182": 24.820563,
+      "183": 16.399068,
+      "184": 17.996382,
+      "185": 16.077636,
+      "186": 11.700874,
+      "187": 14.169809,
+      "188": 12.776553,
+      "189": 18.633431,
+      "19": 11.459481,
+      "190": 18.367592,
+      "191": 20.485344,
+      "192": 14.803433,
+      "193": 17.052538,
+      "194": 18.032479,
+      "195": 16.227861,
+      "196": 16.783313,
+      "197": 11.399079,
+      "198": 8.811848,
+      "199": 9.085598,
+      "2": 11.15607,
+      "20": 10.783898,
+      "200": 9.380384,
+      "201": 24.823415,
+      "202": 20.616535,
+      "203": 20.108439,
+      "204": 24.801068,
+      "205": 23.886484,
+      "206": 36.372269,
+      "207": 15.425894,
+      "208": 18.801414,
+      "209": 29.042605,
+      "21": 8.125021,
+      "210": 28.830652,
+      "211": 11.443323,
+      "212": 11.402194,
+      "213": 11.294836,
+      "214": 11.634474,
+      "215": 11.801414,
+      "216": 11.816408,
+      "217": 11.898665,
+      "218": 11.994777,
+      "219": 12.27175,
+      "22": 8.447521,
+      "220": 12.354007,
+      "221": 22.48312,
+      "222": 28.487806,
+      "223": 14.588708,
+      "224": 11.764785,
+      "225": 14.421223,
+      "226": 11.596144,
+      "227": 13.458304,
+      "228": 14.622063,
+      "229": 37.176767,
+      "23": 13.595541,
+      "230": 31.985555,
+      "231": 21.593607,
+      "232": 11.61397,
+      "233": 11.826937,
+      "234": 18.81871,
+      "235": 12.899,
+      "236": 11.650537,
+      "237": 14.059096,
+      "238": 14.425775,
+      "239": 7.623231,
+      "24": 15.889048,
+      "240": 9.401893,
+      "241": 7.789032,
+      "242": 23.870146,
+      "243": 27.484959,
+      "244": 17.557278,
+      "245": 15.236241,
+      "246": 29.236241,
+      "247": 21.077269,
+      "248": 24.710688,
+      "249": 19.398097,
+      "25": 15.544961,
+      "250": 16.110233,
+      "251": 19.194825,
+      "252": 15.060567,
+      "253": 15.206883,
+      "254": 11.046248,
+      "255": 18.796378,
+      "256": 26.502399,
+      "257": 25.010717,
+      "258": 25.528844,
+      "259": 10.251418,
+      "26": 32.054102,
+      "260": 21.500311,
+      "261": 21.472701,
+      "262": 17.821372,
+      "263": 19.009853,
+      "264": 19.849225,
+      "265": 21.089376,
+      "266": 13.076771,
+      "267": 10.834744,
+      "268": 17.257305,
+      "269": 21.406665,
+      "27": 27.474269,
+      "270": 22.042198,
+      "271": 22.542853,
+      "272": 22.61849,
+      "273": 24.863726,
+      "274": 24.132542,
+      "275": 20.552029,
+      "276": 31.025327,
+      "277": 31.695235,
+      "278": 17.889393,
+      "279": 14.064267,
+      "28": 16.729082,
+      "280": 12.799222,
+      "281": 12.317404,
+      "282": 7.430563,
+      "283": 11.936108,
+      "284": 12.553504,
+      "285": 12.34938,
+      "286": 17.900617,
+      "287": 20.651685,
+      "288": 21.017919,
+      "289": 24.141951,
+      "29": 16.785973,
+      "290": 10.419363,
+      "291": 6.0,
+      "292": 6.607975,
+      "293": 13.8424,
+      "294": 6.39902,
+      "295": 13.24252,
+      "296": 12.713591,
+      "297": 7.391969,
+      "298": 13.019318,
+      "299": 13.065549,
+      "3": 11.58417,
+      "30": 17.0,
+      "300": 14.775472,
+      "301": 17.806132,
+      "302": 17.336483,
+      "303": 13.806595,
+      "304": 16.969061,
+      "305": 11.521172,
+      "306": 11.341691,
+      "307": 9.586397,
+      "308": 12.45015,
+      "309": 11.502809,
+      "31": 15.618055,
+      "310": 6.0,
+      "311": 9.543069,
+      "312": 28.427441,
+      "313": 21.829789,
+      "314": 18.572559,
+      "315": 24.611474,
+      "316": 19.185169,
+      "317": 31.334769,
+      "318": 17.86206,
+      "319": 16.705913,
+      "32": 15.875479,
+      "320": 16.61298,
+      "321": 16.814855,
+      "322": 16.895676,
+      "323": 17.047861,
+      "324": 17.247699,
+      "325": 17.040104,
+      "326": 30.211748,
+      "327": 25.435291,
+      "33": 15.598753,
+      "34": 15.875479,
+      "35": 15.51801,
+      "36": 12.024357,
+      "37": 12.161187,
+      "38": 17.568108,
+      "39": 15.254028,
+      "4": 12.318128,
+      "40": 10.386679,
+      "41": 15.392432,
+      "42": 16.354669,
+      "43": 14.995828,
+      "44": 9.458354,
+      "45": 14.282237,
+      "46": 21.042692,
+      "47": 17.773358,
+      "48": 25.335044,
+      "49": 20.507725,
+      "5": 11.325045,
+      "50": 13.303421,
+      "51": 13.547145,
+      "52": 19.456676,
+      "53": 18.687173,
+      "54": 18.004664,
+      "55": 10.506004,
+      "56": 6.0,
+      "57": 6.0,
+      "58": 6.0,
+      "59": 8.612785,
+      "6": 15.158119,
+      "60": 8.332087,
+      "61": 8.456804,
+      "62": 8.159576,
+      "63": 7.884268,
+      "64": 8.120581,
+      "65": 8.456804,
+      "66": 22.534794,
+      "67": 22.424499,
+      "68": 11.325199,
+      "69": 15.775066,
+      "7": 18.150156,
+      "70": 15.049241,
+      "71": 15.599026,
+      "72": 17.437506,
+      "73": 22.320088,
+      "74": 22.34969,
+      "75": 27.373628,
+      "76": 21.65643,
+      "77": 14.426507,
+      "78": 14.414876,
+      "79": 13.150785,
+      "8": 18.576785,
+      "80": 13.029497,
+      "81": 12.908783,
+      "82": 12.456786,
+      "83": 12.456786,
+      "84": 14.11364,
+      "85": 25.672816,
+      "86": 32.655913,
+      "87": 15.298969,
+      "88": 19.456654,
+      "89": 20.499939,
+      "9": 33.925721,
+      "90": 24.839071,
+      "91": 9.328431,
+      "92": 8.790992,
+      "93": 22.0,
+      "94": 17.26714,
+      "95": 17.672647,
+      "96": 9.504828,
+      "97": 15.783269,
+      "98": 24.338782,
+      "99": 12.850233
+    },
+    "pathway_max_connection_junction_turn_degrees": 45,
+    "pathway_max_segments_per_trace": 19,
+    "pathway_mean_geometric_length": 405.4125206326784,
+    "pathway_mean_segments_per_trace": 7.658536585365853,
+    "pathway_mean_turns_per_trace": 2.1463414634146343,
+    "pathway_median_geometric_length": 387.53203580086756,
+    "pathway_midline_connection_count": 0,
+    "pathway_min_actual_segment": 2.4067784215885695,
+    "pathway_min_foreign_main_chip_clearance": 22.543246548161523,
+    "pathway_min_foreign_static_clearance": 22.543246548161523,
+    "pathway_min_normal_center_segment": 47.761320772221325,
+    "pathway_min_segments_per_trace": 2,
+    "pathway_min_unconnected_stroke_clearance_margin": 1.0974518261336157,
+    "pathway_minimum_segment_exception_count": 1265,
+    "pathway_module_U": 31.84088051481431,
+    "pathway_module_canvas_units": 23.880660386110733,
+    "pathway_multiply_connected_trace_count": 0,
+    "pathway_non_octilinear_segment_count": 0,
+    "pathway_outcome_policy": "hard_invariants_soft_best_effort_targets",
+    "pathway_overlap_event_count": 0,
+    "pathway_persistence_hard_debt_peak": 83,
+    "pathway_persistence_horizon_unresolved_trace_count": 0,
+    "pathway_persistence_shared_rebuild_count": 0,
+    "pathway_persistence_shared_tick_budget": 10,
+    "pathway_persistence_shared_tick_count": 10,
+    "pathway_phase": "main_chip_network_frozen_before_residual_fill",
+    "pathway_planner_mode": "route_first_family_protected_transactional_parallel",
+    "pathway_post_main_terminal_connection_count": 0,
+    "pathway_primary_path_clear_proof_hit_count": 6988,
+    "pathway_profile": {
+      "branch_appetite": 0.459099,
+      "branch_multiplier": 1.746454,
+      "connection_appetite": 0.967043,
+      "exit_inclination": 0.290253,
+      "late_life_branch_multiplier": 1.5,
+      "late_life_branch_start": 0.6,
+      "max_rounds": 56,
+      "module_U": 31.840881,
+      "outward_bias": 0.630638,
+      "persistence_shared_ticks": 10,
+      "persistence_tail_rounds": 0,
+      "preferred_run_modules": 2,
+      "reroute_budget": 7,
+      "turn_appetite": 0.616786
+    },
+    "pathway_progress_repair_scheduled_count": 27,
+    "pathway_proposal_failure_certificate_hit_count": 10888,
+    "pathway_proposal_failure_certificate_store_count": 11459,
+    "pathway_proposal_replay_draw_count": 10180,
+    "pathway_protected_launch_unresolved_count": 0,
+    "pathway_recovery_fragment_count": 13,
+    "pathway_render_pair_audit_pass_count": 1,
+    "pathway_required_main_chip_keepout": 18.0,
+    "pathway_required_static_keepout": 6.0,
+    "pathway_reroute_exhausted_count": 1815,
+    "pathway_reroute_recovery_count": 2812,
+    "pathway_reroute_scheduled_count": 1548,
+    "pathway_reroute_short_rebase_count": 1131,
+    "pathway_root_emergence_traceback_count": 0,
+    "pathway_rounds_with_multiple_fronts": 66,
+    "pathway_route_search_count": 0,
+    "pathway_same_round_conflict_count": 1845,
+    "pathway_short_termination_fraction": 0.0,
+    "pathway_short_termination_trace_count": 0,
+    "pathway_short_trace_count": 24,
+    "pathway_short_trace_fraction": 0.07317073170731707,
+    "pathway_source_marker_count": 328,
+    "pathway_space_available_replan_count": 223,
+    "pathway_split_count": 219,
+    "pathway_static_intersection_count": 0,
+    "pathway_structural_persistence_atomic_round_count": 2,
+    "pathway_structural_persistence_atomic_tick_count": 2,
+    "pathway_structural_persistence_conflict_combination_count": 123,
+    "pathway_structural_persistence_exhausted_count": 11,
+    "pathway_structural_persistence_hold_front_count": 12,
+    "pathway_structural_persistence_repair_count": 28,
+    "pathway_terminal_alignment_exception_count": 0,
+    "pathway_terminal_head_backoff_count": 126,
+    "pathway_terminal_head_backoff_distance": 5780.304862306967,
+    "pathway_terminal_head_keepout": 3.375,
+    "pathway_terminal_separation_repair_count": 0,
+    "pathway_termination_count": 133,
+    "pathway_termination_dot_hollow_stroke": 2.0250000000000004,
+    "pathway_termination_dot_scale": 2.0,
+    "pathway_termination_marker_overlap_count": 0,
+    "pathway_termination_trace_count": 146,
+    "pathway_tiny_termination_trace_count": 0,
+    "pathway_trace_count": 328,
+    "pathway_trace_thickness_max": 2.319982396648222,
+    "pathway_trace_thickness_mean": 1.9041493204519997,
+    "pathway_trace_thickness_min": 1.5000216446282146,
+    "pathway_traceback_count": 1130,
+    "pathway_traceback_segment_count": 2797,
+    "pathway_transactional_birth_reject_count": 143,
+    "pathway_turn_count": 704,
+    "pathway_turns_per_100U": 0.3970662018649112,
+    "pathway_unmarked_clearance_violation_count": 0,
+    "pathway_unmarked_overlap_count": 0,
+    "pathway_unmarked_stroke_overlap_count": 0,
+    "pathway_visible_launch_coverage_max": 0.8822499996445505,
+    "pathway_visible_launch_coverage_min": 0.7201190021773698,
+    "pathway_visible_launch_trace_count": 328,
+    "pathway_young_survival_repair_count": 0,
+    "pathway_young_survival_repair_trace_count": 0,
+    "pathway_zigzag_trace_cleanup_count": 0,
+    "population_area_scale": 4.0,
+    "population_long_axis": "x",
+    "quotas": {
+      "N_border": 46,
+      "N_dense": 56,
+      "N_ic": 41
+    },
+    "renderer_version": "V48",
+    "restart_index": 0,
+    "route_restarted_for_component_failure": false,
+    "scale": 0.5,
+    "seed": 2231933914823899592,
+    "service_grid_scale_basis": "canonical_design_units_over_logical_viewbox"
+  },
+  "rss_kib": 185524,
+  "scale": 0.5,
+  "seed": 102,
+  "sha": "d58ee1bf5073dd479e954b922a5fbdec56ef879de10394bf804094752af9c9b0",
+  "src": "/mnt/data/local2_candidate4.py",
+  "wall_s": 40.2092921250005
+}

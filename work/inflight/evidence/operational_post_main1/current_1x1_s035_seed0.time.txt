@@ -1,0 +1,23 @@
+	Command being timed: "python tools/exact_sample_phase_perf_harness.py pcb_v48_renderer.py --aspect-ratio 1:1 --scale 0.35 --seed 0 --sample-index 0 --out work/inflight/evidence/operational_post_main1/current_1x1_s035_seed0.json"
+	User time (seconds): 97.79
+	System time (seconds): 0.63
+	Percent of CPU this job got: 100%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:38.07
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 235092
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 51962
+	Voluntary context switches: 11
+	Involuntary context switches: 771
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 16
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

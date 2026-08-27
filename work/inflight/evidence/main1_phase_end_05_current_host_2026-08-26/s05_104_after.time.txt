@@ -1,0 +1,1 @@
+wall=27.92 cpu_user=27.86 cpu_sys=0.40 rss_kib=153000

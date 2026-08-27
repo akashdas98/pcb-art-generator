@@ -1,0 +1,7832 @@
+{
+  "aspect": "1:6",
+  "cpu_s": 101.148791218,
+  "geom": "568b07250554204017b4d6777340f32e4ea459bd626730fca3a5b3b323f870bd",
+  "phases": {
+    "component_place": {
+      "calls": 1,
+      "cpu_s": 7.2517162850000005,
+      "wall_s": 7.2546704030010005
+    },
+    "component_prepare": {
+      "calls": 1,
+      "cpu_s": 0.6308080430000018,
+      "wall_s": 0.6314554309992673
+    },
+    "local": {
+      "calls": 1,
+      "cpu_s": 46.97066265600001,
+      "wall_s": 46.986499651000486
+    },
+    "main": {
+      "calls": 1,
+      "cpu_s": 45.134497888000006,
+      "wall_s": 45.15650599199944
+    }
+  },
+  "report": {
+    "IC_required_contact_count": 727,
+    "IC_required_contact_failure_count": 0,
+    "aspect_ratio": [
+      1.0,
+      6.0
+    ],
+    "base_seed": 1,
+    "canonical_short_side": 1200.0,
+    "canvas_territory_scale": 6.0,
+    "chip_count": 22,
+    "chip_count_expected": 21.333333333333332,
+    "chip_count_fractional_territory_probability": 0.6666666666666661,
+    "chip_count_population_basis": "logical_viewbox_area_divided_by_canonical_square_area",
+    "chip_count_probability_3": 0.6666666666666661,
+    "chip_motifs": [
+      [
+        "M3",
+        "M6",
+        "M8"
+      ],
+      [
+        "M1",
+        "M2",
+        "M5"
+      ],
+      [
+        "M1",
+        "M3",
+        "M6"
+      ],
+      [
+        "M1",
+        "M2",
+        "M8"
+      ],
+      [
+        "M7",
+        "M8"
+      ],
+      [
+        "M1",
+        "M3",
+        "M5"
+      ],
+      [
+        "M2",
+        "M5"
+      ],
+      [
+        "M6",
+        "M7"
+      ],
+      [
+        "M1",
+        "M2",
+        "M5"
+      ],
+      [
+        "M3",
+        "M8"
+      ],
+      [
+        "M1",
+        "M2"
+      ],
+      [
+        "M1",
+        "M3",
+        "M8"
+      ],
+      [
+        "M1",
+        "M6",
+        "M7",
+        "M8"
+      ],
+      [
+        "M3"
+      ],
+      [
+        "M1",
+        "M3",
+        "M8"
+      ],
+      [
+        "M1",
+        "M6",
+        "M7"
+      ],
+      [
+        "M1",
+        "M4"
+      ],
+      [
+        "M7",
+        "M8"
+      ],
+      [
+        "M1"
+      ],
+      [
+        "M2",
+        "M6",
+        "M8"
+      ],
+      [
+        "M1",
+        "M3",
+        "M4",
+        "M6"
+      ],
+      [
+        "M1",
+        "M5",
+        "M7"
+      ]
+    ],
+    "chip_q": [
+      107.27160601163791,
+      116.07476109774417,
+      108.90350762163102,
+      114.45327631717278,
+      123.05474815618649,
+      100.12340700713399,
+      105.80140777135226,
+      109.53062454448462,
+      118.76965670237641,
+      98.18566839737981,
+      103.39869821742155,
+      111.78841804001654,
+      112.96203899599924,
+      114.92877123083865,
+      107.52733289928942,
+      95.57057168937779,
+      109.83515482841517,
+      97.63935997566665,
+      114.52230360030975,
+      112.50102059688594,
+      98.98361436266835,
+      115.03079247861837
+    ],
+    "clearance_violation_count": 0,
+    "collection_capacitor_entity_count": 67,
+    "collection_capacitor_group_count": 67,
+    "collection_count": 179,
+    "collection_long": [
+      108.76653936722687,
+      72.96106694359696,
+      69.24047599965343,
+      69.91614582581724,
+      84.32188241551921,
+      69.65275533685553,
+      59.614336310455656,
+      58.42067715173198,
+      85.06177707415873,
+      54.96745196775453,
+      56.91692340899863,
+      75.91931186963893,
+      59.37161778974223,
+      54.93674729517875,
+      54.825403811690194,
+      56.18776298659395,
+      63.4030539996329,
+      77.37326986255312,
+      54.395119039362726,
+      56.875649081492156,
+      55.366743727325115,
+      48.565892778063755,
+      58.548774413745605,
+      54.385807666324354,
+      48.4817059160946,
+      50.4428877471687,
+      56.63084357146158,
+      60.091770473740326,
+      55.53918959567818,
+      50.214466170112246,
+      51.52476725108863,
+      53.788387961111766,
+      51.156670704934186,
+      56.399993134382385,
+      56.47381859844154,
+      46.51543825472572,
+      52.90223302103823,
+      45.84159272868328,
+      48.61032551555854,
+      49.49142635687804,
+      46.10852829359783,
+      50.635411719786134,
+      56.306046589765174,
+      50.4015293363409,
+      56.359788545044694,
+      55.07032102105222,
+      77.08335656502072,
+      40.36217175448451,
+      53.7101685265402,
+      52.92481891913434,
+      54.26968041933975,
+      57.80166110209848,
+      80.86897701113958,
+      57.50047710826311,
+      42.71969577137634,
+      51.48892282522638,
+      51.903513125938844,
+      48.33153126239631,
+      51.671088896304354,
+      56.964575390930804,
+      37.928950840392645,
+      44.26907592615271,
+      42.17297356868403,
+      47.52312320876422,
+      39.28192702210936,
+      36.23516614837922,
+      53.61812303898648,
+      31.517006441391914,
+      47.64932888435635,
+      51.55612704724709,
+      32.17517623953199,
+      62.07158626493401,
+      50.395610756477254,
+      49.31312411020235,
+      45.57912864496939,
+      46.82430226982956,
+      33.237230495324184,
+      21.15069254631453,
+      19.256194538733325,
+      76.33700885589224,
+      81.86242118174403,
+      84.74139999875842,
+      76.42140841571654,
+      80.4951722140595,
+      73.74677387115821,
+      64.5612544770218,
+      81.03359663196579,
+      82.32830700198845,
+      87.80929333889299,
+      68.9712206062618,
+      61.75601470515994,
+      61.24682872071935,
+      65.91836906846606,
+      70.37042019256273,
+      78.62172886275312,
+      71.80770543842186,
+      61.35819757695708,
+      67.01792437713266,
+      75.53845812470536,
+      67.47226967096776,
+      77.42461295989233,
+      59.67584733166041,
+      63.31707851103192,
+      59.29182232470566,
+      61.786390620160546,
+      80.51012663951795,
+      60.30158691521683,
+      58.395016324294915,
+      56.617177959858964,
+      66.08166098774996,
+      83.88408584277977,
+      63.83457891414582,
+      69.9677656113713,
+      66.84799206159116,
+      70.80623687754087,
+      55.95874391803966,
+      65.13724144664047,
+      53.536556662817475,
+      58.74530820221776,
+      58.63280883682137,
+      56.692953487631485,
+      66.27495948540081,
+      71.79365249721877,
+      53.98569395401739,
+      75.5834075162129,
+      67.88086568199347,
+      53.41518184125562,
+      68.02186085616086,
+      62.11948158694497,
+      56.8208570222605,
+      56.473086570862506,
+      52.185844403644296,
+      57.44216816067359,
+      58.782771949947346,
+      52.92552838071333,
+      49.65840495312659,
+      58.48493797637275,
+      56.824480814976084,
+      53.997191143579585,
+      54.552381042666866,
+      59.529600518144434,
+      57.98495775663375,
+      61.18124086020907,
+      50.01809451020381,
+      48.799811211037195,
+      47.77757744972314,
+      55.09110865780622,
+      48.026696463237045,
+      59.27306814844076,
+      52.41145700258744,
+      47.43637646155776,
+      53.447521001976725,
+      58.734780292536016,
+      48.21250731780674,
+      48.04712998144646,
+      66.93077325560336,
+      45.02983946896347,
+      43.60690461992044,
+      53.52552900748742,
+      51.93964869234014,
+      68.2162057388432,
+      52.198299403164356,
+      54.93121153295442,
+      58.797900973603646,
+      55.13699440702476,
+      47.812623910540424,
+      56.25405836432947,
+      68.90983229870835,
+      43.80987108727936,
+      47.781238454803315,
+      52.8980979154357,
+      49.38209850311978,
+      48.10367824257128,
+      51.13163852345542,
+      53.842722382243664,
+      57.52042656671271,
+      52.13886462859409,
+      55.20674715123687,
+      39.39478128442579
+    ],
+    "component_chip_clearance": 31.5,
+    "component_component_clearance": 9.0,
+    "component_gap_scheduler_exact_candidate_count": 640,
+    "component_gap_scheduler_local_attempt_count": 7071,
+    "component_gap_scheduler_metadata_probe_count": 640,
+    "component_gap_scheduler_mode": "territory_first_bounded_local_tokens",
+    "component_gap_scheduler_prepared_object_count": 199,
+    "component_gap_scheduler_recovery_attempt_count": 937,
+    "component_gap_scheduler_recovery_object_count": 100,
+    "component_gap_scheduler_site_success_count": 99,
+    "component_gap_scheduler_site_token_count": 225,
+    "component_layout_attempt_count": 1,
+    "component_layout_attempt_index": 0,
+    "component_long_axis_quarter_counts": [
+      106,
+      105,
+      109,
+      97
+    ],
+    "component_long_axis_span_fraction": 0.9927448235227905,
+    "component_pathway_attachment_count": 0,
+    "component_pathway_attachment_probability": 0.24,
+    "component_pathway_clearance": 7.5,
+    "component_pathway_unauthorized_overlap_count": 0,
+    "component_placement_mode": "post_main_pre_local_residual_gap_fill",
+    "component_residual_gap_claimed_area_fraction": 0.13301100202279342,
+    "component_residual_gap_claimed_cell_count": 2696,
+    "component_residual_gap_completion_remaining_open_cell_count": 16470,
+    "component_residual_gap_completion_uses_legacy_filler_cap": false,
+    "component_residual_gap_compound_filler_count": 209,
+    "component_residual_gap_compound_filler_fraction": 0.9587155963302753,
+    "component_residual_gap_density_target_count": 199,
+    "component_residual_gap_extra_filler_count": 218,
+    "component_residual_gap_extra_filler_limit": 1024,
+    "component_residual_gap_fill_actual": 0.5397601674392859,
+    "component_residual_gap_fill_definition": "50_60_percent_of_post_main_residual_capacity_with_gap_sized_quantity",
+    "component_residual_gap_fill_target": 0.5385430404930516,
+    "component_residual_gap_grid_shape": [
+      75,
+      448
+    ],
+    "component_residual_gap_mandatory_region_count": 202,
+    "component_residual_gap_micro_filler_count": 0,
+    "component_residual_gap_micro_filler_limit": 86,
+    "component_residual_gap_open_cell_count": 20269,
+    "component_residual_gap_optional_region_count": 193,
+    "component_residual_gap_placed_count": 417,
+    "component_residual_gap_region_capacity_fraction": 0.5397601674392859,
+    "component_residual_gap_region_component_counts": {
+      "0": 3,
+      "1": 1,
+      "2": 4,
+      "3": 0,
+      "4": 5,
+      "5": 2,
+      "6": 1,
+      "7": 2,
+      "8": 2,
+      "9": 1,
+      "10": 2,
+      "11": 2,
+      "12": 1,
+      "13": 2,
+      "14": 0,
+      "15": 1,
+      "16": 2,
+      "17": 13,
+      "18": 1,
+      "19": 2,
+      "20": 1,
+      "21": 1,
+      "22": 2,
+      "23": 1,
+      "24": 1,
+      "25": 1,
+      "26": 1,
+      "27": 2,
+      "28": 2,
+      "29": 5,
+      "30": 2,
+      "31": 2,
+      "32": 1,
+      "33": 0,
+      "34": 10,
+      "35": 6,
+      "36": 0,
+      "37": 0,
+      "38": 7,
+      "39": 0,
+      "40": 0,
+      "41": 0,
+      "42": 0,
+      "43": 0,
+      "44": 1,
+      "45": 0,
+      "46": 0,
+      "47": 2,
+      "48": 0,
+      "49": 5,
+      "50": 2,
+      "51": 0,
+      "52": 2,
+      "53": 2,
+      "54": 0,
+      "55": 1,
+      "56": 0,
+      "57": 0,
+      "58": 0,
+      "59": 0,
+      "60": 0,
+      "61": 1,
+      "62": 2,
+      "63": 0,
+      "64": 0,
+      "65": 2,
+      "66": 0,
+      "67": 0,
+      "68": 6,
+      "69": 0,
+      "70": 0,
+      "71": 2,
+      "72": 0,
+      "73": 2,
+      "74": 0,
+      "75": 1,
+      "76": 0,
+      "77": 1,
+      "78": 0,
+      "79": 0,
+      "80": 3,
+      "81": 0,
+      "82": 0,
+      "83": 0,
+      "84": 0,
+      "85": 0,
+      "86": 3,
+      "87": 1,
+      "88": 1,
+      "89": 0,
+      "90": 1,
+      "91": 2,
+      "92": 6,
+      "93": 0,
+      "94": 0,
+      "95": 1,
+      "96": 4,
+      "97": 0,
+      "98": 0,
+      "99": 1,
+      "100": 0,
+      "101": 1,
+      "102": 1,
+      "103": 1,
+      "104": 1,
+      "105": 0,
+      "106": 5,
+      "107": 0,
+      "108": 7,
+      "109": 5,
+      "110": 0,
+      "111": 0,
+      "112": 0,
+      "113": 2,
+      "114": 0,
+      "115": 2,
+      "116": 0,
+      "117": 1,
+      "118": 0,
+      "119": 9,
+      "120": 6,
+      "121": 0,
+      "122": 0,
+      "123": 0,
+      "124": 2,
+      "125": 0,
+      "126": 0,
+      "127": 0,
+      "128": 0,
+      "129": 0,
+      "130": 1,
+      "131": 0,
+      "132": 0,
+      "133": 1,
+      "134": 0,
+      "135": 6,
+      "136": 0,
+      "137": 1,
+      "138": 0,
+      "139": 0,
+      "140": 0,
+      "141": 0,
+      "142": 0,
+      "143": 1,
+      "144": 2,
+      "145": 2,
+      "146": 0,
+      "147": 0,
+      "148": 0,
+      "149": 1,
+      "150": 0,
+      "151": 0,
+      "152": 4,
+      "153": 1,
+      "154": 0,
+      "155": 0,
+      "156": 0,
+      "157": 0,
+      "158": 5,
+      "159": 3,
+      "160": 0,
+      "161": 0,
+      "162": 0,
+      "163": 6,
+      "164": 0,
+      "165": 1,
+      "166": 0,
+      "167": 0,
+      "168": 0,
+      "169": 0,
+      "170": 2,
+      "171": 0,
+      "172": 0,
+      "173": 1,
+      "174": 0,
+      "175": 2,
+      "176": 1,
+      "177": 6,
+      "178": 0,
+      "179": 12,
+      "180": 0,
+      "181": 0,
+      "182": 1,
+      "183": 0,
+      "184": 0,
+      "185": 0,
+      "186": 2,
+      "187": 1,
+      "188": 2,
+      "189": 0,
+      "190": 0,
+      "191": 0,
+      "192": 1,
+      "193": 1,
+      "194": 2,
+      "195": 0,
+      "196": 2,
+      "197": 0,
+      "198": 0,
+      "199": 1,
+      "200": 2,
+      "201": 1,
+      "202": 0,
+      "203": 0,
+      "204": 0,
+      "205": 0,
+      "206": 6,
+      "207": 0,
+      "208": 1,
+      "209": 0,
+      "210": 1,
+      "211": 0,
+      "212": 0,
+      "213": 2,
+      "214": 0,
+      "215": 0,
+      "216": 0,
+      "217": 1,
+      "218": 1,
+      "219": 0,
+      "220": 0,
+      "221": 0,
+      "222": 6,
+      "223": 1,
+      "224": 5,
+      "225": 2,
+      "226": 0,
+      "227": 0,
+      "228": 0,
+      "229": 3,
+      "230": 0,
+      "231": 2,
+      "232": 0,
+      "233": 0,
+      "234": 0,
+      "235": 11,
+      "236": 1,
+      "237": 0,
+      "238": 2,
+      "239": 0,
+      "240": 0,
+      "241": 1,
+      "242": 1,
+      "243": 0,
+      "244": 0,
+      "245": 0,
+      "246": 0,
+      "247": 0,
+      "248": 0,
+      "249": 0,
+      "250": 1,
+      "251": 2,
+      "252": 0,
+      "253": 0,
+      "254": 0,
+      "255": 1,
+      "256": 0,
+      "257": 0,
+      "258": 0,
+      "259": 0,
+      "260": 2,
+      "261": 0,
+      "262": 0,
+      "263": 0,
+      "264": 0,
+      "265": 1,
+      "266": 0,
+      "267": 0,
+      "268": 0,
+      "269": 0,
+      "270": 0,
+      "271": 0,
+      "272": 2,
+      "273": 1,
+      "274": 0,
+      "275": 0,
+      "276": 0,
+      "277": 0,
+      "278": 0,
+      "279": 0,
+      "280": 0,
+      "281": 1,
+      "282": 3,
+      "283": 0,
+      "284": 2,
+      "285": 2,
+      "286": 0,
+      "287": 1,
+      "288": 0,
+      "289": 0,
+      "290": 1,
+      "291": 0,
+      "292": 3,
+      "293": 2,
+      "294": 0,
+      "295": 0,
+      "296": 2,
+      "297": 0,
+      "298": 3,
+      "299": 0,
+      "300": 1,
+      "301": 3,
+      "302": 0,
+      "303": 0,
+      "304": 1,
+      "305": 1,
+      "306": 1,
+      "307": 0,
+      "308": 6,
+      "309": 1,
+      "310": 0,
+      "311": 0,
+      "312": 2,
+      "313": 3,
+      "314": 1,
+      "315": 0,
+      "316": 0,
+      "317": 0,
+      "318": 2,
+      "319": 0,
+      "320": 1,
+      "321": 0,
+      "322": 0,
+      "323": 0,
+      "324": 6,
+      "325": 0,
+      "326": 1,
+      "327": 2,
+      "328": 0,
+      "329": 0,
+      "330": 1,
+      "331": 3,
+      "332": 0,
+      "333": 1,
+      "334": 1,
+      "335": 3,
+      "336": 0,
+      "337": 0,
+      "338": 0,
+      "339": 1,
+      "340": 0,
+      "341": 2,
+      "342": 0,
+      "343": 0,
+      "344": 1,
+      "345": 0,
+      "346": 2,
+      "347": 4,
+      "348": 1,
+      "349": 0,
+      "350": 1,
+      "351": 0,
+      "352": 0,
+      "353": 1,
+      "354": 2,
+      "355": 0,
+      "356": 0,
+      "357": 1,
+      "358": 0,
+      "359": 0,
+      "360": 0,
+      "361": 0,
+      "362": 0,
+      "363": 2,
+      "364": 1,
+      "365": 0,
+      "366": 1,
+      "367": 1,
+      "368": 2,
+      "369": 1,
+      "370": 2,
+      "371": 0,
+      "372": 0,
+      "373": 1,
+      "374": 2,
+      "375": 0,
+      "376": 0,
+      "377": 1,
+      "378": 1,
+      "379": 0,
+      "380": 0,
+      "381": 0,
+      "382": 0,
+      "383": 0,
+      "384": 2,
+      "385": 0,
+      "386": 1,
+      "387": 0,
+      "388": 0,
+      "389": 0,
+      "390": 0,
+      "391": 0,
+      "392": 0,
+      "393": 0,
+      "394": 0
+    },
+    "component_residual_gap_region_count": 395,
+    "component_residual_gap_region_quota_units": {
+      "0": 12,
+      "1": 4,
+      "2": 22,
+      "3": 0.0,
+      "4": 24,
+      "5": 9,
+      "6": 5,
+      "7": 8,
+      "8": 6,
+      "9": 3,
+      "10": 5,
+      "11": 6,
+      "12": 3,
+      "13": 12,
+      "14": 1.0,
+      "15": 1.0,
+      "16": 5,
+      "17": 72,
+      "18": 1.0,
+      "19": 5,
+      "20": 2,
+      "21": 2,
+      "22": 5,
+      "23": 4,
+      "24": 5,
+      "25": 1.0,
+      "26": 1.0,
+      "27": 10,
+      "28": 10,
+      "29": 17,
+      "30": 9,
+      "31": 11,
+      "32": 4,
+      "33": 0.0,
+      "34": 58,
+      "35": 14,
+      "36": 0.0,
+      "37": 0.0,
+      "38": 34,
+      "39": 2,
+      "40": 0.0,
+      "41": 0.0,
+      "42": 0.0,
+      "43": 0.0,
+      "44": 2,
+      "45": 0.0,
+      "46": 0.0,
+      "47": 7,
+      "48": 0.0,
+      "49": 17,
+      "50": 7,
+      "51": 0.0,
+      "52": 8,
+      "53": 9,
+      "54": 0.0,
+      "55": 2,
+      "56": 0.0,
+      "57": 0.0,
+      "58": 0.0,
+      "59": 2,
+      "60": 0.0,
+      "61": 3,
+      "62": 10,
+      "63": 0.0,
+      "64": 0.0,
+      "65": 8,
+      "66": 0.0,
+      "67": 0.0,
+      "68": 27,
+      "69": 0.0,
+      "70": 0.0,
+      "71": 7,
+      "72": 0.0,
+      "73": 8,
+      "74": 0.0,
+      "75": 2,
+      "76": 0.0,
+      "77": 1.0,
+      "78": 0.0,
+      "79": 1.0,
+      "80": 13,
+      "81": 0.0,
+      "82": 0.0,
+      "83": 3,
+      "84": 0.0,
+      "85": 0.0,
+      "86": 13,
+      "87": 3,
+      "88": 3,
+      "89": 0.0,
+      "90": 2,
+      "91": 7,
+      "92": 16,
+      "93": 0.0,
+      "94": 0.0,
+      "95": 2,
+      "96": 16,
+      "97": 0.0,
+      "98": 1.0,
+      "99": 4,
+      "100": 3,
+      "101": 1.0,
+      "102": 1.0,
+      "103": 3,
+      "104": 1.0,
+      "105": 0.0,
+      "106": 14,
+      "107": 0.0,
+      "108": 31,
+      "109": 18,
+      "110": 0.0,
+      "111": 0.0,
+      "112": 0.0,
+      "113": 6,
+      "114": 0.0,
+      "115": 8,
+      "116": 0.0,
+      "117": 1.0,
+      "118": 0.0,
+      "119": 41,
+      "120": 26,
+      "121": 0.0,
+      "122": 0.0,
+      "123": 0.0,
+      "124": 7,
+      "125": 0.0,
+      "126": 0.0,
+      "127": 0.0,
+      "128": 0.0,
+      "129": 0.0,
+      "130": 2,
+      "131": 0.0,
+      "132": 0.0,
+      "133": 2,
+      "134": 0.0,
+      "135": 15,
+      "136": 0.0,
+      "137": 2,
+      "138": 0.0,
+      "139": 0.0,
+      "140": 1.0,
+      "141": 0.0,
+      "142": 0.0,
+      "143": 4,
+      "144": 5,
+      "145": 5,
+      "146": 0.0,
+      "147": 0.0,
+      "148": 0.0,
+      "149": 3,
+      "150": 0.0,
+      "151": 0.0,
+      "152": 20,
+      "153": 2.0,
+      "154": 0.0,
+      "155": 0.0,
+      "156": 0.0,
+      "157": 0.0,
+      "158": 15,
+      "159": 13,
+      "160": 0.0,
+      "161": 0.0,
+      "162": 0.0,
+      "163": 27,
+      "164": 0.0,
+      "165": 2,
+      "166": 0.0,
+      "167": 0.0,
+      "168": 3,
+      "169": 1.0,
+      "170": 7,
+      "171": 0.0,
+      "172": 0.0,
+      "173": 3,
+      "174": 0.0,
+      "175": 12,
+      "176": 2,
+      "177": 32,
+      "178": 0.0,
+      "179": 63,
+      "180": 0.0,
+      "181": 0.0,
+      "182": 1.0,
+      "183": 0.0,
+      "184": 0.0,
+      "185": 0.0,
+      "186": 9,
+      "187": 3,
+      "188": 7,
+      "189": 0.0,
+      "190": 0.0,
+      "191": 0.0,
+      "192": 2,
+      "193": 3,
+      "194": 9,
+      "195": 1.0,
+      "196": 11,
+      "197": 0.0,
+      "198": 0.0,
+      "199": 2,
+      "200": 6,
+      "201": 2,
+      "202": 0.0,
+      "203": 0.0,
+      "204": 0.0,
+      "205": 0.0,
+      "206": 28,
+      "207": 0.0,
+      "208": 3,
+      "209": 0.0,
+      "210": 1.0,
+      "211": 0.0,
+      "212": 0.0,
+      "213": 8,
+      "214": 0.0,
+      "215": 0.0,
+      "216": 0.0,
+      "217": 1.0,
+      "218": 2,
+      "219": 0.0,
+      "220": 1.0,
+      "221": 0.0,
+      "222": 28,
+      "223": 1.0,
+      "224": 20,
+      "225": 10,
+      "226": 0.0,
+      "227": 0.0,
+      "228": 1.0,
+      "229": 13,
+      "230": 0.0,
+      "231": 5,
+      "232": 0.0,
+      "233": 0.0,
+      "234": 1.0,
+      "235": 58,
+      "236": 2,
+      "237": 0.0,
+      "238": 8,
+      "239": 0.0,
+      "240": 0.0,
+      "241": 5,
+      "242": 1.0,
+      "243": 0.0,
+      "244": 0.0,
+      "245": 0.0,
+      "246": 0.0,
+      "247": 0.0,
+      "248": 0.0,
+      "249": 0.0,
+      "250": 1.0,
+      "251": 9,
+      "252": 1.0,
+      "253": 0.0,
+      "254": 0.0,
+      "255": 1.0,
+      "256": 0.0,
+      "257": 0.0,
+      "258": 0.0,
+      "259": 0.0,
+      "260": 6,
+      "261": 0.0,
+      "262": 0.0,
+      "263": 1.0,
+      "264": 0.0,
+      "265": 4,
+      "266": 0.0,
+      "267": 0.0,
+      "268": 0.0,
+      "269": 0.0,
+      "270": 0.0,
+      "271": 0.0,
+      "272": 6,
+      "273": 4,
+      "274": 0.0,
+      "275": 0.0,
+      "276": 1.0,
+      "277": 0.0,
+      "278": 0.0,
+      "279": 0.0,
+      "280": 0.0,
+      "281": 6,
+      "282": 13,
+      "283": 0.0,
+      "284": 7,
+      "285": 9,
+      "286": 0.0,
+      "287": 1.0,
+      "288": 0.0,
+      "289": 0.0,
+      "290": 3,
+      "291": 0.0,
+      "292": 14,
+      "293": 8,
+      "294": 0.0,
+      "295": 0.0,
+      "296": 10,
+      "297": 0.0,
+      "298": 12,
+      "299": 0.0,
+      "300": 1.0,
+      "301": 12,
+      "302": 0.0,
+      "303": 0.0,
+      "304": 3,
+      "305": 1.0,
+      "306": 4,
+      "307": 0.0,
+      "308": 16,
+      "309": 2,
+      "310": 0.0,
+      "311": 2,
+      "312": 8,
+      "313": 12,
+      "314": 6,
+      "315": 0.0,
+      "316": 0.0,
+      "317": 0.0,
+      "318": 6,
+      "319": 0.0,
+      "320": 1.0,
+      "321": 0.0,
+      "322": 0.0,
+      "323": 0.0,
+      "324": 27,
+      "325": 0.0,
+      "326": 5,
+      "327": 10,
+      "328": 0.0,
+      "329": 0.0,
+      "330": 2,
+      "331": 9,
+      "332": 0.0,
+      "333": 1.0,
+      "334": 1.0,
+      "335": 14,
+      "336": 0.0,
+      "337": 0.0,
+      "338": 1.0,
+      "339": 2,
+      "340": 1.0,
+      "341": 6,
+      "342": 0.0,
+      "343": 0.0,
+      "344": 3,
+      "345": 0.0,
+      "346": 9,
+      "347": 19,
+      "348": 2,
+      "349": 0.0,
+      "350": 6,
+      "351": 0.0,
+      "352": 0.0,
+      "353": 2,
+      "354": 7,
+      "355": 0.0,
+      "356": 0.0,
+      "357": 1.0,
+      "358": 3,
+      "359": 0.0,
+      "360": 0.0,
+      "361": 0.0,
+      "362": 0.0,
+      "363": 10,
+      "364": 5,
+      "365": 0.0,
+      "366": 4,
+      "367": 2,
+      "368": 7,
+      "369": 4,
+      "370": 7,
+      "371": 0.0,
+      "372": 0.0,
+      "373": 4,
+      "374": 4,
+      "375": 0.0,
+      "376": 0.0,
+      "377": 3,
+      "378": 2,
+      "379": 0.0,
+      "380": 0.0,
+      "381": 0.0,
+      "382": 1.0,
+      "383": 0.0,
+      "384": 5,
+      "385": 0.0,
+      "386": 1.0,
+      "387": 0.0,
+      "388": 0.0,
+      "389": 0.0,
+      "390": 0.0,
+      "391": 0.0,
+      "392": 0.0,
+      "393": 0.0,
+      "394": 0.0
+    },
+    "component_residual_gap_served_region_area_fraction": 0.985358053070811,
+    "component_residual_gap_served_region_count": 184,
+    "component_residual_gap_singleton_filler_count": 9,
+    "component_residual_gap_site_count": 370,
+    "component_residual_gap_site_fill_actual": 1.0,
+    "component_residual_gap_site_requested_count": 370,
+    "component_residual_gap_size_counts": {
+      "large": 166,
+      "medium": 39,
+      "small": 13
+    },
+    "component_residual_gap_size_mean_spans": {
+      "large": 70.45152369857665,
+      "medium": 43.47938485187266,
+      "small": 21.939224789452645
+    },
+    "component_residual_gap_static_clearance_certificate_hits": 156,
+    "component_residual_gap_total_component_count": 417,
+    "component_templates_prepared_before_routing": false,
+    "component_unplaced_count": 0,
+    "design_detail_area_scale": 10.666666666666666,
+    "design_distance_scale": 1.3333333333333333,
+    "design_scale_basis": 1200.0,
+    "design_unit_divisor": 1600,
+    "design_unit_viewbox_fraction": 0.00046875,
+    "forbidden_intersection_count": 0,
+    "forbidden_touch_count": 0,
+    "generation_order": "main_chips -> primary_pathways -> residual_components_50_60 -> local_gap_pathways_80_90_of_remaining",
+    "ic_array_count": 78,
+    "ic_array_shapes": [
+      [
+        6,
+        1
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        5,
+        1
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        5,
+        1
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        6,
+        1
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        6,
+        1
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        5,
+        2
+      ],
+      [
+        6,
+        1
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        6,
+        1
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        6,
+        1
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        5,
+        1
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        4,
+        2
+      ]
+    ],
+    "isolated_capacitor_count": 238,
+    "isolated_capacitor_radii": [
+      14.049692124963894,
+      13.850853104956252,
+      13.503416357181582,
+      11.709064921197646,
+      11.152276109697475,
+      11.807320889170615,
+      11.027351275539143,
+      10.812090917931808,
+      10.781855156795114,
+      10.571736769770267,
+      9.850126268231023,
+      10.194151947572642,
+      8.831693417518933,
+      8.12560726840881,
+      8.201739234234491,
+      8.040284679168524,
+      6.961436139888918,
+      6.910483884561687,
+      6.007358477688751,
+      5.805369380286891,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      13.271310882179957,
+      12.556093593897256,
+      null,
+      5.515461402821221,
+      null,
+      13.389191263886357,
+      7.090390349197328,
+      8.656874801657167,
+      null,
+      null,
+      8.690688292190611,
+      11.899584392013125,
+      12.962051018103425,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "isolated_capacitor_states": [
+      "filled",
+      "filled",
+      "filled",
+      "hollow",
+      "concentric",
+      "filled",
+      "concentric",
+      "concentric",
+      "hollow",
+      "concentric",
+      "concentric",
+      "filled",
+      "hollow",
+      "concentric",
+      "filled",
+      "filled",
+      "concentric",
+      "concentric",
+      "hollow",
+      "hollow",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      "hollow",
+      "concentric",
+      null,
+      "concentric",
+      null,
+      "filled",
+      "hollow",
+      "filled",
+      null,
+      null,
+      "concentric",
+      "filled",
+      "filled",
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "local_component_clearance_violation_count": 0,
+    "logical_sample_index": 0,
+    "logical_viewbox": [
+      1600.0,
+      9600.0
+    ],
+    "main_chip_long_axis_quarter_counts": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "main_chip_long_axis_span_fraction": 0.9533807605003954,
+    "main_chip_pair_min_clearance": 403.55772903044453,
+    "main_chip_pair_required_clearance": 322.5,
+    "pathway_abandoned_short_bundle_count": 0,
+    "pathway_abandoned_short_trace_count": 0,
+    "pathway_atomic_conflict_group_defer_count": 1026,
+    "pathway_atomic_conflict_group_repair_front_count": 2490,
+    "pathway_atomic_round_commit_count": 59,
+    "pathway_blocked_gesture_count": 5105,
+    "pathway_blocker_yield_count": 0,
+    "pathway_board_scale_trace_count": 0,
+    "pathway_board_scale_trace_fraction": 0.0,
+    "pathway_branch_preflight_reject_count": 142,
+    "pathway_bundle_count": 88,
+    "pathway_bundle_middle_termination_deferral_count": 30,
+    "pathway_bundled_forced_termination_trace_count": 78,
+    "pathway_bundled_hard_stop_deferral_count": 200,
+    "pathway_bundled_journey_deferral_count": 2,
+    "pathway_bundled_termination_suppression_intent": 0.97,
+    "pathway_candidate_seed_retry_count": 0,
+    "pathway_canvas_quartiles_touched": 4,
+    "pathway_causal_blocker_rollback_request_count": 0,
+    "pathway_causal_terminal_reopen_count": 0,
+    "pathway_chip_launch_gap": 16.875,
+    "pathway_close_head_lane_detach_count": 34,
+    "pathway_collapsed_overlap_count": 0,
+    "pathway_collection_approach_count": 0,
+    "pathway_collection_approached_trace_count": 0,
+    "pathway_collection_connected_trace_count": 0,
+    "pathway_collection_connection_count": 0,
+    "pathway_compensating_zigzag_count": 0,
+    "pathway_conflict_combination_count": 21078,
+    "pathway_conflict_region_count": 3224,
+    "pathway_conflict_region_front_count": 8685,
+    "pathway_conflict_repair_scheduled_count": 2490,
+    "pathway_connection_count": 131,
+    "pathway_coordinated_fragment_terminal_group_count": 35,
+    "pathway_coordinated_persistence_terminal_trace_count": 317,
+    "pathway_coordinated_root_terminal_group_count": 68,
+    "pathway_coverage_cell_fraction": 0.7122395833333334,
+    "pathway_cross_chip_connected_trace_count": 262,
+    "pathway_cross_chip_connection_count": 131,
+    "pathway_curved_primitive_count": 0,
+    "pathway_decision_round_count": 59,
+    "pathway_deep_traceback_count": 817,
+    "pathway_detached_prefix_lock_count": 34,
+    "pathway_duplicate_trace_cleanup_count": 0,
+    "pathway_early_reroute_scheduled_count": 1,
+    "pathway_embedded_singleton_separation_repair_count": 27,
+    "pathway_escape_count": 96,
+    "pathway_escape_trace_count": 231,
+    "pathway_exhausted_embedded_terminal_trace_count": 46,
+    "pathway_family_hold_front_count": 396,
+    "pathway_family_hold_round_count": 277,
+    "pathway_fan_permutation_fallback_count": 86,
+    "pathway_final_escape_repair_count": 14,
+    "pathway_final_relational_geometric_exhaustion_trace_count": 47,
+    "pathway_final_relational_progress_move_count": 23,
+    "pathway_final_relational_progress_tick_count": 3,
+    "pathway_forced_close_head_connection_count": 65,
+    "pathway_fragment_short_future_reject_count": 216,
+    "pathway_future_failure_certificate_hit_count": 10996,
+    "pathway_future_failure_certificate_store_count": 25378,
+    "pathway_future_local_visible_failure_certificate_hit_count": 1408,
+    "pathway_future_local_visible_failure_certificate_store_count": 4039,
+    "pathway_future_local_visible_preflight_reject_count": 4039,
+    "pathway_general_repair_scheduled_count": 2757,
+    "pathway_gesture_clear_check_budget": 554667,
+    "pathway_gesture_clear_check_count": 170412,
+    "pathway_hard_stop_count": 1710,
+    "pathway_holistic_connection_guided_round_count": 120,
+    "pathway_holistic_connection_pair_count": 11837,
+    "pathway_holistic_front_round_count": 21415,
+    "pathway_illegal_connection_junction_turn_count": 0,
+    "pathway_illegal_turn_count": 0,
+    "pathway_incremental_rollback_batch_count": 57,
+    "pathway_incremental_rollback_compacted_segment_count": 5981,
+    "pathway_incremental_rollback_segment_remove_count": 5981,
+    "pathway_intersection_marker_count": 0,
+    "pathway_intersection_trace_cleanup_count": 0,
+    "pathway_late_life_branch_attempt_count": 96,
+    "pathway_launch_cohort_count": 237,
+    "pathway_launch_coverage_intent_range": [
+      0.72,
+      0.9
+    ],
+    "pathway_launch_coverage_max": 0.8992603911676893,
+    "pathway_launch_coverage_min": 0.7209545637262549,
+    "pathway_launch_egress_reservation_reject_count": 0,
+    "pathway_launch_min_lane_edge_gap_ratio": 3.367827806229257,
+    "pathway_launch_spacing_max": 14.779986300325971,
+    "pathway_launch_spacing_min": 10.203892639333118,
+    "pathway_launch_trace_count": 900,
+    "pathway_leaf_bundle_count": 722,
+    "pathway_local_gap_abandoned_segment_prune_count": 1205,
+    "pathway_local_gap_absolute_target_fraction": 0.3854108055206541,
+    "pathway_local_gap_bundle_pair_count": 35,
+    "pathway_local_gap_bundle_release_count": 57,
+    "pathway_local_gap_component_marker_backoff_count": 28,
+    "pathway_local_gap_component_marker_backoff_distance": 298.42615306303355,
+    "pathway_local_gap_component_marker_prune_count": 3,
+    "pathway_local_gap_covered_cell_count": 4333,
+    "pathway_local_gap_curved_primitive_count": 0,
+    "pathway_local_gap_denominator": "canonical_post_main_residual_service_field",
+    "pathway_local_gap_deterministic_debt_completion_candidate_count": 15565,
+    "pathway_local_gap_deterministic_debt_completion_trace_count": 27,
+    "pathway_local_gap_deterministic_debt_first_leg_cache_hit_count": 5706,
+    "pathway_local_gap_deterministic_debt_first_leg_cache_miss_count": 2055,
+    "pathway_local_gap_direct_failure_cert_hit_count": 3223,
+    "pathway_local_gap_direct_run_family_attempt_count": 7672,
+    "pathway_local_gap_direct_run_family_quarantine_count": 2270,
+    "pathway_local_gap_direct_run_family_quarantine_skip_count": 3484,
+    "pathway_local_gap_direct_run_family_retired_count": 2270,
+    "pathway_local_gap_direct_run_family_unique_attempted_count": 2905,
+    "pathway_local_gap_escape_trace_count": 52,
+    "pathway_local_gap_exit_probability_factor": 0.5,
+    "pathway_local_gap_fast_round_count": 82,
+    "pathway_local_gap_fill_actual": 0.8003410551062088,
+    "pathway_local_gap_fill_actual_absolute_service": 0.3683488331935468,
+    "pathway_local_gap_fill_definition": "80_90_percent_of_post_component_remaining_field_by_visible_stroke_plus_legitimate_perimeter",
+    "pathway_local_gap_fill_target_fraction": 0.8374129709205718,
+    "pathway_local_gap_fill_target_range": [
+      0.8,
+      0.9
+    ],
+    "pathway_local_gap_fragment_candidate_work_cap": 5334,
+    "pathway_local_gap_fragment_candidate_work_cap_hit_count": 2,
+    "pathway_local_gap_fragment_candidate_work_token_count": 10668,
+    "pathway_local_gap_fragment_mopup_trace_count": 95,
+    "pathway_local_gap_fragment_mopup_work_cap": 427,
+    "pathway_local_gap_frozen_main_render_primitive_count": 900,
+    "pathway_local_gap_frozen_main_retained_segment_buffer_count": 0,
+    "pathway_local_gap_frozen_main_segment_count": 5709,
+    "pathway_local_gap_hard_floor_absolute": 0.3681918660485713,
+    "pathway_local_gap_hard_floor_rescue_wave_cap": 2,
+    "pathway_local_gap_hard_floor_rescue_wave_count": 2,
+    "pathway_local_gap_hold_front_count": 30,
+    "pathway_local_gap_hold_round_count": 28,
+    "pathway_local_gap_illegal_connection_junction_turn_count": 0,
+    "pathway_local_gap_illegal_turn_count": 0,
+    "pathway_local_gap_independent_source_count": 2096,
+    "pathway_local_gap_late_wave_work_cap": 2,
+    "pathway_local_gap_max_single_vertex_turn_degrees": 45,
+    "pathway_local_gap_mean_turns_per_visible_trace": 1.2422243166823752,
+    "pathway_local_gap_mopup_bent_rescue_trace_count": 6,
+    "pathway_local_gap_mopup_bent_trace_count": 486,
+    "pathway_local_gap_mopup_straight_trace_count": 5,
+    "pathway_local_gap_mopup_trace_count": 491,
+    "pathway_local_gap_mopup_work_cap": 576,
+    "pathway_local_gap_non_octilinear_segment_count": 0,
+    "pathway_local_gap_normal_branch_boost_range": [
+      3.0,
+      5.0
+    ],
+    "pathway_local_gap_open_cell_count": 15947,
+    "pathway_local_gap_partial_service_candidate_work_cap_per_wave": 6400,
+    "pathway_local_gap_partial_service_candidate_work_token_count": 6400,
+    "pathway_local_gap_partial_service_rescue_wave_cap": 3,
+    "pathway_local_gap_partial_service_rescue_wave_count": 1,
+    "pathway_local_gap_phase": "after_components",
+    "pathway_local_gap_physical_post_component_service_fraction": 0.46387643443907944,
+    "pathway_local_gap_post_component_open_cell_count": 15947,
+    "pathway_local_gap_post_main_service_cell_count": 20269,
+    "pathway_local_gap_region_count": 349,
+    "pathway_local_gap_remaining_service_fraction": 0.4602398325607141,
+    "pathway_local_gap_round_budget": 12,
+    "pathway_local_gap_sampled_target_shortfall": 0.017061972327107322,
+    "pathway_local_gap_service_debt_direct_trace_count": 134,
+    "pathway_local_gap_service_debt_fragment_trace_count": 14,
+    "pathway_local_gap_service_debt_mopup_work_cap": 256,
+    "pathway_local_gap_service_definition": "visible_stroke_plus_legitimate_exclusion_perimeter",
+    "pathway_local_gap_source_count": 2096,
+    "pathway_local_gap_spawn_attempt_count": 70025,
+    "pathway_local_gap_spawn_reject_count": 835,
+    "pathway_local_gap_special_hollow_cap_count": 70,
+    "pathway_local_gap_special_probability_range": [
+      0.15,
+      0.3
+    ],
+    "pathway_local_gap_special_ratio": 0.1445142580956984,
+    "pathway_local_gap_special_thick_trace_count": 299,
+    "pathway_local_gap_split_count": 0,
+    "pathway_local_gap_static_intersection_count": 0,
+    "pathway_local_gap_straight_visible_trace_count": 118,
+    "pathway_local_gap_straight_visible_trace_fraction": 0.1112158341187559,
+    "pathway_local_gap_target_call_count": 9841,
+    "pathway_local_gap_target_cell_count": 7812,
+    "pathway_local_gap_target_cell_evaluation_count": 214692,
+    "pathway_local_gap_target_chunk_evaluation_count": 46096,
+    "pathway_local_gap_target_chunk_fallback_count": 4,
+    "pathway_local_gap_trace_count": 2096,
+    "pathway_local_gap_unmarked_clearance_violation_count": 0,
+    "pathway_local_gap_unmarked_overlap_count": 0,
+    "pathway_local_gap_visible_trace_count": 1061,
+    "pathway_local_gap_wave_count": 8,
+    "pathway_local_gap_wave_work_cap": 3,
+    "pathway_local_space_capacity_evaluation_count": 53073,
+    "pathway_local_visible_failure_certificate_hit_count": 949,
+    "pathway_local_visible_failure_certificate_store_count": 1987,
+    "pathway_local_visible_preflight_reject_count": 1987,
+    "pathway_lookahead_evaluation_count": 136449,
+    "pathway_loop_candidate_reject_count": 21809,
+    "pathway_main_active_unmaterialized_launch_trace_count": 0,
+    "pathway_main_active_unmaterialized_launch_trace_ids": [],
+    "pathway_main_connected_trace_count": 262,
+    "pathway_main_floor_hugging_terminal_trace_count": 0,
+    "pathway_main_frame_exit_trace_count": 240,
+    "pathway_main_free_terminal_under_preferred_visible_trace_count": 4,
+    "pathway_main_horizon_under_preferred_visible_trace_count": 4,
+    "pathway_main_launch_survival_count": 900,
+    "pathway_main_local_clearance_violation_count": 0,
+    "pathway_main_outcome_by_trace": {
+      "0": [
+        "connected",
+        null,
+        16.118665
+      ],
+      "1": [
+        "connected",
+        null,
+        13.243109
+      ],
+      "10": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.356311
+      ],
+      "100": [
+        "terminated",
+        "coordinated_persistence_limit",
+        26.350849
+      ],
+      "101": [
+        "connected",
+        null,
+        22.110867
+      ],
+      "102": [
+        "connected",
+        null,
+        20.706363
+      ],
+      "103": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.418829
+      ],
+      "104": [
+        "terminated",
+        "coordinated_persistence_limit",
+        20.271114
+      ],
+      "105": [
+        "escaped",
+        null,
+        36.414476
+      ],
+      "106": [
+        "escaped",
+        null,
+        35.572081
+      ],
+      "107": [
+        "escaped",
+        null,
+        17.828466
+      ],
+      "108": [
+        "connected",
+        null,
+        11.510814
+      ],
+      "109": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.0
+      ],
+      "11": [
+        "terminated",
+        "round_limit",
+        7.583102
+      ],
+      "110": [
+        "connected",
+        null,
+        18.705351
+      ],
+      "111": [
+        "connected",
+        null,
+        15.568692
+      ],
+      "112": [
+        "terminated",
+        "coordinated_persistence_limit",
+        22.0
+      ],
+      "113": [
+        "connected",
+        null,
+        21.161705
+      ],
+      "114": [
+        "connected",
+        null,
+        14.871793
+      ],
+      "115": [
+        "connected",
+        null,
+        17.463336
+      ],
+      "116": [
+        "connected",
+        null,
+        32.692997
+      ],
+      "117": [
+        "terminated",
+        "coordinated_persistence_limit",
+        32.810939
+      ],
+      "118": [
+        "terminated",
+        "coordinated_persistence_limit",
+        26.828595
+      ],
+      "119": [
+        "connected",
+        null,
+        26.699333
+      ],
+      "12": [
+        "terminated",
+        "round_limit",
+        7.672783
+      ],
+      "120": [
+        "terminated",
+        "coordinated_persistence_limit",
+        16.826957
+      ],
+      "121": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.162155
+      ],
+      "122": [
+        "connected",
+        null,
+        17.184799
+      ],
+      "123": [
+        "escaped",
+        null,
+        23.713871
+      ],
+      "124": [
+        "escaped",
+        null,
+        20.477681
+      ],
+      "125": [
+        "escaped",
+        null,
+        20.296694
+      ],
+      "126": [
+        "escaped",
+        null,
+        20.598886
+      ],
+      "127": [
+        "connected",
+        null,
+        22.560132
+      ],
+      "128": [
+        "connected",
+        null,
+        9.252386
+      ],
+      "129": [
+        "connected",
+        null,
+        19.258541
+      ],
+      "13": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.5
+      ],
+      "130": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.635567
+      ],
+      "131": [
+        "terminated",
+        "coordinated_persistence_limit",
+        16.417762
+      ],
+      "132": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.702652
+      ],
+      "133": [
+        "connected",
+        null,
+        17.274547
+      ],
+      "134": [
+        "escaped",
+        null,
+        35.030074
+      ],
+      "135": [
+        "escaped",
+        null,
+        35.456973
+      ],
+      "136": [
+        "escaped",
+        null,
+        22.854743
+      ],
+      "137": [
+        "escaped",
+        null,
+        22.67259
+      ],
+      "138": [
+        "escaped",
+        null,
+        22.69845
+      ],
+      "139": [
+        "escaped",
+        null,
+        23.203446
+      ],
+      "14": [
+        "terminated",
+        "coordinated_persistence_limit",
+        11.106361
+      ],
+      "140": [
+        "connected",
+        null,
+        26.795957
+      ],
+      "141": [
+        "terminated",
+        "coordinated_persistence_limit",
+        26.428361
+      ],
+      "142": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.62217
+      ],
+      "143": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.474282
+      ],
+      "144": [
+        "terminated",
+        "coordinated_persistence_limit",
+        17.515314
+      ],
+      "145": [
+        "terminated",
+        "coordinated_persistence_limit",
+        17.037497
+      ],
+      "146": [
+        "connected",
+        null,
+        13.475121
+      ],
+      "147": [
+        "terminated",
+        "coordinated_persistence_limit",
+        10.666178
+      ],
+      "148": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.822212
+      ],
+      "149": [
+        "terminated",
+        "coordinated_persistence_limit",
+        13.177788
+      ],
+      "15": [
+        "terminated",
+        "coordinated_persistence_limit",
+        13.330988
+      ],
+      "150": [
+        "terminated",
+        "round_limit",
+        16.629837
+      ],
+      "151": [
+        "terminated",
+        "coordinated_persistence_limit",
+        24.451824
+      ],
+      "152": [
+        "terminated",
+        "coordinated_persistence_limit",
+        22.200541
+      ],
+      "153": [
+        "terminated",
+        "coordinated_persistence_limit",
+        20.992407
+      ],
+      "154": [
+        "connected",
+        null,
+        19.891428
+      ],
+      "155": [
+        "connected",
+        null,
+        25.412287
+      ],
+      "156": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.334411
+      ],
+      "157": [
+        "connected",
+        null,
+        16.832625
+      ],
+      "158": [
+        "connected",
+        null,
+        17.903101
+      ],
+      "159": [
+        "connected",
+        null,
+        35.908973
+      ],
+      "16": [
+        "terminated",
+        "hard_stop_exhausted",
+        7.381557
+      ],
+      "160": [
+        "connected",
+        null,
+        24.15272
+      ],
+      "161": [
+        "terminated",
+        "coordinated_persistence_limit",
+        11.611073
+      ],
+      "162": [
+        "terminated",
+        "coordinated_persistence_limit",
+        9.826114
+      ],
+      "163": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.949736
+      ],
+      "164": [
+        "terminated",
+        "coordinated_persistence_limit",
+        22.205085
+      ],
+      "165": [
+        "terminated",
+        "coordinated_persistence_limit",
+        22.420127
+      ],
+      "166": [
+        "escaped",
+        null,
+        14.421383
+      ],
+      "167": [
+        "escaped",
+        null,
+        13.122185
+      ],
+      "168": [
+        "escaped",
+        null,
+        12.177717
+      ],
+      "169": [
+        "connected",
+        null,
+        16.573497
+      ],
+      "17": [
+        "connected",
+        null,
+        14.05446
+      ],
+      "170": [
+        "terminated",
+        "hard_stop_exhausted",
+        16.0
+      ],
+      "171": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.347882
+      ],
+      "172": [
+        "terminated",
+        "coordinated_persistence_limit",
+        17.39855
+      ],
+      "173": [
+        "terminated",
+        "hard_stop_exhausted",
+        18.832948
+      ],
+      "174": [
+        "terminated",
+        "coordinated_persistence_limit",
+        9.304259
+      ],
+      "175": [
+        "terminated",
+        "coordinated_persistence_limit",
+        13.274947
+      ],
+      "176": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.29864
+      ],
+      "177": [
+        "terminated",
+        "coordinated_persistence_limit",
+        13.5
+      ],
+      "178": [
+        "terminated",
+        "coordinated_persistence_limit",
+        10.294692
+      ],
+      "179": [
+        "terminated",
+        "journey_limit",
+        17.848792
+      ],
+      "18": [
+        "connected",
+        null,
+        12.177044
+      ],
+      "180": [
+        "terminated",
+        "round_limit",
+        7.437889
+      ],
+      "181": [
+        "terminated",
+        "journey_limit",
+        17.67314
+      ],
+      "182": [
+        "terminated",
+        "coordinated_persistence_limit",
+        26.657165
+      ],
+      "183": [
+        "terminated",
+        "coordinated_persistence_limit",
+        25.519186
+      ],
+      "184": [
+        "connected",
+        null,
+        16.558242
+      ],
+      "185": [
+        "terminated",
+        "coordinated_persistence_limit",
+        13.063985
+      ],
+      "186": [
+        "terminated",
+        "coordinated_persistence_limit",
+        11.413154
+      ],
+      "187": [
+        "terminated",
+        "marker_clearance_shorten",
+        14.576278
+      ],
+      "188": [
+        "connected",
+        null,
+        16.881982
+      ],
+      "189": [
+        "escaped",
+        null,
+        30.785954
+      ],
+      "19": [
+        "connected",
+        null,
+        21.518451
+      ],
+      "190": [
+        "escaped",
+        null,
+        20.987535
+      ],
+      "191": [
+        "escaped",
+        null,
+        4.116657
+      ],
+      "192": [
+        "escaped",
+        null,
+        4.116657
+      ],
+      "193": [
+        "escaped",
+        null,
+        4.116657
+      ],
+      "194": [
+        "escaped",
+        null,
+        4.116657
+      ],
+      "195": [
+        "escaped",
+        null,
+        4.116657
+      ],
+      "196": [
+        "escaped",
+        null,
+        4.116657
+      ],
+      "197": [
+        "escaped",
+        null,
+        4.116657
+      ],
+      "198": [
+        "escaped",
+        null,
+        4.116657
+      ],
+      "199": [
+        "escaped",
+        null,
+        4.116657
+      ],
+      "2": [
+        "terminated",
+        "coordinated_persistence_limit",
+        13.622535
+      ],
+      "20": [
+        "connected",
+        null,
+        8.734118
+      ],
+      "200": [
+        "terminated",
+        "round_limit",
+        29.494627
+      ],
+      "201": [
+        "terminated",
+        "journey_limit",
+        54.168458
+      ],
+      "202": [
+        "connected",
+        null,
+        31.15109
+      ],
+      "203": [
+        "terminated",
+        "round_limit",
+        34.831542
+      ],
+      "204": [
+        "connected",
+        null,
+        29.77526
+      ],
+      "205": [
+        "terminated",
+        "hard_stop_exhausted",
+        19.164449
+      ],
+      "206": [
+        "terminated",
+        "hard_stop_exhausted",
+        18.084602
+      ],
+      "207": [
+        "connected",
+        null,
+        20.0124
+      ],
+      "208": [
+        "terminated",
+        "hard_stop_exhausted",
+        11.818675
+      ],
+      "209": [
+        "connected",
+        null,
+        13.394248
+      ],
+      "21": [
+        "terminated",
+        "coordinated_persistence_limit",
+        25.314703
+      ],
+      "210": [
+        "connected",
+        null,
+        25.277254
+      ],
+      "211": [
+        "escaped",
+        null,
+        14.724482
+      ],
+      "212": [
+        "escaped",
+        null,
+        14.177673
+      ],
+      "213": [
+        "escaped",
+        null,
+        13.532034
+      ],
+      "214": [
+        "escaped",
+        null,
+        12.30061
+      ],
+      "215": [
+        "escaped",
+        null,
+        11.575308
+      ],
+      "216": [
+        "escaped",
+        null,
+        3.288545
+      ],
+      "217": [
+        "escaped",
+        null,
+        3.288545
+      ],
+      "218": [
+        "escaped",
+        null,
+        3.288545
+      ],
+      "219": [
+        "escaped",
+        null,
+        3.288545
+      ],
+      "22": [
+        "terminated",
+        "coordinated_persistence_limit",
+        20.626678
+      ],
+      "220": [
+        "escaped",
+        null,
+        3.288545
+      ],
+      "221": [
+        "escaped",
+        null,
+        3.288545
+      ],
+      "222": [
+        "escaped",
+        null,
+        3.288545
+      ],
+      "223": [
+        "escaped",
+        null,
+        3.288545
+      ],
+      "224": [
+        "escaped",
+        null,
+        3.288545
+      ],
+      "225": [
+        "escaped",
+        null,
+        3.288545
+      ],
+      "226": [
+        "escaped",
+        null,
+        3.288545
+      ],
+      "227": [
+        "terminated",
+        "coordinated_persistence_limit",
+        30.783296
+      ],
+      "228": [
+        "connected",
+        null,
+        25.388416
+      ],
+      "229": [
+        "connected",
+        null,
+        16.472413
+      ],
+      "23": [
+        "connected",
+        null,
+        21.349123
+      ],
+      "230": [
+        "connected",
+        null,
+        14.665788
+      ],
+      "231": [
+        "terminated",
+        "coordinated_persistence_limit",
+        11.0
+      ],
+      "232": [
+        "connected",
+        "terminal_separation",
+        18.253124
+      ],
+      "233": [
+        "terminated",
+        "terminal_separation",
+        16.35
+      ],
+      "234": [
+        "terminated",
+        "terminal_separation",
+        16.051998
+      ],
+      "235": [
+        "connected",
+        null,
+        12.067587
+      ],
+      "236": [
+        "terminated",
+        "coordinated_persistence_limit",
+        6.361558
+      ],
+      "237": [
+        "terminated",
+        "coordinated_persistence_limit",
+        6.644169
+      ],
+      "238": [
+        "terminated",
+        "coordinated_persistence_limit",
+        13.0
+      ],
+      "239": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.176227
+      ],
+      "24": [
+        "connected",
+        null,
+        21.853714
+      ],
+      "240": [
+        "connected",
+        null,
+        20.053214
+      ],
+      "241": [
+        "connected",
+        null,
+        18.744344
+      ],
+      "242": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.650502
+      ],
+      "243": [
+        "escaped",
+        null,
+        18.80089
+      ],
+      "244": [
+        "escaped",
+        null,
+        14.339704
+      ],
+      "245": [
+        "escaped",
+        null,
+        13.730754
+      ],
+      "246": [
+        "escaped",
+        null,
+        12.986307
+      ],
+      "247": [
+        "escaped",
+        null,
+        12.24911
+      ],
+      "248": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.0
+      ],
+      "249": [
+        "terminated",
+        "coordinated_persistence_limit",
+        10.685335
+      ],
+      "25": [
+        "connected",
+        null,
+        35.264582
+      ],
+      "250": [
+        "terminated",
+        "coordinated_persistence_limit",
+        10.514452
+      ],
+      "251": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.36063
+      ],
+      "252": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.940682
+      ],
+      "253": [
+        "connected",
+        null,
+        17.214637
+      ],
+      "254": [
+        "connected",
+        null,
+        17.147018
+      ],
+      "255": [
+        "connected",
+        null,
+        33.236875
+      ],
+      "256": [
+        "escaped",
+        null,
+        16.343117
+      ],
+      "257": [
+        "escaped",
+        null,
+        14.177825
+      ],
+      "258": [
+        "escaped",
+        null,
+        13.381876
+      ],
+      "259": [
+        "escaped",
+        null,
+        12.434158
+      ],
+      "26": [
+        "connected",
+        null,
+        41.683316
+      ],
+      "260": [
+        "connected",
+        null,
+        18.879372
+      ],
+      "261": [
+        "connected",
+        null,
+        16.606912
+      ],
+      "262": [
+        "connected",
+        null,
+        12.722454
+      ],
+      "263": [
+        "connected",
+        null,
+        10.46742
+      ],
+      "264": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.670603
+      ],
+      "265": [
+        "terminated",
+        "coordinated_persistence_limit",
+        8.672828
+      ],
+      "266": [
+        "terminated",
+        "coordinated_persistence_limit",
+        8.611924
+      ],
+      "267": [
+        "terminated",
+        "coordinated_persistence_limit",
+        8.486478
+      ],
+      "268": [
+        "escaped",
+        null,
+        3.145943
+      ],
+      "269": [
+        "escaped",
+        null,
+        3.145943
+      ],
+      "27": [
+        "connected",
+        null,
+        32.756569
+      ],
+      "270": [
+        "escaped",
+        null,
+        3.145943
+      ],
+      "271": [
+        "escaped",
+        null,
+        3.145943
+      ],
+      "272": [
+        "escaped",
+        null,
+        3.145943
+      ],
+      "273": [
+        "escaped",
+        null,
+        3.145943
+      ],
+      "274": [
+        "escaped",
+        null,
+        3.145943
+      ],
+      "275": [
+        "escaped",
+        null,
+        3.145943
+      ],
+      "276": [
+        "escaped",
+        null,
+        14.438532
+      ],
+      "277": [
+        "escaped",
+        null,
+        14.472116
+      ],
+      "278": [
+        "escaped",
+        null,
+        14.42419
+      ],
+      "279": [
+        "escaped",
+        null,
+        14.505692
+      ],
+      "28": [
+        "connected",
+        null,
+        27.988628
+      ],
+      "280": [
+        "escaped",
+        null,
+        13.616683
+      ],
+      "281": [
+        "escaped",
+        null,
+        13.58186
+      ],
+      "282": [
+        "escaped",
+        null,
+        13.671178
+      ],
+      "283": [
+        "escaped",
+        null,
+        22.731609
+      ],
+      "284": [
+        "connected",
+        null,
+        45.430838
+      ],
+      "285": [
+        "terminated",
+        "round_limit",
+        38.064221
+      ],
+      "286": [
+        "terminated",
+        "round_limit",
+        24.772673
+      ],
+      "287": [
+        "connected",
+        null,
+        29.238084
+      ],
+      "288": [
+        "connected",
+        null,
+        31.571599
+      ],
+      "289": [
+        "connected",
+        null,
+        31.704327
+      ],
+      "29": [
+        "escaped",
+        null,
+        24.895015
+      ],
+      "290": [
+        "connected",
+        null,
+        23.878228
+      ],
+      "291": [
+        "connected",
+        null,
+        15.679248
+      ],
+      "292": [
+        "connected",
+        null,
+        23.313132
+      ],
+      "293": [
+        "connected",
+        null,
+        15.533046
+      ],
+      "294": [
+        "terminated",
+        "coordinated_persistence_limit",
+        18.207765
+      ],
+      "295": [
+        "terminated",
+        "round_limit",
+        25.682928
+      ],
+      "296": [
+        "terminated",
+        "coordinated_persistence_limit",
+        23.369474
+      ],
+      "297": [
+        "escaped",
+        null,
+        20.276845
+      ],
+      "298": [
+        "escaped",
+        null,
+        21.198324
+      ],
+      "299": [
+        "terminated",
+        "journey_limit",
+        23.366668
+      ],
+      "3": [
+        "terminated",
+        "coordinated_persistence_limit",
+        10.890083
+      ],
+      "30": [
+        "escaped",
+        null,
+        25.004879
+      ],
+      "300": [
+        "escaped",
+        null,
+        26.210547
+      ],
+      "301": [
+        "escaped",
+        null,
+        33.091768
+      ],
+      "302": [
+        "connected",
+        null,
+        29.264944
+      ],
+      "303": [
+        "terminated",
+        "coordinated_persistence_limit",
+        18.019587
+      ],
+      "304": [
+        "connected",
+        null,
+        25.89186
+      ],
+      "305": [
+        "connected",
+        null,
+        37.179606
+      ],
+      "306": [
+        "terminated",
+        "coordinated_persistence_limit",
+        20.331599
+      ],
+      "307": [
+        "terminated",
+        "round_limit",
+        27.635367
+      ],
+      "308": [
+        "terminated",
+        "coordinated_persistence_limit",
+        21.863819
+      ],
+      "309": [
+        "connected",
+        null,
+        24.116907
+      ],
+      "31": [
+        "escaped",
+        null,
+        24.93348
+      ],
+      "310": [
+        "connected",
+        null,
+        18.454226
+      ],
+      "311": [
+        "terminated",
+        "coordinated_persistence_limit",
+        21.812444
+      ],
+      "312": [
+        "connected",
+        null,
+        20.276009
+      ],
+      "313": [
+        "terminated",
+        "hard_stop_exhausted",
+        18.829977
+      ],
+      "314": [
+        "escaped",
+        null,
+        8.127626
+      ],
+      "315": [
+        "escaped",
+        null,
+        8.05553
+      ],
+      "316": [
+        "escaped",
+        null,
+        7.983433
+      ],
+      "317": [
+        "escaped",
+        null,
+        7.735049
+      ],
+      "318": [
+        "escaped",
+        null,
+        7.232515
+      ],
+      "319": [
+        "escaped",
+        null,
+        7.427989
+      ],
+      "32": [
+        "escaped",
+        null,
+        24.443575
+      ],
+      "320": [
+        "escaped",
+        null,
+        7.278875
+      ],
+      "321": [
+        "escaped",
+        null,
+        7.56922
+      ],
+      "322": [
+        "escaped",
+        null,
+        7.472119
+      ],
+      "323": [
+        "escaped",
+        null,
+        7.605268
+      ],
+      "324": [
+        "terminated",
+        "coordinated_persistence_limit",
+        24.817729
+      ],
+      "325": [
+        "connected",
+        null,
+        20.366955
+      ],
+      "326": [
+        "terminated",
+        "hard_stop_exhausted",
+        15.465671
+      ],
+      "327": [
+        "connected",
+        null,
+        15.968372
+      ],
+      "328": [
+        "connected",
+        null,
+        11.978136
+      ],
+      "329": [
+        "terminated",
+        "coordinated_persistence_limit",
+        11.429514
+      ],
+      "33": [
+        "escaped",
+        null,
+        24.590666
+      ],
+      "330": [
+        "terminated",
+        "coordinated_persistence_limit",
+        11.445361
+      ],
+      "331": [
+        "terminated",
+        "coordinated_persistence_limit",
+        11.562334
+      ],
+      "332": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.615857
+      ],
+      "333": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.563574
+      ],
+      "334": [
+        "escaped",
+        null,
+        17.432363
+      ],
+      "335": [
+        "escaped",
+        null,
+        17.761338
+      ],
+      "336": [
+        "escaped",
+        null,
+        20.182352
+      ],
+      "337": [
+        "escaped",
+        null,
+        23.901924
+      ],
+      "338": [
+        "terminated",
+        "hard_stop_exhausted",
+        15.832742
+      ],
+      "339": [
+        "connected",
+        null,
+        17.264495
+      ],
+      "34": [
+        "escaped",
+        null,
+        25.398526
+      ],
+      "340": [
+        "terminated",
+        "coordinated_persistence_limit",
+        16.479205
+      ],
+      "341": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.833433
+      ],
+      "342": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.013907
+      ],
+      "343": [
+        "terminated",
+        "round_limit",
+        21.978683
+      ],
+      "344": [
+        "terminated",
+        "round_limit",
+        24.646381
+      ],
+      "345": [
+        "terminated",
+        "coordinated_persistence_limit",
+        17.835441
+      ],
+      "346": [
+        "escaped",
+        null,
+        16.98862
+      ],
+      "347": [
+        "escaped",
+        null,
+        17.667852
+      ],
+      "348": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.805424
+      ],
+      "349": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.013365
+      ],
+      "35": [
+        "escaped",
+        null,
+        43.661734
+      ],
+      "350": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.365359
+      ],
+      "351": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.827361
+      ],
+      "352": [
+        "connected",
+        null,
+        18.638022
+      ],
+      "353": [
+        "terminated",
+        "hard_stop_exhausted",
+        13.156493
+      ],
+      "354": [
+        "connected",
+        null,
+        12.764213
+      ],
+      "355": [
+        "terminated",
+        "coordinated_persistence_limit",
+        17.18867
+      ],
+      "356": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.345279
+      ],
+      "357": [
+        "terminated",
+        "coordinated_persistence_limit",
+        20.142336
+      ],
+      "358": [
+        "terminated",
+        "coordinated_persistence_limit",
+        20.626463
+      ],
+      "359": [
+        "connected",
+        null,
+        24.3035
+      ],
+      "36": [
+        "escaped",
+        null,
+        43.479162
+      ],
+      "360": [
+        "connected",
+        null,
+        25.582915
+      ],
+      "361": [
+        "connected",
+        null,
+        22.76795
+      ],
+      "362": [
+        "escaped",
+        null,
+        29.138613
+      ],
+      "363": [
+        "escaped",
+        null,
+        29.013816
+      ],
+      "364": [
+        "escaped",
+        null,
+        29.302165
+      ],
+      "365": [
+        "escaped",
+        null,
+        30.276871
+      ],
+      "366": [
+        "terminated",
+        "coordinated_persistence_limit",
+        16.838798
+      ],
+      "367": [
+        "escaped",
+        null,
+        30.246964
+      ],
+      "368": [
+        "terminated",
+        "coordinated_persistence_limit",
+        40.804114
+      ],
+      "369": [
+        "connected",
+        null,
+        22.7855
+      ],
+      "37": [
+        "escaped",
+        null,
+        44.697433
+      ],
+      "370": [
+        "connected",
+        null,
+        10.586611
+      ],
+      "371": [
+        "connected",
+        null,
+        10.468746
+      ],
+      "372": [
+        "connected",
+        null,
+        13.342112
+      ],
+      "373": [
+        "connected",
+        null,
+        13.35106
+      ],
+      "374": [
+        "connected",
+        null,
+        10.468958
+      ],
+      "375": [
+        "terminated",
+        "coordinated_persistence_limit",
+        18.032591
+      ],
+      "376": [
+        "terminated",
+        "coordinated_persistence_limit",
+        22.461757
+      ],
+      "377": [
+        "connected",
+        null,
+        11.365644
+      ],
+      "378": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.502696
+      ],
+      "379": [
+        "terminated",
+        "coordinated_persistence_limit",
+        10.877068
+      ],
+      "38": [
+        "terminated",
+        "coordinated_persistence_limit",
+        27.351897
+      ],
+      "380": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.216315
+      ],
+      "381": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.452846
+      ],
+      "382": [
+        "terminated",
+        "coordinated_persistence_limit",
+        18.860327
+      ],
+      "383": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.775124
+      ],
+      "384": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.496619
+      ],
+      "385": [
+        "terminated",
+        "round_limit",
+        7.180315
+      ],
+      "386": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.296579
+      ],
+      "387": [
+        "terminated",
+        "round_limit",
+        11.830534
+      ],
+      "388": [
+        "terminated",
+        "coordinated_persistence_limit",
+        9.550192
+      ],
+      "389": [
+        "connected",
+        null,
+        9.816543
+      ],
+      "39": [
+        "terminated",
+        "coordinated_persistence_limit",
+        27.490383
+      ],
+      "390": [
+        "connected",
+        null,
+        11.879595
+      ],
+      "391": [
+        "terminated",
+        "coordinated_persistence_limit",
+        8.0
+      ],
+      "392": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.541916
+      ],
+      "393": [
+        "terminated",
+        "coordinated_persistence_limit",
+        8.0
+      ],
+      "394": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.606942
+      ],
+      "395": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.264705
+      ],
+      "396": [
+        "connected",
+        null,
+        15.613204
+      ],
+      "397": [
+        "connected",
+        null,
+        12.619452
+      ],
+      "398": [
+        "connected",
+        null,
+        12.360937
+      ],
+      "399": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.0
+      ],
+      "4": [
+        "connected",
+        null,
+        11.879595
+      ],
+      "40": [
+        "connected",
+        null,
+        32.452025
+      ],
+      "400": [
+        "connected",
+        null,
+        13.320362
+      ],
+      "401": [
+        "terminated",
+        "coordinated_persistence_limit",
+        24.45242
+      ],
+      "402": [
+        "terminated",
+        "coordinated_persistence_limit",
+        30.832023
+      ],
+      "403": [
+        "connected",
+        null,
+        22.078683
+      ],
+      "404": [
+        "terminated",
+        "coordinated_persistence_limit",
+        21.335997
+      ],
+      "405": [
+        "terminated",
+        "coordinated_persistence_limit",
+        25.47306
+      ],
+      "406": [
+        "terminated",
+        "coordinated_persistence_limit",
+        30.671827
+      ],
+      "407": [
+        "terminated",
+        "coordinated_persistence_limit",
+        20.592193
+      ],
+      "408": [
+        "connected",
+        null,
+        23.59512
+      ],
+      "409": [
+        "connected",
+        null,
+        23.062558
+      ],
+      "41": [
+        "terminated",
+        "coordinated_persistence_limit",
+        23.0
+      ],
+      "410": [
+        "connected",
+        null,
+        20.971569
+      ],
+      "411": [
+        "terminated",
+        "coordinated_persistence_limit",
+        18.029313
+      ],
+      "412": [
+        "connected",
+        null,
+        19.02013
+      ],
+      "413": [
+        "connected",
+        null,
+        23.867211
+      ],
+      "414": [
+        "connected",
+        null,
+        23.472885
+      ],
+      "415": [
+        "connected",
+        null,
+        30.88915
+      ],
+      "416": [
+        "escaped",
+        null,
+        7.102478
+      ],
+      "417": [
+        "escaped",
+        null,
+        7.282563
+      ],
+      "418": [
+        "escaped",
+        null,
+        7.282563
+      ],
+      "419": [
+        "escaped",
+        null,
+        7.282563
+      ],
+      "42": [
+        "terminated",
+        "coordinated_persistence_limit",
+        22.815804
+      ],
+      "420": [
+        "escaped",
+        null,
+        7.282563
+      ],
+      "421": [
+        "escaped",
+        null,
+        7.12247
+      ],
+      "422": [
+        "escaped",
+        null,
+        7.282563
+      ],
+      "423": [
+        "escaped",
+        null,
+        7.282563
+      ],
+      "424": [
+        "escaped",
+        null,
+        7.510523
+      ],
+      "425": [
+        "escaped",
+        null,
+        7.597709
+      ],
+      "426": [
+        "escaped",
+        null,
+        7.813818
+      ],
+      "427": [
+        "escaped",
+        null,
+        7.882167
+      ],
+      "428": [
+        "escaped",
+        null,
+        7.950515
+      ],
+      "429": [
+        "connected",
+        null,
+        32.108563
+      ],
+      "43": [
+        "terminated",
+        "round_limit",
+        24.657666
+      ],
+      "430": [
+        "connected",
+        null,
+        32.269855
+      ],
+      "431": [
+        "connected",
+        null,
+        31.878748
+      ],
+      "432": [
+        "connected",
+        null,
+        22.05405
+      ],
+      "433": [
+        "terminated",
+        "hard_stop_exhausted",
+        21.702504
+      ],
+      "434": [
+        "escaped",
+        null,
+        18.328177
+      ],
+      "435": [
+        "escaped",
+        null,
+        17.890709
+      ],
+      "436": [
+        "escaped",
+        null,
+        17.078259
+      ],
+      "437": [
+        "connected",
+        null,
+        10.558257
+      ],
+      "438": [
+        "connected",
+        null,
+        13.637133
+      ],
+      "439": [
+        "terminated",
+        "round_limit",
+        10.263928
+      ],
+      "44": [
+        "terminated",
+        "round_limit",
+        7.885731
+      ],
+      "440": [
+        "terminated",
+        "round_limit",
+        9.612803
+      ],
+      "441": [
+        "terminated",
+        "round_limit",
+        9.374645
+      ],
+      "442": [
+        "terminated",
+        "coordinated_persistence_limit",
+        8.797384
+      ],
+      "443": [
+        "connected",
+        null,
+        9.403265
+      ],
+      "444": [
+        "connected",
+        null,
+        24.53343
+      ],
+      "445": [
+        "connected",
+        null,
+        16.347053
+      ],
+      "446": [
+        "connected",
+        null,
+        16.732369
+      ],
+      "447": [
+        "connected",
+        null,
+        18.454072
+      ],
+      "448": [
+        "terminated",
+        "coordinated_persistence_limit",
+        18.170613
+      ],
+      "449": [
+        "terminated",
+        "hard_stop_exhausted",
+        6.789022
+      ],
+      "45": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.774898
+      ],
+      "450": [
+        "connected",
+        null,
+        19.296422
+      ],
+      "451": [
+        "connected",
+        null,
+        17.872551
+      ],
+      "452": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.151745
+      ],
+      "453": [
+        "terminated",
+        "coordinated_persistence_limit",
+        22.323544
+      ],
+      "454": [
+        "terminated",
+        "coordinated_persistence_limit",
+        17.73018
+      ],
+      "455": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.867598
+      ],
+      "456": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.934133
+      ],
+      "457": [
+        "terminated",
+        "coordinated_persistence_limit",
+        24.358448
+      ],
+      "458": [
+        "connected",
+        null,
+        18.561881
+      ],
+      "459": [
+        "terminated",
+        "coordinated_persistence_limit",
+        17.469013
+      ],
+      "46": [
+        "connected",
+        null,
+        11.693402
+      ],
+      "460": [
+        "terminated",
+        "coordinated_persistence_limit",
+        16.730782
+      ],
+      "461": [
+        "connected",
+        null,
+        12.696872
+      ],
+      "462": [
+        "connected",
+        null,
+        12.394138
+      ],
+      "463": [
+        "connected",
+        null,
+        10.164446
+      ],
+      "464": [
+        "connected",
+        null,
+        12.776925
+      ],
+      "465": [
+        "connected",
+        null,
+        16.15021
+      ],
+      "466": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.616773
+      ],
+      "467": [
+        "terminated",
+        "coordinated_persistence_limit",
+        16.324807
+      ],
+      "468": [
+        "connected",
+        null,
+        15.741874
+      ],
+      "469": [
+        "connected",
+        null,
+        17.470814
+      ],
+      "47": [
+        "connected",
+        null,
+        8.512313
+      ],
+      "470": [
+        "connected",
+        null,
+        18.574213
+      ],
+      "471": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.0
+      ],
+      "472": [
+        "terminated",
+        "coordinated_persistence_limit",
+        9.816155
+      ],
+      "473": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.631388
+      ],
+      "474": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.453943
+      ],
+      "475": [
+        "terminated",
+        "coordinated_persistence_limit",
+        18.0
+      ],
+      "476": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.369466
+      ],
+      "477": [
+        "terminated",
+        "coordinated_persistence_limit",
+        24.842709
+      ],
+      "478": [
+        "terminated",
+        "coordinated_persistence_limit",
+        16.0
+      ],
+      "479": [
+        "terminated",
+        "coordinated_persistence_limit",
+        17.051518
+      ],
+      "48": [
+        "connected",
+        null,
+        9.076972
+      ],
+      "480": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.136955
+      ],
+      "481": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.771467
+      ],
+      "482": [
+        "connected",
+        null,
+        10.893804
+      ],
+      "483": [
+        "terminated",
+        "coordinated_persistence_limit",
+        11.847946
+      ],
+      "484": [
+        "connected",
+        null,
+        11.684769
+      ],
+      "485": [
+        "terminated",
+        "coordinated_persistence_limit",
+        8.05426
+      ],
+      "486": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.298451
+      ],
+      "487": [
+        "connected",
+        null,
+        17.513308
+      ],
+      "488": [
+        "terminated",
+        "coordinated_persistence_limit",
+        20.0
+      ],
+      "489": [
+        "connected",
+        null,
+        22.873438
+      ],
+      "49": [
+        "escaped",
+        null,
+        5.491261
+      ],
+      "490": [
+        "connected",
+        null,
+        12.949211
+      ],
+      "491": [
+        "connected",
+        null,
+        9.562526
+      ],
+      "492": [
+        "terminated",
+        "coordinated_persistence_limit",
+        9.66682
+      ],
+      "493": [
+        "terminated",
+        "coordinated_persistence_limit",
+        10.120437
+      ],
+      "494": [
+        "terminated",
+        "coordinated_persistence_limit",
+        11.2315
+      ],
+      "495": [
+        "terminated",
+        "coordinated_persistence_limit",
+        11.726736
+      ],
+      "496": [
+        "terminated",
+        "hard_stop_exhausted",
+        19.494389
+      ],
+      "497": [
+        "terminated",
+        "round_limit",
+        33.192293
+      ],
+      "498": [
+        "connected",
+        null,
+        21.711083
+      ],
+      "499": [
+        "connected",
+        null,
+        21.25266
+      ],
+      "5": [
+        "terminated",
+        "journey_limit",
+        32.0
+      ],
+      "50": [
+        "escaped",
+        null,
+        5.491261
+      ],
+      "500": [
+        "connected",
+        null,
+        19.162782
+      ],
+      "501": [
+        "terminated",
+        "hard_stop_exhausted",
+        8.633511
+      ],
+      "502": [
+        "connected",
+        null,
+        9.3641
+      ],
+      "503": [
+        "connected",
+        null,
+        12.984958
+      ],
+      "504": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.197833
+      ],
+      "505": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.807113
+      ],
+      "506": [
+        "terminated",
+        "coordinated_persistence_limit",
+        13.814285
+      ],
+      "507": [
+        "connected",
+        null,
+        15.355816
+      ],
+      "508": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.605381
+      ],
+      "509": [
+        "terminated",
+        "coordinated_persistence_limit",
+        16.677533
+      ],
+      "51": [
+        "escaped",
+        null,
+        5.491261
+      ],
+      "510": [
+        "connected",
+        null,
+        15.740922
+      ],
+      "511": [
+        "connected",
+        null,
+        13.989649
+      ],
+      "512": [
+        "terminated",
+        "coordinated_persistence_limit",
+        13.987024
+      ],
+      "513": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.825369
+      ],
+      "514": [
+        "terminated",
+        "coordinated_persistence_limit",
+        10.860417
+      ],
+      "515": [
+        "terminated",
+        "coordinated_persistence_limit",
+        18.0
+      ],
+      "516": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.846297
+      ],
+      "517": [
+        "terminated",
+        "coordinated_persistence_limit",
+        21.298988
+      ],
+      "518": [
+        "terminated",
+        "coordinated_persistence_limit",
+        13.266859
+      ],
+      "519": [
+        "terminated",
+        "coordinated_persistence_limit",
+        17.625059
+      ],
+      "52": [
+        "escaped",
+        null,
+        5.491261
+      ],
+      "520": [
+        "terminated",
+        "coordinated_persistence_limit",
+        13.786856
+      ],
+      "521": [
+        "terminated",
+        "coordinated_persistence_limit",
+        20.657775
+      ],
+      "522": [
+        "terminated",
+        "coordinated_persistence_limit",
+        13.0
+      ],
+      "523": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.285717
+      ],
+      "524": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.151365
+      ],
+      "525": [
+        "connected",
+        null,
+        23.652925
+      ],
+      "526": [
+        "connected",
+        null,
+        24.940876
+      ],
+      "527": [
+        "terminated",
+        "journey_limit",
+        20.670773
+      ],
+      "528": [
+        "terminated",
+        "hard_stop_exhausted",
+        19.790578
+      ],
+      "529": [
+        "connected",
+        null,
+        20.478954
+      ],
+      "53": [
+        "escaped",
+        null,
+        5.491261
+      ],
+      "530": [
+        "connected",
+        null,
+        20.510367
+      ],
+      "531": [
+        "terminated",
+        "round_limit",
+        29.659516
+      ],
+      "532": [
+        "terminated",
+        "round_limit",
+        21.763732
+      ],
+      "533": [
+        "terminated",
+        "round_limit",
+        13.0
+      ],
+      "534": [
+        "connected",
+        null,
+        17.873956
+      ],
+      "535": [
+        "connected",
+        null,
+        15.861488
+      ],
+      "536": [
+        "terminated",
+        "coordinated_persistence_limit",
+        10.656034
+      ],
+      "537": [
+        "terminated",
+        "coordinated_persistence_limit",
+        10.692375
+      ],
+      "538": [
+        "terminated",
+        "round_limit",
+        10.349936
+      ],
+      "539": [
+        "terminated",
+        "round_limit",
+        10.621934
+      ],
+      "54": [
+        "escaped",
+        null,
+        5.491261
+      ],
+      "540": [
+        "terminated",
+        "round_limit",
+        10.654121
+      ],
+      "541": [
+        "terminated",
+        "coordinated_persistence_limit",
+        25.847037
+      ],
+      "542": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.5
+      ],
+      "543": [
+        "connected",
+        null,
+        22.168149
+      ],
+      "544": [
+        "terminated",
+        "round_limit",
+        18.608059
+      ],
+      "545": [
+        "connected",
+        null,
+        21.937353
+      ],
+      "546": [
+        "terminated",
+        "coordinated_persistence_limit",
+        29.615897
+      ],
+      "547": [
+        "terminated",
+        "coordinated_persistence_limit",
+        32.828696
+      ],
+      "548": [
+        "terminated",
+        "coordinated_persistence_limit",
+        32.342607
+      ],
+      "549": [
+        "terminated",
+        "hard_stop_exhausted",
+        33.31587
+      ],
+      "55": [
+        "escaped",
+        null,
+        5.491261
+      ],
+      "550": [
+        "connected",
+        null,
+        14.997137
+      ],
+      "551": [
+        "terminated",
+        "coordinated_persistence_limit",
+        10.921578
+      ],
+      "552": [
+        "terminated",
+        "coordinated_persistence_limit",
+        11.850801
+      ],
+      "553": [
+        "connected",
+        null,
+        18.530474
+      ],
+      "554": [
+        "terminated",
+        "coordinated_persistence_limit",
+        18.0
+      ],
+      "555": [
+        "connected",
+        null,
+        20.934762
+      ],
+      "556": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.34374
+      ],
+      "557": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.839379
+      ],
+      "558": [
+        "connected",
+        null,
+        33.501771
+      ],
+      "559": [
+        "terminated",
+        "coordinated_persistence_limit",
+        16.828696
+      ],
+      "56": [
+        "escaped",
+        null,
+        5.491261
+      ],
+      "560": [
+        "connected",
+        null,
+        16.591858
+      ],
+      "561": [
+        "terminated",
+        "coordinated_persistence_limit",
+        13.439705
+      ],
+      "562": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.482933
+      ],
+      "563": [
+        "connected",
+        null,
+        18.408754
+      ],
+      "564": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.808573
+      ],
+      "565": [
+        "connected",
+        null,
+        17.382835
+      ],
+      "566": [
+        "terminated",
+        "coordinated_persistence_limit",
+        16.227354
+      ],
+      "567": [
+        "connected",
+        null,
+        18.592993
+      ],
+      "568": [
+        "connected",
+        null,
+        21.896056
+      ],
+      "569": [
+        "connected",
+        null,
+        25.276017
+      ],
+      "57": [
+        "escaped",
+        null,
+        5.491261
+      ],
+      "570": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.0
+      ],
+      "571": [
+        "connected",
+        null,
+        19.494207
+      ],
+      "572": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.835913
+      ],
+      "573": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.146201
+      ],
+      "574": [
+        "connected",
+        null,
+        16.80513
+      ],
+      "575": [
+        "connected",
+        null,
+        36.651144
+      ],
+      "576": [
+        "connected",
+        null,
+        26.253458
+      ],
+      "577": [
+        "connected",
+        null,
+        23.732037
+      ],
+      "578": [
+        "connected",
+        null,
+        23.030513
+      ],
+      "579": [
+        "escaped",
+        null,
+        28.776529
+      ],
+      "58": [
+        "escaped",
+        null,
+        5.491261
+      ],
+      "580": [
+        "connected",
+        null,
+        19.26949
+      ],
+      "581": [
+        "connected",
+        null,
+        16.32814
+      ],
+      "582": [
+        "connected",
+        null,
+        12.424031
+      ],
+      "583": [
+        "terminated",
+        "coordinated_persistence_limit",
+        9.728037
+      ],
+      "584": [
+        "terminated",
+        "coordinated_persistence_limit",
+        9.848043
+      ],
+      "585": [
+        "terminated",
+        "coordinated_persistence_limit",
+        10.358707
+      ],
+      "586": [
+        "terminated",
+        "coordinated_persistence_limit",
+        10.666452
+      ],
+      "587": [
+        "connected",
+        null,
+        18.933444
+      ],
+      "588": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.980807
+      ],
+      "589": [
+        "connected",
+        null,
+        17.718665
+      ],
+      "59": [
+        "escaped",
+        null,
+        5.491261
+      ],
+      "590": [
+        "terminated",
+        "coordinated_persistence_limit",
+        20.636674
+      ],
+      "591": [
+        "connected",
+        null,
+        33.063704
+      ],
+      "592": [
+        "connected",
+        null,
+        18.781565
+      ],
+      "593": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.175419
+      ],
+      "594": [
+        "connected",
+        null,
+        22.833781
+      ],
+      "595": [
+        "connected",
+        null,
+        22.926042
+      ],
+      "596": [
+        "connected",
+        null,
+        24.176456
+      ],
+      "597": [
+        "connected",
+        null,
+        30.612867
+      ],
+      "598": [
+        "terminated",
+        "coordinated_persistence_limit",
+        18.737204
+      ],
+      "599": [
+        "connected",
+        null,
+        21.466296
+      ],
+      "6": [
+        "terminated",
+        "round_limit",
+        19.190365
+      ],
+      "60": [
+        "escaped",
+        null,
+        5.491261
+      ],
+      "600": [
+        "connected",
+        null,
+        21.835101
+      ],
+      "601": [
+        "escaped",
+        null,
+        9.289462
+      ],
+      "602": [
+        "escaped",
+        null,
+        9.360941
+      ],
+      "603": [
+        "escaped",
+        null,
+        9.626066
+      ],
+      "604": [
+        "escaped",
+        null,
+        9.528663
+      ],
+      "605": [
+        "escaped",
+        null,
+        10.561769
+      ],
+      "606": [
+        "escaped",
+        null,
+        10.792301
+      ],
+      "607": [
+        "escaped",
+        null,
+        10.667652
+      ],
+      "608": [
+        "escaped",
+        null,
+        10.279293
+      ],
+      "609": [
+        "connected",
+        null,
+        16.4608
+      ],
+      "61": [
+        "terminated",
+        "coordinated_persistence_limit",
+        10.437169
+      ],
+      "610": [
+        "connected",
+        null,
+        28.750713
+      ],
+      "611": [
+        "terminated",
+        "round_limit",
+        7.815158
+      ],
+      "612": [
+        "connected",
+        null,
+        14.254345
+      ],
+      "613": [
+        "connected",
+        null,
+        10.892292
+      ],
+      "614": [
+        "terminated",
+        "coordinated_persistence_limit",
+        21.815555
+      ],
+      "615": [
+        "terminated",
+        "coordinated_persistence_limit",
+        17.819131
+      ],
+      "616": [
+        "escaped",
+        null,
+        9.169014
+      ],
+      "617": [
+        "escaped",
+        null,
+        9.07769
+      ],
+      "618": [
+        "escaped",
+        null,
+        9.179072
+      ],
+      "619": [
+        "escaped",
+        null,
+        9.102004
+      ],
+      "62": [
+        "connected",
+        null,
+        11.975437
+      ],
+      "620": [
+        "escaped",
+        null,
+        8.997426
+      ],
+      "621": [
+        "escaped",
+        null,
+        9.076761
+      ],
+      "622": [
+        "escaped",
+        null,
+        9.169983
+      ],
+      "623": [
+        "escaped",
+        null,
+        9.097376
+      ],
+      "624": [
+        "escaped",
+        null,
+        5.400775
+      ],
+      "625": [
+        "escaped",
+        null,
+        5.400775
+      ],
+      "626": [
+        "escaped",
+        null,
+        5.400775
+      ],
+      "627": [
+        "escaped",
+        null,
+        5.400775
+      ],
+      "628": [
+        "escaped",
+        null,
+        5.400775
+      ],
+      "629": [
+        "escaped",
+        null,
+        5.400775
+      ],
+      "63": [
+        "connected",
+        null,
+        14.582297
+      ],
+      "630": [
+        "escaped",
+        null,
+        5.400775
+      ],
+      "631": [
+        "escaped",
+        null,
+        5.400775
+      ],
+      "632": [
+        "escaped",
+        null,
+        5.400775
+      ],
+      "633": [
+        "escaped",
+        null,
+        5.400775
+      ],
+      "634": [
+        "escaped",
+        null,
+        5.400775
+      ],
+      "635": [
+        "connected",
+        null,
+        16.414152
+      ],
+      "636": [
+        "connected",
+        null,
+        19.841001
+      ],
+      "637": [
+        "terminated",
+        "coordinated_persistence_limit",
+        16.700746
+      ],
+      "638": [
+        "connected",
+        null,
+        16.421922
+      ],
+      "639": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.826083
+      ],
+      "64": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.105405
+      ],
+      "640": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.591505
+      ],
+      "641": [
+        "connected",
+        null,
+        32.509931
+      ],
+      "642": [
+        "escaped",
+        null,
+        31.553279
+      ],
+      "643": [
+        "escaped",
+        null,
+        26.521585
+      ],
+      "644": [
+        "terminated",
+        "coordinated_persistence_limit",
+        10.280864
+      ],
+      "645": [
+        "terminated",
+        "coordinated_persistence_limit",
+        10.805117
+      ],
+      "646": [
+        "escaped",
+        null,
+        5.831017
+      ],
+      "647": [
+        "escaped",
+        null,
+        5.831017
+      ],
+      "648": [
+        "escaped",
+        null,
+        5.831017
+      ],
+      "649": [
+        "escaped",
+        null,
+        5.831017
+      ],
+      "65": [
+        "connected",
+        null,
+        17.511115
+      ],
+      "650": [
+        "escaped",
+        null,
+        5.831017
+      ],
+      "651": [
+        "escaped",
+        null,
+        5.831017
+      ],
+      "652": [
+        "escaped",
+        null,
+        5.831017
+      ],
+      "653": [
+        "escaped",
+        null,
+        5.831017
+      ],
+      "654": [
+        "escaped",
+        null,
+        5.831017
+      ],
+      "655": [
+        "escaped",
+        null,
+        14.045028
+      ],
+      "656": [
+        "escaped",
+        null,
+        14.723111
+      ],
+      "657": [
+        "escaped",
+        null,
+        15.443474
+      ],
+      "658": [
+        "escaped",
+        null,
+        18.439322
+      ],
+      "659": [
+        "connected",
+        null,
+        29.054805
+      ],
+      "66": [
+        "escaped",
+        null,
+        18.578695
+      ],
+      "660": [
+        "terminated",
+        "coordinated_persistence_limit",
+        16.039989
+      ],
+      "661": [
+        "terminated",
+        "round_limit",
+        19.0
+      ],
+      "662": [
+        "connected",
+        null,
+        27.02543
+      ],
+      "663": [
+        "terminated",
+        "coordinated_persistence_limit",
+        24.582796
+      ],
+      "664": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.697733
+      ],
+      "665": [
+        "connected",
+        null,
+        14.559727
+      ],
+      "666": [
+        "terminated",
+        "coordinated_persistence_limit",
+        16.4706
+      ],
+      "667": [
+        "connected",
+        null,
+        21.761484
+      ],
+      "668": [
+        "connected",
+        null,
+        19.000235
+      ],
+      "669": [
+        "terminated",
+        "coordinated_persistence_limit",
+        8.0
+      ],
+      "67": [
+        "terminated",
+        "round_limit",
+        16.845033
+      ],
+      "670": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.720233
+      ],
+      "671": [
+        "connected",
+        null,
+        8.897521
+      ],
+      "672": [
+        "terminated",
+        "coordinated_persistence_limit",
+        10.656337
+      ],
+      "673": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.840585
+      ],
+      "674": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.006494
+      ],
+      "675": [
+        "terminated",
+        "coordinated_persistence_limit",
+        13.282813
+      ],
+      "676": [
+        "terminated",
+        "coordinated_persistence_limit",
+        17.136452
+      ],
+      "677": [
+        "terminated",
+        "coordinated_persistence_limit",
+        18.82888
+      ],
+      "678": [
+        "escaped",
+        null,
+        17.340618
+      ],
+      "679": [
+        "escaped",
+        null,
+        18.052537
+      ],
+      "68": [
+        "escaped",
+        null,
+        16.825442
+      ],
+      "680": [
+        "escaped",
+        null,
+        18.974549
+      ],
+      "681": [
+        "terminated",
+        "hard_stop_exhausted",
+        7.841732
+      ],
+      "682": [
+        "terminated",
+        "hard_stop_exhausted",
+        7.737746
+      ],
+      "683": [
+        "connected",
+        null,
+        9.011335
+      ],
+      "684": [
+        "connected",
+        null,
+        9.337467
+      ],
+      "685": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.345159
+      ],
+      "686": [
+        "connected",
+        null,
+        9.646353
+      ],
+      "687": [
+        "connected",
+        null,
+        10.144909
+      ],
+      "688": [
+        "connected",
+        null,
+        11.188521
+      ],
+      "689": [
+        "connected",
+        null,
+        9.712099
+      ],
+      "69": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.769915
+      ],
+      "690": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.210891
+      ],
+      "691": [
+        "escaped",
+        null,
+        17.468053
+      ],
+      "692": [
+        "escaped",
+        null,
+        27.808036
+      ],
+      "693": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.388395
+      ],
+      "694": [
+        "connected",
+        null,
+        10.293788
+      ],
+      "695": [
+        "connected",
+        null,
+        9.169542
+      ],
+      "696": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.740151
+      ],
+      "697": [
+        "connected",
+        null,
+        11.144875
+      ],
+      "698": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.818838
+      ],
+      "699": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.806241
+      ],
+      "7": [
+        "connected",
+        null,
+        21.500945
+      ],
+      "70": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.185212
+      ],
+      "700": [
+        "terminated",
+        "round_limit",
+        16.064231
+      ],
+      "701": [
+        "terminated",
+        "coordinated_persistence_limit",
+        20.019553
+      ],
+      "702": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.414339
+      ],
+      "703": [
+        "connected",
+        null,
+        18.7129
+      ],
+      "704": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.358134
+      ],
+      "705": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.511788
+      ],
+      "706": [
+        "terminated",
+        "coordinated_persistence_limit",
+        18.022901
+      ],
+      "707": [
+        "terminated",
+        "coordinated_persistence_limit",
+        20.827655
+      ],
+      "708": [
+        "connected",
+        null,
+        22.235284
+      ],
+      "709": [
+        "connected",
+        null,
+        16.51257
+      ],
+      "71": [
+        "terminated",
+        "coordinated_persistence_limit",
+        13.892905
+      ],
+      "710": [
+        "terminated",
+        "hard_stop_exhausted",
+        13.684134
+      ],
+      "711": [
+        "terminated",
+        "coordinated_persistence_limit",
+        26.312698
+      ],
+      "712": [
+        "terminated",
+        "coordinated_persistence_limit",
+        22.77971
+      ],
+      "713": [
+        "terminated",
+        "coordinated_persistence_limit",
+        21.952296
+      ],
+      "714": [
+        "terminated",
+        "coordinated_persistence_limit",
+        23.471785
+      ],
+      "715": [
+        "terminated",
+        "coordinated_persistence_limit",
+        21.775507
+      ],
+      "716": [
+        "terminated",
+        "coordinated_persistence_limit",
+        13.026595
+      ],
+      "717": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.655355
+      ],
+      "718": [
+        "terminated",
+        "hard_stop_exhausted",
+        9.218452
+      ],
+      "719": [
+        "connected",
+        null,
+        9.537833
+      ],
+      "72": [
+        "terminated",
+        "hard_stop_exhausted",
+        14.542839
+      ],
+      "720": [
+        "terminated",
+        "coordinated_persistence_limit",
+        10.046372
+      ],
+      "721": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.647307
+      ],
+      "722": [
+        "connected",
+        null,
+        12.367495
+      ],
+      "723": [
+        "escaped",
+        null,
+        6.378753
+      ],
+      "724": [
+        "escaped",
+        null,
+        6.304335
+      ],
+      "725": [
+        "escaped",
+        null,
+        6.215198
+      ],
+      "726": [
+        "escaped",
+        null,
+        6.051116
+      ],
+      "727": [
+        "escaped",
+        null,
+        6.215198
+      ],
+      "728": [
+        "escaped",
+        null,
+        6.304335
+      ],
+      "729": [
+        "escaped",
+        null,
+        6.198313
+      ],
+      "73": [
+        "terminated",
+        "hard_stop_exhausted",
+        7.659021
+      ],
+      "730": [
+        "escaped",
+        null,
+        6.302011
+      ],
+      "731": [
+        "connected",
+        null,
+        8.555109
+      ],
+      "732": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.66654
+      ],
+      "733": [
+        "terminated",
+        "coordinated_persistence_limit",
+        8.62798
+      ],
+      "734": [
+        "connected",
+        null,
+        11.394834
+      ],
+      "735": [
+        "terminated",
+        "coordinated_persistence_limit",
+        8.835661
+      ],
+      "736": [
+        "connected",
+        null,
+        10.860337
+      ],
+      "737": [
+        "terminated",
+        "coordinated_persistence_limit",
+        22.804769
+      ],
+      "738": [
+        "escaped",
+        null,
+        17.427884
+      ],
+      "739": [
+        "escaped",
+        null,
+        4.627346
+      ],
+      "74": [
+        "connected",
+        null,
+        11.391306
+      ],
+      "740": [
+        "escaped",
+        null,
+        4.627346
+      ],
+      "741": [
+        "escaped",
+        null,
+        4.627346
+      ],
+      "742": [
+        "escaped",
+        null,
+        4.627346
+      ],
+      "743": [
+        "escaped",
+        null,
+        4.627346
+      ],
+      "744": [
+        "escaped",
+        null,
+        4.627346
+      ],
+      "745": [
+        "escaped",
+        null,
+        4.627346
+      ],
+      "746": [
+        "escaped",
+        null,
+        4.627346
+      ],
+      "747": [
+        "escaped",
+        null,
+        4.627346
+      ],
+      "748": [
+        "connected",
+        null,
+        27.259231
+      ],
+      "749": [
+        "connected",
+        null,
+        19.39737
+      ],
+      "75": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.540733
+      ],
+      "750": [
+        "terminated",
+        "round_limit",
+        11.419465
+      ],
+      "751": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.0
+      ],
+      "752": [
+        "terminated",
+        "coordinated_persistence_limit",
+        10.627172
+      ],
+      "753": [
+        "terminated",
+        "coordinated_persistence_limit",
+        10.362722
+      ],
+      "754": [
+        "terminated",
+        "coordinated_persistence_limit",
+        9.560637
+      ],
+      "755": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.584415
+      ],
+      "756": [
+        "connected",
+        null,
+        9.42974
+      ],
+      "757": [
+        "connected",
+        null,
+        19.528725
+      ],
+      "758": [
+        "escaped",
+        null,
+        15.944787
+      ],
+      "759": [
+        "escaped",
+        null,
+        6.126229
+      ],
+      "76": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.644455
+      ],
+      "760": [
+        "escaped",
+        null,
+        6.052038
+      ],
+      "761": [
+        "escaped",
+        null,
+        6.010566
+      ],
+      "762": [
+        "escaped",
+        null,
+        6.010566
+      ],
+      "763": [
+        "escaped",
+        null,
+        6.010566
+      ],
+      "764": [
+        "escaped",
+        null,
+        6.010566
+      ],
+      "765": [
+        "escaped",
+        null,
+        6.010566
+      ],
+      "766": [
+        "escaped",
+        null,
+        6.010566
+      ],
+      "767": [
+        "escaped",
+        null,
+        6.010566
+      ],
+      "768": [
+        "escaped",
+        null,
+        6.010566
+      ],
+      "769": [
+        "escaped",
+        null,
+        6.052038
+      ],
+      "77": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.521215
+      ],
+      "770": [
+        "escaped",
+        null,
+        6.126229
+      ],
+      "771": [
+        "connected",
+        null,
+        16.990222
+      ],
+      "772": [
+        "connected",
+        null,
+        15.666188
+      ],
+      "773": [
+        "terminated",
+        "round_limit",
+        8.661734
+      ],
+      "774": [
+        "terminated",
+        "round_limit",
+        9.540081
+      ],
+      "775": [
+        "terminated",
+        "round_limit",
+        10.337122
+      ],
+      "776": [
+        "connected",
+        null,
+        10.506676
+      ],
+      "777": [
+        "terminated",
+        "coordinated_persistence_limit",
+        9.831439
+      ],
+      "778": [
+        "terminated",
+        "coordinated_persistence_limit",
+        10.680649
+      ],
+      "779": [
+        "terminated",
+        "coordinated_persistence_limit",
+        11.502731
+      ],
+      "78": [
+        "terminated",
+        "round_limit",
+        15.609923
+      ],
+      "780": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.69134
+      ],
+      "781": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.651275
+      ],
+      "782": [
+        "connected",
+        null,
+        18.269174
+      ],
+      "783": [
+        "terminated",
+        "coordinated_persistence_limit",
+        6.0
+      ],
+      "784": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.809277
+      ],
+      "785": [
+        "terminated",
+        "coordinated_persistence_limit",
+        8.676146
+      ],
+      "786": [
+        "terminated",
+        "coordinated_persistence_limit",
+        8.835453
+      ],
+      "787": [
+        "terminated",
+        "coordinated_persistence_limit",
+        16.664355
+      ],
+      "788": [
+        "terminated",
+        "coordinated_persistence_limit",
+        17.196406
+      ],
+      "789": [
+        "terminated",
+        "coordinated_persistence_limit",
+        9.891079
+      ],
+      "79": [
+        "terminated",
+        "round_limit",
+        16.62085
+      ],
+      "790": [
+        "terminated",
+        "coordinated_persistence_limit",
+        9.811515
+      ],
+      "791": [
+        "connected",
+        null,
+        9.565554
+      ],
+      "792": [
+        "terminated",
+        "hard_stop_exhausted",
+        11.092874
+      ],
+      "793": [
+        "terminated",
+        "hard_stop_exhausted",
+        18.982029
+      ],
+      "794": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.482571
+      ],
+      "795": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.611122
+      ],
+      "796": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.497766
+      ],
+      "797": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.829084
+      ],
+      "798": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.31215
+      ],
+      "799": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.720486
+      ],
+      "8": [
+        "terminated",
+        "coordinated_persistence_limit",
+        23.931226
+      ],
+      "80": [
+        "terminated",
+        "coordinated_persistence_limit",
+        17.497356
+      ],
+      "800": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.170916
+      ],
+      "801": [
+        "terminated",
+        "coordinated_persistence_limit",
+        16.849511
+      ],
+      "802": [
+        "connected",
+        null,
+        14.852033
+      ],
+      "803": [
+        "connected",
+        null,
+        14.909272
+      ],
+      "804": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.494653
+      ],
+      "805": [
+        "connected",
+        null,
+        23.326497
+      ],
+      "806": [
+        "escaped",
+        null,
+        23.610505
+      ],
+      "807": [
+        "escaped",
+        null,
+        24.033572
+      ],
+      "808": [
+        "connected",
+        null,
+        15.324929
+      ],
+      "809": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.989586
+      ],
+      "81": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.734613
+      ],
+      "810": [
+        "terminated",
+        "coordinated_persistence_limit",
+        17.673442
+      ],
+      "811": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.262137
+      ],
+      "812": [
+        "terminated",
+        "round_limit",
+        15.025557
+      ],
+      "813": [
+        "connected",
+        null,
+        15.560518
+      ],
+      "814": [
+        "escaped",
+        null,
+        4.012292
+      ],
+      "815": [
+        "escaped",
+        null,
+        4.012292
+      ],
+      "816": [
+        "escaped",
+        null,
+        4.012292
+      ],
+      "817": [
+        "escaped",
+        null,
+        4.012292
+      ],
+      "818": [
+        "escaped",
+        null,
+        4.012292
+      ],
+      "819": [
+        "escaped",
+        null,
+        4.012292
+      ],
+      "82": [
+        "terminated",
+        "coordinated_persistence_limit",
+        17.820097
+      ],
+      "820": [
+        "escaped",
+        null,
+        4.012292
+      ],
+      "821": [
+        "escaped",
+        null,
+        4.012292
+      ],
+      "822": [
+        "escaped",
+        null,
+        4.012292
+      ],
+      "823": [
+        "escaped",
+        null,
+        4.012292
+      ],
+      "824": [
+        "escaped",
+        null,
+        4.012292
+      ],
+      "825": [
+        "escaped",
+        null,
+        4.012292
+      ],
+      "826": [
+        "escaped",
+        null,
+        4.012292
+      ],
+      "827": [
+        "escaped",
+        null,
+        14.71113
+      ],
+      "828": [
+        "escaped",
+        null,
+        15.817415
+      ],
+      "829": [
+        "connected",
+        null,
+        21.88906
+      ],
+      "83": [
+        "terminated",
+        "round_limit",
+        9.502104
+      ],
+      "830": [
+        "terminated",
+        "coordinated_persistence_limit",
+        8.0
+      ],
+      "831": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.543108
+      ],
+      "832": [
+        "connected",
+        null,
+        5.506791
+      ],
+      "833": [
+        "terminated",
+        "coordinated_persistence_limit",
+        5.0
+      ],
+      "834": [
+        "connected",
+        null,
+        7.419743
+      ],
+      "835": [
+        "connected",
+        null,
+        10.472563
+      ],
+      "836": [
+        "terminated",
+        "round_limit",
+        13.122274
+      ],
+      "837": [
+        "terminated",
+        "coordinated_persistence_limit",
+        13.299297
+      ],
+      "838": [
+        "terminated",
+        "coordinated_persistence_limit",
+        13.264681
+      ],
+      "839": [
+        "connected",
+        null,
+        11.734275
+      ],
+      "84": [
+        "terminated",
+        "round_limit",
+        12.516005
+      ],
+      "840": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.454886
+      ],
+      "841": [
+        "terminated",
+        "coordinated_persistence_limit",
+        11.009707
+      ],
+      "842": [
+        "terminated",
+        "coordinated_persistence_limit",
+        14.104399
+      ],
+      "843": [
+        "terminated",
+        "coordinated_persistence_limit",
+        11.382984
+      ],
+      "844": [
+        "connected",
+        null,
+        11.083007
+      ],
+      "845": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.997051
+      ],
+      "846": [
+        "terminated",
+        "coordinated_persistence_limit",
+        15.65404
+      ],
+      "847": [
+        "connected",
+        null,
+        9.600379
+      ],
+      "848": [
+        "escaped",
+        null,
+        14.959613
+      ],
+      "849": [
+        "connected",
+        null,
+        12.147527
+      ],
+      "85": [
+        "terminated",
+        "round_limit",
+        14.441972
+      ],
+      "850": [
+        "connected",
+        null,
+        12.895782
+      ],
+      "851": [
+        "connected",
+        null,
+        14.579087
+      ],
+      "852": [
+        "connected",
+        null,
+        15.828297
+      ],
+      "853": [
+        "connected",
+        null,
+        17.090142
+      ],
+      "854": [
+        "escaped",
+        null,
+        6.599093
+      ],
+      "855": [
+        "escaped",
+        null,
+        6.518321
+      ],
+      "856": [
+        "escaped",
+        null,
+        6.437548
+      ],
+      "857": [
+        "escaped",
+        null,
+        6.366508
+      ],
+      "858": [
+        "escaped",
+        null,
+        6.437548
+      ],
+      "859": [
+        "escaped",
+        null,
+        6.518321
+      ],
+      "86": [
+        "connected",
+        null,
+        11.13547
+      ],
+      "860": [
+        "escaped",
+        null,
+        6.599093
+      ],
+      "861": [
+        "escaped",
+        null,
+        6.514873
+      ],
+      "862": [
+        "escaped",
+        null,
+        17.237194
+      ],
+      "863": [
+        "escaped",
+        null,
+        29.303537
+      ],
+      "864": [
+        "escaped",
+        null,
+        29.879104
+      ],
+      "865": [
+        "connected",
+        null,
+        8.745027
+      ],
+      "866": [
+        "connected",
+        null,
+        23.579907
+      ],
+      "867": [
+        "connected",
+        null,
+        16.543757
+      ],
+      "868": [
+        "terminated",
+        "coordinated_persistence_limit",
+        20.663468
+      ],
+      "869": [
+        "terminated",
+        "coordinated_persistence_limit",
+        19.941979
+      ],
+      "87": [
+        "connected",
+        null,
+        14.011016
+      ],
+      "870": [
+        "connected",
+        null,
+        18.758761
+      ],
+      "871": [
+        "connected",
+        null,
+        19.185016
+      ],
+      "872": [
+        "connected",
+        null,
+        12.674546
+      ],
+      "873": [
+        "terminated",
+        "coordinated_persistence_limit",
+        13.0
+      ],
+      "874": [
+        "connected",
+        null,
+        11.193341
+      ],
+      "875": [
+        "terminated",
+        "round_limit",
+        17.667271
+      ],
+      "876": [
+        "terminated",
+        "hard_stop_exhausted",
+        17.302169
+      ],
+      "877": [
+        "terminated",
+        "coordinated_persistence_limit",
+        7.795764
+      ],
+      "878": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.987197
+      ],
+      "879": [
+        "terminated",
+        "coordinated_persistence_limit",
+        16.004493
+      ],
+      "88": [
+        "terminated",
+        "coordinated_persistence_limit",
+        21.82785
+      ],
+      "880": [
+        "terminated",
+        "coordinated_persistence_limit",
+        12.735762
+      ],
+      "881": [
+        "terminated",
+        "coordinated_persistence_limit",
+        13.264578
+      ],
+      "882": [
+        "connected",
+        null,
+        11.309029
+      ],
+      "883": [
+        "terminated",
+        "coordinated_persistence_limit",
+        17.005752
+      ],
+      "884": [
+        "terminated",
+        "coordinated_persistence_limit",
+        22.639817
+      ],
+      "885": [
+        "connected",
+        null,
+        7.752119
+      ],
+      "886": [
+        "connected",
+        null,
+        7.2727
+      ],
+      "887": [
+        "connected",
+        null,
+        6.933635
+      ],
+      "888": [
+        "connected",
+        null,
+        6.760241
+      ],
+      "889": [
+        "connected",
+        null,
+        5.441438
+      ],
+      "89": [
+        "terminated",
+        "coordinated_persistence_limit",
+        18.699597
+      ],
+      "890": [
+        "terminated",
+        "coordinated_persistence_limit",
+        5.0
+      ],
+      "891": [
+        "terminated",
+        "coordinated_persistence_limit",
+        5.0
+      ],
+      "892": [
+        "terminated",
+        "coordinated_persistence_limit",
+        5.0
+      ],
+      "893": [
+        "terminated",
+        "round_limit",
+        6.0
+      ],
+      "894": [
+        "terminated",
+        "round_limit",
+        6.0
+      ],
+      "895": [
+        "terminated",
+        "coordinated_persistence_limit",
+        6.0
+      ],
+      "896": [
+        "connected",
+        null,
+        6.049451
+      ],
+      "897": [
+        "connected",
+        null,
+        10.584668
+      ],
+      "898": [
+        "connected",
+        null,
+        18.193368
+      ],
+      "899": [
+        "connected",
+        null,
+        15.031908
+      ],
+      "9": [
+        "terminated",
+        "coordinated_persistence_limit",
+        22.128816
+      ],
+      "90": [
+        "terminated",
+        "coordinated_persistence_limit",
+        17.67976
+      ],
+      "91": [
+        "terminated",
+        "coordinated_persistence_limit",
+        21.168962
+      ],
+      "92": [
+        "terminated",
+        "coordinated_persistence_limit",
+        20.831038
+      ],
+      "93": [
+        "terminated",
+        "coordinated_persistence_limit",
+        23.68898
+      ],
+      "94": [
+        "terminated",
+        "journey_limit",
+        24.762244
+      ],
+      "95": [
+        "terminated",
+        "coordinated_persistence_limit",
+        20.192976
+      ],
+      "96": [
+        "connected",
+        null,
+        20.810109
+      ],
+      "97": [
+        "connected",
+        null,
+        30.464928
+      ],
+      "98": [
+        "terminated",
+        "journey_limit",
+        39.02105
+      ],
+      "99": [
+        "terminated",
+        "round_limit",
+        34.807024
+      ]
+    },
+    "pathway_main_preferred_visible_modules": 6.0,
+    "pathway_main_short_termination_trace_count": 0,
+    "pathway_main_source_marker_count": 900,
+    "pathway_main_stalled_side_count": 0,
+    "pathway_main_stalled_side_details": [],
+    "pathway_main_unaccounted_launch_trace_count": 0,
+    "pathway_main_unaccounted_launch_trace_ids": [],
+    "pathway_main_under_preferred_root_count": 2,
+    "pathway_main_under_preferred_root_max_fraction": 0.2,
+    "pathway_main_under_preferred_visible_details": [
+      {
+        "front": 318,
+        "root": [
+          21,
+          3,
+          "bottom"
+        ],
+        "status": "terminated",
+        "termination_reason": "coordinated_persistence_limit",
+        "tid": 890,
+        "visible_modules": 5.0
+      },
+      {
+        "front": 318,
+        "root": [
+          21,
+          3,
+          "bottom"
+        ],
+        "status": "terminated",
+        "termination_reason": "coordinated_persistence_limit",
+        "tid": 891,
+        "visible_modules": 5.0
+      },
+      {
+        "front": 318,
+        "root": [
+          21,
+          3,
+          "bottom"
+        ],
+        "status": "terminated",
+        "termination_reason": "coordinated_persistence_limit",
+        "tid": 892,
+        "visible_modules": 5.0
+      },
+      {
+        "front": 1311,
+        "root": [
+          20,
+          1,
+          "top"
+        ],
+        "status": "terminated",
+        "termination_reason": "coordinated_persistence_limit",
+        "tid": 833,
+        "visible_modules": 5.0
+      }
+    ],
+    "pathway_main_visible_length_modules_by_trace": {
+      "0": 16.118665,
+      "1": 13.243109,
+      "10": 19.356311,
+      "100": 26.350849,
+      "101": 22.110867,
+      "102": 20.706363,
+      "103": 19.418829,
+      "104": 20.271114,
+      "105": 36.414476,
+      "106": 35.572081,
+      "107": 17.828466,
+      "108": 11.510814,
+      "109": 12.0,
+      "11": 7.583102,
+      "110": 18.705351,
+      "111": 15.568692,
+      "112": 22.0,
+      "113": 21.161705,
+      "114": 14.871793,
+      "115": 17.463336,
+      "116": 32.692997,
+      "117": 32.810939,
+      "118": 26.828595,
+      "119": 26.699333,
+      "12": 7.672783,
+      "120": 16.826957,
+      "121": 19.162155,
+      "122": 17.184799,
+      "123": 23.713871,
+      "124": 20.477681,
+      "125": 20.296694,
+      "126": 20.598886,
+      "127": 22.560132,
+      "128": 9.252386,
+      "129": 19.258541,
+      "13": 7.5,
+      "130": 14.635567,
+      "131": 16.417762,
+      "132": 12.702652,
+      "133": 17.274547,
+      "134": 35.030074,
+      "135": 35.456973,
+      "136": 22.854743,
+      "137": 22.67259,
+      "138": 22.69845,
+      "139": 23.203446,
+      "14": 11.106361,
+      "140": 26.795957,
+      "141": 26.428361,
+      "142": 19.62217,
+      "143": 15.474282,
+      "144": 17.515314,
+      "145": 17.037497,
+      "146": 13.475121,
+      "147": 10.666178,
+      "148": 12.822212,
+      "149": 13.177788,
+      "15": 13.330988,
+      "150": 16.629837,
+      "151": 24.451824,
+      "152": 22.200541,
+      "153": 20.992407,
+      "154": 19.891428,
+      "155": 25.412287,
+      "156": 12.334411,
+      "157": 16.832625,
+      "158": 17.903101,
+      "159": 35.908973,
+      "16": 7.381557,
+      "160": 24.15272,
+      "161": 11.611073,
+      "162": 9.826114,
+      "163": 14.949736,
+      "164": 22.205085,
+      "165": 22.420127,
+      "166": 14.421383,
+      "167": 13.122185,
+      "168": 12.177717,
+      "169": 16.573497,
+      "17": 14.05446,
+      "170": 16.0,
+      "171": 19.347882,
+      "172": 17.39855,
+      "173": 18.832948,
+      "174": 9.304259,
+      "175": 13.274947,
+      "176": 15.29864,
+      "177": 13.5,
+      "178": 10.294692,
+      "179": 17.848792,
+      "18": 12.177044,
+      "180": 7.437889,
+      "181": 17.67314,
+      "182": 26.657165,
+      "183": 25.519186,
+      "184": 16.558242,
+      "185": 13.063985,
+      "186": 11.413154,
+      "187": 14.576278,
+      "188": 16.881982,
+      "189": 30.785954,
+      "19": 21.518451,
+      "190": 20.987535,
+      "191": 4.116657,
+      "192": 4.116657,
+      "193": 4.116657,
+      "194": 4.116657,
+      "195": 4.116657,
+      "196": 4.116657,
+      "197": 4.116657,
+      "198": 4.116657,
+      "199": 4.116657,
+      "2": 13.622535,
+      "20": 8.734118,
+      "200": 29.494627,
+      "201": 54.168458,
+      "202": 31.15109,
+      "203": 34.831542,
+      "204": 29.77526,
+      "205": 19.164449,
+      "206": 18.084602,
+      "207": 20.0124,
+      "208": 11.818675,
+      "209": 13.394248,
+      "21": 25.314703,
+      "210": 25.277254,
+      "211": 14.724482,
+      "212": 14.177673,
+      "213": 13.532034,
+      "214": 12.30061,
+      "215": 11.575308,
+      "216": 3.288545,
+      "217": 3.288545,
+      "218": 3.288545,
+      "219": 3.288545,
+      "22": 20.626678,
+      "220": 3.288545,
+      "221": 3.288545,
+      "222": 3.288545,
+      "223": 3.288545,
+      "224": 3.288545,
+      "225": 3.288545,
+      "226": 3.288545,
+      "227": 30.783296,
+      "228": 25.388416,
+      "229": 16.472413,
+      "23": 21.349123,
+      "230": 14.665788,
+      "231": 11.0,
+      "232": 18.253124,
+      "233": 16.35,
+      "234": 16.051998,
+      "235": 12.067587,
+      "236": 6.361558,
+      "237": 6.644169,
+      "238": 13.0,
+      "239": 14.176227,
+      "24": 21.853714,
+      "240": 20.053214,
+      "241": 18.744344,
+      "242": 19.650502,
+      "243": 18.80089,
+      "244": 14.339704,
+      "245": 13.730754,
+      "246": 12.986307,
+      "247": 12.24911,
+      "248": 15.0,
+      "249": 10.685335,
+      "25": 35.264582,
+      "250": 10.514452,
+      "251": 14.36063,
+      "252": 12.940682,
+      "253": 17.214637,
+      "254": 17.147018,
+      "255": 33.236875,
+      "256": 16.343117,
+      "257": 14.177825,
+      "258": 13.381876,
+      "259": 12.434158,
+      "26": 41.683316,
+      "260": 18.879372,
+      "261": 16.606912,
+      "262": 12.722454,
+      "263": 10.46742,
+      "264": 7.670603,
+      "265": 8.672828,
+      "266": 8.611924,
+      "267": 8.486478,
+      "268": 3.145943,
+      "269": 3.145943,
+      "27": 32.756569,
+      "270": 3.145943,
+      "271": 3.145943,
+      "272": 3.145943,
+      "273": 3.145943,
+      "274": 3.145943,
+      "275": 3.145943,
+      "276": 14.438532,
+      "277": 14.472116,
+      "278": 14.42419,
+      "279": 14.505692,
+      "28": 27.988628,
+      "280": 13.616683,
+      "281": 13.58186,
+      "282": 13.671178,
+      "283": 22.731609,
+      "284": 45.430838,
+      "285": 38.064221,
+      "286": 24.772673,
+      "287": 29.238084,
+      "288": 31.571599,
+      "289": 31.704327,
+      "29": 24.895015,
+      "290": 23.878228,
+      "291": 15.679248,
+      "292": 23.313132,
+      "293": 15.533046,
+      "294": 18.207765,
+      "295": 25.682928,
+      "296": 23.369474,
+      "297": 20.276845,
+      "298": 21.198324,
+      "299": 23.366668,
+      "3": 10.890083,
+      "30": 25.004879,
+      "300": 26.210547,
+      "301": 33.091768,
+      "302": 29.264944,
+      "303": 18.019587,
+      "304": 25.89186,
+      "305": 37.179606,
+      "306": 20.331599,
+      "307": 27.635367,
+      "308": 21.863819,
+      "309": 24.116907,
+      "31": 24.93348,
+      "310": 18.454226,
+      "311": 21.812444,
+      "312": 20.276009,
+      "313": 18.829977,
+      "314": 8.127626,
+      "315": 8.05553,
+      "316": 7.983433,
+      "317": 7.735049,
+      "318": 7.232515,
+      "319": 7.427989,
+      "32": 24.443575,
+      "320": 7.278875,
+      "321": 7.56922,
+      "322": 7.472119,
+      "323": 7.605268,
+      "324": 24.817729,
+      "325": 20.366955,
+      "326": 15.465671,
+      "327": 15.968372,
+      "328": 11.978136,
+      "329": 11.429514,
+      "33": 24.590666,
+      "330": 11.445361,
+      "331": 11.562334,
+      "332": 7.615857,
+      "333": 7.563574,
+      "334": 17.432363,
+      "335": 17.761338,
+      "336": 20.182352,
+      "337": 23.901924,
+      "338": 15.832742,
+      "339": 17.264495,
+      "34": 25.398526,
+      "340": 16.479205,
+      "341": 15.833433,
+      "342": 15.013907,
+      "343": 21.978683,
+      "344": 24.646381,
+      "345": 17.835441,
+      "346": 16.98862,
+      "347": 17.667852,
+      "348": 15.805424,
+      "349": 14.013365,
+      "35": 43.661734,
+      "350": 15.365359,
+      "351": 14.827361,
+      "352": 18.638022,
+      "353": 13.156493,
+      "354": 12.764213,
+      "355": 17.18867,
+      "356": 19.345279,
+      "357": 20.142336,
+      "358": 20.626463,
+      "359": 24.3035,
+      "36": 43.479162,
+      "360": 25.582915,
+      "361": 22.76795,
+      "362": 29.138613,
+      "363": 29.013816,
+      "364": 29.302165,
+      "365": 30.276871,
+      "366": 16.838798,
+      "367": 30.246964,
+      "368": 40.804114,
+      "369": 22.7855,
+      "37": 44.697433,
+      "370": 10.586611,
+      "371": 10.468746,
+      "372": 13.342112,
+      "373": 13.35106,
+      "374": 10.468958,
+      "375": 18.032591,
+      "376": 22.461757,
+      "377": 11.365644,
+      "378": 7.502696,
+      "379": 10.877068,
+      "38": 27.351897,
+      "380": 14.216315,
+      "381": 15.452846,
+      "382": 18.860327,
+      "383": 19.775124,
+      "384": 7.496619,
+      "385": 7.180315,
+      "386": 15.296579,
+      "387": 11.830534,
+      "388": 9.550192,
+      "389": 9.816543,
+      "39": 27.490383,
+      "390": 11.879595,
+      "391": 8.0,
+      "392": 7.541916,
+      "393": 8.0,
+      "394": 14.606942,
+      "395": 15.264705,
+      "396": 15.613204,
+      "397": 12.619452,
+      "398": 12.360937,
+      "399": 14.0,
+      "4": 11.879595,
+      "40": 32.452025,
+      "400": 13.320362,
+      "401": 24.45242,
+      "402": 30.832023,
+      "403": 22.078683,
+      "404": 21.335997,
+      "405": 25.47306,
+      "406": 30.671827,
+      "407": 20.592193,
+      "408": 23.59512,
+      "409": 23.062558,
+      "41": 23.0,
+      "410": 20.971569,
+      "411": 18.029313,
+      "412": 19.02013,
+      "413": 23.867211,
+      "414": 23.472885,
+      "415": 30.88915,
+      "416": 7.102478,
+      "417": 7.282563,
+      "418": 7.282563,
+      "419": 7.282563,
+      "42": 22.815804,
+      "420": 7.282563,
+      "421": 7.12247,
+      "422": 7.282563,
+      "423": 7.282563,
+      "424": 7.510523,
+      "425": 7.597709,
+      "426": 7.813818,
+      "427": 7.882167,
+      "428": 7.950515,
+      "429": 32.108563,
+      "43": 24.657666,
+      "430": 32.269855,
+      "431": 31.878748,
+      "432": 22.05405,
+      "433": 21.702504,
+      "434": 18.328177,
+      "435": 17.890709,
+      "436": 17.078259,
+      "437": 10.558257,
+      "438": 13.637133,
+      "439": 10.263928,
+      "44": 7.885731,
+      "440": 9.612803,
+      "441": 9.374645,
+      "442": 8.797384,
+      "443": 9.403265,
+      "444": 24.53343,
+      "445": 16.347053,
+      "446": 16.732369,
+      "447": 18.454072,
+      "448": 18.170613,
+      "449": 6.789022,
+      "45": 19.774898,
+      "450": 19.296422,
+      "451": 17.872551,
+      "452": 14.151745,
+      "453": 22.323544,
+      "454": 17.73018,
+      "455": 19.867598,
+      "456": 19.934133,
+      "457": 24.358448,
+      "458": 18.561881,
+      "459": 17.469013,
+      "46": 11.693402,
+      "460": 16.730782,
+      "461": 12.696872,
+      "462": 12.394138,
+      "463": 10.164446,
+      "464": 12.776925,
+      "465": 16.15021,
+      "466": 15.616773,
+      "467": 16.324807,
+      "468": 15.741874,
+      "469": 17.470814,
+      "47": 8.512313,
+      "470": 18.574213,
+      "471": 15.0,
+      "472": 9.816155,
+      "473": 19.631388,
+      "474": 14.453943,
+      "475": 18.0,
+      "476": 14.369466,
+      "477": 24.842709,
+      "478": 16.0,
+      "479": 17.051518,
+      "48": 9.076972,
+      "480": 15.136955,
+      "481": 14.771467,
+      "482": 10.893804,
+      "483": 11.847946,
+      "484": 11.684769,
+      "485": 8.05426,
+      "486": 15.298451,
+      "487": 17.513308,
+      "488": 20.0,
+      "489": 22.873438,
+      "49": 5.491261,
+      "490": 12.949211,
+      "491": 9.562526,
+      "492": 9.66682,
+      "493": 10.120437,
+      "494": 11.2315,
+      "495": 11.726736,
+      "496": 19.494389,
+      "497": 33.192293,
+      "498": 21.711083,
+      "499": 21.25266,
+      "5": 32.0,
+      "50": 5.491261,
+      "500": 19.162782,
+      "501": 8.633511,
+      "502": 9.3641,
+      "503": 12.984958,
+      "504": 12.197833,
+      "505": 7.807113,
+      "506": 13.814285,
+      "507": 15.355816,
+      "508": 15.605381,
+      "509": 16.677533,
+      "51": 5.491261,
+      "510": 15.740922,
+      "511": 13.989649,
+      "512": 13.987024,
+      "513": 7.825369,
+      "514": 10.860417,
+      "515": 18.0,
+      "516": 19.846297,
+      "517": 21.298988,
+      "518": 13.266859,
+      "519": 17.625059,
+      "52": 5.491261,
+      "520": 13.786856,
+      "521": 20.657775,
+      "522": 13.0,
+      "523": 19.285717,
+      "524": 19.151365,
+      "525": 23.652925,
+      "526": 24.940876,
+      "527": 20.670773,
+      "528": 19.790578,
+      "529": 20.478954,
+      "53": 5.491261,
+      "530": 20.510367,
+      "531": 29.659516,
+      "532": 21.763732,
+      "533": 13.0,
+      "534": 17.873956,
+      "535": 15.861488,
+      "536": 10.656034,
+      "537": 10.692375,
+      "538": 10.349936,
+      "539": 10.621934,
+      "54": 5.491261,
+      "540": 10.654121,
+      "541": 25.847037,
+      "542": 12.5,
+      "543": 22.168149,
+      "544": 18.608059,
+      "545": 21.937353,
+      "546": 29.615897,
+      "547": 32.828696,
+      "548": 32.342607,
+      "549": 33.31587,
+      "55": 5.491261,
+      "550": 14.997137,
+      "551": 10.921578,
+      "552": 11.850801,
+      "553": 18.530474,
+      "554": 18.0,
+      "555": 20.934762,
+      "556": 14.34374,
+      "557": 14.839379,
+      "558": 33.501771,
+      "559": 16.828696,
+      "56": 5.491261,
+      "560": 16.591858,
+      "561": 13.439705,
+      "562": 14.482933,
+      "563": 18.408754,
+      "564": 15.808573,
+      "565": 17.382835,
+      "566": 16.227354,
+      "567": 18.592993,
+      "568": 21.896056,
+      "569": 25.276017,
+      "57": 5.491261,
+      "570": 19.0,
+      "571": 19.494207,
+      "572": 15.835913,
+      "573": 15.146201,
+      "574": 16.80513,
+      "575": 36.651144,
+      "576": 26.253458,
+      "577": 23.732037,
+      "578": 23.030513,
+      "579": 28.776529,
+      "58": 5.491261,
+      "580": 19.26949,
+      "581": 16.32814,
+      "582": 12.424031,
+      "583": 9.728037,
+      "584": 9.848043,
+      "585": 10.358707,
+      "586": 10.666452,
+      "587": 18.933444,
+      "588": 15.980807,
+      "589": 17.718665,
+      "59": 5.491261,
+      "590": 20.636674,
+      "591": 33.063704,
+      "592": 18.781565,
+      "593": 19.175419,
+      "594": 22.833781,
+      "595": 22.926042,
+      "596": 24.176456,
+      "597": 30.612867,
+      "598": 18.737204,
+      "599": 21.466296,
+      "6": 19.190365,
+      "60": 5.491261,
+      "600": 21.835101,
+      "601": 9.289462,
+      "602": 9.360941,
+      "603": 9.626066,
+      "604": 9.528663,
+      "605": 10.561769,
+      "606": 10.792301,
+      "607": 10.667652,
+      "608": 10.279293,
+      "609": 16.4608,
+      "61": 10.437169,
+      "610": 28.750713,
+      "611": 7.815158,
+      "612": 14.254345,
+      "613": 10.892292,
+      "614": 21.815555,
+      "615": 17.819131,
+      "616": 9.169014,
+      "617": 9.07769,
+      "618": 9.179072,
+      "619": 9.102004,
+      "62": 11.975437,
+      "620": 8.997426,
+      "621": 9.076761,
+      "622": 9.169983,
+      "623": 9.097376,
+      "624": 5.400775,
+      "625": 5.400775,
+      "626": 5.400775,
+      "627": 5.400775,
+      "628": 5.400775,
+      "629": 5.400775,
+      "63": 14.582297,
+      "630": 5.400775,
+      "631": 5.400775,
+      "632": 5.400775,
+      "633": 5.400775,
+      "634": 5.400775,
+      "635": 16.414152,
+      "636": 19.841001,
+      "637": 16.700746,
+      "638": 16.421922,
+      "639": 14.826083,
+      "64": 15.105405,
+      "640": 15.591505,
+      "641": 32.509931,
+      "642": 31.553279,
+      "643": 26.521585,
+      "644": 10.280864,
+      "645": 10.805117,
+      "646": 5.831017,
+      "647": 5.831017,
+      "648": 5.831017,
+      "649": 5.831017,
+      "65": 17.511115,
+      "650": 5.831017,
+      "651": 5.831017,
+      "652": 5.831017,
+      "653": 5.831017,
+      "654": 5.831017,
+      "655": 14.045028,
+      "656": 14.723111,
+      "657": 15.443474,
+      "658": 18.439322,
+      "659": 29.054805,
+      "66": 18.578695,
+      "660": 16.039989,
+      "661": 19.0,
+      "662": 27.02543,
+      "663": 24.582796,
+      "664": 15.697733,
+      "665": 14.559727,
+      "666": 16.4706,
+      "667": 21.761484,
+      "668": 19.000235,
+      "669": 8.0,
+      "67": 16.845033,
+      "670": 7.720233,
+      "671": 8.897521,
+      "672": 10.656337,
+      "673": 12.840585,
+      "674": 14.006494,
+      "675": 13.282813,
+      "676": 17.136452,
+      "677": 18.82888,
+      "678": 17.340618,
+      "679": 18.052537,
+      "68": 16.825442,
+      "680": 18.974549,
+      "681": 7.841732,
+      "682": 7.737746,
+      "683": 9.011335,
+      "684": 9.337467,
+      "685": 7.345159,
+      "686": 9.646353,
+      "687": 10.144909,
+      "688": 11.188521,
+      "689": 9.712099,
+      "69": 19.769915,
+      "690": 7.210891,
+      "691": 17.468053,
+      "692": 27.808036,
+      "693": 7.388395,
+      "694": 10.293788,
+      "695": 9.169542,
+      "696": 7.740151,
+      "697": 11.144875,
+      "698": 12.818838,
+      "699": 7.806241,
+      "7": 21.500945,
+      "70": 19.185212,
+      "700": 16.064231,
+      "701": 20.019553,
+      "702": 14.414339,
+      "703": 18.7129,
+      "704": 15.358134,
+      "705": 14.511788,
+      "706": 18.022901,
+      "707": 20.827655,
+      "708": 22.235284,
+      "709": 16.51257,
+      "71": 13.892905,
+      "710": 13.684134,
+      "711": 26.312698,
+      "712": 22.77971,
+      "713": 21.952296,
+      "714": 23.471785,
+      "715": 21.775507,
+      "716": 13.026595,
+      "717": 14.655355,
+      "718": 9.218452,
+      "719": 9.537833,
+      "72": 14.542839,
+      "720": 10.046372,
+      "721": 7.647307,
+      "722": 12.367495,
+      "723": 6.378753,
+      "724": 6.304335,
+      "725": 6.215198,
+      "726": 6.051116,
+      "727": 6.215198,
+      "728": 6.304335,
+      "729": 6.198313,
+      "73": 7.659021,
+      "730": 6.302011,
+      "731": 8.555109,
+      "732": 7.66654,
+      "733": 8.62798,
+      "734": 11.394834,
+      "735": 8.835661,
+      "736": 10.860337,
+      "737": 22.804769,
+      "738": 17.427884,
+      "739": 4.627346,
+      "74": 11.391306,
+      "740": 4.627346,
+      "741": 4.627346,
+      "742": 4.627346,
+      "743": 4.627346,
+      "744": 4.627346,
+      "745": 4.627346,
+      "746": 4.627346,
+      "747": 4.627346,
+      "748": 27.259231,
+      "749": 19.39737,
+      "75": 14.540733,
+      "750": 11.419465,
+      "751": 15.0,
+      "752": 10.627172,
+      "753": 10.362722,
+      "754": 9.560637,
+      "755": 7.584415,
+      "756": 9.42974,
+      "757": 19.528725,
+      "758": 15.944787,
+      "759": 6.126229,
+      "76": 15.644455,
+      "760": 6.052038,
+      "761": 6.010566,
+      "762": 6.010566,
+      "763": 6.010566,
+      "764": 6.010566,
+      "765": 6.010566,
+      "766": 6.010566,
+      "767": 6.010566,
+      "768": 6.010566,
+      "769": 6.052038,
+      "77": 7.521215,
+      "770": 6.126229,
+      "771": 16.990222,
+      "772": 15.666188,
+      "773": 8.661734,
+      "774": 9.540081,
+      "775": 10.337122,
+      "776": 10.506676,
+      "777": 9.831439,
+      "778": 10.680649,
+      "779": 11.502731,
+      "78": 15.609923,
+      "780": 7.69134,
+      "781": 15.651275,
+      "782": 18.269174,
+      "783": 6.0,
+      "784": 14.809277,
+      "785": 8.676146,
+      "786": 8.835453,
+      "787": 16.664355,
+      "788": 17.196406,
+      "789": 9.891079,
+      "79": 16.62085,
+      "790": 9.811515,
+      "791": 9.565554,
+      "792": 11.092874,
+      "793": 18.982029,
+      "794": 7.482571,
+      "795": 19.611122,
+      "796": 7.497766,
+      "797": 15.829084,
+      "798": 12.31215,
+      "799": 7.720486,
+      "8": 23.931226,
+      "80": 17.497356,
+      "800": 15.170916,
+      "801": 16.849511,
+      "802": 14.852033,
+      "803": 14.909272,
+      "804": 14.494653,
+      "805": 23.326497,
+      "806": 23.610505,
+      "807": 24.033572,
+      "808": 15.324929,
+      "809": 14.989586,
+      "81": 15.734613,
+      "810": 17.673442,
+      "811": 7.262137,
+      "812": 15.025557,
+      "813": 15.560518,
+      "814": 4.012292,
+      "815": 4.012292,
+      "816": 4.012292,
+      "817": 4.012292,
+      "818": 4.012292,
+      "819": 4.012292,
+      "82": 17.820097,
+      "820": 4.012292,
+      "821": 4.012292,
+      "822": 4.012292,
+      "823": 4.012292,
+      "824": 4.012292,
+      "825": 4.012292,
+      "826": 4.012292,
+      "827": 14.71113,
+      "828": 15.817415,
+      "829": 21.88906,
+      "83": 9.502104,
+      "830": 8.0,
+      "831": 7.543108,
+      "832": 5.506791,
+      "833": 5.0,
+      "834": 7.419743,
+      "835": 10.472563,
+      "836": 13.122274,
+      "837": 13.299297,
+      "838": 13.264681,
+      "839": 11.734275,
+      "84": 12.516005,
+      "840": 7.454886,
+      "841": 11.009707,
+      "842": 14.104399,
+      "843": 11.382984,
+      "844": 11.083007,
+      "845": 12.997051,
+      "846": 15.65404,
+      "847": 9.600379,
+      "848": 14.959613,
+      "849": 12.147527,
+      "85": 14.441972,
+      "850": 12.895782,
+      "851": 14.579087,
+      "852": 15.828297,
+      "853": 17.090142,
+      "854": 6.599093,
+      "855": 6.518321,
+      "856": 6.437548,
+      "857": 6.366508,
+      "858": 6.437548,
+      "859": 6.518321,
+      "86": 11.13547,
+      "860": 6.599093,
+      "861": 6.514873,
+      "862": 17.237194,
+      "863": 29.303537,
+      "864": 29.879104,
+      "865": 8.745027,
+      "866": 23.579907,
+      "867": 16.543757,
+      "868": 20.663468,
+      "869": 19.941979,
+      "87": 14.011016,
+      "870": 18.758761,
+      "871": 19.185016,
+      "872": 12.674546,
+      "873": 13.0,
+      "874": 11.193341,
+      "875": 17.667271,
+      "876": 17.302169,
+      "877": 7.795764,
+      "878": 12.987197,
+      "879": 16.004493,
+      "88": 21.82785,
+      "880": 12.735762,
+      "881": 13.264578,
+      "882": 11.309029,
+      "883": 17.005752,
+      "884": 22.639817,
+      "885": 7.752119,
+      "886": 7.2727,
+      "887": 6.933635,
+      "888": 6.760241,
+      "889": 5.441438,
+      "89": 18.699597,
+      "890": 5.0,
+      "891": 5.0,
+      "892": 5.0,
+      "893": 6.0,
+      "894": 6.0,
+      "895": 6.0,
+      "896": 6.049451,
+      "897": 10.584668,
+      "898": 18.193368,
+      "899": 15.031908,
+      "9": 22.128816,
+      "90": 17.67976,
+      "91": 21.168962,
+      "92": 20.831038,
+      "93": 23.68898,
+      "94": 24.762244,
+      "95": 20.192976,
+      "96": 20.810109,
+      "97": 30.464928,
+      "98": 39.02105,
+      "99": 34.807024
+    },
+    "pathway_max_connection_junction_turn_degrees": 45,
+    "pathway_max_segments_per_trace": 18,
+    "pathway_mean_geometric_length": 413.2388464956935,
+    "pathway_mean_segments_per_trace": 6.343333333333334,
+    "pathway_mean_turns_per_trace": 1.72,
+    "pathway_median_geometric_length": 397.5270335115339,
+    "pathway_midline_connection_count": 0,
+    "pathway_min_actual_segment": 2.8631529710085695,
+    "pathway_min_foreign_main_chip_clearance": 20.146229946016145,
+    "pathway_min_foreign_static_clearance": 20.146229946016145,
+    "pathway_min_normal_center_segment": 53.620741013212864,
+    "pathway_min_segments_per_trace": 1,
+    "pathway_min_unconnected_stroke_clearance_margin": 1.1191840234944266,
+    "pathway_minimum_segment_exception_count": 3052,
+    "pathway_module_U": 35.747160675475776,
+    "pathway_module_canvas_units": 26.81037050660683,
+    "pathway_multiply_connected_trace_count": 0,
+    "pathway_non_octilinear_segment_count": 0,
+    "pathway_outcome_policy": "hard_invariants_soft_best_effort_targets",
+    "pathway_overlap_event_count": 0,
+    "pathway_persistence_hard_debt_peak": 260,
+    "pathway_persistence_horizon_unresolved_trace_count": 0,
+    "pathway_persistence_shared_rebuild_count": 0,
+    "pathway_persistence_shared_tick_budget": 10,
+    "pathway_persistence_shared_tick_count": 10,
+    "pathway_phase": "main_chip_network_frozen_before_residual_fill",
+    "pathway_planner_mode": "route_first_family_protected_transactional_parallel",
+    "pathway_post_main_terminal_connection_count": 0,
+    "pathway_primary_path_clear_proof_hit_count": 16504,
+    "pathway_profile": {
+      "branch_appetite": 0.423786,
+      "branch_multiplier": 1.708569,
+      "connection_appetite": 0.895187,
+      "exit_inclination": 0.282984,
+      "late_life_branch_multiplier": 1.5,
+      "late_life_branch_start": 0.6,
+      "max_rounds": 49,
+      "module_U": 35.747161,
+      "outward_bias": 0.507616,
+      "persistence_shared_ticks": 10,
+      "persistence_tail_rounds": 0,
+      "preferred_run_modules": 4,
+      "reroute_budget": 7,
+      "turn_appetite": 0.569452
+    },
+    "pathway_progress_repair_scheduled_count": 39,
+    "pathway_proposal_failure_certificate_hit_count": 29628,
+    "pathway_proposal_failure_certificate_store_count": 30740,
+    "pathway_proposal_replay_draw_count": 24828,
+    "pathway_protected_launch_unresolved_count": 0,
+    "pathway_recovery_fragment_count": 42,
+    "pathway_render_pair_audit_pass_count": 1,
+    "pathway_required_main_chip_keepout": 18.0,
+    "pathway_required_static_keepout": 6.0,
+    "pathway_reroute_exhausted_count": 5121,
+    "pathway_reroute_recovery_count": 6368,
+    "pathway_reroute_scheduled_count": 4008,
+    "pathway_reroute_short_rebase_count": 2751,
+    "pathway_root_emergence_traceback_count": 0,
+    "pathway_rounds_with_multiple_fronts": 59,
+    "pathway_route_search_count": 0,
+    "pathway_same_round_conflict_count": 5461,
+    "pathway_short_termination_fraction": 0.0,
+    "pathway_short_termination_trace_count": 0,
+    "pathway_short_trace_count": 102,
+    "pathway_short_trace_fraction": 0.11333333333333333,
+    "pathway_source_marker_count": 900,
+    "pathway_space_available_replan_count": 529,
+    "pathway_split_count": 536,
+    "pathway_static_intersection_count": 0,
+    "pathway_structural_persistence_atomic_round_count": 2,
+    "pathway_structural_persistence_atomic_tick_count": 2,
+    "pathway_structural_persistence_conflict_combination_count": 389,
+    "pathway_structural_persistence_exhausted_count": 43,
+    "pathway_structural_persistence_hold_front_count": 39,
+    "pathway_structural_persistence_repair_count": 77,
+    "pathway_terminal_alignment_exception_count": 0,
+    "pathway_terminal_head_backoff_count": 377,
+    "pathway_terminal_head_backoff_distance": 18492.382709427096,
+    "pathway_terminal_head_keepout": 3.375,
+    "pathway_terminal_separation_repair_count": 1,
+    "pathway_termination_count": 355,
+    "pathway_termination_dot_hollow_stroke": 2.0250000000000004,
+    "pathway_termination_dot_scale": 2.0,
+    "pathway_termination_marker_overlap_count": 0,
+    "pathway_termination_trace_count": 398,
+    "pathway_tiny_termination_trace_count": 0,
+    "pathway_trace_count": 900,
+    "pathway_trace_thickness_max": 4.673084263991935,
+    "pathway_trace_thickness_mean": 1.9176879315131699,
+    "pathway_trace_thickness_min": 1.5001201957131,
+    "pathway_traceback_count": 2821,
+    "pathway_traceback_segment_count": 5981,
+    "pathway_transactional_birth_reject_count": 358,
+    "pathway_turn_count": 1548,
+    "pathway_turns_per_100U": 0.312168134951331,
+    "pathway_unmarked_clearance_violation_count": 0,
+    "pathway_unmarked_overlap_count": 0,
+    "pathway_unmarked_stroke_overlap_count": 0,
+    "pathway_visible_launch_coverage_max": 0.8992603911676896,
+    "pathway_visible_launch_coverage_min": 0.7209545637262552,
+    "pathway_visible_launch_trace_count": 900,
+    "pathway_young_survival_repair_count": 0,
+    "pathway_young_survival_repair_trace_count": 0,
+    "pathway_zigzag_trace_cleanup_count": 0,
+    "population_area_scale": 10.666666666666666,
+    "population_long_axis": "y",
+    "quotas": {
+      "N_border": 125,
+      "N_dense": 151,
+      "N_ic": 112
+    },
+    "renderer_version": "V48",
+    "restart_index": 0,
+    "route_restarted_for_component_failure": false,
+    "scale": 0.75,
+    "seed": 7179163421162001120,
+    "service_grid_scale_basis": "canonical_design_units_over_logical_viewbox"
+  },
+  "rss_kib": 287888,
+  "scale": 0.75,
+  "seed": 1,
+  "sha": "d58ee1bf5073dd479e954b922a5fbdec56ef879de10394bf804094752af9c9b0",
+  "src": "/mnt/data/local2_candidate4.py",
+  "wall_s": 101.19056521499988
+}

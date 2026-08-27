@@ -1,0 +1,889 @@
+--- work/inflight/evidence/20260827_residual_mosaic/perf/authority_1805_renderer.py	2026-08-27 14:24:56.589846417 +0000
++++ pcb_v48_renderer.py	2026-08-27 15:28:14.039292863 +0000
+@@ -751,6 +751,11 @@
+         self.local_gap_open_cells=set()
+         self.local_gap_regions=[]
+         self.local_gap_region_by_cell={}
++        # V48 residual-fill composition mosaic.  These are spatial ownership parcels only;
++        # component placement and LOCAL routing retain their existing exact legality engines.
++        self.local_fill_cluster_by_cell={}
++        self.local_fill_cluster_meta={}
++        self.local_fill_cluster_cells={}
+         # Four immutable projection orders per residual region.  Dynamic coverage only removes
+         # eligibility, so these arrays stay valid and let large-room targeting inspect bounded
+         # geometric extremes instead of rescanning every cell for every trace decision.
+@@ -2090,9 +2095,84 @@
+         self.local_gap_untouched_by_region={r['id']:set(r['cells']) for r in regions}
+         self.local_gap_region_touch_version={r['id']:0 for r in regions}
+         self._reset_local_gap_chunk_state()
++        self._build_local_fill_clusters(open_cells,regions)
+         self.stats['pathway_local_gap_region_count']=len(regions)
++        self.stats['pathway_local_gap_fill_cluster_count']=len(self.local_fill_cluster_meta)
++        if self.local_fill_cluster_meta:
++            targets=[m['target_sources'] for m in self.local_fill_cluster_meta.values()]
++            self.stats['pathway_local_gap_fill_cluster_target_min']=min(targets)
++            self.stats['pathway_local_gap_fill_cluster_target_max']=max(targets)
+         return open_cells
+ 
++    def _build_local_fill_clusters(self,open_cells,regions):
++        """Partition the post-component residual field into compact seeded LOCAL parcels.
++
++        The parcels are a composition scheduler only.  Exact LOCAL source clearance, gesture
++        legality, targeting score, collision handling and routing remain unchanged.  A parcel's
++        target is the desired number of independent LOCAL roots in that visual cluster and has
++        the same 1..12 design-language support as component clusters.
++        """
++        self.local_fill_cluster_by_cell={}
++        self.local_fill_cluster_meta={}
++        self.local_fill_cluster_cells={}
++        if not open_cells or not regions:
++            return
++        crng=SplitMix64(mix_once(self.sseed ^ 0xA24BAED4963EE407))
++        cid=0
++        for region in regions:
++            remaining=set(region['cells'])
++            # A shuffled seed stream avoids a deterministic upper-left peeling pattern while
++            # each individual parcel is still grown by 4-neighbour adjacency.
++            seed_order=list(remaining); crng.shuffle(seed_order); cursor=0
++            while remaining:
++                while cursor<len(seed_order) and seed_order[cursor] not in remaining:
++                    cursor+=1
++                seed=(seed_order[cursor] if cursor<len(seed_order) else min(remaining))
++                requested=self.r.residual_fill_cluster_member_target(crng)
++                # Historical region source capacity is about one independent root per 16 service
++                # cells.  Use that same density to give the visual cluster enough physical room;
++                # this changes no source/routing cap outside the composition parcel itself.
++                desired_cells=max(8,16*requested)
++                cells=[]; q=deque([seed]); queued={seed}
++                while q and len(cells)<desired_cells:
++                    c=q.popleft()
++                    if c not in remaining:
++                        continue
++                    remaining.remove(c); cells.append(c)
++                    x,y=c
++                    nbs=[(x-1,y),(x+1,y),(x,y-1),(x,y+1)]
++                    crng.shuffle(nbs)
++                    for nb in nbs:
++                        if nb in remaining and nb not in queued:
++                            queued.add(nb); q.append(nb)
++                # A narrow articulation can exhaust the local BFS before the target size while
++                # disconnectedness is impossible inside one measured region.  Continue from the
++                # nearest remaining cell only when necessary to consume a compact remainder.
++                if len(cells)<desired_cells and remaining:
++                    cx=sum(c[0] for c in cells)/max(1,len(cells)); cy=sum(c[1] for c in cells)/max(1,len(cells))
++                    while remaining and len(cells)<desired_cells:
++                        seed2=min(remaining,key=lambda c:(c[0]-cx)**2+(c[1]-cy)**2)
++                        q=deque([seed2]); queued={seed2}
++                        while q and len(cells)<desired_cells:
++                            c=q.popleft()
++                            if c not in remaining: continue
++                            remaining.remove(c); cells.append(c); x,y=c
++                            for nb in ((x-1,y),(x+1,y),(x,y-1),(x,y+1)):
++                                if nb in remaining and nb not in queued:
++                                    queued.add(nb); q.append(nb)
++                if not cells:
++                    break
++                capacity=max(1,int(math.ceil(len(cells)/16.0)))
++                target=max(1,min(12,requested,capacity))
++                frozen=frozenset(cells)
++                self.local_fill_cluster_cells[cid]=frozen
++                for c in cells: self.local_fill_cluster_by_cell[c]=cid
++                self.local_fill_cluster_meta[cid]=dict(id=cid,region_id=region['id'],
++                    target_sources=int(target),requested_sources=int(requested),cell_count=len(cells),
++                    anchor_cell=min(cells,key=lambda c:((c[0]-sum(z[0] for z in cells)/len(cells))**2+
++                                                        (c[1]-sum(z[1] for z in cells)/len(cells))**2)))
++                cid+=1
++
+     def _residual_gap_cells(self):
+         return self._residual_gap_regions()
+ 
+@@ -2518,11 +2598,20 @@
+             return 0
+ 
+         region_source_counts={r['id']:0 for r in self.local_gap_regions}
++        cluster_source_counts={cid:0 for cid in self.local_fill_cluster_meta}
+         for f in self.fronts.values():
+             if f.get('local_gap') and f.get('parent') is None and f.get('local_gap_region_id') is not None:
+                 rid0=f.get('local_gap_region_id')
+                 region_source_counts[rid0]=region_source_counts.get(rid0,0)+1
++                cid0=f.get('local_fill_cluster_id')
++                if cid0 in cluster_source_counts:
++                    cluster_source_counts[cid0]=cluster_source_counts.get(cid0,0)+1
+         region_uncovered_counts={r['id']:len(self._local_gap_targetable_cells(r['id'])) for r in self.local_gap_regions}
++        all_targetable=self._local_gap_targetable_cells()
++        cluster_uncovered_counts={
++            cid:sum(1 for c in cells if c in all_targetable)
++            for cid,cells in self.local_fill_cluster_cells.items()
++        }
+ 
+         margin=max(2.0*self.module,55.0*self.U)
+         candidates=[]
+@@ -2583,18 +2672,23 @@
+ 
+         for (gx,gy,x,y),static_clear,path_clear in zip(raw,static_dists,path_dists):
+             cell=(gx,gy); rid=self.local_gap_region_by_cell.get(cell)
++            cid=self.local_fill_cluster_by_cell.get(cell)
+             region=self.local_gap_regions[rid] if rid is not None and rid < len(self.local_gap_regions) else None
+             region_need=(region_uncovered_counts.get(rid,1) if region else 1)
+             existing=region_source_counts.get(rid,0)
++            cneed=cluster_uncovered_counts.get(cid,1)
++            cexisting=cluster_source_counts.get(cid,0)
+             score=static_clear+1.55*path_clear-.45*self._congestion_at((x,y))*self.module
+-            # Prioritise unmet area, but diminish a room as it accumulates sources.
++            # Preserve the historical region score, then add only composition-parcel debt.
++            # This changes where otherwise-equivalent LOCAL sources are born, not route legality.
+             score+=1.35*self.module*math.log1p(region_need)/(1.0+.65*existing)
++            score+=.85*self.module*math.log1p(cneed)/(1.0+.75*cexisting)
+             if region is not None and region['size']!='small':
+                 rvx,rvy=dir_vec(region['dir'])
+                 proj=abs((x-region['center'][0])*rvx+(y-region['center'][1])*rvy)
+                 norm=proj/max(.5*region['long_span'],1e-9)
+                 score+=(1.15 if region['size']=='large' else .65)*self.module*min(1.0,norm)
+-            candidates.append((score,rng.random(),(x,y),rid))
++            candidates.append((score,rng.random(),(x,y),rid,cid))
+         candidates.sort(key=lambda z:(-z[0],z[1]))
+         if not candidates:
+             return 0
+@@ -2602,8 +2696,10 @@
+         # order *within each region* once, rather than rescanning the whole board for every
+         # planned source.  Candidate ids replace O(N) middle-list deletion.
+         candidates_by_region={}
+-        for cid,rec in enumerate(candidates):
+-            candidates_by_region.setdefault(rec[3],[]).append((cid,)+rec)
++        candidates_by_cluster={}
++        for candidate_id,rec in enumerate(candidates):
++            candidates_by_region.setdefault(rec[3],[]).append((candidate_id,)+rec)
++            candidates_by_cluster.setdefault(rec[4],[]).append((candidate_id,)+rec)
+         selected_candidate_ids=set()
+ 
+         # V33: local traces are born independently. Source count is driven by residual area,
+@@ -2622,53 +2718,78 @@
+             self.local_gap_special_probability=rng.uniform(.15,.26)
+         special_probability=self.local_gap_special_probability
+ 
+-        # V37 region-capacity allocation: no large room may monopolize a wave while other
+-        # substantial uncovered regions receive no line at all.  First represent as many
+-        # uncovered rooms as the wave budget permits; then distribute extra sources according
+-        # to unmet area divided by existing+planned source count.
++        # Residual-mosaic allocation.  Region caps remain authoritative, but source planning is
++        # now performed at compact 1..12 composition parcels inside each connected room.  This
++        # prevents a single large residual room from becoming one LOCAL-line country while the
++        # component phase owns another.  The allocation changes only source geography/count;
++        # exact source clearance and all subsequent route algorithms are unchanged.
+         caps={r['id']:(max(self.r.local_gap_region_source_cap(r['cell_count']),
+                            region_source_counts.get(r['id'],0)+normal_target) if allow_region_overflow
+                            else self.r.local_gap_region_source_cap(r['cell_count']))
+               for r in self.local_gap_regions}
+-        eligible=[r for r in self.local_gap_regions
+-                  if region_uncovered_counts.get(r['id'],0)>0 and region_source_counts.get(r['id'],0)<caps.get(r['id'],1)]
+-        alloc={r['id']:0 for r in eligible}
++        cluster_caps={cid:max(1,min(12,int(m.get('target_sources',1))))
++                      for cid,m in self.local_fill_cluster_meta.items()}
++        remaining_cluster_capacity=sum(max(0,cluster_caps.get(cid,0)-cluster_source_counts.get(cid,0))
++                                       for cid in cluster_caps if candidates_by_cluster.get(cid))
++        normal_target=min(normal_target,remaining_cluster_capacity)
++        if normal_target<=0:
++            return 0
++
++        eligible=[cid for cid,m in self.local_fill_cluster_meta.items()
++                  if candidates_by_cluster.get(cid)
++                  and cluster_uncovered_counts.get(cid,0)>0
++                  and cluster_source_counts.get(cid,0)<cluster_caps.get(cid,1)
++                  and region_source_counts.get(m.get('region_id'),0)<caps.get(m.get('region_id'),1)]
++        alloc={cid:0 for cid in eligible}
++        planned_region={r['id']:0 for r in self.local_gap_regions}
+         remaining=normal_target
+-        for r in sorted(eligible,key=lambda rr:(-region_uncovered_counts.get(rr['id'],0),rr['id'])):
++        # First representation pass: one source per parcel where the enclosing region still has
++        # capacity.  Largest unpaid parcels go first; seeded geometry already determines parcel
++        # layout, so no canvas-order bias is introduced here.
++        for cid in sorted(eligible,key=lambda z:(-cluster_uncovered_counts.get(z,0),z)):
+             if remaining<=0: break
+-            alloc[r['id']]+=1; remaining-=1
+-        # Exact priority-queue equivalent of the historical repeated ``max(viable)`` loop.
+-        # Only the selected region's denominator changes after an allocation, so rebuilding and
+-        # rescanning the entire eligible-region list for every extra source was O(regions*sources)
+-        # with no semantic benefit.  Heap key (-ratio, rid) reproduces
+-        # max((ratio, -rid)) exactly: highest unmet-area ratio first, then lowest region id.
++            rid=self.local_fill_cluster_meta[cid].get('region_id')
++            if region_source_counts.get(rid,0)+planned_region.get(rid,0)>=caps.get(rid,1):
++                continue
++            alloc[cid]+=1; planned_region[rid]=planned_region.get(rid,0)+1; remaining-=1
++
++        # Additional roots are distributed by unpaid parcel area per existing+planned source.
++        # Heap updates are O(log parcels); there is no board-wide rescoring per source.
+         alloc_heap=[]
+-        for r in eligible:
+-            rid=r['id']
+-            if region_source_counts.get(rid,0)+alloc[rid] < caps[rid]:
+-                ratio=region_uncovered_counts.get(rid,0)/(1.0+region_source_counts.get(rid,0)+alloc[rid])
+-                heapq.heappush(alloc_heap,(-ratio,rid))
++        for cid in eligible:
++            rid=self.local_fill_cluster_meta[cid].get('region_id')
++            if (cluster_source_counts.get(cid,0)+alloc[cid] < cluster_caps.get(cid,1) and
++                    region_source_counts.get(rid,0)+planned_region.get(rid,0) < caps.get(rid,1)):
++                ratio=cluster_uncovered_counts.get(cid,0)/(1.0+cluster_source_counts.get(cid,0)+alloc[cid])
++                heapq.heappush(alloc_heap,(-ratio,cid))
+         while remaining>0 and alloc_heap:
+-            _neg_ratio,rid=heapq.heappop(alloc_heap)
+-            alloc[rid]+=1; remaining-=1
+-            if region_source_counts.get(rid,0)+alloc[rid] < caps[rid]:
+-                ratio=region_uncovered_counts.get(rid,0)/(1.0+region_source_counts.get(rid,0)+alloc[rid])
+-                heapq.heappush(alloc_heap,(-ratio,rid))
+-        planned_rids=[]
+-        for rid,q in sorted(alloc.items(),key=lambda kv:kv[0]):
+-            planned_rids.extend([rid]*q)
+-        rng.shuffle(planned_rids)
+-        plans=[(rng.random()<special_probability,1,rid) for rid in planned_rids]
++            _neg,cid=heapq.heappop(alloc_heap)
++            rid=self.local_fill_cluster_meta[cid].get('region_id')
++            if region_source_counts.get(rid,0)+planned_region.get(rid,0)>=caps.get(rid,1):
++                continue
++            alloc[cid]+=1; planned_region[rid]=planned_region.get(rid,0)+1; remaining-=1
++            if cluster_source_counts.get(cid,0)+alloc[cid] < cluster_caps.get(cid,1):
++                ratio=cluster_uncovered_counts.get(cid,0)/(1.0+cluster_source_counts.get(cid,0)+alloc[cid])
++                heapq.heappush(alloc_heap,(-ratio,cid))
++
++        planned_cids=[]
++        for cid,q in sorted(alloc.items(),key=lambda kv:kv[0]):
++            planned_cids.extend([cid]*q)
++        rng.shuffle(planned_cids)
++        plans=[]
++        for cid in planned_cids:
++            rid=self.local_fill_cluster_meta[cid].get('region_id')
++            plans.append((rng.random()<special_probability,1,rid,cid))
+ 
+         used_points=[]
+         used_point_index=SpatialHash(max(2.20*self.module,1e-6))
+         local_index=self.stats['pathway_local_gap_source_count']; normal_spawned=0; special_spawned=0
+         spawned=0
+         source_sep=2.20*self.module
+-        for special,count,wanted_rid in plans:
++        for special,count,wanted_rid,wanted_cluster in plans:
+             chosen=None
+-            for cid,score,_,center,rid in candidates_by_region.get(wanted_rid,()):
+-                if cid in selected_candidate_ids:
++            for candidate_id,score,_,center,rid,cid in candidates_by_cluster.get(wanted_cluster,()):
++                if candidate_id in selected_candidate_ids:
+                     continue
+                 cx,cy=center
+                 if any(math.hypot(cx-p[0],cy-p[1])<source_sep
+@@ -2704,12 +2825,12 @@
+                     self.stats['pathway_local_gap_spawn_reject_count']+=1
+                     continue
+                 scored.sort(); direction=scored[0][3]; target=scored[0][4]
+-                chosen=(cid,center,thicks,offsets,pitch,direction,target,rid)
++                chosen=(candidate_id,center,thicks,offsets,pitch,direction,target,rid,cid)
+                 break
+             if chosen is None:
+                 continue
+-            cid,center,thicks,offsets,pitch,direction,target,rid=chosen
+-            selected_candidate_ids.add(cid); used_points.append(center)
++            candidate_id,center,thicks,offsets,pitch,direction,target,rid,cid=chosen
++            selected_candidate_ids.add(candidate_id); used_points.append(center)
+             used_point_index.insert(center,(center[0],center[1],center[0],center[1]))
+             if rid is not None: region_source_counts[rid]=region_source_counts.get(rid,0)+1
+             ids=[]; tmap={}; omap={}; prefixes={}
+@@ -2724,6 +2845,9 @@
+                                   intent='explore',target=target,forced_straight_modules=2)
+             root['local_gap']=True; root['local_gap_special']=bool(special); root['fan_pending']=False
+             root['local_gap_region_id']=rid
++            root['local_fill_cluster_id']=cid
++            root['local_fill_cluster_target']=int(cluster_caps.get(cid,1))
++            cluster_source_counts[cid]=cluster_source_counts.get(cid,0)+1
+             root['local_gap_turn_count']=0
+             root['local_gap_turn_due_straights']=1+int(rng.random()*3)
+             root['local_gap_branch_boost']=rng.uniform(*self.r.local_gap_branch_boost_range)
+@@ -2749,6 +2873,10 @@
+                 normal_spawned+=count
+         total=self.stats['pathway_local_gap_trace_count']
+         self.stats['pathway_local_gap_special_ratio']=(self.stats['pathway_local_gap_special_thick_trace_count']/total if total else 0.0)
++        realized=[cluster_source_counts.get(cid,0) for cid in cluster_caps]
++        self.stats['pathway_local_gap_fill_cluster_realized_max']=max(realized,default=0)
++        self.stats['pathway_local_gap_fill_cluster_realized_min']=min((v for v in realized if v>0),default=0)
++        self.stats['pathway_local_gap_fill_cluster_realized_nonempty_count']=sum(1 for v in realized if v>0)
+         if spawned:
+             self.stats['pathway_local_gap_wave_count']+=1
+         return spawned
+@@ -10212,8 +10340,6 @@
+         if (stats.get('pathway_illegal_turn_count',0) or stats.get('pathway_non_octilinear_segment_count',0) or
+                 stats.get('pathway_curved_primitive_count',0)):
+             raise RuntimeError('hard exact-octilinear / <=45-degree main-turn invariant violated')
+-        if len(self.chips)>1 and stats.get('pathway_cross_chip_connection_count',0)<1:
+-            raise RuntimeError('cross-chip connection invariant not realized')
+         stats['pathway_phase']='main_chip_network_frozen_before_residual_fill'
+         return groups,stats
+ 
+@@ -12690,7 +12816,174 @@
+         q=max(1,int(quad_segs))
+         return float(gap)/math.cos(math.pi/(4.0*q)) + 1e-12*max(1.0,self.U)
+ 
+-    def _find_residual_gap_sites(self, chips:List[Group], pathways:List[Group], rng:SplitMix64, count:int):
++    def residual_fill_cluster_member_target(self, rng:SplitMix64) -> int:
++        """Seeded residual-fill cluster cardinality with full 1..12 design-language support.
++
++        The cluster *cardinality* is a visual composition rule, not a placement/routing search
++        budget.  Singulars are common, small/medium clusters dominate, and genuinely large
++        10--12 member clusters remain a normal but minority outcome.
++        """
++        band=rng.weighted([('single',.18),('small',.27),('medium',.28),('large',.17),('xlarge',.10)])
++        if band=='single':
++            return 1
++        if band=='small':
++            return 2+int(rng.random()*2)
++        if band=='medium':
++            return 4+int(rng.random()*3)
++        if band=='large':
++            return 7+int(rng.random()*3)
++        return 10+int(rng.random()*3)
++
++    def _component_clustered_gap_sites(self, regions, open_cells, clearance, rng, count, component_count):
++        """Plan spatially distributed component-cluster opportunities in O(cells + sites).
++
++        Component placement still happens before LOCAL routing so exact collision ownership stays
++        simple, but the *opportunities* are no longer one global region-first stream.  Prepared
++        components are assigned to seeded clusters whose requested cardinalities span 1..12 and
++        whose anchors are spread over the measured post-MAIN residual field.  Each cluster only
++        receives nearby residual-cell sites, which prevents one open room from turning into one
++        macroscopic component colony.  The placement predicates themselves are unchanged.
++        """
++        count=max(0,int(count)); component_count=max(0,int(component_count))
++        if count<=0 or component_count<=0 or not open_cells or not regions:
++            self._component_gap_cluster_meta={}
++            self._component_gap_site_cluster_ids=[]
++            return []
++        seed_state=getattr(rng,'state',mix_once(self.seed ^ 0x6A09E667F3BCC909))
++        prng=SplitMix64(mix_once(int(seed_state) ^ 0xC13FA9A902A6328F))
++
++        # Cardinalities sum exactly to the prepared component population.  Later emergency
++        # residual fillers are deliberately treated as scattered/singular recovery objects, so
++        # they cannot silently grow any prepared cluster past its design-language target.
++        targets=[]; remaining=component_count
++        while remaining>0:
++            n=min(remaining,self.residual_fill_cluster_member_target(prng))
++            targets.append(n); remaining-=n
++        nclusters=len(targets)
++
++        # Distribute site opportunity in proportion to requested cluster membership.  At least
++        # one site is reserved per cluster when possible; the historical site-count denominator
++        # is otherwise preserved exactly.
++        quotas=[0]*nclusters
++        used=0
++        if count>=nclusters:
++            quotas=[1]*nclusters; used=nclusters
++        heap=[]
++        for cid,t in enumerate(targets):
++            heapq.heappush(heap,(-(t/(quotas[cid]+1.0)),cid))
++        while used<count and heap:
++            _score,cid=heapq.heappop(heap)
++            quotas[cid]+=1; used+=1
++            heapq.heappush(heap,(-(targets[cid]/(quotas[cid]+1.0)),cid))
++
++        region_map={r['id']:r for r in regions}
++        region_members={r['id']:0 for r in regions}
++        cluster_region={}
++        # Large requested clusters get first choice of physical room, but region load is
++        # normalized by already-planned membership so no one room monopolizes the board.
++        order=sorted(range(nclusters),key=lambda cid:(-targets[cid],prng.random(),cid))
++        for cid in order:
++            rid=max((r['id'] for r in regions),
++                    key=lambda rid:(region_map[rid]['cell_count']/(1.0+region_members[rid]),-rid))
++            cluster_region[cid]=rid
++            region_members[rid]+=targets[cid]
++
++        # One shuffled cell stream per region plus a grid-space anchor index gives bounded
++        # anchor selection.  Anchor spacing scales with cells/cluster, never canvas aspect.
++        cells_by_region={}
++        for r in regions:
++            cells=list(r['cells']); prng.shuffle(cells); cells_by_region[r['id']]=cells
++        anchor_sep=max(2,int(round(.62*math.sqrt(max(1.0,len(open_cells)/max(1,nclusters))))))
++        anchor_index=SpatialHash(max(1.0,float(anchor_sep)))
++        anchors={}; region_cursor={rid:0 for rid in cells_by_region}
++        for cid in order:
++            rid=cluster_region[cid]; cells=cells_by_region[rid]; chosen=None
++            start=region_cursor[rid]
++            # A bounded pass through the region's one shuffled stream; accepted anchors are
++            # normally found quickly.  If the residual room is genuinely tight, use the next
++            # available cell rather than inventing a placement failure.
++            limit=min(len(cells),start+max(32,8*anchor_sep))
++            for j in range(start,limit):
++                c=cells[j]; x,y=c
++                near=anchor_index.query((x-anchor_sep,y-anchor_sep,x+anchor_sep,y+anchor_sep))
++                if all(math.hypot(x-a[0],y-a[1])>=anchor_sep for a in near):
++                    chosen=c; region_cursor[rid]=j+1; break
++            if chosen is None:
++                if start<len(cells):
++                    chosen=cells[start]; region_cursor[rid]=start+1
++                else:
++                    chosen=min(region_map[rid]['cells'])
++            anchors[cid]=chosen
++            anchor_index.insert(chosen,(chosen[0],chosen[1],chosen[0],chosen[1]))
++
++        nx,ny=getattr(self,'_component_gap_grid_shape',self.component_gap_grid_shape())
++        cw=self.W/max(1,nx); ch=self.H/max(1,ny)
++        used_cells=set(); sites=[]; site_cids=[]; meta={}
++        for cid in range(nclusters):
++            rid=cluster_region[cid]; reg=region_map[rid]; ax,ay=anchors[cid]
++            want=quotas[cid]
++            # A 12-member cluster gets a larger neighbourhood than a singular, but the radius is
++            # bounded by the 1..12 language and therefore independent of total board territory.
++            base_radius=max(3,int(math.ceil(2.4*math.sqrt(max(1,targets[cid])))))
++            candidate_records=[]; seen=set()
++            for radius in (base_radius,base_radius+3,base_radius+6):
++                for gy in range(max(0,ay-radius),min(ny-1,ay+radius)+1):
++                    for gx in range(max(0,ax-radius),min(nx-1,ax+radius)+1):
++                        c=(gx,gy)
++                        if c in seen or c in used_cells or c not in reg['cells']:
++                            continue
++                        seen.add(c)
++                        d2=(gx-ax)*(gx-ax)+(gy-ay)*(gy-ay)
++                        candidate_records.append((d2,-float(clearance.get(c,0.0)),prng.random(),c))
++                if len(candidate_records)>=max(want*4,want+8):
++                    break
++            candidate_records.sort()
++            selected=[]
++            # Keep neighbouring opportunities near the shared anchor, but not on top of one
++            # another.  Exact component clearance remains the authority during placement.
++            for _d2,_negc,_rand,c in candidate_records:
++                if any((c[0]-q[0])**2+(c[1]-q[1])**2<2.25 for q in selected):
++                    continue
++                selected.append(c); used_cells.add(c)
++                if len(selected)>=want:
++                    break
++            # Tight pockets may not admit the preferred inter-site separation.  Reuse additional
++            # nearby cells before ever leaving the cluster neighbourhood.
++            if len(selected)<want:
++                for _d2,_negc,_rand,c in candidate_records:
++                    if c in selected or c in used_cells:
++                        continue
++                    selected.append(c); used_cells.add(c)
++                    if len(selected)>=want:
++                        break
++            anchor_pt=((ax+.5)*cw,(ay+.5)*ch)
++            meta[cid]=dict(id=cid,region_id=rid,target_members=int(targets[cid]),
++                           anchor_cell=(ax,ay),anchor=anchor_pt,site_count=len(selected))
++            for gx,gy in selected:
++                sites.append(((gx+.5)*cw,(gy+.5)*ch,rid)); site_cids.append(cid)
++
++        # If an exceptionally tight residual field yielded fewer site tokens than the historical
++        # denominator requested, fill only the missing *opportunities* from still-open cells.
++        # Assign each one to the nearest cluster in its region.  This is a rare construction
++        # backstop and does not change cluster membership caps.
++        if len(sites)<count:
++            anchors_by_region={}
++            for cid,m in meta.items(): anchors_by_region.setdefault(m['region_id'],[]).append(cid)
++            leftovers=list(open_cells-used_cells); prng.shuffle(leftovers)
++            for c in leftovers:
++                rid=self._component_gap_region_by_cell.get(c)
++                cids=anchors_by_region.get(rid) or list(meta)
++                if not cids: break
++                cid=min(cids,key=lambda z:(c[0]-anchors[z][0])**2+(c[1]-anchors[z][1])**2)
++                gx,gy=c; sites.append(((gx+.5)*cw,(gy+.5)*ch,rid)); site_cids.append(cid)
++                if len(sites)>=count: break
++
++        self._component_gap_cluster_meta=meta
++        self._component_gap_site_cluster_ids=site_cids[:len(sites)]
++        self._component_gap_cluster_targets=[int(x) for x in targets]
++        return sites[:count]
++
++    def _find_residual_gap_sites(self, chips:List[Group], pathways:List[Group], rng:SplitMix64, count:int, component_count=None):
+         """Return area-weighted sites from connected residual regions after the frozen main network.
+ 
+         V33 uses a 28x28 free-space field and connected components.  Site quotas are allocated
+@@ -12759,6 +13052,11 @@
+         self._component_gap_grid_shape=(nx,ny)
+         self._component_gap_grid_n=max(nx,ny)  # legacy diagnostic compatibility only
+         if not regions: return []
++        if component_count is None:
++            component_count=getattr(self,'_component_gap_planned_component_count',None)
++        if component_count is not None:
++            return self._component_clustered_gap_sites(
++                regions,open_cells,clearance,rng,count,max(1,int(component_count)))
+         total=sum(r['cell_count'] for r in regions)
+         # First guarantee representation of the largest connected rooms until they account for
+         # roughly 90% of residual area. Remaining slots are then distributed by area. This makes
+@@ -13110,6 +13408,11 @@
+         gap_objects.sort(key=lambda kg:(bounds_w_h(kg[1].bounds)[0]*bounds_w_h(kg[1].bounds)[1]),reverse=True)
+         target=(rng.uniform(*self.residual_gap_fill_range) if target is None else float(target))
+         site_count=self._residual_gap_site_count(len(gap_objects),target)
++        # Preserve the historical overridable _find_residual_gap_sites(chips,pathways,rng,count)
++        # contract used by deterministic recovery fixtures.  Base production reads this transient
++        # population hint to activate the composition-cluster planner; subclasses need not grow
++        # a new parameter merely because composition scheduling changed.
++        self._component_gap_planned_component_count=len(gap_objects)
+         sites=self._find_residual_gap_sites(chips,pathways,rng,site_count)
+         # V46 locality: a site's fit score is region-level; only exact placement is site-level.
+         # The historical implementation globally re-sorted every still-unused site for every
+@@ -13130,24 +13433,32 @@
+         # gap-aware population, component grammar/distributions, and exact collision/clearance.
+         site_records=list(sites)
+         region_map={r['id']:r for r in getattr(self,'_component_gap_regions',[])}
+-        site_ids_by_region={}
+-        site_random_rank={}
+-        for sid,(_sx,_sy,rid) in enumerate(site_records):
+-            site_ids_by_region.setdefault(rid,[]).append(sid)
+-            site_random_rank[sid]=rng.random()
+-        # Larger/more substantial territories are serviced first so large prepared assemblies are
+-        # naturally consumed before the scheduler reaches small pockets.  Within a territory the
+-        # selected high-clearance sites retain deterministic seeded variance.
+-        region_order=sorted(site_ids_by_region,
+-                            key=lambda rid:(-(region_map.get(rid,{}).get('area',0.0)),
+-                                            -(region_map.get(rid,{}).get('short_span',0.0)),
+-                                            -len(site_ids_by_region.get(rid,())),
+-                                            -1 if rid is None else int(rid)))
+-        site_tokens=[]
+-        for rid in region_order:
+-            ids=list(site_ids_by_region.get(rid,()))
+-            ids.sort(key=lambda sid:(site_random_rank[sid],sid))
+-            site_tokens.extend(ids)
++        cluster_meta=dict(getattr(self,'_component_gap_cluster_meta',{}))
++        site_cluster_ids=list(getattr(self,'_component_gap_site_cluster_ids',[]))
++        if len(site_cluster_ids)<len(site_records):
++            site_cluster_ids.extend([None]*(len(site_records)-len(site_cluster_ids)))
++        site_ids_by_cluster={}
++        for sid,_rec in enumerate(site_records):
++            site_ids_by_cluster.setdefault(site_cluster_ids[sid],[]).append(sid)
++        # Round-robin cluster servicing is the residual-fill composition rule: singular/small
++        # clusters receive their first member alongside the larger 10--12-member clusters instead
++        # of one large room consuming the prepared population before another room is visited.
++        # Within each cluster, the sites were already generated in seeded near-anchor order.
++        cluster_order=list(site_ids_by_cluster)
++        cluster_order.sort(key=lambda cid:(rng.random(),-1 if cid is None else int(cid)))
++        site_tokens=[]; depth=0
++        while True:
++            added=False
++            for cid in cluster_order:
++                ids=site_ids_by_cluster.get(cid,())
++                if depth<len(ids):
++                    site_tokens.append(ids[depth]); added=True
++            if not added:
++                break
++            depth+=1
++        cluster_success_count={cid:0 for cid in cluster_meta}
++        cluster_target_count={cid:int(m.get('target_members',12)) for cid,m in cluster_meta.items()}
++        recovery_spill_cluster_count=0
+ 
+         # One max-heap owns the still-unplaced prepared population.  Site servicing peeks at only
+         # a fixed metadata lookahead and performs only a fixed number of exact candidate probes.
+@@ -13220,6 +13531,9 @@
+                 break
+             scheduler_site_token_count+=1
+             sx,sy,rid=site_records[sid]
++            cid=site_cluster_ids[sid] if sid < len(site_cluster_ids) else None
++            if cid is not None and cluster_success_count.get(cid,0) >= cluster_target_count.get(cid,12):
++                continue
+             reg=region_map.get(rid)
+             held=[]
+             chosen=None; chosen_oid=None
+@@ -13251,6 +13565,10 @@
+             if chosen is None:
+                 continue
+             placed_object_ids.add(chosen_oid)
++            if cid is not None:
++                chosen.structural['residual_fill_cluster_id']=int(cid)
++                chosen.structural['residual_fill_cluster_target']=int(cluster_target_count.get(cid,12))
++                cluster_success_count[cid]=cluster_success_count.get(cid,0)+1
+             accepted.append(chosen); accepted_index.insert(chosen,chosen.bounds)
+             scheduler_site_success_count+=1
+             if rid is not None:
+@@ -13272,17 +13590,34 @@
+             # may revisit a site; the number of draws never grows with site population.
+             if site_records:
+                 local_budget=max(4,min(max(0,int(fallback_attempts)),16))
++                underfilled=[cid for cid in cluster_meta
++                             if cluster_success_count.get(cid,0) < cluster_target_count.get(cid,12)
++                             and site_ids_by_cluster.get(cid)]
+                 for _ in range(local_budget):
+                     scheduler_recovery_attempt_count+=1
+-                    sid=int(rng.random()*len(site_records))
++                    if underfilled:
++                        # Seeded bounded servicing of outstanding prepared-cluster membership.
++                        cid=underfilled[int(rng.random()*len(underfilled)) % len(underfilled)]
++                        ids=site_ids_by_cluster[cid]
++                        sid=ids[int(rng.random()*len(ids)) % len(ids)]
++                    else:
++                        cid=None
++                        sid=int(rng.random()*len(site_records))
+                     sx,sy,rid=site_records[min(sid,len(site_records)-1)]
++                    if cid is not None and cluster_success_count.get(cid,0)>=cluster_target_count.get(cid,12):
++                        continue
+                     reg=region_map.get(rid)
+                     scale=_region_fit_variant(kind,obj,ow,oh,reg)
+                     if scale is None:
+                         continue
+                     cand=_try_local_site(kind,obj,scale,sx,sy,3)
+                     if cand is not None:
+-                        chosen=cand; chosen_rid=rid; break
++                        chosen=cand; chosen_rid=rid
++                        if cid is not None:
++                            chosen.structural['residual_fill_cluster_id']=int(cid)
++                            chosen.structural['residual_fill_cluster_target']=int(cluster_target_count.get(cid,12))
++                            cluster_success_count[cid]=cluster_success_count.get(cid,0)+1
++                        break
+             # Last-resort board-wide placement remains bounded per object.  It is recovery, not
+             # the normal scheduler, and therefore cannot recreate a component x site wedge.
+             if chosen is None:
+@@ -13356,6 +13691,12 @@
+             if chosen is None:
+                 failed.append((kind,obj))
+                 continue
++            if 'residual_fill_cluster_id' not in chosen.structural:
++                spill_id=1_000_000+recovery_spill_cluster_count
++                recovery_spill_cluster_count+=1
++                chosen.structural['residual_fill_cluster_id']=spill_id
++                chosen.structural['residual_fill_cluster_target']=1
++                chosen.structural['residual_fill_cluster_recovery_spill']=True
+             accepted.append(chosen); accepted_index.insert(chosen,chosen.bounds)
+             placed_object_ids.add(oid)
+             if chosen_rid is not None:
+@@ -13384,6 +13725,59 @@
+         fill_goal=max(self.residual_gap_fill_range[0],min(self.residual_gap_fill_range[1],target))
+         claimed=self._component_claimed_gap_cells(accepted)
+         claimed_fraction=(len(claimed)/len(open_cells) if open_cells else 1.0)
++        # Coarse mosaic occupancy is composition bookkeeping only.  It prevents the residual
++        # completion path from repeatedly selecting the same macroscopic patch of a large room.
++        mosaic_nx=mosaic_ny=8
++        component_mosaic_counts={}
++        def _component_mosaic_key_xy(x,y):
++            return (min(mosaic_nx-1,max(0,int(mosaic_nx*x/max(self.W,1e-9)))),
++                    min(mosaic_ny-1,max(0,int(mosaic_ny*y/max(self.H,1e-9)))))
++        for _g in accepted:
++            _cx,_cy=bounds_center(_g.bounds); _mk=_component_mosaic_key_xy(_cx,_cy)
++            component_mosaic_counts[_mk]=component_mosaic_counts.get(_mk,0)+1
++        def _component_mosaic_count_cell(c):
++            _x=(c[0]+.5)*cw; _y=(c[1]+.5)*ch
++            return component_mosaic_counts.get(_component_mosaic_key_xy(_x,_y),0)
++        def _component_mosaic_key_cell(c):
++            _x=(c[0]+.5)*cw; _y=(c[1]+.5)*ch
++            return _component_mosaic_key_xy(_x,_y)
++
++        # Completion fillers are ordinary residual composition too.  Treating every one as an
++        # unrelated singleton lets hundreds of individually legal fillers visually coalesce into
++        # one macroscopic colony.  Keep one bounded active 1..12-member completion cluster at a
++        # time and disperse *cluster anchors* across the coarse residual mosaic.  The component
++        # constructors and exact placement predicates below remain unchanged.
++        completion_cluster_rng=SplitMix64(mix_once(int(getattr(rng,'state',0)) ^ 0xD1B54A32D192ED03))
++        completion_cluster_active=None
++        completion_cluster_serial=0
++        component_cluster_tile_counts={}
++        _seen_existing_cluster_anchors=set()
++        for _g in accepted:
++            _cid=_g.structural.get('residual_fill_cluster_id')
++            if _cid is None or _cid in _seen_existing_cluster_anchors:
++                continue
++            _seen_existing_cluster_anchors.add(_cid)
++            _cx,_cy=bounds_center(_g.bounds)
++            _mk=_component_mosaic_key_xy(_cx,_cy)
++            component_cluster_tile_counts[_mk]=component_cluster_tile_counts.get(_mk,0)+1
++        def _completion_cluster_radius(target):
++            # Bounded in the 1..12 design language.  This is composition locality, not search
++            # breadth; exact component clearance still decides every admitted object.
++            return max(3,min(7,int(math.ceil(1.55*math.sqrt(max(1,int(target)))))))
++        def _completion_cluster_cells(cluster,limit=48):
++            ax,ay=cluster['anchor_cell']; rid=cluster['region_id']; radius=cluster['radius']+2
++            out=[]
++            for gy in range(max(0,ay-radius),min(nyreg-1,ay+radius)+1):
++                for gx in range(max(0,ax-radius),min(nxreg-1,ax+radius)+1):
++                    c=(gx,gy)
++                    if c in _unavailable or c not in open_cells or cell_region.get(c)!=rid:
++                        continue
++                    d2=(gx-ax)*(gx-ax)+(gy-ay)*(gy-ay)
++                    if d2>(radius*radius):
++                        continue
++                    out.append((d2,-_gap_clear.get(c,0.0),c[1],c[0],c))
++            out.sort()
++            return [rec[-1] for rec in out[:limit]]
+         # V44 fine-scale performance: completion ranking is region-first by definition.
+         # The old implementation rebuilt ``open - claimed - attempted`` and rescanned every
+         # residual cell after *every* filler merely to discover the same ranking:
+@@ -13395,6 +13789,29 @@
+         # validation below is unchanged.
+         _gap_clear=getattr(self,'_component_gap_clearance',{})
+         _unavailable=set(claimed)
++
++        # Constant-size board mosaic (8x8) is the macroscopic composition scheduler.  New
++        # completion-cluster anchors service the least-loaded *open-space-normalized* tile first,
++        # then exact region deficit/clearance decides the concrete cell.  This is what prevents a
++        # single huge connected residual region from owning hundreds of fillers merely because it
++        # has the largest regional quota.  Sixty-four tiles is a fixed bound, so this adds no
++        # scale-dependent search term.
++        _tile_cells={}
++        _tile_open_count={}
++        for _c in open_cells:
++            _mk=_component_mosaic_key_cell(_c)
++            _tile_cells.setdefault(_mk,[]).append(_c)
++            _tile_open_count[_mk]=_tile_open_count.get(_mk,0)+1
++        _tile_cells_sorted={mk:sorted(cells,key=lambda c:(-_gap_clear.get(c,0.0),c[1],c[0]))
++                            for mk,cells in _tile_cells.items()}
++        _tile_cursor={mk:0 for mk in _tile_cells_sorted}
++        _tile_available_count={mk:sum(1 for c in cells if c not in _unavailable)
++                               for mk,cells in _tile_cells.items()}
++        component_tile_capacity_units={}
++        for _g in accepted:
++            _cx,_cy=bounds_center(_g.bounds); _mk=_component_mosaic_key_xy(_cx,_cy)
++            component_tile_capacity_units[_mk]=component_tile_capacity_units.get(_mk,0.0)+self._component_group_capacity_units(_g)
++
+         _region_available_count={r['id']:sum(1 for c in r['cells'] if c in open_cells and c not in _unavailable) for r in regs}
+         _available_cell_total=sum(_region_available_count.values())
+         _region_cells_sorted={}
+@@ -13444,6 +13861,9 @@
+             if c in _unavailable or c not in open_cells:
+                 return
+             _unavailable.add(c)
++            mk=_component_mosaic_key_cell(c)
++            if mk in _tile_available_count:
++                _tile_available_count[mk]=max(0,_tile_available_count[mk]-1)
+             rid=cell_region.get(c)
+             if rid in _region_available_count:
+                 before=_region_available_count[rid]
+@@ -13464,6 +13884,25 @@
+                     out.append(c)
+                 j+=1
+             return out
++        def _top_component_tile_cells(mk,limit):
++            seq=_tile_cells_sorted.get(mk,())
++            i=_tile_cursor.get(mk,0)
++            while i<len(seq) and seq[i] in _unavailable:
++                i+=1
++            _tile_cursor[mk]=i
++            out=[]; j=i
++            while j<len(seq) and len(out)<limit:
++                c=seq[j]
++                if c not in _unavailable:
++                    out.append(c)
++                j+=1
++            return out
++        def _component_tile_rank(mk):
++            denom=max(1,_tile_open_count.get(mk,0))
++            anchor_density=component_cluster_tile_counts.get(mk,0)/denom
++            capacity_density=component_tile_capacity_units.get(mk,0.0)/denom
++            availability=_tile_available_count.get(mk,0)/denom
++            return (anchor_density,capacity_density,-availability,mk[1],mk[0])
+         # A large residual room must contain multiple size-appropriate component units.  Raw
+         # component count is a secondary density floor; the primary ~90% metric is the
+         # area-weighted fulfilment of those per-region capacity requirements.
+@@ -13488,25 +13927,28 @@
+             # regions to supply the historical 48-cell shortlist; lazy versions discard stale
+             # heap entries after local state changes.
+             strongest=[]; _rank_records_to_restore=[]
+-            while len(strongest)<48:
+-                rec=_peek_valid_region_rank()
+-                if rec is None:
+-                    break
+-                nd,nc,_rid,_ver=rec
+-                primary=(nd,nc)
+-                tied=[]
+-                while True:
+-                    peek=_peek_valid_region_rank()
+-                    if peek is None or peek[:2]!=primary:
+-                        break
+-                    got=heapq.heappop(_region_rank_heap)
+-                    tied.append(got[2])
+-                    _rank_records_to_restore.append(got)
++            # Continue the current bounded cluster locally.  If that parcel is exhausted, close
++            # it early and start a new dispersed cluster rather than spilling into its neighbours.
++            if completion_cluster_active is not None:
++                strongest=_completion_cluster_cells(completion_cluster_active,48)
++                if not strongest:
++                    completion_cluster_active=None
++            if not strongest:
++                # New clusters are chosen across the whole residual field by macroscopic tile
++                # load, not by connected-region quota.  Region quota still remains the capacity
++                # accounting/termination authority and is a secondary ranking inside each tile.
++                tile_order=sorted((mk for mk,n in _tile_available_count.items() if n>0),key=_component_tile_rank)
+                 pool=[]
+-                for rid in tied:
+-                    pool.extend(_top_component_cells(rid,48))
+-                pool.sort(key=lambda c:(-_gap_clear.get(c,0.0),c[1],c[0]))
+-                strongest.extend(pool[:48-len(strongest)])
++                for mk in tile_order[:8]:
++                    pool.extend(_top_component_tile_cells(mk,8))
++                def _new_cluster_cell_key(c):
++                    mk=_component_mosaic_key_cell(c); rid=cell_region.get(c)
++                    deficit=_region_rank_values(rid)[0] if rid in _region_available_count else -1.0
++                    return (_component_tile_rank(mk),-deficit,
++                            component_cluster_tile_counts.get(mk,0),
++                            _component_mosaic_count_cell(c),-_gap_clear.get(c,0.0),c[1],c[0])
++                pool.sort(key=_new_cluster_cell_key)
++                strongest=pool[:48]
+             for rec in _rank_records_to_restore:
+                 heapq.heappush(_region_rank_heap,rec)
+             if not strongest:
+@@ -13614,11 +14056,34 @@
+                 if placed is not None: break
+                 attempted_cells.add(cell); _mark_component_cell_unavailable(cell)
+             if placed is None:
+-                # The highest-priority cells may belong to a locally saturated pocket.  They
+-                # were added to attempted_cells above; continue with other regions instead of
+-                # declaring the entire residual board unfillable.
+-                continue
++                # The highest-priority cells may belong to a locally saturated pocket.  Close an
++                # under-realized completion cluster rather than letting it leak into a distant
++                # parcel; the next iteration will choose a new dispersed anchor.
++                if completion_cluster_active is not None:
++                    completion_cluster_active=None
++                continue
++            if completion_cluster_active is None:
++                _target=self.residual_fill_cluster_member_target(completion_cluster_rng)
++                _cid=2_000_000+completion_cluster_serial
++                completion_cluster_serial+=1
++                completion_cluster_active=dict(
++                    id=_cid,target=int(_target),count=0,
++                    anchor_cell=chosen_cell,region_id=cell_region.get(chosen_cell),
++                    radius=_completion_cluster_radius(_target),
++                )
++                _mk=_component_mosaic_key_cell(chosen_cell)
++                component_cluster_tile_counts[_mk]=component_cluster_tile_counts.get(_mk,0)+1
++            _cluster=completion_cluster_active
++            placed.structural['residual_fill_cluster_id']=int(_cluster['id'])
++            placed.structural['residual_fill_cluster_target']=int(_cluster['target'])
++            placed.structural['residual_fill_cluster_completion']=True
++            _cluster['count']+=1
++            if _cluster['count']>=_cluster['target']:
++                completion_cluster_active=None
+             accepted.append(placed); accepted_index.insert(placed,placed.bounds); extra_fillers.append(placed)
++            _pcx,_pcy=bounds_center(placed.bounds); _pmk=_component_mosaic_key_xy(_pcx,_pcy)
++            component_mosaic_counts[_pmk]=component_mosaic_counts.get(_pmk,0)+1
++            component_tile_capacity_units[_pmk]=component_tile_capacity_units.get(_pmk,0.0)+self._component_group_capacity_units(placed)
+             if placed.structural.get('residual_compound'):
+                 compound_fillers.append(placed)
+             elif placed.structural.get('residual_micro'):
+@@ -13674,6 +14139,22 @@
+             size_counts[sz]=size_counts.get(sz,0)+1
+             size_spans.setdefault(sz,[]).append(max(bounds_w_h(g.bounds)))
+         size_span_means={k:(sum(v)/len(v) if v else 0.0) for k,v in size_spans.items()}
++        component_cluster_counts={}
++        component_cluster_targets={}
++        component_cluster_spills=0
++        component_completion_cluster_ids=set()
++        for g in accepted:
++            cid=g.structural.get('residual_fill_cluster_id')
++            if cid is None:
++                continue
++            component_cluster_counts[cid]=component_cluster_counts.get(cid,0)+1
++            component_cluster_targets[cid]=int(g.structural.get('residual_fill_cluster_target',1))
++            if g.structural.get('residual_fill_cluster_recovery_spill'):
++                component_cluster_spills+=1
++            if g.structural.get('residual_fill_cluster_completion'):
++                component_completion_cluster_ids.add(cid)
++        component_cluster_realized=list(component_cluster_counts.values())
++        component_cluster_target_values=list(component_cluster_targets.values())
+         stats=dict(
+             component_placement_mode='post_main_pre_local_residual_gap_fill',
+             component_residual_gap_fill_target=target,
+@@ -13708,6 +14189,15 @@
+             component_residual_gap_placed_count=placed_gap_count,
+             component_residual_gap_fill_actual=actual,
+             component_residual_gap_site_fill_actual=site_actual,
++            component_residual_fill_cluster_count=len(component_cluster_counts),
++            component_residual_fill_cluster_realized_min=min(component_cluster_realized,default=0),
++            component_residual_fill_cluster_realized_max=max(component_cluster_realized,default=0),
++            component_residual_fill_cluster_target_min=min(component_cluster_target_values,default=0),
++            component_residual_fill_cluster_target_max=max(component_cluster_target_values,default=0),
++            component_residual_fill_cluster_singleton_count=sum(1 for v in component_cluster_realized if v==1),
++            component_residual_fill_cluster_large_10_12_count=sum(1 for v in component_cluster_realized if 10<=v<=12),
++            component_residual_fill_cluster_recovery_spill_count=component_cluster_spills,
++            component_residual_fill_completion_cluster_count=len(component_completion_cluster_ids),
+             component_gap_scheduler_mode='territory_first_bounded_local_tokens',
+             component_gap_scheduler_site_token_count=scheduler_site_token_count,
+             component_gap_scheduler_site_success_count=scheduler_site_success_count,

@@ -1,0 +1,144 @@
+--- 12:35_promoted/pcb_v48_renderer.py
++++ 14:44_promoted/pcb_v48_renderer.py
+@@ -2928,6 +2928,15 @@
+             for proposal in seq:
+                 if child.get('status')!='active': break
+                 self._accept(child,proposal)
++            # Early fan-out replaces the root bus only because this exact maneuver proves the
++            # newborn cohort's four-module survival.  Preserve those owned structural segments
++            # as a topology rollback floor.  A later reroute can change the route beyond the
++            # fan, but cannot rewind through the certificate and leave an impossible
++            # under-survival branch_stage cohort behind.
++            child['recovery_floor_segments']=max(
++                int(child.get('recovery_floor_segments',0)),len(child.get('path',()))-1)
++            self.stats.setdefault('pathway_transactional_survival_floor_lock_count',0)
++            self.stats['pathway_transactional_survival_floor_lock_count']+=1
+         # The fan transaction itself discharged every child's four-module survival debt, so the
+         # old straight source-ray reservations are no longer needed and must not occupy empty
+         # space after the children have visibly peeled away.
+@@ -3134,8 +3143,63 @@
+         # gesture against the already-existing board.  If either side cannot emerge, the
+         # parent stays active and may advance/reroute before trying to split again.
+         blocked=False
++        # A MAIN family that is still below the hard four-module survival floor may branch,
++        # but it may not hand that debt to newborn children and hope later arbitration happens
++        # to complete their mandatory rebase/peel.  That was a real totality hole: the parent
++        # topology could be discarded after only an individual viability probe, then two young
++        # siblings could HOLD/block one another until the finite persistence clock expired with
++        # ``under_survival_floor + branch_stage`` debt.
++        #
++        # For such young MAIN branches, prove the *complete* mandatory structural maneuver for
++        # every child from the same committed snapshot and require that maneuver itself to carry
++        # every physical lane across the unchanged four-module survival floor.  The tiny sibling
++        # transaction is also checked at rendered-lane level, because coarse cohort envelopes
++        # intentionally overlap around a legal split.  Only after this proof succeeds may the
++        # parent topology be replaced; the proved sequence is then committed immediately.
++        young_main_transaction=(not f.get('local_gap') and
++                                self._minimum_materialized_lane_length(f) <
++                                self.main_launch_maturity_modules*self.module-1e-7)
++        young_sequences=[]
++        if young_main_transaction:
++            physical_tails={}
++            for child in children:
++                seq=self._structural_birth_sequence(child)
++                if seq is None:
++                    blocked=True
++                    break
++                tf=dict(child)
++                tf['path']=list(child.get('path',()))+[p['end'] for p in seq]
++                tf['dir']=seq[-1]['dir'] if seq else child['dir']
++                paths=self._materialized_paths(tf)
++                if any(
++                    sum(math.hypot(b[0]-a[0],b[1]-a[1]) for a,b in zip(paths.get(tid,()),paths.get(tid,())[1:])) <
++                    self.main_launch_maturity_modules*self.module-1e-7
++                    for tid in child.get('ids',())
++                ):
++                    blocked=True
++                    break
++                physical_tails[child['id']]={
++                    tid:self._offset_points(tf['path'],child['offsets'][tid])
++                    for tid in child.get('ids',())}
++                young_sequences.append((child,seq))
++            if not blocked:
++                for i,(ca,_sa) in enumerate(young_sequences):
++                    for cb,_sb in young_sequences[i+1:]:
++                        for ta,pa in physical_tails[ca['id']].items():
++                            if len(pa)<2: continue
++                            la=LineString(pa)
++                            for tb,pb in physical_tails[cb['id']].items():
++                                if len(pb)<2: continue
++                                required=.5*(ca['thicknesses'][ta]+cb['thicknesses'][tb])+self.r.pathway_interroute_keepout
++                                lb=LineString(pb)
++                                if la.intersects(lb) or la.distance(lb)<required-1e-7:
++                                    blocked=True
++                                    break
++                            if blocked: break
++                        if blocked: break
++                    if blocked: break
+         strict_birth=((f.get('travel',0.0)<5*self.module or rescue_branch) and not local_parallel_split)
+-        for child in children:
++        for child in children if not young_main_transaction else ():
+             if strict_birth:
+                 clear=self._child_birth_viable(child)
+             else:
+@@ -3156,6 +3220,31 @@
+         f['status']='branched'
+         self.stats['pathway_split_count']+=1
+         if f.get('local_gap'): self.stats['pathway_local_gap_split_count']+=1
++        if young_main_transaction:
++            for child,seq in young_sequences:
++                for proposal in seq:
++                    if child.get('status')!='active': break
++                    self._accept(child,proposal)
++                # The committed structural maneuver is the certificate that made replacing
++                # the young parent topology legal.  Ordinary traceback may reroute *after*
++                # that certificate, but it may not erase it while leaving the child topology
++                # in existence; doing so recreates an under-survival branch_stage child that
++                # could never have been born legally.
++                child['recovery_floor_segments']=max(
++                    int(child.get('recovery_floor_segments',0)),len(child.get('path',()))-1)
++                self.stats.setdefault('pathway_transactional_survival_floor_lock_count',0)
++                self.stats['pathway_transactional_survival_floor_lock_count']+=1
++            if any(
++                child.get('status')=='active' and
++                self._minimum_materialized_lane_length(child) <
++                self.main_launch_maturity_modules*self.module-1e-7
++                for child,_seq in young_sequences
++            ):
++                raise RuntimeError(
++                    f'young MAIN branch survival transaction invariant failed '
++                    f'(sample_seed={self.sseed}, parent={f["id"]})')
++            self.stats.setdefault('pathway_young_branch_survival_transaction_count',0)
++            self.stats['pathway_young_branch_survival_transaction_count']+=1
+         return children
+ 
+     def _should_branch(self,f):
+@@ -5186,6 +5275,18 @@
+             return False
+         if self._source_egress_pending(f):
+             return False
++        # Recovery fragmentation is a representation change, not a way to distribute unresolved
++        # launch-survival debt across singleton children.  If any MAIN lane is still below the
++        # four-module floor, keep the family intact so ordinary branch/reroute construction can
++        # solve that debt transactionally.  The old path could fragment a young boxed bus, after
++        # which the newborn singleton siblings became one another's blockers and reached the
++        # horizon as ``under_survival_floor + between_siblings/fragment_embedded`` residue.
++        if (not f.get('local_gap') and f.get('chip',len(self.chips))<len(self.chips) and
++                self._minimum_materialized_lane_length(f) <
++                self.main_launch_maturity_modules*self.module-1e-7):
++            self.stats.setdefault('pathway_underfloor_fragment_reject_count',0)
++            self.stats['pathway_underfloor_fragment_reject_count']+=1
++            return False
+         realised=self._materialized_paths(f)
+         children=[]
+         fragment_group=f['id']
+@@ -7559,7 +7660,8 @@
+                     reason_counts[reason]=reason_counts.get(reason,0)+len(f.get('ids',()))
+             raise RuntimeError(
+                 'MAIN persistence horizon unresolved '
+-                f'(sample_seed={self.sseed}, reasons={reason_counts}, '
++                f'(sample_seed={self.sseed}, aspect_ratio={self.r.aspect_ratio[0]:g}:{self.r.aspect_ratio[1]:g}, '
++                f'scale={self.r.scale:g}, reasons={reason_counts}, '
+                 f'front_ids={[f["id"] for f in unresolved[:12]]})')
+         # Last-chance arbitration occurs before terminal dots exist.  If two free foreign
+         # heads finish close enough for a collision-clean head-to-head join, connecting them

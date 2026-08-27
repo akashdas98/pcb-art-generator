@@ -1,0 +1,330 @@
+{
+  "delta_a_to_b": {
+    "main_cpu_s": {
+      "a": 44.143953563,
+      "b": 41.500113435,
+      "delta": -2.6438401279999937,
+      "ratio": 0.9401086691470251
+    },
+    "main_wall_s": {
+      "a": 44.17159530899994,
+      "b": 41.50646874300014,
+      "delta": -2.665126565999799,
+      "ratio": 0.9396642446948983
+    },
+    "max_rss_kib": {
+      "a": 148424,
+      "b": 155208,
+      "delta": 6784,
+      "ratio": 1.0457068937638119
+    },
+    "pathway_bundled_forced_termination_trace_count": {
+      "a": 40,
+      "b": 40,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_connection_count": {
+      "a": 39,
+      "b": 39,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_cross_chip_connected_trace_count": {
+      "a": 78,
+      "b": 78,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_cross_chip_connection_count": {
+      "a": 39,
+      "b": 39,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_escape_trace_count": {
+      "a": 86,
+      "b": 86,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_gesture_clear_check_count": {
+      "a": 77808,
+      "b": 77808,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_incremental_rollback_batch_count": {
+      "a": 62,
+      "b": 62,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_incremental_rollback_segment_remove_count": {
+      "a": 2304,
+      "b": 2304,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_local_space_capacity_evaluation_count": {
+      "a": 27580,
+      "b": 27580,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_lookahead_evaluation_count": {
+      "a": 65517,
+      "b": 65517,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_mean_geometric_length": {
+      "a": 408.05059009843006,
+      "b": 408.05059009843006,
+      "delta": 0.0,
+      "ratio": 1.0
+    },
+    "pathway_mean_segments_per_trace": {
+      "a": 6.1,
+      "b": 6.1,
+      "delta": 0.0,
+      "ratio": 1.0
+    },
+    "pathway_mean_turns_per_trace": {
+      "a": 1.488235294117647,
+      "b": 1.488235294117647,
+      "delta": 0.0,
+      "ratio": 1.0
+    },
+    "pathway_persistence_shared_rebuild_count": {
+      "a": 0,
+      "b": 0,
+      "delta": 0,
+      "ratio": null
+    },
+    "pathway_persistence_shared_tick_count": {
+      "a": 11,
+      "b": 11,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_post_main_terminal_connection_count": {
+      "a": 0,
+      "b": 0,
+      "delta": 0,
+      "ratio": null
+    },
+    "pathway_recovery_fragment_count": {
+      "a": 26,
+      "b": 26,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_reroute_exhausted_count": {
+      "a": 3039,
+      "b": 3039,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_reroute_scheduled_count": {
+      "a": 1634,
+      "b": 1634,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_reroute_short_rebase_count": {
+      "a": 926,
+      "b": 926,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_termination_trace_count": {
+      "a": 163,
+      "b": 163,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_traceback_count": {
+      "a": 1177,
+      "b": 1177,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_traceback_segment_count": {
+      "a": 2304,
+      "b": 2304,
+      "delta": 0,
+      "ratio": 1.0
+    }
+  },
+  "runs": [
+    {
+      "aspect_ratio": "1:1",
+      "chip_count": 8,
+      "chip_wall_s": 0.40929932099993493,
+      "effective_area_multiplier": 4.0,
+      "error": null,
+      "gesture_checks_per_final_segment": 37.51591128254581,
+      "logical_seed": 5530594186682607813,
+      "lookaheads_per_final_segment": 31.589681774349085,
+      "main_cpu_s": 44.143953563,
+      "main_wall_s": 44.17159530899994,
+      "max_rss_kib": 148424,
+      "output_geometry_sha256": "0de10ca880a2fca7d8be8a92c620bf826a8f04df0c1a13607aaaae6de19f9957",
+      "pathway_bundled_forced_termination_trace_count": 40,
+      "pathway_connection_count": 39,
+      "pathway_cross_chip_connected_trace_count": 78,
+      "pathway_cross_chip_connection_count": 39,
+      "pathway_escape_trace_count": 86,
+      "pathway_gesture_clear_check_count": 77808,
+      "pathway_gesture_clear_opportunity_count": 0,
+      "pathway_gesture_legality_cache_hit_count": 0,
+      "pathway_gesture_legality_cache_miss_count": 0,
+      "pathway_illegal_turn_count": 0,
+      "pathway_incremental_rollback_batch_count": 62,
+      "pathway_incremental_rollback_segment_remove_count": 2304,
+      "pathway_intersection_trace_cleanup_count": 0,
+      "pathway_launch_trace_count": 340,
+      "pathway_local_space_capacity_evaluation_count": 27580,
+      "pathway_lookahead_evaluation_count": 65517,
+      "pathway_main_short_termination_trace_count": 0,
+      "pathway_main_stalled_side_count": 0,
+      "pathway_main_unaccounted_launch_trace_count": 0,
+      "pathway_mean_geometric_length": 408.05059009843006,
+      "pathway_mean_segments_per_trace": 6.1,
+      "pathway_mean_turns_per_trace": 1.488235294117647,
+      "pathway_non_octilinear_segment_count": 0,
+      "pathway_path_collision_cache_hit_count": 0,
+      "pathway_path_collision_cache_miss_count": 0,
+      "pathway_persistence_shared_rebuild_count": 0,
+      "pathway_persistence_shared_tick_count": 11,
+      "pathway_post_main_terminal_connection_count": 0,
+      "pathway_profile": {
+        "branch_appetite": 0.364695,
+        "branch_multiplier": 1.664109,
+        "connection_appetite": 0.920284,
+        "exit_inclination": 0.29868,
+        "late_life_branch_multiplier": 1.5,
+        "late_life_branch_start": 0.6,
+        "max_rounds": 53,
+        "module_U": 37.082381,
+        "outward_bias": 0.50273,
+        "persistence_shared_ticks": 11,
+        "persistence_tail_rounds": 0,
+        "preferred_run_modules": 4,
+        "reroute_budget": 7,
+        "turn_appetite": 0.442338
+      },
+      "pathway_recovery_fragment_count": 26,
+      "pathway_reroute_exhausted_count": 3039,
+      "pathway_reroute_repeat_changed_front_state_count": 0,
+      "pathway_reroute_repeat_changed_local_state_count": 0,
+      "pathway_reroute_repeat_exhausted_attempt_count": 0,
+      "pathway_reroute_repeat_same_front_state_count": 0,
+      "pathway_reroute_repeat_same_local_state_count": 0,
+      "pathway_reroute_scheduled_count": 1634,
+      "pathway_reroute_short_rebase_count": 926,
+      "pathway_reroute_unique_exhausted_front_count": 0,
+      "pathway_static_intersection_count": 0,
+      "pathway_static_query_cache_hit_count": 0,
+      "pathway_static_query_cache_miss_count": 0,
+      "pathway_termination_trace_count": 163,
+      "pathway_traceback_count": 1177,
+      "pathway_traceback_segment_count": 2304,
+      "pathway_unmarked_clearance_violation_count": 0,
+      "pathway_unmarked_overlap_count": 0,
+      "pathway_visible_launch_trace_count": 340,
+      "scale": 0.5,
+      "seed": 104,
+      "source": "work/inflight/main1_joint_future_fallback_renderer.py",
+      "source_sha256": "e9e4ff79851ffa21eac8fe161cd967b788014e28377b1c2fc019aa0c16e39eac",
+      "status": "PASS",
+      "total_cpu_s": 44.553058993,
+      "total_wall_s": 44.5809091829999
+    },
+    {
+      "aspect_ratio": "1:1",
+      "chip_count": 8,
+      "chip_wall_s": 0.3712617629998931,
+      "effective_area_multiplier": 4.0,
+      "error": null,
+      "gesture_checks_per_final_segment": 37.51591128254581,
+      "logical_seed": 5530594186682607813,
+      "lookaheads_per_final_segment": 31.589681774349085,
+      "main_cpu_s": 41.500113435,
+      "main_wall_s": 41.50646874300014,
+      "max_rss_kib": 155208,
+      "output_geometry_sha256": "0de10ca880a2fca7d8be8a92c620bf826a8f04df0c1a13607aaaae6de19f9957",
+      "pathway_bundled_forced_termination_trace_count": 40,
+      "pathway_connection_count": 39,
+      "pathway_cross_chip_connected_trace_count": 78,
+      "pathway_cross_chip_connection_count": 39,
+      "pathway_escape_trace_count": 86,
+      "pathway_gesture_clear_check_count": 77808,
+      "pathway_gesture_clear_opportunity_count": 0,
+      "pathway_gesture_legality_cache_hit_count": 0,
+      "pathway_gesture_legality_cache_miss_count": 0,
+      "pathway_illegal_turn_count": 0,
+      "pathway_incremental_rollback_batch_count": 62,
+      "pathway_incremental_rollback_segment_remove_count": 2304,
+      "pathway_intersection_trace_cleanup_count": 0,
+      "pathway_launch_trace_count": 340,
+      "pathway_local_space_capacity_evaluation_count": 27580,
+      "pathway_lookahead_evaluation_count": 65517,
+      "pathway_main_short_termination_trace_count": 0,
+      "pathway_main_stalled_side_count": 0,
+      "pathway_main_unaccounted_launch_trace_count": 0,
+      "pathway_mean_geometric_length": 408.05059009843006,
+      "pathway_mean_segments_per_trace": 6.1,
+      "pathway_mean_turns_per_trace": 1.488235294117647,
+      "pathway_non_octilinear_segment_count": 0,
+      "pathway_path_collision_cache_hit_count": 0,
+      "pathway_path_collision_cache_miss_count": 0,
+      "pathway_persistence_shared_rebuild_count": 0,
+      "pathway_persistence_shared_tick_count": 11,
+      "pathway_post_main_terminal_connection_count": 0,
+      "pathway_profile": {
+        "branch_appetite": 0.364695,
+        "branch_multiplier": 1.664109,
+        "connection_appetite": 0.920284,
+        "exit_inclination": 0.29868,
+        "late_life_branch_multiplier": 1.5,
+        "late_life_branch_start": 0.6,
+        "max_rounds": 53,
+        "module_U": 37.082381,
+        "outward_bias": 0.50273,
+        "persistence_shared_ticks": 11,
+        "persistence_tail_rounds": 0,
+        "preferred_run_modules": 4,
+        "reroute_budget": 7,
+        "turn_appetite": 0.442338
+      },
+      "pathway_recovery_fragment_count": 26,
+      "pathway_reroute_exhausted_count": 3039,
+      "pathway_reroute_repeat_changed_front_state_count": 0,
+      "pathway_reroute_repeat_changed_local_state_count": 0,
+      "pathway_reroute_repeat_exhausted_attempt_count": 0,
+      "pathway_reroute_repeat_same_front_state_count": 0,
+      "pathway_reroute_repeat_same_local_state_count": 0,
+      "pathway_reroute_scheduled_count": 1634,
+      "pathway_reroute_short_rebase_count": 926,
+      "pathway_reroute_unique_exhausted_front_count": 0,
+      "pathway_static_intersection_count": 0,
+      "pathway_static_query_cache_hit_count": 0,
+      "pathway_static_query_cache_miss_count": 0,
+      "pathway_termination_trace_count": 163,
+      "pathway_traceback_count": 1177,
+      "pathway_traceback_segment_count": 2304,
+      "pathway_unmarked_clearance_violation_count": 0,
+      "pathway_unmarked_overlap_count": 0,
+      "pathway_visible_launch_trace_count": 340,
+      "scale": 0.5,
+      "seed": 104,
+      "source": "work/inflight/main1_joint_future_fallback_cached_renderer.py",
+      "source_sha256": "deaf7348a15467aba7f8b4571d6bd2b7b17e457f9da6aa8618c3e123f049fe4b",
+      "status": "PASS",
+      "total_cpu_s": 41.870968331,
+      "total_wall_s": 41.87774492599988
+    }
+  ]
+}

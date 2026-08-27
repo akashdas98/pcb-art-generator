@@ -1,0 +1,330 @@
+{
+  "delta_a_to_b": {
+    "main_cpu_s": {
+      "a": 9.470961132,
+      "b": 9.396733649,
+      "delta": -0.0742274829999996,
+      "ratio": 0.9921626240499284
+    },
+    "main_wall_s": {
+      "a": 9.483332953999707,
+      "b": 9.39711728300017,
+      "delta": -0.08621567099953609,
+      "ratio": 0.9909087162269069
+    },
+    "max_rss_kib": {
+      "a": 127676,
+      "b": 129212,
+      "delta": 1536,
+      "ratio": 1.0120304520818322
+    },
+    "pathway_bundled_forced_termination_trace_count": {
+      "a": 6,
+      "b": 6,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_connection_count": {
+      "a": 15,
+      "b": 15,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_cross_chip_connected_trace_count": {
+      "a": 30,
+      "b": 30,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_cross_chip_connection_count": {
+      "a": 15,
+      "b": 15,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_escape_trace_count": {
+      "a": 50,
+      "b": 50,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_gesture_clear_check_count": {
+      "a": 18669,
+      "b": 18669,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_incremental_rollback_batch_count": {
+      "a": 60,
+      "b": 60,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_incremental_rollback_segment_remove_count": {
+      "a": 689,
+      "b": 689,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_local_space_capacity_evaluation_count": {
+      "a": 6520,
+      "b": 6520,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_lookahead_evaluation_count": {
+      "a": 14908,
+      "b": 14908,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_mean_geometric_length": {
+      "a": 429.3919988644999,
+      "b": 429.3919988644999,
+      "delta": 0.0,
+      "ratio": 1.0
+    },
+    "pathway_mean_segments_per_trace": {
+      "a": 6.214876033057851,
+      "b": 6.214876033057851,
+      "delta": 0.0,
+      "ratio": 1.0
+    },
+    "pathway_mean_turns_per_trace": {
+      "a": 1.5537190082644627,
+      "b": 1.5537190082644627,
+      "delta": 0.0,
+      "ratio": 1.0
+    },
+    "pathway_persistence_shared_rebuild_count": {
+      "a": 0,
+      "b": 0,
+      "delta": 0,
+      "ratio": null
+    },
+    "pathway_persistence_shared_tick_count": {
+      "a": 11,
+      "b": 11,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_post_main_terminal_connection_count": {
+      "a": 0,
+      "b": 0,
+      "delta": 0,
+      "ratio": null
+    },
+    "pathway_recovery_fragment_count": {
+      "a": 3,
+      "b": 3,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_reroute_exhausted_count": {
+      "a": 455,
+      "b": 455,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_reroute_scheduled_count": {
+      "a": 432,
+      "b": 432,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_reroute_short_rebase_count": {
+      "a": 270,
+      "b": 270,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_termination_trace_count": {
+      "a": 39,
+      "b": 39,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_traceback_count": {
+      "a": 276,
+      "b": 276,
+      "delta": 0,
+      "ratio": 1.0
+    },
+    "pathway_traceback_segment_count": {
+      "a": 689,
+      "b": 689,
+      "delta": 0,
+      "ratio": 1.0
+    }
+  },
+  "runs": [
+    {
+      "aspect_ratio": "1:1",
+      "chip_count": 3,
+      "chip_wall_s": 0.10948845500024618,
+      "effective_area_multiplier": 1.7777777777777777,
+      "error": null,
+      "gesture_checks_per_final_segment": 24.825797872340427,
+      "logical_seed": 5530594186682607813,
+      "lookaheads_per_final_segment": 19.824468085106382,
+      "main_cpu_s": 9.470961132,
+      "main_wall_s": 9.483332953999707,
+      "max_rss_kib": 127676,
+      "output_geometry_sha256": "a886efa7fe43bb9faea153a92e6173ce412ee03a352301f884a18657e78a0508",
+      "pathway_bundled_forced_termination_trace_count": 6,
+      "pathway_connection_count": 15,
+      "pathway_cross_chip_connected_trace_count": 30,
+      "pathway_cross_chip_connection_count": 15,
+      "pathway_escape_trace_count": 50,
+      "pathway_gesture_clear_check_count": 18669,
+      "pathway_gesture_clear_opportunity_count": 0,
+      "pathway_gesture_legality_cache_hit_count": 0,
+      "pathway_gesture_legality_cache_miss_count": 0,
+      "pathway_illegal_turn_count": 0,
+      "pathway_incremental_rollback_batch_count": 60,
+      "pathway_incremental_rollback_segment_remove_count": 689,
+      "pathway_intersection_trace_cleanup_count": 0,
+      "pathway_launch_trace_count": 121,
+      "pathway_local_space_capacity_evaluation_count": 6520,
+      "pathway_lookahead_evaluation_count": 14908,
+      "pathway_main_short_termination_trace_count": 0,
+      "pathway_main_stalled_side_count": 0,
+      "pathway_main_unaccounted_launch_trace_count": 0,
+      "pathway_mean_geometric_length": 429.3919988644999,
+      "pathway_mean_segments_per_trace": 6.214876033057851,
+      "pathway_mean_turns_per_trace": 1.5537190082644627,
+      "pathway_non_octilinear_segment_count": 0,
+      "pathway_path_collision_cache_hit_count": 0,
+      "pathway_path_collision_cache_miss_count": 0,
+      "pathway_persistence_shared_rebuild_count": 0,
+      "pathway_persistence_shared_tick_count": 11,
+      "pathway_post_main_terminal_connection_count": 0,
+      "pathway_profile": {
+        "branch_appetite": 0.364695,
+        "branch_multiplier": 1.664109,
+        "connection_appetite": 0.920284,
+        "exit_inclination": 0.29868,
+        "late_life_branch_multiplier": 1.5,
+        "late_life_branch_start": 0.6,
+        "max_rounds": 53,
+        "module_U": 37.082381,
+        "outward_bias": 0.50273,
+        "persistence_shared_ticks": 11,
+        "persistence_tail_rounds": 0,
+        "preferred_run_modules": 4,
+        "reroute_budget": 7,
+        "turn_appetite": 0.442338
+      },
+      "pathway_recovery_fragment_count": 3,
+      "pathway_reroute_exhausted_count": 455,
+      "pathway_reroute_repeat_changed_front_state_count": 0,
+      "pathway_reroute_repeat_changed_local_state_count": 0,
+      "pathway_reroute_repeat_exhausted_attempt_count": 0,
+      "pathway_reroute_repeat_same_front_state_count": 0,
+      "pathway_reroute_repeat_same_local_state_count": 0,
+      "pathway_reroute_scheduled_count": 432,
+      "pathway_reroute_short_rebase_count": 270,
+      "pathway_reroute_unique_exhausted_front_count": 0,
+      "pathway_static_intersection_count": 0,
+      "pathway_static_query_cache_hit_count": 0,
+      "pathway_static_query_cache_miss_count": 0,
+      "pathway_termination_trace_count": 39,
+      "pathway_traceback_count": 276,
+      "pathway_traceback_segment_count": 689,
+      "pathway_unmarked_clearance_violation_count": 0,
+      "pathway_unmarked_overlap_count": 0,
+      "pathway_visible_launch_trace_count": 121,
+      "scale": 0.75,
+      "seed": 104,
+      "source": "work/inflight/main1_joint_future_fallback_cached_renderer.py",
+      "source_sha256": "deaf7348a15467aba7f8b4571d6bd2b7b17e457f9da6aa8618c3e123f049fe4b",
+      "status": "PASS",
+      "total_cpu_s": 9.580263103,
+      "total_wall_s": 9.592851045000316
+    },
+    {
+      "aspect_ratio": "1:1",
+      "chip_count": 3,
+      "chip_wall_s": 0.10530711799992787,
+      "effective_area_multiplier": 1.7777777777777777,
+      "error": null,
+      "gesture_checks_per_final_segment": 24.825797872340427,
+      "logical_seed": 5530594186682607813,
+      "lookaheads_per_final_segment": 19.824468085106382,
+      "main_cpu_s": 9.396733649,
+      "main_wall_s": 9.39711728300017,
+      "max_rss_kib": 129212,
+      "output_geometry_sha256": "a886efa7fe43bb9faea153a92e6173ce412ee03a352301f884a18657e78a0508",
+      "pathway_bundled_forced_termination_trace_count": 6,
+      "pathway_connection_count": 15,
+      "pathway_cross_chip_connected_trace_count": 30,
+      "pathway_cross_chip_connection_count": 15,
+      "pathway_escape_trace_count": 50,
+      "pathway_gesture_clear_check_count": 18669,
+      "pathway_gesture_clear_opportunity_count": 0,
+      "pathway_gesture_legality_cache_hit_count": 0,
+      "pathway_gesture_legality_cache_miss_count": 0,
+      "pathway_illegal_turn_count": 0,
+      "pathway_incremental_rollback_batch_count": 60,
+      "pathway_incremental_rollback_segment_remove_count": 689,
+      "pathway_intersection_trace_cleanup_count": 0,
+      "pathway_launch_trace_count": 121,
+      "pathway_local_space_capacity_evaluation_count": 6520,
+      "pathway_lookahead_evaluation_count": 14908,
+      "pathway_main_short_termination_trace_count": 0,
+      "pathway_main_stalled_side_count": 0,
+      "pathway_main_unaccounted_launch_trace_count": 0,
+      "pathway_mean_geometric_length": 429.3919988644999,
+      "pathway_mean_segments_per_trace": 6.214876033057851,
+      "pathway_mean_turns_per_trace": 1.5537190082644627,
+      "pathway_non_octilinear_segment_count": 0,
+      "pathway_path_collision_cache_hit_count": 0,
+      "pathway_path_collision_cache_miss_count": 0,
+      "pathway_persistence_shared_rebuild_count": 0,
+      "pathway_persistence_shared_tick_count": 11,
+      "pathway_post_main_terminal_connection_count": 0,
+      "pathway_profile": {
+        "branch_appetite": 0.364695,
+        "branch_multiplier": 1.664109,
+        "connection_appetite": 0.920284,
+        "exit_inclination": 0.29868,
+        "late_life_branch_multiplier": 1.5,
+        "late_life_branch_start": 0.6,
+        "max_rounds": 53,
+        "module_U": 37.082381,
+        "outward_bias": 0.50273,
+        "persistence_shared_ticks": 11,
+        "persistence_tail_rounds": 0,
+        "preferred_run_modules": 4,
+        "reroute_budget": 7,
+        "turn_appetite": 0.442338
+      },
+      "pathway_recovery_fragment_count": 3,
+      "pathway_reroute_exhausted_count": 455,
+      "pathway_reroute_repeat_changed_front_state_count": 0,
+      "pathway_reroute_repeat_changed_local_state_count": 0,
+      "pathway_reroute_repeat_exhausted_attempt_count": 0,
+      "pathway_reroute_repeat_same_front_state_count": 0,
+      "pathway_reroute_repeat_same_local_state_count": 0,
+      "pathway_reroute_scheduled_count": 432,
+      "pathway_reroute_short_rebase_count": 270,
+      "pathway_reroute_unique_exhausted_front_count": 0,
+      "pathway_static_intersection_count": 0,
+      "pathway_static_query_cache_hit_count": 0,
+      "pathway_static_query_cache_miss_count": 0,
+      "pathway_termination_trace_count": 39,
+      "pathway_traceback_count": 276,
+      "pathway_traceback_segment_count": 689,
+      "pathway_unmarked_clearance_violation_count": 0,
+      "pathway_unmarked_overlap_count": 0,
+      "pathway_visible_launch_trace_count": 121,
+      "scale": 0.75,
+      "seed": 104,
+      "source": "work/inflight/main1_joint_future_fallback_rawdist_renderer.py",
+      "source_sha256": "76c9e55e879bfbbcdb22629f0803cbf2e74e3947e9972a5cb48d049efd7cbd74",
+      "status": "PASS",
+      "total_cpu_s": 9.502045635000002,
+      "total_wall_s": 9.502440762999868
+    }
+  ]
+}

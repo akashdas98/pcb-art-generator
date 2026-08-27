@@ -1,8 +1,5 @@
-# v39 reference artifacts
+# Curated Example
 
-These checked-in outputs document the v39 release gates:
+This directory is intentionally tiny. The single `V48_CURRENT_*.svg` file is freshly generated from the active V48 production authority and is retained only as a visual/reference example.
 
-- `V39_REFERENCE_SAMPLE.svg` and `V39_REFERENCE_REPORT.json` are the standard reference pair.
-- `V39_DIFFICULT_SAMPLE.svg` and `V39_DIFFICULT_REPORT.json` capture the difficult-case gate.
-
-New renderer output should be written to `output/` or another ignored output directory rather than committed here.
+It is not a substitute for the mandatory 148-test release gate, maintained stress gate, or seed-totality qualification. Proactive MAIN line-survival is now promoted; current qualification status is in `CONTEXT.md`.

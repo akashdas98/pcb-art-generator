@@ -1,0 +1,33 @@
+Traceback (most recent call last):
+  File "E:\Downloads\pcb-art-generator_V48_CLEAN_2026-08-26_0519IST\pcb_v48_repo\pcb_v48_renderer.py", line 13637, in <module>
+    if __name__=='__main__': main()
+                             ^^^^^^
+  File "E:\Downloads\pcb-art-generator_V48_CLEAN_2026-08-26_0519IST\pcb_v48_repo\pcb_v48_renderer.py", line 13633, in main
+    reports,skipped=r.render_batch(args.count,args.out_dir,
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Downloads\pcb-art-generator_V48_CLEAN_2026-08-26_0519IST\pcb_v48_repo\pcb_v48_renderer.py", line 13611, in render_batch
+    placed,report=self.generate_sample(logical_index,max_sample_restarts=1,
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Downloads\pcb-art-generator_V48_CLEAN_2026-08-26_0519IST\pcb_v48_repo\pcb_v48_renderer.py", line 13355, in generate_sample
+    main_pathways,main_path_stats=self.generate_main_pathways(cur_seed, placed_chips)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Downloads\pcb-art-generator_V48_CLEAN_2026-08-26_0519IST\pcb_v48_repo\pcb_v48_renderer.py", line 11410, in generate_main_pathways
+    groups,stats=planner.run_main_only()
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Downloads\pcb-art-generator_V48_CLEAN_2026-08-26_0519IST\pcb_v48_repo\pcb_v48_renderer.py", line 9439, in run_main_only
+    self._run_main_core_and_preflight()
+  File "E:\Downloads\pcb-art-generator_V48_CLEAN_2026-08-26_0519IST\pcb_v48_repo\pcb_v48_renderer.py", line 9370, in _run_main_core_and_preflight
+    self._run_rounds()
+  File "E:\Downloads\pcb-art-generator_V48_CLEAN_2026-08-26_0519IST\pcb_v48_repo\pcb_v48_renderer.py", line 7217, in _run_rounds
+    raise RuntimeError('MAIN persistence horizon unresolved')
+RuntimeError: MAIN persistence horizon unresolved
+ELAPSED_SECONDS=184.684
+
+--- metadata ---
+Command: python pcb_v48_renderer.py --aspect-ratio 1:6 --scale 0.35 --count 2 --out-dir E:\Desktop
+Seed argument supplied: no
+Exit code: 1
+Elapsed seconds: 184.684
+Result: batch did not complete
+Captured artifact: raw console traceback in first_run_console.log
+Renderer-generated trace/log artifacts found on E:\Desktop: none

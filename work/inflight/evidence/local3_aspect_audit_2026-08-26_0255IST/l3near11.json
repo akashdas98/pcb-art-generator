@@ -1,0 +1,181 @@
+{
+  "aspect": "1:1",
+  "local": {
+    "pathway_local_gap_region_count": 47,
+    "pathway_local_gap_spawn_attempt_count": 9736,
+    "pathway_local_gap_trace_count": 272,
+    "pathway_local_gap_visible_trace_count": 166
+  },
+  "nearest": {
+    "path_build": {
+      "calls": 6,
+      "cpu_s": 0.0010854340000001628,
+      "geom_total": 2636
+    },
+    "path_query_nearest": {
+      "calls": 6,
+      "cpu_s": 0.12099358400000071,
+      "geom_total": 2636
+    },
+    "static_build": {
+      "calls": 6,
+      "cpu_s": 0.006512969999999285,
+      "geom_total": 11904
+    },
+    "static_query_nearest": {
+      "calls": 6,
+      "cpu_s": 0.2064473809999967,
+      "geom_total": 11904
+    }
+  },
+  "records": [
+    {
+      "cpu_s": 0.0007503829999997436,
+      "n": 1984,
+      "op": "build",
+      "slot": "static"
+    },
+    {
+      "cpu_s": 0.05669683800000058,
+      "n": 1984,
+      "op": "query_nearest",
+      "slot": "static"
+    },
+    {
+      "cpu_s": 9.003499999948872e-05,
+      "n": 174,
+      "op": "build",
+      "slot": "path"
+    },
+    {
+      "cpu_s": 0.02278655300000132,
+      "n": 174,
+      "op": "query_nearest",
+      "slot": "path"
+    },
+    {
+      "cpu_s": 0.001554159999999527,
+      "n": 1984,
+      "op": "build",
+      "slot": "static"
+    },
+    {
+      "cpu_s": 0.048155461000000344,
+      "n": 1984,
+      "op": "query_nearest",
+      "slot": "static"
+    },
+    {
+      "cpu_s": 0.00012020200000151249,
+      "n": 281,
+      "op": "build",
+      "slot": "path"
+    },
+    {
+      "cpu_s": 0.02365858399999965,
+      "n": 281,
+      "op": "query_nearest",
+      "slot": "path"
+    },
+    {
+      "cpu_s": 0.0014938339999996941,
+      "n": 1984,
+      "op": "build",
+      "slot": "static"
+    },
+    {
+      "cpu_s": 0.040773029999998656,
+      "n": 1984,
+      "op": "query_nearest",
+      "slot": "static"
+    },
+    {
+      "cpu_s": 0.00013950499999992871,
+      "n": 349,
+      "op": "build",
+      "slot": "path"
+    },
+    {
+      "cpu_s": 0.020973207000000826,
+      "n": 349,
+      "op": "query_nearest",
+      "slot": "path"
+    },
+    {
+      "cpu_s": 0.0009454079999997589,
+      "n": 1984,
+      "op": "build",
+      "slot": "static"
+    },
+    {
+      "cpu_s": 0.020477095999998696,
+      "n": 1984,
+      "op": "query_nearest",
+      "slot": "static"
+    },
+    {
+      "cpu_s": 0.0002284939999999125,
+      "n": 606,
+      "op": "build",
+      "slot": "path"
+    },
+    {
+      "cpu_s": 0.014790668999999923,
+      "n": 606,
+      "op": "query_nearest",
+      "slot": "path"
+    },
+    {
+      "cpu_s": 0.0009882660000002375,
+      "n": 1984,
+      "op": "build",
+      "slot": "static"
+    },
+    {
+      "cpu_s": 0.017551964999999115,
+      "n": 1984,
+      "op": "query_nearest",
+      "slot": "static"
+    },
+    {
+      "cpu_s": 0.00027944500000032235,
+      "n": 613,
+      "op": "build",
+      "slot": "path"
+    },
+    {
+      "cpu_s": 0.010892867999999112,
+      "n": 613,
+      "op": "query_nearest",
+      "slot": "path"
+    },
+    {
+      "cpu_s": 0.0007809190000003241,
+      "n": 1984,
+      "op": "build",
+      "slot": "static"
+    },
+    {
+      "cpu_s": 0.02279299099999932,
+      "n": 1984,
+      "op": "query_nearest",
+      "slot": "static"
+    },
+    {
+      "cpu_s": 0.000227752999998998,
+      "n": 613,
+      "op": "build",
+      "slot": "path"
+    },
+    {
+      "cpu_s": 0.02789170299999988,
+      "n": 613,
+      "op": "query_nearest",
+      "slot": "path"
+    }
+  ],
+  "scale": 0.75,
+  "seed": 0,
+  "source_sha256": "3100503d27110c2bcd4b680ab65b6f9d50b344660fd43106cedbabe62ff03ebb",
+  "total_cpu_s": 14.713585537000002
+}

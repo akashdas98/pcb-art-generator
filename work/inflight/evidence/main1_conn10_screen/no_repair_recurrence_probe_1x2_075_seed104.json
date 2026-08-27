@@ -1,0 +1,14 @@
+{
+  "main_cpu_s": 20.141114895,
+  "pathway_atomic_conflict_group_defer_count": 364,
+  "pathway_conflict_region_count": 1149,
+  "pathway_incremental_rollback_segment_remove_count": 1545,
+  "pathway_no_repair_conflict_group_count": 640,
+  "pathway_no_repair_group_with_connection_pending_count": 317,
+  "pathway_no_repair_group_with_normal_count": 1,
+  "pathway_no_repair_group_with_recovering_count": 155,
+  "pathway_no_repair_group_with_structural_transition_count": 486,
+  "pathway_no_repair_same_group_after_gap_count": 54,
+  "pathway_no_repair_same_group_next_round_count": 510,
+  "pathway_traceback_count": 885
+}

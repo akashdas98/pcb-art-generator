@@ -1,0 +1,21 @@
+{
+  "chip_count": 7,
+  "geom": "5ed12da0d7a2f635e7b1c426c0b7ae686c97b4629733b51252c5157ec27a9fa1",
+  "main_cpu_s": 15.740265164999999,
+  "pathway_conn_probe_front_same_peer_after_gap_count": 3618,
+  "pathway_conn_probe_front_same_peer_next_round_count": 1327,
+  "pathway_conn_probe_front_switched_peer_after_gap_count": 621,
+  "pathway_conn_probe_front_switched_peer_next_round_count": 1270,
+  "pathway_conn_probe_pair_assignment_count": 3558,
+  "pathway_conn_probe_pair_distance_gt13": 385,
+  "pathway_conn_probe_pair_distance_le10": 1293,
+  "pathway_conn_probe_pair_distance_le13": 275,
+  "pathway_conn_probe_pair_distance_le5": 1605,
+  "pathway_cross_chip_connection_count": 41,
+  "pathway_gesture_clear_check_count": 62899,
+  "pathway_incremental_rollback_segment_remove_count": 1545,
+  "pathway_lookahead_evaluation_count": 53385,
+  "pathway_reroute_exhausted_count": 2806,
+  "pathway_reroute_scheduled_count": 1334,
+  "pathway_traceback_count": 885
+}

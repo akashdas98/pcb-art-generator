@@ -1,0 +1,299 @@
+{
+  "schema_version": 1,
+  "renderer_version": "V44",
+  "release_rule": "Every test listed here is active and mandatory. The discovered active test set must match this manifest exactly. Zero failures, errors, skips, or expected failures are permitted.",
+  "tests": {
+    "test_batch_deadlock_skip_preserves_one_renderer_domain": {
+      "intent": "Synthetic current-policy batch fixture: a dead logical sample is skipped without changing renderer instance, base seed, or batch uniqueness domain.",
+      "migration": "V39 legacy intent reconciled for V40"
+    },
+    "test_bundle_gesture_pathways_are_direct_modular_and_collision_clean": {
+      "intent": "Current bundle/network hard contract: transactional-parallel routing, modular gesture lengths, cross-chip connectivity, octilinear legality, and zero collision/clearance violations.",
+      "migration": "V39 legacy intent reconciled for V40"
+    },
+    "test_capacitor_circle_family_is_available_and_varied": {
+      "intent": "capacitor circle family is available and varied",
+      "migration": "current retained contract"
+    },
+    "test_component_fallback_reuses_precomputed_route_keepout": {
+      "intent": "component fallback reuses precomputed route keepout",
+      "migration": "current retained contract"
+    },
+    "test_dense_dimensions_and_diamond_stagger_are_procedural": {
+      "intent": "dense dimensions and diamond stagger are procedural",
+      "migration": "current retained contract"
+    },
+    "test_escaped_trace_is_clipped_at_first_frame_crossing": {
+      "intent": "escaped trace is clipped at first frame crossing",
+      "migration": "current retained contract"
+    },
+    "test_exact_quota_assignment": {
+      "intent": "exact quota assignment",
+      "migration": "current retained contract"
+    },
+    "test_foreign_path_inside_head_disk_is_not_invisible": {
+      "intent": "foreign path inside head disk is not invisible",
+      "migration": "current retained contract"
+    },
+    "test_hard_stops_use_deferred_reroute_before_forced_termination": {
+      "intent": "Controlled live router state: hard stop schedules reroute while budget remains, performs real multi-segment traceback/deep repair, and only refuses reroute after budget exhaustion.",
+      "migration": "V39 legacy intent reconciled for V40"
+    },
+    "test_holistic_connections_loop_guard_and_extended_repair_are_active": {
+      "intent": "Maintained holistic-network contract plus bounded live connection pairing and loop-risk rejection.",
+      "migration": "V39 legacy intent reconciled for V40"
+    },
+    "test_ic_arrays_are_procedural_and_connected": {
+      "intent": "ic arrays are procedural and connected",
+      "migration": "current retained contract"
+    },
+    "test_isolated_capacitor_occurrence_path": {
+      "intent": "isolated capacitor occurrence path",
+      "migration": "current retained contract"
+    },
+    "test_joint_conflict_solution_is_insertion_order_invariant": {
+      "intent": "joint conflict solution is insertion order invariant",
+      "migration": "current retained contract"
+    },
+    "test_main_chip_density_is_territory_stationary_and_scale_independent": {
+      "intent": "Main-chip opportunities are stationary per normalized territory, rotation invariant, and independent of main_scale or absolute square size.",
+      "migration": "V43 aspect-invariant spatial-population contract"
+    },
+    "test_main_chip_scalar_variation_is_continuous": {
+      "intent": "main chip scalar variation is continuous",
+      "migration": "current retained contract"
+    },
+    "test_main_scale_is_independent_of_canvas_size": {
+      "intent": "main scale is independent of canvas size",
+      "migration": "current retained contract"
+    },
+    "test_multiple_isolated_capacitors_are_independent_and_clear": {
+      "intent": "multiple isolated capacitors are independent and clear",
+      "migration": "current retained contract"
+    },
+    "test_pathways_are_deterministic_without_pathway_seed_search": {
+      "intent": "pathways are deterministic without pathway seed search",
+      "migration": "current retained contract"
+    },
+    "test_post_route_component_failure_never_restarts_routing_internally": {
+      "intent": "post route component failure never restarts routing internally",
+      "migration": "current retained contract"
+    },
+    "test_reference_seed_residual_completion_is_compound_dominant": {
+      "intent": "reference seed residual completion is compound dominant",
+      "migration": "current retained contract"
+    },
+    "test_residual_filler_uses_compound_assemblies_outside_micro_rooms": {
+      "intent": "residual filler uses compound assemblies outside micro rooms",
+      "migration": "current retained contract"
+    },
+    "test_residual_micro_tokens_are_region_gated_and_capped": {
+      "intent": "residual micro tokens are region gated and capped",
+      "migration": "current retained contract"
+    },
+    "test_root_bundle_cannot_structurally_split_before_physical_egress": {
+      "intent": "root bundle cannot structurally split before physical egress",
+      "migration": "current retained contract"
+    },
+    "test_root_main_launch_can_trace_back_to_emergence_anchor": {
+      "intent": "root main launch can trace back to emergence anchor",
+      "migration": "current retained contract"
+    },
+    "test_root_traceback_reactivates_source_egress_reservation": {
+      "intent": "root traceback reactivates source egress reservation",
+      "migration": "current retained contract"
+    },
+    "test_routes_before_secondary_components_exist": {
+      "intent": "routes before secondary components exist",
+      "migration": "current retained contract"
+    },
+    "test_same_family_conflict_can_atomically_hold_sibling": {
+      "intent": "same family conflict can atomically hold sibling",
+      "migration": "current retained contract"
+    },
+    "test_secondary_components_keep_main_chip_breathing_room": {
+      "intent": "Direct current component-candidate gate: post-main components cannot enter the 42U main-chip clearance moat.",
+      "migration": "V39 legacy intent reconciled for V40"
+    },
+    "test_single_cohort_root_is_straight_until_source_egress": {
+      "intent": "single cohort root is straight until source egress",
+      "migration": "current retained contract"
+    },
+    "test_single_sample_invariants": {
+      "intent": "Current non-spatial Phase-A/template fixture: quotas, scale distribution, component-template validation, and within-sample fingerprint uniqueness without invoking residual routing.",
+      "migration": "V39 legacy intent reconciled for V40"
+    },
+    "test_source_has_no_ic_or_dense_shape_lookup_table": {
+      "intent": "source has no ic or dense shape lookup table",
+      "migration": "current retained contract"
+    },
+    "test_tall_canvas_micro_escape_cleanup_preserves_octilinear_previous_leg": {
+      "intent": "Tall-canvas regression: microscopic final frame crossings collapse by extending the previous legal octilinear leg, never by skewing that leg to the next segment crossing.",
+      "migration": "V41 regression for 1200x6248\u20138046 non-octilinear escape-clipping defect"
+    },
+    "test_two_sample_cross_sample_uniqueness": {
+      "intent": "Current batch fingerprint domain tested at the component-template stage across two deterministic logical populations, with first-population records registered before the second is prepared.",
+      "migration": "V39 legacy intent reconciled for V40"
+    },
+    "test_unsolved_same_round_group_defers_instead_of_choosing_winner": {
+      "intent": "unsolved same round group defers instead of choosing winner",
+      "migration": "current retained contract"
+    },
+    "test_v38_connection_leg_rejects_visible_90_degree_terminal_kink": {
+      "intent": "v38 connection leg rejects visible 90 degree terminal kink",
+      "migration": "current retained contract"
+    },
+    "test_v38_nonzero_offset_singleton_rebases_to_exact_materialized_head_before_connection": {
+      "intent": "v38 nonzero offset singleton rebases to exact materialized head before connection",
+      "migration": "current retained contract"
+    },
+    "test_v38_space_aware_causal_contract": {
+      "intent": "v38 space aware causal contract",
+      "migration": "current retained contract"
+    },
+    "test_v38_traceback_blacklists_actual_replayed_corridor_at_rollback_junction": {
+      "intent": "v38 traceback blacklists actual replayed corridor at rollback junction",
+      "migration": "current retained contract"
+    },
+    "test_v39_commit_rejects_direct_90_degree_turn": {
+      "intent": "v39 commit rejects direct 90 degree turn",
+      "migration": "current retained contract"
+    },
+    "test_v39_connection_junction_rejects_90_allows_45": {
+      "intent": "v39 connection junction rejects 90 allows 45",
+      "migration": "current retained contract"
+    },
+    "test_v39_exact_dir8_rejects_non_octilinear_segment": {
+      "intent": "v39 exact dir8 rejects non octilinear segment",
+      "migration": "current retained contract"
+    },
+    "test_v44_committed_extended_acceptance_is_distributed_and_geometry_clean": {
+      "intent": "Committed V44 scale-1 portrait/landscape/upper-range production reports prove full-territory chip/component distribution, physical component-grid shape, 50\u201360% component service, >=80% local remainder service, source-dot parity, and zero geometry/clearance violations on logical sample 0.",
+      "migration": "V44 fresh production acceptance contract"
+    },
+    "test_v44_component_grid_preserves_physical_locality_and_rotation": {
+      "intent": "Component service cells preserve square-reference physical locality and transpose under portrait/landscape rotation.",
+      "migration": "V43 aspect-invariant spatial-population contract; renamed for V44 active suite"
+    },
+    "test_v44_default_scale_is_canvas_over_1600_and_population_is_area_not_absolute_size": {
+      "intent": "Entity scale remains short-side based while chip population depends on normalized territory rather than absolute square dimensions.",
+      "migration": "V43 aspect-invariant spatial-population contract; renamed for V44 active suite"
+    },
+    "test_v44_fine_scale_acceptance_examples_are_real_full_samples": {
+      "intent": "Committed full logical-sample-0 production reports at main_scale=0.35 for 1200\u00d76248 and 1200\u00d78046 prove design-local service-grid resolution, distributed population, unchanged service targets, and zero exact geometry/clearance violations.",
+      "migration": "V44 scale-stationary fine-detail acceptance contract"
+    },
+    "test_v44_fine_scale_preserves_population_but_scales_detail_capacity": {
+      "intent": "main_scale does not change main-chip/prepared-population opportunities, while residual detail/service capacity scales with normalized design-area T/main_scale^2.",
+      "migration": "V44 scale-stationary fine-detail / bounded-performance contract"
+    },
+    "test_v44_fine_scale_service_grids_follow_design_unit_not_canvas_pixels": {
+      "intent": "Fine-scale component/local service bookkeeping preserves the same physical design-unit cell size; main-router heuristic grids remain scale-independent coarse broad phases.",
+      "migration": "V44 scale-stationary fine-detail / bounded-performance contract"
+    },
+    "test_v44_fine_scale_work_budgets_scale_by_the_dimension_of_work": {
+      "intent": "Fine-scale exact computational allowances scale by distance for main routing and by design-area for residual detail work without brute-force extra global routing rounds.",
+      "migration": "V44 scale-stationary fine-detail / bounded-performance contract"
+    },
+    "test_v44_fractional_chip_opportunities_are_independent": {
+      "intent": "Fractional normalized territory realizes two independent Bernoulli main-chip opportunities.",
+      "migration": "V43 aspect-invariant spatial-population contract; renamed for V44 active suite"
+    },
+    "test_v44_fragment_child_first_gesture_cannot_complete_inherited_zigzag": {
+      "intent": "A recovery-fragment child must obey the visible-lane no-repeated-weave grammar from its first gesture against its inherited prefix.",
+      "migration": "V44 scale-stationary fine-detail / bounded-performance contract"
+    },
+    "test_v44_fragment_region_priority_handles_none_and_numeric_ids": {
+      "intent": "Fragmented-pocket region ranking uses an explicit numeric tie-break so uncovered cells with no region id can coexist with integer region ids without a late-fill ordering crash.",
+      "migration": "V43 full extended acceptance regression discovered during final 1200x6248 production render; renamed for V44 active suite"
+    },
+    "test_v44_hard_floor_reserve_is_not_cancelled_by_one_zero_gain_wave": {
+      "intent": "The territory-scaled ordinary-router hard-floor reserve is not cancelled merely because one deterministic wave produces zero measured gain; it stops only on target, no spawn, or bounded cap exhaustion.",
+      "migration": "V43 upper 1200x8046 logical-sample-0 integration regression; renamed for V44 active suite"
+    },
+    "test_v44_incremental_local_targetable_sets_match_legacy_set_semantics": {
+      "intent": "Incremental local untouched/retarget bookkeeping is set-equivalent to the historical open-minus-covered targeting semantics.",
+      "migration": "V44 scale-stationary fine-detail / bounded-performance contract"
+    },
+    "test_v44_large_local_target_shortlist_is_workload_not_aspect_triggered": {
+      "intent": "Large local-target shortlist is triggered only by candidate workload, never a tall/wide semantic mode.",
+      "migration": "V43 aspect-invariant spatial-population contract; renamed for V44 active suite"
+    },
+    "test_v44_local_branch_trace_cap_is_stationary_per_territory": {
+      "intent": "Local branch population opportunity remains 96 per square-reference territory and scales identically under rotation.",
+      "migration": "V43 aspect-invariant spatial-population contract; renamed for V44 active suite"
+    },
+    "test_v44_local_budget_scales_exactly_once_not_quadratically": {
+      "intent": "Local exact-check allowance scales once with normalized territory and cannot regress to accidental T-squared work.",
+      "migration": "V43 aspect-invariant spatial-population contract; renamed for V44 active suite"
+    },
+    "test_v44_local_coverage_rebuild_resynchronizes_incremental_targeting": {
+      "intent": "Any exact path-index/local-coverage rebuild resets and replays the incremental untouched complement so rollback cannot leave stale target eligibility.",
+      "migration": "V44 scale-stationary fine-detail / bounded-performance contract"
+    },
+    "test_v44_local_first_touch_updates_incremental_targeting_and_capture": {
+      "intent": "The exact 4x4 service raster updates incremental untouched-region bookkeeping and per-line first-touch capture atomically on first legitimate service.",
+      "migration": "V44 scale-stationary fine-detail / bounded-performance contract"
+    },
+    "test_v44_local_grid_preserves_reference_physical_cell_size": {
+      "intent": "Local residual bookkeeping keeps approximately square-reference physical cell size on portrait and landscape extended canvases.",
+      "migration": "V43 fresh acceptance / aspect-invariant grid contract; renamed for V44 active suite"
+    },
+    "test_v44_local_region_source_ceiling_is_stationary_per_territory": {
+      "intent": "Per-region local source capacity keeps the historical 34-source square ceiling per normalized territory while retaining the cell-count/16 local-area bound; extending/rotating a canvas cannot starve one large region with a fixed global 34 cap.",
+      "migration": "V43 1200x8046 hard-floor root-cause regression; renamed for V44 active suite"
+    },
+    "test_v44_local_visible_markers_preserve_frozen_component_moat": {
+      "intent": "Final materialization must preserve the frozen component moat for every visible local-trace primitive, including source/terminal marker extent, not only the polyline stroke body.",
+      "migration": "V44 rotated scale-1 clearance regression discovered while validating fine-scale changes"
+    },
+    "test_v44_local_work_allowance_is_linear_in_normalized_territory": {
+      "intent": "Local exact-work opportunity and late ordinary/articulated allowances scale with normalized territory, superseding V42 sqrt-area limits.",
+      "migration": "V43 aspect-invariant spatial-population contract; renamed for V44 active suite"
+    },
+    "test_v44_main_chip_placement_spans_every_long_axis_quarter_across_maintained_seeds": {
+      "intent": "Maintained portrait and landscape placement fixtures distribute main chips into every long-axis quarter instead of clustering in one square-sized region.",
+      "migration": "V43 aspect-invariant spatial-population contract; renamed for V44 active suite"
+    },
+    "test_v44_main_gesture_budget_is_territory_scaled_and_rotation_invariant": {
+      "intent": "Main exact-gesture computational allowance is stationary per territory and rotation invariant.",
+      "migration": "V43 aspect-invariant spatial-population contract; renamed for V44 active suite"
+    },
+    "test_v44_no_fixed_component_service_grid_on_extended_canvas": {
+      "intent": "Extended canvases may not stretch a fixed 56x56 component service grid across the long axis.",
+      "migration": "V43 aspect-invariant spatial-population contract; renamed for V44 active suite"
+    },
+    "test_v44_partial_service_retarget_uses_same_area_metric_as_hard_floor": {
+      "intent": "Hard-floor-only retargeting may make partially served cells eligible again without changing the exact subcell service metric; candidate eligibility and service measurement remain separate.",
+      "migration": "V43 1200x8046 area-metric/source-targeting integration regression; renamed for V44 active suite"
+    },
+    "test_v44_population_area_scale_is_rotation_invariant_and_main_scale_independent": {
+      "intent": "Normalized territory is invariant under width/height rotation and independent of main_scale.",
+      "migration": "V43 aspect-invariant spatial-population contract; renamed for V44 active suite"
+    },
+    "test_v44_population_caps_are_rotation_invariant_and_territory_scaled": {
+      "intent": "Residual component/micro/trace opportunity caps scale with normalized territory and not orientation.",
+      "migration": "V43 aspect-invariant spatial-population contract; renamed for V44 active suite"
+    },
+    "test_v44_preflight_intersection_repairs_only_one_causal_side_per_pair": {
+      "intent": "A materialized main-network intersection repairs the later causal/offending trace first and does not reroute the already-valid sibling after one side succeeds.",
+      "migration": "V44 tall stress regression discovered during full release verification; prevents stale-pair double repair from manufacturing a new sibling crossing."
+    },
+    "test_v44_prepared_collection_distribution_transposes_exactly": {
+      "intent": "Prepared collection population uses the same seeded stationary law after width/height rotation.",
+      "migration": "V43 aspect-invariant spatial-population contract; renamed for V44 active suite"
+    },
+    "test_v44_reference_local_fill_is_bent_dominant_and_45_degree_only": {
+      "intent": "Fresh V43 square-reference acceptance preserves bent-dominant 45-degree-only local fill, hard geometry, source markers, and residual-fill contracts.",
+      "migration": "V43 fresh acceptance / aspect-invariant grid contract; renamed for V44 active suite"
+    },
+    "test_v44_service_grids_transpose_under_rotation": {
+      "intent": "Component and local physical service grid shapes transpose exactly when canvas axes swap.",
+      "migration": "V43 aspect-invariant spatial-population contract; renamed for V44 active suite"
+    },
+    "test_young_blocked_launch_requests_causal_blocker_rollback": {
+      "intent": "young blocked launch requests causal blocker rollback",
+      "migration": "current retained contract"
+    }
+  }
+}

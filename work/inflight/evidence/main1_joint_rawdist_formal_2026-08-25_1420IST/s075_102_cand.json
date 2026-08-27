@@ -1,0 +1,65 @@
+{
+  "runs": [
+    {
+      "aspect_ratio": "1:1",
+      "max_rss_kib": 154136,
+      "output_geometry_sha256": "d63e271de064968ac4a0dee8001c94c5d22b9d5f1348f5db7476da4fca5d1d3c",
+      "phase_times": {
+        "component_place": {
+          "calls": 1,
+          "cpu_s": 1.9827429359999975,
+          "wall_s": 1.9828460819999236
+        },
+        "component_prepare": {
+          "calls": 1,
+          "cpu_s": 0.3684017500000003,
+          "wall_s": 0.36842036899997765
+        },
+        "final_clearance_audits": {
+          "calls": 4,
+          "cpu_s": 0.27817496200000136,
+          "wall_s": 0.27817339799958063
+        },
+        "final_validation": {
+          "calls": 2,
+          "cpu_s": 0.029222354000001616,
+          "wall_s": 0.029207264999968174
+        },
+        "local_gap_routing": {
+          "calls": 1,
+          "cpu_s": 11.913059638,
+          "wall_s": 11.914090398999633
+        },
+        "main_routing": {
+          "calls": 1,
+          "cpu_s": 11.960917862,
+          "wall_s": 11.961745116999737
+        }
+      },
+      "report": {
+        "chip_count": 4,
+        "collection_count": 29,
+        "component_residual_gap_fill_actual": 0.5135006906686257,
+        "component_residual_gap_total_component_count": 67,
+        "pathway_gesture_clear_check_count": 23357,
+        "pathway_launch_trace_count": 161,
+        "pathway_local_gap_fill_actual": 0.8001040661952596,
+        "pathway_local_gap_source_count": 387,
+        "pathway_local_gap_trace_count": 393,
+        "pathway_lookahead_evaluation_count": 19481,
+        "pathway_main_short_termination_trace_count": 0,
+        "pathway_main_stalled_side_count": 0,
+        "pathway_visible_launch_trace_count": 161
+      },
+      "sample_index": 0,
+      "scale": 0.75,
+      "seed": 102,
+      "source": "work/inflight/main1_joint_future_fallback_rawdist_renderer.py",
+      "source_sha256": "76c9e55e879bfbbcdb22629f0803cbf2e74e3947e9972a5cb48d049efd7cbd74",
+      "status": "PASS",
+      "total_cpu_s": 26.686656431,
+      "total_wall_s": 26.688673601999653,
+      "unattributed_wall_s": 0.15419097200083343
+    }
+  ]
+}

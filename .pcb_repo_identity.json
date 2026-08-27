@@ -1,0 +1,6 @@
+{
+  "bundle_root_name": "pcb_v48_repo",
+  "repository_id": "pcb-art-generator-v48-canonical",
+  "role": "canonical-writable-repository",
+  "single_worktree_required": true
+}

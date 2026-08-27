@@ -1,0 +1,144 @@
+{
+  "aspect": "1:1",
+  "local_stats": {
+    "pathway_local_gap_abandoned_segment_prune_count": 135,
+    "pathway_local_gap_absolute_target_fraction": 0.3401492381474358,
+    "pathway_local_gap_bundle_pair_count": 14,
+    "pathway_local_gap_bundle_release_count": 19,
+    "pathway_local_gap_component_marker_backoff_count": 6,
+    "pathway_local_gap_component_marker_backoff_distance": 11.784450278465187,
+    "pathway_local_gap_component_marker_prune_count": 1,
+    "pathway_local_gap_covered_cell_count": 1890,
+    "pathway_local_gap_curved_primitive_count": 0,
+    "pathway_local_gap_denominator": "canonical_post_main_residual_service_field",
+    "pathway_local_gap_direct_failure_cert_hit_count": 397,
+    "pathway_local_gap_direct_run_family_attempt_count": 273,
+    "pathway_local_gap_direct_run_family_quarantine_count": 49,
+    "pathway_local_gap_direct_run_family_quarantine_skip_count": 77,
+    "pathway_local_gap_direct_run_family_retired_count": 49,
+    "pathway_local_gap_direct_run_family_unique_attempted_count": 146,
+    "pathway_local_gap_escape_trace_count": 8,
+    "pathway_local_gap_exit_probability_factor": 0.5,
+    "pathway_local_gap_fast_round_count": 48,
+    "pathway_local_gap_fill_actual": 0.8055098161327784,
+    "pathway_local_gap_fill_actual_absolute_service": 0.3288842231553689,
+    "pathway_local_gap_fill_definition": "80_90_percent_of_post_component_remaining_field_by_visible_stroke_plus_legitimate_perimeter",
+    "pathway_local_gap_fill_target_fraction": 0.8331003161206908,
+    "pathway_local_gap_fill_target_range": [
+      0.8,
+      0.9
+    ],
+    "pathway_local_gap_fragment_candidate_work_cap": 889,
+    "pathway_local_gap_fragment_candidate_work_cap_hit_count": 1,
+    "pathway_local_gap_fragment_candidate_work_token_count": 889,
+    "pathway_local_gap_fragment_mopup_trace_count": 12,
+    "pathway_local_gap_fragment_mopup_work_cap": 72,
+    "pathway_local_gap_frozen_main_render_primitive_count": 174,
+    "pathway_local_gap_frozen_main_retained_segment_buffer_count": 0,
+    "pathway_local_gap_frozen_main_segment_count": 931,
+    "pathway_local_gap_hard_floor_absolute": 0.32663460240306386,
+    "pathway_local_gap_hard_floor_rescue_wave_cap": 2,
+    "pathway_local_gap_hard_floor_rescue_wave_count": 1,
+    "pathway_local_gap_hold_front_count": 8,
+    "pathway_local_gap_hold_round_count": 8,
+    "pathway_local_gap_illegal_connection_junction_turn_count": 0,
+    "pathway_local_gap_illegal_turn_count": 0,
+    "pathway_local_gap_independent_source_count": 254,
+    "pathway_local_gap_late_wave_work_cap": 2,
+    "pathway_local_gap_max_single_vertex_turn_degrees": 45,
+    "pathway_local_gap_mean_turns_per_visible_trace": 1.2469879518072289,
+    "pathway_local_gap_mopup_bent_rescue_trace_count": 3,
+    "pathway_local_gap_mopup_bent_trace_count": 85,
+    "pathway_local_gap_mopup_straight_trace_count": 1,
+    "pathway_local_gap_mopup_trace_count": 86,
+    "pathway_local_gap_mopup_work_cap": 96,
+    "pathway_local_gap_non_octilinear_segment_count": 0,
+    "pathway_local_gap_normal_branch_boost_range": [
+      3.0,
+      5.0
+    ],
+    "pathway_local_gap_open_cell_count": 2741,
+    "pathway_local_gap_partial_service_candidate_work_cap_per_wave": 1067,
+    "pathway_local_gap_partial_service_candidate_work_token_count": 0,
+    "pathway_local_gap_partial_service_rescue_wave_cap": 3,
+    "pathway_local_gap_partial_service_rescue_wave_count": 0,
+    "pathway_local_gap_phase": "after_components",
+    "pathway_local_gap_physical_post_component_service_fraction": 0.3916681867931412,
+    "pathway_local_gap_post_component_open_cell_count": 2741,
+    "pathway_local_gap_post_main_service_cell_count": 3334,
+    "pathway_local_gap_region_count": 47,
+    "pathway_local_gap_remaining_service_fraction": 0.4082932530038298,
+    "pathway_local_gap_round_budget": 12,
+    "pathway_local_gap_sampled_target_shortfall": 0.01126501499206689,
+    "pathway_local_gap_service_definition": "visible_stroke_plus_legitimate_exclusion_perimeter",
+    "pathway_local_gap_singleton_branch_count": 18,
+    "pathway_local_gap_source_count": 254,
+    "pathway_local_gap_spawn_attempt_count": 9736,
+    "pathway_local_gap_spawn_reject_count": 22,
+    "pathway_local_gap_special_hollow_cap_count": 9,
+    "pathway_local_gap_special_probability_range": [
+      0.15,
+      0.3
+    ],
+    "pathway_local_gap_special_ratio": 0.09558823529411764,
+    "pathway_local_gap_special_thick_trace_count": 26,
+    "pathway_local_gap_split_count": 18,
+    "pathway_local_gap_static_intersection_count": 0,
+    "pathway_local_gap_straight_visible_trace_count": 10,
+    "pathway_local_gap_straight_visible_trace_fraction": 0.060240963855421686,
+    "pathway_local_gap_target_call_count": 1380,
+    "pathway_local_gap_target_cell_count": 1134,
+    "pathway_local_gap_target_cell_evaluation_count": 23761,
+    "pathway_local_gap_target_chunk_evaluation_count": 7576,
+    "pathway_local_gap_trace_count": 272,
+    "pathway_local_gap_unmarked_clearance_violation_count": 0,
+    "pathway_local_gap_unmarked_overlap_count": 0,
+    "pathway_local_gap_visible_trace_count": 166,
+    "pathway_local_gap_wave_count": 5,
+    "pathway_local_gap_wave_work_cap": 3
+  },
+  "scale": 0.75,
+  "seed": 0,
+  "source_sha256": "666a677a9b65d46777e36b2d145455f1a6c4a03aa9274fb1fc88b77729fc408b",
+  "timings": {
+    "_gesture_clear": {
+      "calls": 13714,
+      "cpu_s": 1.5180110570001766
+    },
+    "_launch_local_gap_fronts": {
+      "calls": 6,
+      "cpu_s": 1.0814607449999993
+    },
+    "_local_gap_covered_cells": {
+      "calls": 9,
+      "cpu_s": 0.0010496750000026367
+    },
+    "_local_gap_direct_mopup": {
+      "calls": 1,
+      "cpu_s": 0.8667209499999995
+    },
+    "_local_gap_fragment_mopup": {
+      "calls": 1,
+      "cpu_s": 0.9918041199999994
+    },
+    "_local_gap_service_fraction": {
+      "calls": 227,
+      "cpu_s": 0.0006568110000060301
+    },
+    "_local_gap_target": {
+      "calls": 1380,
+      "cpu_s": 0.1396417650000199
+    },
+    "_run_local_gap_fast_rounds": {
+      "calls": 5,
+      "cpu_s": 1.5849783029999998
+    }
+  },
+  "total_cpu_s": 14.4469505,
+  "whole": {
+    "component_residual_gap_total_component_count": 72,
+    "pathway_gesture_clear_check_count": 16985,
+    "pathway_launch_trace_count": 174,
+    "pathway_lookahead_evaluation_count": 20638
+  }
+}

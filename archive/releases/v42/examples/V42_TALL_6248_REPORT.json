@@ -1,0 +1,21 @@
+{
+  "seed": 7179163421162001120,
+  "base_seed": 1,
+  "logical_sample_index": 0,
+  "width": 1200,
+  "height": 6248,
+  "main_scale": 1.0,
+  "component_residual_gap_fill_actual": 0.5401509622295365,
+  "pathway_local_gap_fill_actual": 0.8380681044488534,
+  "pathway_local_gap_fill_actual_absolute_service": 0.3853848114169215,
+  "pathway_non_octilinear_segment_count": 0,
+  "pathway_illegal_turn_count": 0,
+  "pathway_illegal_connection_junction_turn_count": 0,
+  "pathway_unmarked_clearance_violation_count": 0,
+  "pathway_static_intersection_count": 0,
+  "local_component_clearance_violation_count": 0,
+  "pathway_main_local_clearance_violation_count": 0,
+  "component_pathway_unauthorized_overlap_count": 0,
+  "generation_order": "main_chips -> primary_pathways -> residual_components_50_60 -> local_gap_pathways_80_90_of_remaining",
+  "v42_tall_acceptance_sample": true
+}

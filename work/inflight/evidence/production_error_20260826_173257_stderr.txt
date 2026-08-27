@@ -1,0 +1,38 @@
+python.exe : Traceback (most recent call last):
+At line:2 char:330
++ ... StartNew(); & python generate_pcb.py --aspect-ratio 1:6 --scale 0.35  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  File "E:\Downloads\pcb-art-generator_V48_CLEAN_2026-08-26_1631IST\pcb_v48_repo\generate_pcb.py", line 81, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "E:\Downloads\pcb-art-generator_V48_CLEAN_2026-08-26_1631IST\pcb_v48_repo\generate_pcb.py", line 69, in main
+    for path in render_requested(
+                ^^^^^^^^^^^^^^^^^
+  File "E:\Downloads\pcb-art-generator_V48_CLEAN_2026-08-26_1631IST\pcb_v48_repo\generate_pcb.py", line 44, in 
+render_requested
+    placed, report = renderer.generate_sample(logical_index)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Downloads\pcb-art-generator_V48_CLEAN_2026-08-26_1631IST\pcb_v48_repo\pcb_v48_renderer.py", line 13467, in 
+generate_sample
+    main_pathways,main_path_stats=self.generate_main_pathways(cur_seed, placed_chips)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Downloads\pcb-art-generator_V48_CLEAN_2026-08-26_1631IST\pcb_v48_repo\pcb_v48_renderer.py", line 11522, in 
+generate_main_pathways
+    groups,stats=planner.run_main_only()
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Downloads\pcb-art-generator_V48_CLEAN_2026-08-26_1631IST\pcb_v48_repo\pcb_v48_renderer.py", line 9551, in 
+run_main_only
+    self._run_main_core_and_preflight()
+  File "E:\Downloads\pcb-art-generator_V48_CLEAN_2026-08-26_1631IST\pcb_v48_repo\pcb_v48_renderer.py", line 9482, in 
+_run_main_core_and_preflight
+    self._run_rounds()
+  File "E:\Downloads\pcb-art-generator_V48_CLEAN_2026-08-26_1631IST\pcb_v48_repo\pcb_v48_renderer.py", line 7142, in 
+_run_rounds
+    self._settle_final_source_egress_totality()
+  File "E:\Downloads\pcb-art-generator_V48_CLEAN_2026-08-26_1631IST\pcb_v48_repo\pcb_v48_renderer.py", line 7277, in 
+_settle_final_source_egress_totality
+    raise RuntimeError(f'final source-egress reserved corridor blocked (sample_seed={self.sseed}, front={f["id"]})')
+RuntimeError: final source-egress reserved corridor blocked (sample_seed=9409060408987575905, front=21)

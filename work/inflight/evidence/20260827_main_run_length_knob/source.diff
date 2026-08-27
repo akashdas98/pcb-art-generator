@@ -1,0 +1,312 @@
+--- /mnt/data/v48_density_authority_renderer.py	2026-08-27 11:21:18.342927662 +0000
++++ pcb_v48_renderer.py	2026-08-27 11:27:50.918148434 +0000
+@@ -949,17 +949,37 @@
+     def _sample_profile(self):
+         """One coherent variance profile for the whole board, not per-trace noise."""
+         rng=self.rng
++        # Preserve the historical RNG draw order byte-for-byte.  Item 4 changes only the values
++        # derived from the already-existing route-life draws; it must not reshuffle the board's
++        # stochastic profile or downstream front seeds merely because the knob exists.
++        module_U=rng.uniform(31.0,39.0)
++        preferred_run_modules=2+int(rng.random()*3)
++        turn_appetite=rng.uniform(.40,.64)
++        branch_appetite=rng.uniform(.34,.54)
++        branch_multiplier=rng.uniform(1.50,1.80)
++        connection_appetite=rng.uniform(.88,.99)
++        exit_inclination=rng.uniform(.25,.44)
++        outward_bias=rng.uniform(.44,.70)
++        historical_max_rounds=48+int(rng.random()*9)
++        persistence_shared_ticks=10+int(rng.random()*3)
++        # Item 4 is a workload/geometry knob, not a routing-algorithm change.  The historical
++        # ordinary clock remains untouched until the requested whole-route residency can no
++        # longer physically fit inside it.  Only then extend that same shared clock by the
++        # bounded amount required to let the existing per-front journey target be realised.
++        # Historical MAIN journey ceilings are 13 gestures (11 + the exit/explore bonus).
++        run_factor=2.0*float(self.r.main_run_length_multiplier)
++        required_main_rounds=int(math.ceil(13.0*run_factor))+12
+         return dict(
+-            module_U=rng.uniform(31.0,39.0),
+-            preferred_run_modules=2+int(rng.random()*3),
+-            turn_appetite=rng.uniform(.40,.64),
+-            branch_appetite=rng.uniform(.34,.54),
+-            branch_multiplier=rng.uniform(1.50,1.80),
+-            connection_appetite=rng.uniform(.88,.99),
+-            exit_inclination=rng.uniform(.25,.44),
++            module_U=module_U,
++            preferred_run_modules=preferred_run_modules,
++            turn_appetite=turn_appetite,
++            branch_appetite=branch_appetite,
++            branch_multiplier=branch_multiplier,
++            connection_appetite=connection_appetite,
++            exit_inclination=exit_inclination,
+             # Main routing still has no component intent.  V37's later local planner receives
+             # frozen components as static obstacles but does not seek or attach to them.
+-            outward_bias=rng.uniform(.44,.70),
++            outward_bias=outward_bias,
+             # V21 gives persistence/recovery a little more room so a lane that is still
+             # visually embedded between continuing siblings is not forced to die merely
+             # because the global planning horizon arrived.
+@@ -968,14 +988,16 @@
+             # Restore the original 48-56 ordinary opportunity window, independent of scale/aspect.
+             # Performance must come from locality, exact broad phases and incremental state—not
+             # from shortening a front's route-life grammar.
+-            max_rounds=48+int(rng.random()*9),
++            max_rounds=max(historical_max_rounds,required_main_rounds),
++            historical_max_rounds=historical_max_rounds,
++            main_run_residency_factor=run_factor,
+             reroute_budget=7,
+             late_life_branch_start=.60,
+             late_life_branch_multiplier=1.50,
+             persistence_tail_rounds=0,
+             # Only a short debt-filtered exceptional tail remains after ordinary route life.
+             # This is not the former 32-40-tick compensating recovery campaign.
+-            persistence_shared_ticks=10+int(rng.random()*3),
++            persistence_shared_ticks=persistence_shared_ticks,
+         )
+ 
+     def _new_rng(self):
+@@ -1110,9 +1132,16 @@
+         fid=self.next_front_id; self.next_front_id+=1
+         if intent is None:
+             intent,target=self._sample_intent(rng,path[-1],direction)
+-        max_gestures=7+int(rng.random()*5)
++        historical_max_gestures=7+int(rng.random()*5)
+         if intent in ('exit','explore'):
+-            max_gestures+=2
++            historical_max_gestures+=2
++        # The run-length knob scales only the existing whole-route MAIN residency pool.  It does
++        # not alter per-gesture module lengths, turn grammar, proposal breadth, clearance logic,
++        # or LOCAL routing.  Multiplier .5 is therefore the historical MAIN journey distribution;
++        # the new default 1.0 is exactly twice that sampled residency, and 3.0 is six times it.
++        is_main=(chip < len(self.chips))
++        run_factor=(2.0*float(self.r.main_run_length_multiplier)) if is_main else 1.0
++        max_gestures=max(1,int(math.floor(historical_max_gestures*run_factor+.5)))
+         f=dict(
+             id=fid,ids=list(ids),chip=chip,side=side,side_index=side_index,
+             path=[tuple(p) for p in path],dir=direction,initial_dir=direction,offsets=dict(offsets),
+@@ -1123,7 +1152,9 @@
+             forced_turn_modules=forced_turn_modules,
+             branch_turn=branch_turn,branch_stage=0 if branch_turn is not None else None,
+             intent=intent,target=target,status='active',gestures=0,local_gestures=0,
+-            travel=0.0,max_gestures=max_gestures,base_max_gestures=max_gestures,failures=0,turn_cooldown=0,
++            travel=0.0,max_gestures=max_gestures,base_max_gestures=max_gestures,
++            historical_max_gestures=historical_max_gestures,main_run_residency_factor=run_factor,
++            journey_limit_pending=False,failures=0,turn_cooldown=0,
+             straight_since_turn=3,last_turn_sign=0,normal_segment_lengths=[],
+             route_history=[],reroute_pending=False,reroute_ready_round=None,
+             reroute_attempts=0,reroute_mode_rounds=0,reroute_avoid_dir=None,
+@@ -3356,11 +3387,12 @@
+                 max_d=(18.0 if desire else 13.0)*self.module
+                 if d<.55*self.module or d>max_d: continue
+                 narrow_bonus=.45*(1.0/min(len(a['ids']),4)+1.0/min(len(b['ids']),4))
+-                priority=d/self.module-1.35*desire-narrow_bonus
+-                candidates.append((priority,a,b,d,desire))
++                cross_chip=(a['chip']!=b['chip'])
++                priority=d/self.module-1.35*desire-narrow_bonus-(4.0 if cross_chip else 0.0)
++                candidates.append((priority,a,b,d,desire,cross_chip))
+         candidates.sort(key=lambda x:(x[0],x[1]['id'],x[2]['id']))
+         used=set(); paired=0
+-        for _,a,b,d,desire in candidates:
++        for _,a,b,d,desire,cross_chip in candidates:
+             if a['id'] in used or b['id'] in used: continue
+             prng=SplitMix64(mix_once(self.sseed ^ 0xA24BAED4963EE407 ^
+                                      ((round_index+1)*0x9E3779B97F4A7C15) ^
+@@ -3373,8 +3405,8 @@
+                           self._refresh_lifecycle(a) in ('LAUNCHING','RECOVERING') or
+                           self._refresh_lifecycle(b) in ('LAUNCHING','RECOVERING')))
+             forced_close=(d<=3.0*self.module and facing) or young_close
+-            chance=1.0 if forced_close else min(.995,.78*self.profile['connection_appetite']+.10*desire)
+-            if prng.random()>=chance: continue
++            chance=1.0 if (forced_close or cross_chip) else min(.995,.78*self.profile['connection_appetite']+.10*desire)
++            if not cross_chip and prng.random()>=chance: continue
+             meet=((pa[0]+pb[0])*.5,(pa[1]+pb[1])*.5)
+             a['round_connection_peer']=b['id']; b['round_connection_peer']=a['id']
+             a['round_connection_target']=meet; b['round_connection_target']=meet
+@@ -4632,23 +4664,43 @@
+             if math.hypot(x-f['target'][0],y-f['target'][1])<=1.8*self.module:
+                 f['target']=self._underused_target((x,y),f['rng'])
+         if f['gestures']>=f['max_gestures']:
+-            if getattr(self,'_in_shared_persistence',False) and self._persistence_work_debt(f):
+-                f['max_gestures']=max(f['max_gestures'],f['gestures']+2)
+-                return
+-            if len(f['ids'])>1 and f['rng'].random()>=.03:
+-                # V21 makes bundled traces ~97% less willing to end by choice.  First try to peel the
+-                # cohort into narrower children; if the local geometry cannot support that fork,
+-                # simply extend its journey and let subsequent synchronous rounds reconsider it.
+-                self.stats['pathway_bundled_journey_deferral_count']+=1
+-                f['bundle_termination_deferrals']=f.get('bundle_termination_deferrals',0)+1
+-                branched=False
+-                if f['depth']<5 and f['local_gestures']>=1 and f['straight_since_turn']>=1:
+-                    branched=bool(self._branch_front(f))
+-                if not branched and f['status']=='active':
+-                    f['max_gestures']+=2+int(f['rng'].random()*3)
+-                    f['branch_retry_after_gesture']=min(f.get('branch_retry_after_gesture',f['gestures']),f['gestures'])
+-            else:
+-                self._terminate_front(f,'journey_limit')
++            # A journey limit is only a voluntary free-running stop.  Defer it until the existing
++            # head-connection sweep has had first right of refusal.  This is ordering only: no new
++            # search, radius, or legality rule is introduced.
++            f['journey_limit_pending']=True
++
++    def _apply_journey_limit(self,f):
++        """Apply the historical voluntary journey-limit policy after connection arbitration."""
++        f['journey_limit_pending']=False
++        if f.get('status')!='active' or f.get('gestures',0)<f.get('max_gestures',0):
++            return
++        if getattr(self,'_in_shared_persistence',False) and self._persistence_work_debt(f):
++            f['max_gestures']=max(f['max_gestures'],f['gestures']+2)
++            return
++        if len(f['ids'])>1 and f['rng'].random()>=.03:
++            # V21 makes bundled traces ~97% less willing to end by choice.  First try to peel the
++            # cohort into narrower children; if the local geometry cannot support that fork,
++            # simply extend its journey and let subsequent synchronous rounds reconsider it.
++            self.stats['pathway_bundled_journey_deferral_count']+=1
++            f['bundle_termination_deferrals']=f.get('bundle_termination_deferrals',0)+1
++            branched=False
++            if f['depth']<5 and f['local_gestures']>=1 and f['straight_since_turn']>=1:
++                branched=bool(self._branch_front(f))
++            if not branched and f['status']=='active':
++                f['max_gestures']+=2+int(f['rng'].random()*3)
++                f['branch_retry_after_gesture']=min(f.get('branch_retry_after_gesture',f['gestures']),f['gestures'])
++        else:
++            self._terminate_front(f,'journey_limit')
++
++    def _settle_pending_journey_limits(self):
++        """Settle voluntary limits only after the current exact head-connection opportunity."""
++        for f in sorted(self.fronts.values(),key=lambda x:x['id']):
++            if not f.get('journey_limit_pending'):
++                continue
++            if f.get('status')!='active':
++                f['journey_limit_pending']=False
++                continue
++            self._apply_journey_limit(f)
+ 
+     def _mod_delta_ok(self,a,b):
+         return (b-a)%8 in (0,1,7)
+@@ -5120,10 +5172,11 @@
+                          self._refresh_lifecycle(b) in ('LAUNCHING','RECOVERING'))):
+                     radius=max_radius
+                 if d<=radius:
+-                    pairs.append((d,a['id'],ta,b['id'],tb,a,b,pa,pb))
+-        pairs.sort(key=lambda x:(x[0],x[1],x[2],x[3],x[4]))
++                    cross_rank=0 if a['chip']!=b['chip'] else 1
++                    pairs.append((cross_rank,d,a['id'],ta,b['id'],tb,a,b,pa,pb))
++        pairs.sort(key=lambda x:(x[0],x[1],x[2],x[3],x[4],x[5]))
+         used=set()
+-        for _,_,ta,_,tb,a,b,pa,pb in pairs:
++        for _,_,_,ta,_,tb,a,b,pa,pb in pairs:
+             if ta in used or tb in used or ta in self.connected_trace_ids or tb in self.connected_trace_ids:
+                 continue
+             if a['status'] not in eligible_status or b['status'] not in eligible_status or ta not in a['ids'] or tb not in b['ids']:
+@@ -5214,18 +5267,20 @@
+                 desire=(a['intent']=='connect')+(b['intent']=='connect')
+                 paired=(a.get('round_connection_peer')==b['id'] and b.get('round_connection_peer')==a['id'])
+                 forced_close=d<=2.35*self.module
+-                chance=1.0 if forced_close else ((.90 if paired else (.24+.28*desire))*self.profile['connection_appetite'])
+-                priority=d/self.module-(3.2 if forced_close else 0.0)-(2.4 if paired else 0.0)-a['rng'].random()*.20-b['rng'].random()*.20
+-                pairs.append((priority,chance,forced_close,a,b))
+-        pairs.sort(key=lambda x:(x[0],x[3]['id'],x[4]['id']))
++                cross_chip=(a['chip']!=b['chip'])
++                chance=1.0 if (forced_close or cross_chip) else ((.90 if paired else (.24+.28*desire))*self.profile['connection_appetite'])
++                priority=(d/self.module-(4.0 if cross_chip else 0.0)-(3.2 if forced_close else 0.0)-
++                          (2.4 if paired else 0.0)-a['rng'].random()*.20-b['rng'].random()*.20)
++                pairs.append((priority,chance,forced_close,cross_chip,a,b))
++        pairs.sort(key=lambda x:(x[0],x[4]['id'],x[5]['id']))
+         used=set()
+-        for _,chance,forced_close,a,b in pairs:
++        for _,chance,forced_close,cross_chip,a,b in pairs:
+             if a['id'] in used or b['id'] in used or a['status']!='active' or b['status']!='active':
+                 continue
+             ta,tb=a['ids'][0],b['ids'][0]
+             if ta in self.connected_trace_ids or tb in self.connected_trace_ids:
+                 continue
+-            if not forced_close and a['rng'].random()>=min(.995,chance):
++            if not forced_close and not cross_chip and a['rng'].random()>=min(.995,chance):
+                 continue
+             pa,pb=a['path'][-1],b['path'][-1]
+             min_leg=.10*self.module if forced_close else .45*self.module
+@@ -5255,12 +5310,19 @@
+                 f['status']='connected'; f['lifecycle']='TERMINAL'
+             self.connection_pairs[tuple(sorted((ta,tb)))]=meet
+             self.connected_trace_ids.update((ta,tb))
+-            self.cross_chip_connected_trace_ids.update((ta,tb))
+-            self.stats['pathway_cross_chip_connection_count']+=1
++            if a['chip']!=b['chip']:
++                self.cross_chip_connected_trace_ids.update((ta,tb))
++                self.stats['pathway_cross_chip_connection_count']+=1
++            else:
++                self.stats.setdefault('pathway_same_chip_head_connection_count',0)
++                self.stats['pathway_same_chip_head_connection_count']+=1
+             self.stats['pathway_cross_chip_connected_trace_count']=len(self.cross_chip_connected_trace_ids)
+             if forced_close:
+                 self.stats['pathway_forced_close_head_connection_count']+=1
+             used.update((a['id'],b['id']))
++        # Journey-limit termination is voluntary free-running completion.  A legal head join—
++        # especially a foreign-chip join—wins first using the exact existing connection machinery.
++        self._settle_pending_journey_limits()
+ 
+     def _fragment_bundled_front(self,f):
+         """Recovery-only fragmentation into independently routable lanes.
+@@ -7280,10 +7342,12 @@
+                 max_d=(18.0 if desire else 13.0)*self.module
+                 if d<.55*self.module or d>max_d: continue
+                 narrow_bonus=.45*(1.0/min(len(a['ids']),4)+1.0/min(len(b['ids']),4))
+-                candidates.append((d/self.module-1.35*desire-narrow_bonus,a,b,d,desire))
++                cross_chip=(a['chip']!=b['chip'])
++                candidates.append((d/self.module-1.35*desire-narrow_bonus-(4.0 if cross_chip else 0.0),
++                                   a,b,d,desire,cross_chip))
+         candidates.sort(key=lambda x:(x[0],x[1]['id'],x[2]['id']))
+         used=set(); paired=0
+-        for _,a,b,d,desire in candidates:
++        for _,a,b,d,desire,cross_chip in candidates:
+             if a['id'] in used or b['id'] in used: continue
+             prng=SplitMix64(mix_once(self.sseed ^ 0xA24BAED4963EE407 ^
+                                      ((round_index+1)*0x9E3779B97F4A7C15) ^
+@@ -7296,8 +7360,8 @@
+                           self._refresh_lifecycle(a) in ('LAUNCHING','RECOVERING') or
+                           self._refresh_lifecycle(b) in ('LAUNCHING','RECOVERING')))
+             forced_close=(d<=3.0*self.module and facing) or young_close
+-            chance=1.0 if forced_close else min(.995,.78*self.profile['connection_appetite']+.10*desire)
+-            if prng.random()>=chance: continue
++            chance=1.0 if (forced_close or cross_chip) else min(.995,.78*self.profile['connection_appetite']+.10*desire)
++            if not cross_chip and prng.random()>=chance: continue
+             meet=((pa[0]+pb[0])*.5,(pa[1]+pb[1])*.5)
+             a['round_connection_peer']=b['id']; b['round_connection_peer']=a['id']
+             a['round_connection_target']=meet; b['round_connection_target']=meet
+@@ -9222,10 +9286,10 @@
+                 av=(a[2][0]-a[3][0],a[2][1]-a[3][1]); bv=(b[2][0]-b[3][0],b[2][1]-b[3][1])
+                 al=max(1e-9,math.hypot(*av)); bl=max(1e-9,math.hypot(*bv))
+                 facing=(av[0]/al*ux+av[1]/al*uy>-0.05 and bv[0]/bl*(-ux)+bv[1]/bl*(-uy)>-0.05)
+-                if facing: pairs.append((d,a,b))
+-        pairs.sort(key=lambda z:(z[0],z[1][0]['id'],z[2][0]['id']))
++                if facing: pairs.append((0 if a[0]['chip']!=b[0]['chip'] else 1,d,a,b))
++        pairs.sort(key=lambda z:(z[0],z[1],z[2][0]['id'],z[3][0]['id']))
+         used=set(); made=0
+-        for _d,a,b in pairs:
++        for _cross_rank,_d,a,b in pairs:
+             if made>=max_pairs: break
+             if a[0]['id'] in used or b[0]['id'] in used: continue
+             if self._try_connect_specific_terminal_heads(a[0],a[1],b[0],b[1]):
+@@ -10558,9 +10622,8 @@
+         self.aspect_ratio=(ratio_w,ratio_h)
+         self.scale=float(scale)
+         self.main_chip_density_multiplier=chip_mult
+-        # Item 4 is not active yet.  Store/validate its reconciled public contract now so the
+-        # production API is stable, but do not change MAIN journey semantics until that stage is
+-        # separately implemented and qualified.
++        # Item 4 is a pure MAIN workload/geometry control.  The planner scales only the existing
++        # whole-route residency distribution; proposal/clearance/search algorithms stay unchanged.
+         self.main_run_length_multiplier=run_mult
+         self.canonical_short_side=float(self.CANONICAL_SHORT_SIDE)
+         ratio_short=min(ratio_w,ratio_h)
+@@ -14257,6 +14320,10 @@
+         report['chip_count_fractional_territory_probability']=frac
+         report['main_chip_density_multiplier']=self.main_chip_density_multiplier
+         report['main_chip_density_multiplier_range']=(0.2,2.0)
++        report['main_run_length_multiplier']=self.main_run_length_multiplier
++        report['main_run_length_multiplier_range']=(0.2,3.0)
++        report['main_free_run_residency_factor']=2.0*self.main_run_length_multiplier
++        report['main_run_length_basis']='existing_whole_route_max_gestures_distribution_only'
+         report['main_chip_opportunity_activation_probability']=self.main_chip_opportunity_activation_probability()
+         report['chip_count_expected_unfloored']=2.0*T*self.main_chip_opportunity_activation_probability()
+         report['chip_count_minimum']=1

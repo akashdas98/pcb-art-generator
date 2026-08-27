@@ -1,0 +1,18 @@
+{
+  "main_cpu_s": 23.583710643,
+  "pathway_conn_probe_front_same_peer_after_gap_count": 3618,
+  "pathway_conn_probe_front_same_peer_next_round_clean_count": 165,
+  "pathway_conn_probe_front_same_peer_next_round_count": 1327,
+  "pathway_conn_probe_front_same_peer_next_round_repair_count": 1157,
+  "pathway_conn_probe_front_same_peer_next_round_structural_count": 5,
+  "pathway_conn_probe_front_switched_peer_after_gap_count": 621,
+  "pathway_conn_probe_front_switched_peer_next_round_clean_count": 259,
+  "pathway_conn_probe_front_switched_peer_next_round_count": 1270,
+  "pathway_conn_probe_front_switched_peer_next_round_repair_count": 993,
+  "pathway_conn_probe_front_switched_peer_next_round_structural_count": 18,
+  "pathway_conn_probe_pair_assignment_count": 3558,
+  "pathway_conn_probe_pair_distance_gt13": 385,
+  "pathway_conn_probe_pair_distance_le10": 1293,
+  "pathway_conn_probe_pair_distance_le13": 275,
+  "pathway_conn_probe_pair_distance_le5": 1605
+}

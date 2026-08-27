@@ -1,0 +1,108 @@
+--- work/inflight/pcb_v48_renderer_before_wide_fragment_leader.py	2026-08-26 18:34:25.553243045 +0000
++++ pcb_v48_renderer.py	2026-08-26 18:34:26.033250586 +0000
+@@ -722,6 +722,11 @@
+         self.next_front_id=0
+         self.next_trace_id=0
+         self.main_launch_trace_ids=set()
++        # A wide recovery fragmentation must not let an entire source side die together just
++        # beyond the ordinary four-module maturity floor.  The designated trace id is carried
++        # independently of front ownership so later rebases/branches cannot lose its rendered
++        # side-progress obligation.
++        self.main_side_progress_trace_ids=set()
+         self.path_segments=[]
+         # Per-front ownership makes rollback proportional to the trace history being rewound,
+         # rather than rescanning the entire board history for each removed gesture.
+@@ -5120,6 +5125,42 @@
+                 self.stats.setdefault('pathway_fragment_short_future_reject_count',0)
+                 self.stats['pathway_fragment_short_future_reject_count']+=1
+                 return False
++        # Wide MAIN recovery cohorts used to bypass the short-future proof above entirely.
++        # At the hard horizon that could create 10+ singleton siblings at the four-module floor,
++        # let them occupy each other's escape room for a few settlement ticks, then legally
++        # terminalize the whole family before *any* lane established real side progression.
++        #
++        # Before mutating that topology, prove and commit one bounded ordinary-clearance future
++        # for one physical lane.  This is O(lanes) with a fixed beam/horizon, not a board search.
++        # The rest of the newborn siblings still route through the normal shared-snapshot solver.
++        # A trace-id certificate (rather than a front flag) preserves the obligation through any
++        # later rebase/branch, and render-time terminal backoff may not amputate that one trace
++        # below the same eight-module side-progress audit used by materialization.
++        wide_main=(len(children)>4 and not f.get('local_gap') and
++                   f.get('chip',len(self.chips))<len(self.chips) and
++                   self._minimum_materialized_lane_length(f)<8.0*self.module-1e-7)
++        if wide_main:
++            ranked=sorted(
++                children,
++                key=lambda child:(
++                    self._congestion_at(child['path'][-1]),
++                    abs(f['offsets'].get(child['ids'][0],0.0)),
++                    child['id']))
++            leader=None
++            for child in ranked:
++                if self._try_young_survival_beam(child,target_modules=9.0,horizon=4,beam_width=12):
++                    leader=child
++                    break
++            if leader is None:
++                for child in children: self._drop_front(child['id'])
++                self.stats['pathway_transactional_birth_reject_count']+=1
++                self.stats.setdefault('pathway_wide_fragment_side_progress_reject_count',0)
++                self.stats['pathway_wide_fragment_side_progress_reject_count']+=1
++                return False
++            self.main_side_progress_trace_ids.add(leader['ids'][0])
++            leader['main_side_progress_leader']=True
++            self.stats.setdefault('pathway_wide_fragment_side_progress_leader_count',0)
++            self.stats['pathway_wide_fragment_side_progress_leader_count']+=1
+         f['status']='branched'
+         self.stats['pathway_split_count']+=1
+         if f.get('local_gap'): self.stats['pathway_local_gap_split_count']+=1
+@@ -5370,6 +5411,20 @@
+         return self._coordinated_terminal_group_safe(
+             fs,allow_fragment_cohort=True,allow_exhausted_embedding=allow_exhausted_embedding)
+ 
++    def _main_terminal_visible_floor_modules(self,f,tid):
++        """Rendered terminal-length floor for one physical MAIN trace.
++
++        Six modules remains the ordinary preferred free-terminal floor.  A trace explicitly
++        chosen as a wide-fragment side-progress leader carries the stronger eight-module cohort
++        obligation because losing that one visible tail can turn an otherwise valid family into
++        an all-young stalled side.
++        """
++        floor=self.main_launch_preferred_terminal_modules
++        if (tid in self.main_side_progress_trace_ids and not f.get('local_gap') and
++                f.get('chip',len(self.chips))<len(self.chips)):
++            floor=max(floor,8.0)
++        return floor
++
+     def _backoff_terminal_points(self,f,tid,points,marker_index=None):
+         """Move a free terminal head backward to maximize safe visual clearance.
+ 
+@@ -5390,7 +5445,7 @@
+         marker_clip=self.r._termination_dot_radius(t)+.5*self.r.termination_dot_hollow_stroke
+         # V33: render-time terminal clearance is cosmetic only.  It may never visually
+         # amputate a mature main-chip route back below the protected launch-survival floor.
+-        visible_floor=(self.main_launch_preferred_terminal_modules if not f.get('local_gap') else 2.75)*self.module
++        visible_floor=(self._main_terminal_visible_floor_modules(f,tid) if not f.get('local_gap') else 2.75)*self.module
+         max_back=max(0.0,total-(visible_floor+marker_clip))
+         # Search the whole legal excess tail in bounded increments; no route search is involved.
+         n=max(1,min(14,int(math.ceil(max_back/max(.14*self.module,1e-9)))))
+@@ -8143,8 +8198,10 @@
+                         # V47 marker fidelity: hollow styling is optional; six-module visible
+                         # persistence is not.  If source clipping alone would drop a completed
+                         # main route below the preferred journey, use the legal filled variant.
++                        main_visible_floor=(self._main_terminal_visible_floor_modules(f,tid)*self.module
++                                            if main_physical_trace else self.main_launch_preferred_terminal_modules*self.module)
+                         preserve_preferred=(main_physical_trace and
+-                            logical_len-hollow_source_clip < self.main_launch_preferred_terminal_modules*self.module-1e-7)
++                            logical_len-hollow_source_clip < main_visible_floor-1e-7)
+                         sfilled=True if (main_near_floor or preserve_preferred) else (mrng.random()<.55)
+                         sstroke=0.0 if sfilled else self.r.termination_dot_hollow_stroke
+                         source_marker=prim_circle(sx,sy,sradius,self.r.FG,sfilled,sstroke)
+@@ -8182,7 +8239,7 @@
+                         main_trace=(not f.get('local_gap') and f.get('chip',len(self.chips))<len(self.chips))
+                         if (len(clipped)<2 or
+                                 math.hypot(clipped[-1][0]-clipped[-2][0],clipped[-1][1]-clipped[-2][1]) < .10*self.module-1e-9 or
+-                                (main_trace and clipped_len < self.main_launch_preferred_terminal_modules*self.module-1e-7)):
++                                (main_trace and clipped_len < self._main_terminal_visible_floor_modules(f,tid)*self.module-1e-7)):
+                             filled=True; stroke=0.0
+                         else:
+                             pts=clipped

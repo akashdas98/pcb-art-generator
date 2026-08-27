@@ -1,0 +1,65 @@
+{
+  "runs": [
+    {
+      "aspect_ratio": "1:6",
+      "max_rss_kib": 804192,
+      "output_geometry_sha256": "2ebbd5a2dd699c9f704fc15e6e8528d24a5bd2051cef4765027bf8466ac870a1",
+      "phase_times": {
+        "component_place": {
+          "calls": 1,
+          "cpu_s": 38.871426045999954,
+          "wall_s": 38.8724700519997
+        },
+        "component_prepare": {
+          "calls": 1,
+          "cpu_s": 2.9651715949999584,
+          "wall_s": 2.965278444999967
+        },
+        "final_clearance_audits": {
+          "calls": 4,
+          "cpu_s": 4.879452703999959,
+          "wall_s": 4.879559000999507
+        },
+        "final_validation": {
+          "calls": 2,
+          "cpu_s": 0.612707862000093,
+          "wall_s": 0.6127087099998789
+        },
+        "local_gap_routing": {
+          "calls": 1,
+          "cpu_s": 215.60580495,
+          "wall_s": 215.66940165100004
+        },
+        "main_routing": {
+          "calls": 1,
+          "cpu_s": 338.406563587,
+          "wall_s": 338.42892648299994
+        }
+      },
+      "report": {
+        "chip_count": 98,
+        "collection_count": 808,
+        "component_residual_gap_fill_actual": 0.5853818943977747,
+        "component_residual_gap_total_component_count": 2047,
+        "pathway_gesture_clear_check_count": 981312,
+        "pathway_launch_trace_count": 4124,
+        "pathway_local_gap_fill_actual": 0.8000222762819545,
+        "pathway_local_gap_source_count": 7869,
+        "pathway_local_gap_trace_count": 7869,
+        "pathway_lookahead_evaluation_count": 801235,
+        "pathway_main_short_termination_trace_count": 0,
+        "pathway_main_stalled_side_count": 0,
+        "pathway_visible_launch_trace_count": 4124
+      },
+      "sample_index": 0,
+      "scale": 0.35,
+      "seed": 0,
+      "source": "work/inflight/v48_longfine_totality_v2_renderer.py",
+      "source_sha256": "e8d1874d652e7aa6a7af763ac20b2a97d1367082dc748f61771833be49d16054",
+      "status": "PASS",
+      "total_cpu_s": 614.4849037930001,
+      "total_wall_s": 614.6302591419999,
+      "unattributed_wall_s": 13.20191480000085
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+{"mult": 0.25, "seed": 13726521167748995250, "elapsed": 40.21222360499996, "chip_count": null, "cross": 0, "local_clusters": 282, "local_cluster_max": 12, "component_cluster_max": 9, "stalled": 0, "short": 0, "unaccounted": 0}

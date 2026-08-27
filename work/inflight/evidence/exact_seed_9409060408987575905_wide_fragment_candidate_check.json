@@ -1,0 +1,78 @@
+{
+  "cpu_s": 23.688196521,
+  "illegal_turns": 0,
+  "max_rss_kib": 553620,
+  "moved": 51,
+  "root_results": [
+    {
+      "created_children": 13,
+      "key": [
+        74,
+        1,
+        "left"
+      ],
+      "leaders": [
+        {
+          "front": 13704,
+          "logical_modules": 9.000000000000016,
+          "outcome": [
+            "terminated",
+            "coordinated_persistence_limit",
+            8.154822
+          ],
+          "tid": 3134
+        }
+      ],
+      "max_visible_modules": 8.154822,
+      "rootid": 297,
+      "stalled": false,
+      "statuses": {
+        "active": 0,
+        "component": 0,
+        "connected": 0,
+        "escaped": 0,
+        "terminated": 13
+      }
+    },
+    {
+      "created_children": 13,
+      "key": [
+        81,
+        2,
+        "bottom"
+      ],
+      "leaders": [
+        {
+          "front": 13720,
+          "logical_modules": 14.000000000000002,
+          "outcome": [
+            "terminated",
+            "coordinated_persistence_limit",
+            8.0
+          ],
+          "tid": 3450
+        }
+      ],
+      "max_visible_modules": 8.0,
+      "rootid": 326,
+      "stalled": false,
+      "statuses": {
+        "active": 0,
+        "component": 0,
+        "connected": 0,
+        "escaped": 0,
+        "terminated": 13
+      }
+    }
+  ],
+  "sample_seed": 9409060408987575905,
+  "short_main": 0,
+  "side_progress_leader_count": 2,
+  "stalled_side_count": 0,
+  "static_intersections": 0,
+  "unaccounted": 0,
+  "unmarked_clearance": 0,
+  "unmarked_overlap": 0,
+  "unmarked_stroke_overlap": 0,
+  "wall_s": 23.690631797999913
+}

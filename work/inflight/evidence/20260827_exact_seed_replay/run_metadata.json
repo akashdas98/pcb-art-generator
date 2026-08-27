@@ -1,0 +1,11 @@
+{
+  "base_seed": 8528317405406420078,
+  "aspect_ratio": "1:6",
+  "scale": 0.35,
+  "logical_index": 0,
+  "expected_sample_seed": 9409060408987575905,
+  "actual_sample_seed": 9409060408987575905,
+  "elapsed_seconds": 934.7098865969999,
+  "status": "PASS",
+  "report_seed": 9409060408987575905
+}

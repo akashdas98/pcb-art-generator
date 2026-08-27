@@ -1,0 +1,47 @@
+--- /mnt/data/v48_baseline/pcb_v48_repo/tests/active/test_pcb_v48_renderer.py	2026-08-27 06:56:34.000000000 +0000
++++ tests/active/test_pcb_v48_renderer.py	2026-08-27 08:09:33.343439394 +0000
+@@ -439,6 +439,44 @@
+         # Early turning does not weaken the hard minimum: termination remains illegal below 4.
+         self.assertTrue(planner._main_launch_physically_protected(f))
+ 
++    def test_v48_recovery_fragmentation_cannot_export_underfloor_survival_debt_to_singletons(self):
++        _r,planner=self._planner_with_fake_chip(320021)
++        f=self._root_family_front(planner,12021,lane_count=3,fan_pending=False)
++        start=f['path'][-1]; end=(start[0]+2.0*planner.module,start[1])
++        geom=planner._corridor_geom(f,start,end)
++        planner._accept(f,dict(front=f['id'],start=start,end=end,dir=0,modules=2,geom=geom,score=1.0),defer_post=True)
++        ancestor=self._planner_front(planner,120210,(900.0,700.0),0,chip=0)
++        ancestor['status']='branched'
++        f['parent']=ancestor['id']
++        f['launch_egress_pending']=False
++        planner._release_source_egress(planner._launch_family_key(f))
++        self.assertLess(planner._minimum_materialized_lane_length(f),4.0*planner.module-1e-7)
++        before=set(planner.fronts)
++        self.assertFalse(planner._fragment_bundled_front(f))
++        self.assertEqual(set(planner.fronts),before)
++        self.assertEqual(f['status'],'active')
++        self.assertGreaterEqual(planner.stats.get('pathway_underfloor_fragment_reject_count',0),1)
++
++    def test_v48_young_main_branch_commits_survival_transaction_before_parent_is_replaced(self):
++        _r,planner=self._planner_with_fake_chip(320022)
++        f=self._root_family_front(planner,12022,lane_count=4,fan_pending=False)
++        start=f['path'][-1]; end=(start[0]+2.0*planner.module,start[1])
++        geom=planner._corridor_geom(f,start,end)
++        planner._accept(f,dict(front=f['id'],start=start,end=end,dir=0,modules=2,geom=geom,score=1.0),defer_post=True)
++        ancestor=self._planner_front(planner,120220,(900.0,700.0),0,chip=0)
++        ancestor['status']='branched'
++        f['parent']=ancestor['id']
++        f['launch_egress_pending']=False
++        planner._release_source_egress(planner._launch_family_key(f))
++        self.assertLess(planner._minimum_materialized_lane_length(f),4.0*planner.module-1e-7)
++        children=planner._branch_front(f)
++        self.assertTrue(children)
++        self.assertEqual(f['status'],'branched')
++        for child in children:
++            self.assertGreaterEqual(planner._minimum_materialized_lane_length(child),4.0*planner.module-1e-7)
++            self.assertIsNone(child.get('branch_stage'))
++        self.assertGreaterEqual(planner.stats.get('pathway_young_branch_survival_transaction_count',0),1)
++
+     def test_v48_root_fan_becomes_transactionally_ready_after_one_real_emergence_gesture(self):
+         _r,p=self._planner_with_fake_chip(480101)
+         f=self._root_family_front(p,480101,lane_count=12,fan_pending=True)
