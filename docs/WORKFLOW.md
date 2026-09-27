@@ -1,12 +1,12 @@
 # Workflow and Optimization Governance
 
-> **DEVELOPMENT MODE ONLY.** This workflow applies only when the user asks to change, fix, debug, test, validate, benchmark, optimize, audit, qualify, or package the repository. A plain request to **use/render/generate** with the renderer is PRODUCTION USE mode: run `python generate_pcb.py ...` and do **not** run this workflow, the worktree guard, tests/stress, seed sweeps, reports, or the handoff builder. A request only to inspect, commit, or push an already-existing working tree is REPOSITORY ADMINISTRATION mode and likewise does not invoke this workflow, the guard, tests, or handoff builder. See `AGENTS.md` for routing and `docs/PRODUCTION_USE.md` for rendering.
+> **DEVELOPMENT MODE ONLY.** This workflow applies only when the user asks to change, fix, debug, test, validate, benchmark, optimize, audit, qualify, package, or otherwise modify repository content. A plain request to **use/render/generate** is PRODUCTION USE mode. A pure request to commit/push/tag/sync/inspect the already-existing repository is REPOSITORY ADMINISTRATION mode. Neither mode runs this DEVELOPMENT workflow, the worktree guard, tests/stress, seed sweeps, reports, or handoff builder merely by virtue of that request. See `docs/PRODUCTION_USE.md` and `docs/REPOSITORY_ADMINISTRATION.md`.
 
 ## 1. One canonical writable repository
 
 The project uses exactly one canonical writable repository per session. The repository identity is stored in `.pcb_repo_identity.json`.
 
-Run `python tools/assert_single_canonical_repo.py` before DEVELOPMENT repository work and before DEVELOPMENT handoff. Do not run it for PRODUCTION USE rendering or REPOSITORY ADMINISTRATION of an already-existing working tree. The guard fails if Git reports parallel worktrees or if another directory under `/mnt/data` carries the same durable repository identity. This is deliberately executable because accidental parallel state previously caused authority contamination. **Do not remove or weaken this guard for DEVELOPMENT work.**
+Run `python tools/assert_single_canonical_repo.py` before DEVELOPMENT repository work and before DEVELOPMENT handoff. Do not run it for PRODUCTION USE rendering or pure REPOSITORY ADMINISTRATION such as commit/push/tag/sync operations on the existing repository state. The guard fails if Git reports parallel worktrees or if another directory in the session's repository area carries the same durable repository identity (`/mnt/data` on Linux; the containing project directory on Windows). This is deliberately executable because accidental parallel state previously caused authority contamination. **Do not remove or weaken this guard.**
 
 Temporary benchmark/output directories must live outside the canonical repo and must not copy the repository identity file.
 
@@ -103,11 +103,12 @@ Future chip-count/run-length controls are workload controls, not permission to u
 
 ## 9. Packaging transaction
 
-Every user-facing **DEVELOPMENT-mode** project response must ship a fresh replacement-ready bundle. Plain PRODUCTION USE rendering does not create a handoff:
+Every user-facing **DEVELOPMENT-mode** project response must ship a fresh replacement-ready bundle. Plain PRODUCTION USE rendering and pure REPOSITORY ADMINISTRATION do not create a handoff:
 
 `python tools/build_handoff_bundle.py`
 
 The builder invokes the single-canonical-repo guard and verifies the ZIP after writing it. No stale ZIP may be served as the current handoff.
+The ZIP is written outside the repository (`/mnt/data` on Linux or the system temporary directory on Windows).
 
 ### 9.1 HARD missed-handoff recovery invariant
 

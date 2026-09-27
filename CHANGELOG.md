@@ -1,8 +1,53 @@
-## 2026-08-27 — repository-administration routing clarified
+## 2026-09-27 ? shared residual cluster distribution ? PROMOTED
 
-- Added an explicit REPOSITORY ADMINISTRATION route for status/diff/history inspection and committing or pushing an already-existing working tree.
-- Clarified that the single-canonical-repository guard, release/stress suites, and handoff builder apply to DEVELOPMENT changes and packaging, not to source-control-only publication of existing state.
-- Requests that also alter, test, validate, or package repository content remain DEVELOPMENT work; renderer behavior is unchanged.
+- Coordinate component and LOCAL opportunity through shared physical composition parcels; preserve distinct seeded cluster sizes and allow larger physically bounded LOCAL groups.
+- Separate component center cores from complete canonical glyph footprints, removing the fine-scale seven-population cost.
+- Measure LOCAL service from final visible strokes on the unchanged canonical denominator; construct indexed early capacity only for higher requested LOCAL allocations and preserve ordinary default language.
+- Correct minimum-length roundoff, certified filled-terminal settlement and polygon-versus-exact logical circle admission.
+- Retain hard default/reduced-density floors; full-density all-LOCAL best-effort 80% reaches80 in all five qualified fixtures. MAIN remains unchanged on paired comparisons.
+- Candidate 204/204 and complete affected fixtures pass. Native release 204/204 and stress 1/1 pass with exit code zero, zero failures/errors/skips/xfails. Source SHA-256 `244661c4f9560322ba90cfb5dd93c3ced2ebc42c37b28e5668fa86777758ba85`; evidence and performance limits in docs/RESIDUAL_CLUSTER_DISTRIBUTION.md.
+
+## 2026-09-04 07:xx IST — residual density knobs — PROMOTED
+
+User requested two controls on the uploaded pre-second-cluster-fix renderer:
+
+- `local_density` in `[0,1]`: scales the total post-MAIN residual-fill budget. `1.0` means the historical residual-fill amount; `0.0` leaves post-MAIN gaps unfilled by both residual components and LOCAL lines.
+- `component_density` in `[0,1]`: splits that residual-fill budget between components and LOCAL lines. `0.0` requests all LOCAL, `1.0` requests all components.
+
+The current nominal default component share is **0.5898123324 (~0.59)**. It is derived from the historical midpoint convention: components target 55% of residual capacity, LOCAL targets 85% of the remainder, so `0.55 / (0.55 + 0.85*0.45) = 0.5898123324`. Exact default settings preserve the historical per-seed 50–60% component and 80–90% LOCAL draws through a legacy fast path rather than replacing those stochastic targets with fixed midpoint numbers.
+
+Current implementation status:
+
+- API/CLI wiring for both knobs is in place.
+- Exact default geometry has been compared against the uploaded original renderer and is **byte-for-byte identical after stripping only the new report metadata**.
+- `local_density=0` is a literal endpoint: no residual components and no LOCAL lines are emitted; MAIN is untouched.
+- Non-default density requests use a shared post-MAIN residual-service budget; `local_density` scales the total requested budget and `component_density` divides it between the two residual modalities.
+- Extreme all-LOCAL/all-component requests are best-effort density requests constrained by existing geometry/clearance grammar; they do not create new 90%+ hard construction invariants. Reports expose requested and realized combined residual density and realized component share.
+- Targeted knob-contract tests pass.
+- Full canonical release gate completed **193/193 PASS**, zero failures/errors/skips/xfails.
+- Maintained geometry stress gate completed **1/1 PASS**.
+- Exact-seed endpoint smokes at `1:1 @ 1.0`, seed `101`, confirm the requested semantics: `local_density=0` emits zero residual components and zero LOCAL traces; `component_density=0` emits zero components and LOCAL-only residual service; `component_density=1` emits components only and zero LOCAL traces. A `local_density=0.5` mixed smoke realized total residual service `0.4751` against target `0.4705`.
+- Endpoint requests remain geometry-constrained best-effort density targets rather than new hard coverage floors: the all-LOCAL smoke realized `0.8008` of the `0.9410` requested total without weakening clearance or LOCAL routing grammar.
+
+This change is **promoted**. Exact defaults preserve historical per-seed geometry, while non-default settings expose the new shared residual-fill controls without changing MAIN architecture, route grammar, or clearance rules. **Authoritative renderer SHA-256:** `7fa8219870e537dc45f3238a83d43779f4d8f5032717bddb1447b99af96e8fcb`.
+
+## 2026-08-28 19:35 IST — repository-administration workflow separated from DEVELOPMENT
+
+- Added a third top-level task mode: **REPOSITORY ADMINISTRATION**, distinct from both PRODUCTION USE and DEVELOPMENT.
+- Pure repository/version-control administration on an already-existing state—status/diff/history, stage/commit/amend, tags/branches/remotes, fetch/pull/rebase/merge, push/sync—no longer routes through DEVELOPMENT merely because it writes Git metadata.
+- In pure REPOSITORY ADMINISTRATION mode, agents explicitly **must not run `tools/assert_single_canonical_repo.py`**, release/stress tests, benchmarks, qualification suites, handoff builders, or DEVELOPMENT missed-handoff recovery just because commit/push/repository housekeeping was requested.
+- Mixed requests remain safe: “fix/change X, then commit/push” is DEVELOPMENT while content changes are made/qualified; commit/push is only the administrative tail. Creating an additional worktree is not treated as ordinary exempt administration and remains constrained by the single-canonical-state policy.
+- Added `docs/REPOSITORY_ADMINISTRATION.md`, updated `AGENTS.md`, `docs/WORKFLOW.md`, and `README.md`, and added a permanent routing regression. Renderer geometry/export source is unchanged: renderer SHA-256 remains `e06fb338cae6a81ef1249336608ee0dacefafb96e4e5ace4380bb2e01bc3ebd3`.
+- Qualification: **191/191 active release tests PASS** with zero failures/errors/skips/xfails. Maintained geometry stress: **1/1 PASS**. Renderer source remains unchanged.
+
+## 2026-08-28 23:40 IST — semantic SVG geometry classification export promoted
+
+- Implemented a **machine-semantic SVG export layer** on the final renderer output. The exported SVG now carries root-level schema/version attributes plus a `semantic_svg` metadata payload alongside the existing report payload, so downstream tools can inspect geometry classes without re-deriving the full scene from raw shapes alone.
+- Final SVG groups are now classified at entity level: `main-chip`, `main-pathway`, `local-pathway`, and `component-group`. Pathway groups preserve source-chip / launch-side semantics, and component groups preserve family / cluster semantics when present.
+- Final SVG primitives are now classified with stable IDs and `class` / `data-*` attributes. Main-chip traces export as `main-trace`; LOCAL traces export as `local-trace`; pathway circles export as trace markers with inferred roles such as `source-marker`, `terminal-marker`, `endpoint-marker`, or `junction-marker`; component primitives export as `component-geometry`.
+- Trace primitives now expose directly usable endpoint/state metadata in the SVG DOM itself (`data-start-*`, `data-end-*`, `data-point-count`, `data-stroke-width`, parent entity id, marker role, etc.). This is intended specifically to support downstream effects/behavior passes such as animated glow particles traveling along main traces and optionally coupling into nearby components or LOCAL traces.
+- Added a focused semantic-export contract doc: `docs/SEMANTIC_SVG_EXPORT.md`.
+- Qualification: **190/190 active tests PASS** (run in deterministic batches to avoid tool execution-window cutoffs) + maintained geometry stress **1/1 PASS** + direct semantic SVG smoke render/inspection PASS. Promoted renderer SHA-256: `e06fb338cae6a81ef1249336608ee0dacefafb96e4e5ace4380bb2e01bc3ebd3`. Active test manifest SHA-256: `a0182681abee07517cbf66ca477f772fc4abae5203a114128d056dab7a9f6555`.
 
 ## 2026-08-27 21:28 IST — residual-fill spatial mosaic + opportunistic cross-chip semantics promoted
 

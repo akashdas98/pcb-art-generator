@@ -7,8 +7,12 @@ SVG payload.  It is intended for proxy scaling work; candidates still need the n
 suite and production gates.
 """
 from __future__ import annotations
-import argparse, hashlib, importlib.machinery, importlib.util, json, resource, sys, time
+import argparse, hashlib, importlib.machinery, importlib.util, json, sys, time
 from pathlib import Path
+try:
+    import resource
+except ImportError:  # Windows has no POSIX resource module.
+    resource = None
 
 def load_module(path: Path):
     tag='v48phase_'+hashlib.sha1(str(path.resolve()).encode()).hexdigest()[:12]
@@ -48,7 +52,7 @@ def run_one(source: Path, aspect: str, scale: float, seed: int, sample_index: in
     return {
         'source':str(source),'source_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),
         'aspect_ratio':aspect,'scale':scale,'seed':seed,'sample_index':sample_index,'status':'PASS',
-        'total_wall_s':total_wall,'total_cpu_s':total_cpu,'max_rss_kib':resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,
+        'total_wall_s':total_wall,'total_cpu_s':total_cpu,'max_rss_kib':(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss if resource else None),
         'output_geometry_sha256':geom_hash,'phase_times':phases,'unattributed_wall_s':max(0.0,total_wall-accounted),
         'report':{k:report.get(k) for k in (
             'chip_count','collection_count','pathway_launch_trace_count','pathway_visible_launch_trace_count',

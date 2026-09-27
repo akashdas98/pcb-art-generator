@@ -1900,17 +1900,57 @@ then frozen.
 
 No later component or local-gap failure may cause this frozen main network to reroute.
 
+### 19.2.1 Residual density controls
+
+Two public controls govern only the **post-MAIN residual phases**:
+
+```text
+D_local     = local_density     in [0, 1], default 1.0
+D_component = component_density in [0, 1], default 0.5898123324396783
+```
+
+The nominal component default is the historical midpoint-convention share:
+
+```text
+C_mid = 0.55
+L_mid = 0.85
+D_component_default = C_mid / (C_mid + (1-C_mid)*L_mid)
+                    = 0.5898123324396783
+```
+
+For each seed, the legacy residual convention still defines its own seeded reference budget:
+
+```text
+C0 = Uniform(0.50, 0.60)
+L0 = Uniform(0.80, 0.90)
+T0 = C0 + (1-C0)*L0
+```
+
+At the **exact default pair** (`D_local=1`, `D_component=0.5898123324396783`) the renderer takes a legacy fast path: it uses `C0` and `(1-C0)*L0` exactly, preserving the pre-knob default geometry/RNG behavior. The numeric component-density default is therefore the nominal midpoint share, not a claim that every historical seed had one fixed component share.
+
+Away from the exact defaults:
+
+```text
+T_target         = D_local * T0
+C_target         = T_target * D_component
+A_local_budget   = T_target * (1-D_component)
+```
+
+Consequences are literal at the allocation level:
+
+- `D_local=0`: leave the post-MAIN residual field empty — no residual components and no LOCAL lines;
+- `D_component=0`: allocate the requested residual-fill budget to LOCAL lines and emit no residual components;
+- `D_component=1`: allocate it to components and assign no residual-fill budget to LOCAL lines;
+- intermediate values split one common total budget rather than independently multiplying two unrelated phase targets.
+
+These controls change **density targets, not geometry law**. Existing component grammar, LOCAL grammar, clearances, octilinear routing, frozen-MAIN ordering, and exact legality remain authoritative. At extreme allocations the requested density may be physically under-realized; the renderer must not relax clearance or invent a new routing algorithm merely to hit a knob. Historical hard floors are scaled downward with reduced density and are capped at their established legacy maxima when a knob requests more work, so a high-density endpoint does not create a new superlinear 90%+ construction invariant. Embedded report fields expose both requested and actual combined residual service and the realized component share.
+
 ## 19.3 First residual phase — connected-region component fill
 
 After the main network is frozen:
 
 1. use the established deterministic component population and substantial-region classifier;
-2. sample a seeded component residual-service target:
-
-```text
-C_target = Uniform(0.50, 0.60)
-```
-
+2. derive the component residual-service target from the residual-density controls in §19.2.1. At the exact defaults this is the historical seeded draw `Uniform(0.50, 0.60)`; away from default it is the component share of the scaled combined post-MAIN residual budget;
 3. analyze the residual field after exact main-chip and main-pathway keepouts;
 4. classify substantial/mandatory versus optional thin/sliver residual regions;
 5. allocate component capacity by region size and usable short/long span: small rooms prefer small components,
@@ -1929,7 +1969,7 @@ C_target = Uniform(0.50, 0.60)
 9. the historical bounded 90%→82%→75% adaptation remains available for the original prepared full collections;
    source collection language/quota validation is performed before routing and is not redefined by fit-only adaptation;
 10. exact chip/main-path/component-component/edge clearances remain authoritative;
-11. once the sampled 50–60% service obligation is met, freeze all accepted components.
+11. once the active component service obligation is met (historical seeded 50–60% at exact defaults), freeze all accepted components.
 
 The governing service metric remains the V35 substantial-region **area representation × size/quantity capacity**
 metric. One token object cannot satisfy a large room, and medium/large rooms may not be serviced visually by a
@@ -1939,7 +1979,7 @@ main network; it may never rerun main routing.
 
 ## 19.4 Second residual phase — local lines over the remaining service budget
 
-After components freeze, sample:
+After components freeze, derive the LOCAL absolute target from the residual-density controls in §19.2.1. At the exact defaults the historical rule is preserved exactly:
 
 ```text
 L_target = Uniform(0.80, 0.90)
@@ -1947,9 +1987,7 @@ R = max(0, 1 - C_actual)
 A_local_target = R * L_target
 ```
 
-where `C_actual` is the accepted component service fraction from §19.3, `R` is the remaining residual **service
-budget**, and `A_local_target` is the corresponding absolute local-line obligation measured against the original
-post-main residual service field.
+Away from the exact defaults, `A_local_target` is the remaining LOCAL allocation of the common post-MAIN residual budget after accepted component service, capped so component overshoot cannot make the combined residual service exceed the requested total. Component under-realization is not silently reassigned to LOCAL because `component_density` owns the modality split.
 
 The local planner then analyzes and routes through the **actual physical post-component free geometry**. It must:
 
@@ -2480,7 +2518,12 @@ batch_uniqueness:
 
 component_fill:
   phase: after_frozen_main_before_local_gap
-  residual_service_target_fraction: [0.50, 0.60]
+  residual_density_controls:
+    local_density: {range: [0.0, 1.0], default: 1.0}
+    component_density: {range: [0.0, 1.0], default: 0.5898123324396783}
+    component_density_default_basis: "0.55 / (0.55 + (1-0.55)*0.85)"
+    exact_default_preserves_legacy_seeded_targets: true
+  residual_service_target_fraction_at_exact_default: [0.50, 0.60]
   substantial_region_size_quantity_capacity: required
   optional_sliver_regions: permitted_negative_space
   chip_clearance_U: 42
@@ -2511,8 +2554,9 @@ pathways:
   local_gap_phase:
     runs_after_components: true
     components_and_main_network_are_immutable_obstacles: true
-    remaining_service_target_fraction: [0.80, 0.90]
-    absolute_target_formula: "(1-component_service_actual) * sampled_remaining_target"
+    remaining_service_target_fraction_at_exact_default: [0.80, 0.90]
+    absolute_target_formula_at_exact_default: "(1-component_service_actual) * sampled_remaining_target"
+    nondefault_budget_formula: "T=D_local*T0; C=T*D_component; LOCAL=T-C after component overshoot cap"
     visible_stroke_plus_legitimate_perimeter_service_only: true
     target_is_hard_acceptance_with_small_numeric_tolerance: true
     bounded_coverage_waves_max: 3
@@ -3919,6 +3963,18 @@ This refinement is normative. It strengthens the production contract without wea
 9. **MAIN line-survival is part of seed-total construction.** The formerly deferred `persistence horizon unresolved` / MAIN materialization-survival family is governed by §29.21's proactive first-rebase fairness / atomic residual structural settlement and §29.22's hard-four/soft-six progress-driven true-final relational settlement. Those failures remain programmer/construction defects if they recur; they may never be hidden, downgraded, or rerolled.
 10. **Required regression style.** Seed-totality regressions should deliberately force former stochastic ceilings to zero/tiny values where practical and prove deterministic constructive completion, rather than merely demonstrate that a larger random budget usually succeeds.
 
+## 29.20.1 2026-09-04 — User controls for total residual density and component/LOCAL mix
+
+This current V48 control extension supersedes fixed residual target wording only when either new density control is moved away from its exact default. It does **not** change MAIN behavior, component/LOCAL geometry grammar, clearances, seed totality, or phase order.
+
+- `local_density` is `[0,1]`, default `1.0`, and scales the seed's historical combined post-MAIN residual-service budget.
+- `component_density` is `[0,1]`, nominal default `0.5898123324396783`, and divides that common budget between components and LOCAL lines.
+- The default value is the midpoint-convention share `0.55/(0.55+0.45*0.85)`.
+- The **exact default pair is behavior-preserving**: old seeded `50–60%` component and `80–90%` remainder-LOCAL draws are used exactly, with no extra RNG consumption.
+- `local_density=0` emits no residual components or LOCAL lines. `component_density=0` assigns the residual budget to LOCAL; `component_density=1` assigns it to components.
+- Density requests are best-effort above the established hard phase floors. Exact geometry is never weakened to force an extreme mix, and new higher knob targets do not become new superlinear hard-floor obligations.
+- The report exposes requested total residual budget, component allocation, LOCAL allocation, actual combined residual service, and actual realized component share.
+
 ## 29.21 2026-08-24 — Proactive first-rebase fairness and atomic residual structural settlement
 
 This refinement is normative and closes the separately tracked MAIN line-murder family without weakening §29.19 or seed totality.
@@ -3972,18 +4028,16 @@ Generation order remains component-first for exact collision ownership; **spatia
    outcomes; small and medium clusters are common; genuinely large clusters of roughly 10--12 remain normal but
    minority outcomes. A connected residual room can and normally should contain several independent clusters rather
    than being represented by one unbounded colony.
-3. **LOCAL source-cluster cardinality has the same 1--12 support.** A large connected post-component room is divided
-   into compact source parcels. LOCAL source allocation services those parcels rather than allocating only at whole
-   connected-region granularity. A parcel may contain a singular source, a small/medium group, or a large 10--12
-   source group; no ordinary parcel may grow beyond 12 roots.
-4. **Cluster size is composition, not search breadth.** The 1--12 target changes only how already-authorized
-   component opportunities or LOCAL source opportunities are distributed. Exact component placement predicates,
-   LOCAL source clearance, route proposal breadth, octilinear grammar, routing/recovery algorithms, service targets,
-   and collision indexes are unchanged by this requirement.
-5. **Recovery may not recreate megaclusters.** A component that cannot fulfill an existing prepared cluster becomes a
-   singular spill composition unit rather than silently extending that cluster past its target. Exceptional LOCAL
-   debt-completion traces likewise remain independent debt-service units; they may not be accumulated into an
-   unbounded ordinary cluster.
+3. **LOCAL groups have varied, physically bounded capacity.** Root counts follow seeded probabilities and feasible
+   route-domain area; they may exceed twelve roots, as explicitly authorized. Each source and descendant retains one
+   connected composition domain. The public area-scaled population ceiling and exact route gates remain governing.
+4. **Cluster size distributes authorized work.** Seeded size targets distribute component opportunities and LOCAL
+   source opportunities according to local feasible capacity. Larger groups do not authorize broader route searches,
+   relaxed constructors, lowered service floors or weaker clearance. Public work ceilings, octilinear grammar and
+   the cached local collision architecture remain governing.
+5. **Completion retains composition ownership.** Component recovery and completion use ordinary seeded 1--12
+   member clusters, canonical constructors and original substantial-region quotas. LOCAL debt sources belong to the
+   same physically bounded domains as ordinary sources; completion may not bypass exact ownership or clearance.
 6. **Mixing is macroscopic, not forced microscopic alternation.** Components and LOCAL lines do not need to alternate
    token-by-token, and exact obstacles may create naturally one-sided pockets. The forbidden outcome is systematic
    board-scale segregation produced by scheduler ownership. On open sparse boards, multiple component and LOCAL
@@ -3998,9 +4052,40 @@ Generation order remains component-first for exact collision ownership; **spatia
    chip connection, when encountered, immediately counts as successful route completion regardless of remaining MAIN
    journey target. A valid board is not required to manufacture at least one foreign-chip encounter. Zero realized
    cross-chip joins is valid when no legal encounter occurs, including sparse/short-run boards.
-10. **Bounded clusters may not re-coalesce into a macroscopic megacluster.** Capping each logical cluster at 12 is
-   insufficient if many independent clusters are then anchored side-by-side. Prepared and completion component-cluster
-   anchors must be dispersed across a fixed-size board mosaic using normalized local load before connected-region quota
-   chooses exact service cells. Completion fillers therefore form ordinary seeded 1--12-member clusters rather than an
-   unbounded cloud of nominal singleton spill clusters. This is a fixed 8x8 composition scheduler only: exact placement
-   legality, component constructors, region fill quotas, LOCAL routing, and collision/search architecture remain unchanged.
+10. **Cluster anchors must remain dispersed.** Shared composition uses independent physical x/y parcel counts,
+    with seeded component/LOCAL allocation inside small neighboring parcel groups. This supersedes the fixed 8x8
+    scheduler. Component center cores locate clusters; their selected tiles contain complete canonical glyphs.
+    Prepared and completion placement use cluster-count-first local load. After components freeze, actual cluster
+    hulls remain protected and unused reservation fringe returns to LOCAL routing opportunity.
+
+## 29.25 2026-09-27 ? Shared residual construction and final visible service
+
+This refinement is normative. It preserves MAIN, phase order, exact seed ownership, canonical component grammar,
+octilinearity and every clearance. It supersedes older LOCAL root caps and density-floor wording where stated.
+
+1. **Accounting and opportunity are separate.** The canonical post-MAIN service denominator is immutable. Policy
+   seams and route exclusions may not shrink it. The LOCAL numerator is the union of final emitted flat-cap stroke
+   service ribbons, including only the legitimate exclusion perimeter, sampled at the established 4x4 subcell mask.
+   Planned paths, suppressed traces and markers do not manufacture service. Recount final visible geometry.
+2. **Ordinary construction retains the default language.** LOCAL targets attract less strongly than MAIN; singleton
+   branching uses the public area-scaled population cap. Source/target scheduling uses local chunk pools, heaps and
+   spatial indexes rather than whole-board scans or all-pairs coordination. Raster room labels nominate proposals;
+   exact frame, composition, static, route and marker predicates decide geometric legality.
+3. **Higher requested LOCAL work receives early capacity construction.** Exact legal bent visible packages reserve
+   feasible service before ordinary routes fragment corridors. Seeded ordinary gauge/special draws, compatible
+   affinity, branching and tails realize that capacity through bounded local transactions. A replacement must preserve
+   the original packet's service bits; rejected local replacements retain their certificate. Minimum logical/visible
+   length comparisons use the existing numerical tolerance. Filled certified terminals may reach their proven prefix
+   without a fictitious hollow clip; genuinely hollow markers retain the full clipping reserve.
+4. **Construction and final marker guards share exact circle spacing.** Logical terminal indexes carry centers and
+   radii. Admission uses the same analytic circle predicate as final cleanup; faceted disc distance cannot certify
+   a pair that the final guard would delete. Existing exact static, stroke, marker and ownership gates remain active.
+5. **Density semantics remain explicit.** Exact default mixed settings retain a hard 80% LOCAL remainder floor and
+   seeded 80--90% preference. Nondefault LOCAL floors cap the full-density floor before multiplying by `local_density`.
+   All-LOCAL density 0.9 therefore requires 0.72 absolute service; density 0.5 requires 0.4. Only the exact full-density
+   all-LOCAL endpoint (`local_density=1`, `component_density=0`) uses best-effort 80%: construction must generally reach
+   it and any misses remain close, with true achieved service and shortfall reported. This approval does not weaken
+   reduced-density floors, default floors, geometry or seed ownership. Finite qualification is not seed-totality proof.
+6. **Work must remain proportional to opportunity and visible output.** Preserve cached exact first legs, incremental
+   service masks, bounded spatial queries and chunk scheduling. Do not raise retries, rescore the board per source,
+   repeat full debt campaigns, or add aspect/scale-specific modes to obtain a passing fixture.

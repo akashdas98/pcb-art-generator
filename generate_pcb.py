@@ -15,7 +15,7 @@ import argparse
 from pathlib import Path
 from typing import Optional
 
-from pcb_v48_renderer import V48Renderer
+from pcb_v48_renderer import DEFAULT_COMPONENT_DENSITY, DEFAULT_LOCAL_DENSITY, V48Renderer
 
 
 def render_requested(
@@ -27,6 +27,8 @@ def render_requested(
     out_dir: Path | str = Path("v48_output"),
     main_chip_density_multiplier: float = 1.0,
     main_run_length_multiplier: float = 1.0,
+    local_density: float = DEFAULT_LOCAL_DENSITY,
+    component_density: float = DEFAULT_COMPONENT_DENSITY,
 ) -> list[Path]:
     """Render exactly ``count`` logical samples and return their SVG paths.
 
@@ -43,6 +45,8 @@ def render_requested(
         aspect_ratio, scale, seed,
         main_chip_density_multiplier=main_chip_density_multiplier,
         main_run_length_multiplier=main_run_length_multiplier,
+        local_density=local_density,
+        component_density=component_density,
     )
     paths: list[Path] = []
 
@@ -72,6 +76,8 @@ def main() -> int:
     ap.add_argument("--out-dir", type=Path, default=Path("v48_output"))
     ap.add_argument("--main-chip-density-multiplier", type=float, default=1.0, metavar="0.2..2.0")
     ap.add_argument("--main-run-length-multiplier", type=float, default=1.0, metavar="0.2..3.0")
+    ap.add_argument("--local-density", type=float, default=DEFAULT_LOCAL_DENSITY, metavar="0..1")
+    ap.add_argument("--component-density", type=float, default=DEFAULT_COMPONENT_DENSITY, metavar="0..1")
     args = ap.parse_args()
 
     for path in render_requested(
@@ -82,6 +88,8 @@ def main() -> int:
         out_dir=args.out_dir,
         main_chip_density_multiplier=args.main_chip_density_multiplier,
         main_run_length_multiplier=args.main_run_length_multiplier,
+        local_density=args.local_density,
+        component_density=args.component_density,
     ):
         print(path)
     return 0

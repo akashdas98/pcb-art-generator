@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from pathlib import Path
 import json
+import os
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -30,9 +31,10 @@ def main() -> int:
     # Replacement-ready handoff roots intentionally may omit .git; in that case the durable
     # repository identity scan below is the authoritative duplicate-state guard.
     git_checked = False
+    git_cmd = ['git', '-c', f'safe.directory={ROOT.as_posix()}']
     try:
         subprocess.check_output(
-            ['git', '-C', str(ROOT), 'rev-parse', '--is-inside-work-tree'],
+            [*git_cmd, '-C', str(ROOT), 'rev-parse', '--is-inside-work-tree'],
             text=True,
             stderr=subprocess.STDOUT,
         )
@@ -42,7 +44,7 @@ def main() -> int:
     if git_checked:
         try:
             out = subprocess.check_output(
-                ['git', '-C', str(ROOT), 'worktree', 'list', '--porcelain'],
+                [*git_cmd, '-C', str(ROOT), 'worktree', 'list', '--porcelain'],
                 text=True,
                 stderr=subprocess.STDOUT,
             )
@@ -58,13 +60,17 @@ def main() -> int:
 
     # 2) A copied canonical repo carrying the same durable identity is always forbidden.
     matches = []
-    for p in Path('/mnt/data').rglob('.pcb_repo_identity.json'):
-        try:
-            data = json.loads(p.read_text(encoding='utf-8'))
-        except Exception:
-            continue
-        if data.get('repository_id') == rid:
-            matches.append(p.parent.resolve())
+    # Handoffs live under /mnt/data on Linux; Windows sessions use the
+    # containing project directory as their writable repository area.
+    scan_roots = [ROOT.parent] if os.name == 'nt' else [Path('/mnt/data')]
+    for scan_root in scan_roots:
+        for p in scan_root.rglob('.pcb_repo_identity.json'):
+            try:
+                data = json.loads(p.read_text(encoding='utf-8'))
+            except Exception:
+                continue
+            if data.get('repository_id') == rid:
+                matches.append(p.parent.resolve())
     uniq = sorted(set(matches))
     if uniq != [ROOT.resolve()]:
         fail('duplicate canonical repository identities detected: ' + ', '.join(map(str, uniq)))

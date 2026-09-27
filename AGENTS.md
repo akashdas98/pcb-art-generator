@@ -22,22 +22,25 @@ In PRODUCTION USE mode:
 
 For production-use details, read only `docs/PRODUCTION_USE.md` if needed. **Do not read `docs/WORKFLOW.md` merely to generate art.**
 
-### REPOSITORY ADMINISTRATION mode — record/publish existing state
+### REPOSITORY ADMINISTRATION mode — version-control / repository housekeeping only
 
-Enter **REPOSITORY ADMINISTRATION** mode when the user asks only to inspect status/diffs/history or to commit and/or push the already-existing working tree, without asking to alter repository content or package a handoff.
+Enter **REPOSITORY ADMINISTRATION** mode when the user asks only to administer the already-existing repository state rather than develop or validate it. Examples include `git status`, inspecting history/diffs, staging, committing/amending, tagging, branch/remote housekeeping, fetching/pulling/rebasing/merging existing work, or pushing/syncing to a remote.
 
 In REPOSITORY ADMINISTRATION mode:
 
-- Review the complete working-tree diff and preserve coherent existing changes.
-- Run only lightweight source-control checks needed to describe and publish that state, such as `git diff --check`.
-- **DO NOT run `tools/assert_single_canonical_repo.py`.** The guard protects DEVELOPMENT changes; it is not a prerequisite for recording or publishing an already-existing working tree.
-- **DO NOT run release/stress suites or `tools/build_handoff_bundle.py` merely because a commit or push was requested.**
-- Use a commit message that accurately describes the complete committed change, then push the requested/current branch.
-- If the request also asks to modify, fix, test, validate, benchmark, optimize, audit, qualify, or package repository content, route that content-changing work to DEVELOPMENT mode.
+- Perform only the requested repository/version-control administration and then stop.
+- **DO NOT run `tools/assert_single_canonical_repo.py` merely because Git/repository administration was requested.** The guard is a DEVELOPMENT repository-write safety gate, not a prerequisite for committing or pushing already-existing work.
+- **DO NOT run release tests, stress tests, benchmarks, qualification sweeps, or `tools/build_handoff_bundle.py` unless the user separately asks for development/validation/packaging.**
+- A pure admin request does **not** trigger DEVELOPMENT handoff/recovery rules.
+- Do not silently modify renderer/source/spec content while in this mode. If the task requires a content change, route that work to DEVELOPMENT mode first.
+- Do not create an additional Git worktree or duplicate canonical repository as an administrative shortcut. A request specifically to create/move/delete worktrees is not exempt from the project's single-canonical-repository policy; handle it explicitly rather than invoking the DEVELOPMENT guard by default.
+- If one user request combines actual code/spec changes with commit/push, the overall request is DEVELOPMENT until those changes are qualified; the final commit/push is merely the administrative tail of that DEVELOPMENT task.
 
-### DEVELOPMENT mode — repository work
+For repository-administration details, read `docs/REPOSITORY_ADMINISTRATION.md` if needed. **Do not read/run the DEVELOPMENT workflow merely to commit or push.**
 
-Enter **DEVELOPMENT** mode only when the user asks to change, fix, debug, test, validate, benchmark, optimize, audit, qualify, or package the renderer/repository. The remaining instructions in this file apply to DEVELOPMENT mode unless a section explicitly says otherwise.
+### DEVELOPMENT mode — content-changing / validation repository work
+
+Enter **DEVELOPMENT** mode only when the user asks to change, fix, debug, test, validate, benchmark, optimize, audit, qualify, package, or otherwise modify renderer/repository content. Pure version-control/repository administration on an already-existing state is REPOSITORY ADMINISTRATION mode, not DEVELOPMENT. The remaining instructions in this file apply to DEVELOPMENT mode unless a section explicitly says otherwise.
 
 ## Development startup order
 
@@ -57,7 +60,7 @@ Before changing the renderer, read:
 Exactly one writable repository carrying `.pcb_repo_identity.json` may exist in a session.
 
 - Never create or work from parallel Git worktrees, per-turn repository copies, or competing canonical roots.
-- Before DEVELOPMENT repository work and before DEVELOPMENT packaging, run `python tools/assert_single_canonical_repo.py`. This command is explicitly **not** run in PRODUCTION USE mode.
+- Before DEVELOPMENT repository work and before DEVELOPMENT packaging, run `python tools/assert_single_canonical_repo.py`. This command is explicitly **not** run in PRODUCTION USE or pure REPOSITORY ADMINISTRATION mode.
 - `tools/assert_single_canonical_repo.py` is the hard executable anti-multi-worktree / duplicate-canonical-state gate. Do not remove, weaken, bypass, or replace it with prose.
 - The handoff builder invokes that guard automatically.
 - Temporary benchmark outputs may exist outside the repository, but they must not carry `.pcb_repo_identity.json`.
@@ -100,7 +103,7 @@ During ordinary candidate qualification, test 0.75 then 0.5. Reserve 0.35 for en
 
 ## DEVELOPMENT: handoffs
 
-Every **DEVELOPMENT-mode** project response must leave a fresh replacement-ready repository bundle. Plain PRODUCTION USE/render requests do not invoke this workflow. Run:
+Every **DEVELOPMENT-mode** project response must leave a fresh replacement-ready repository bundle. Plain PRODUCTION USE/render requests and pure REPOSITORY ADMINISTRATION requests do not invoke this workflow. Run:
 
 `python tools/build_handoff_bundle.py`
 

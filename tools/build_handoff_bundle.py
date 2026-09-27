@@ -10,8 +10,10 @@ from pathlib import Path
 import datetime
 import hashlib
 import json
+import os
 import subprocess
 import sys
+import tempfile
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -43,7 +45,8 @@ def main() -> int:
     root_name = identity.get('bundle_root_name', 'pcb_v48_repo')
     now = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=5, minutes=30)))
     stamp = now.strftime('%Y-%m-%d_%H%MIST')
-    out = Path('/mnt/data') / f'pcb-art-generator_V48_CLEAN_{stamp}.zip'
+    bundle_dir = Path(tempfile.gettempdir()) if os.name == 'nt' else Path('/mnt/data')
+    out = bundle_dir / f'pcb-art-generator_V48_CLEAN_{stamp}.zip'
 
     files = [p for p in sorted(ROOT.rglob('*')) if include(p)]
     with zipfile.ZipFile(out, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=6, allowZip64=True) as z:

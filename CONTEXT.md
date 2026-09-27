@@ -1,3 +1,50 @@
+## Current task - 2026-09-27 shared residual clustering ? COMPLETE / PROMOTED
+
+Production authority is `pcb_v48_renderer.py`, SHA-256 `244661c4f9560322ba90cfb5dd93c3ced2ebc42c37b28e5668fa86777758ba85`. Mandatory native release 204/204 and stress 1/1 pass with exit code zero, no failures/errors/skips/xfails. The obsolete candidate and rejected patch are retired; no renderer work remains inflight.
+
+Components and LOCAL groups share a physical composition plan after MAIN, giving distinct distributed pockets with seeded size variation. Compact component cores own centers; full selected tiles contain canonical glyphs. Actual frozen hulls stay protected and unused reservation fringe returns to LOCAL. Larger varied LOCAL groups are authorized. Default mixed 80% remainder floor stays hard; only full-density all-LOCAL is best-effort 80%, with all five exact endpoint fixtures reaching 80.40--82.29%. Reduced density 0.9/0.5 passes hard 0.72/0.4. Final visible stroke service uses the unchanged canonical denominator.
+
+Complete .75/.5/.35 mixed, neighboring-seed, rotated-aspect, dense/reduced and literal modality fixtures pass. MAIN paired SVG groups are unchanged. LOCAL CPU/source growth .75->.5 is 1.1105x, versus previous 1.2452x; .5->.35 is 1.0840x. Absolute LOCAL CPU is higher due actual coverage and added visible work. The fine-scale seven-population component wedge is removed. See [distribution evidence](docs/RESIDUAL_CLUSTER_DISTRIBUTION.md) for root causes, fixtures, phase timings and limits; current normative behavior is chip_design_language.md sections29.24--29.25. Finite gates are not proof of seed totality.
+
+## 2026-09-04 07:xx IST — residual density knobs — PROMOTED
+
+User requested two controls on the uploaded pre-second-cluster-fix renderer:
+
+- `local_density` in `[0,1]`: scales the total post-MAIN residual-fill budget. `1.0` means the historical residual-fill amount; `0.0` leaves post-MAIN gaps unfilled by both residual components and LOCAL lines.
+- `component_density` in `[0,1]`: splits that residual-fill budget between components and LOCAL lines. `0.0` requests all LOCAL, `1.0` requests all components.
+
+The current nominal default component share is **0.5898123324 (~0.59)**. It is derived from the historical midpoint convention: components target 55% of residual capacity, LOCAL targets 85% of the remainder, so `0.55 / (0.55 + 0.85*0.45) = 0.5898123324`. Exact default settings preserve the historical per-seed 50–60% component and 80–90% LOCAL draws through a legacy fast path rather than replacing those stochastic targets with fixed midpoint numbers.
+
+Current implementation status:
+
+- API/CLI wiring for both knobs is in place.
+- Exact default geometry has been compared against the uploaded original renderer and is **byte-for-byte identical after stripping only the new report metadata**.
+- `local_density=0` is a literal endpoint: no residual components and no LOCAL lines are emitted; MAIN is untouched.
+- Non-default density requests use a shared post-MAIN residual-service budget; `local_density` scales the total requested budget and `component_density` divides it between the two residual modalities.
+- Extreme all-LOCAL/all-component requests are best-effort density requests constrained by existing geometry/clearance grammar; they do not create new 90%+ hard construction invariants. Reports expose requested and realized combined residual density and realized component share.
+- Targeted knob-contract tests pass.
+- Full canonical release gate completed **193/193 PASS**, zero failures/errors/skips/xfails.
+- Maintained geometry stress gate completed **1/1 PASS**.
+- Exact-seed endpoint smokes at `1:1 @ 1.0`, seed `101`, confirm the requested semantics: `local_density=0` emits zero residual components and zero LOCAL traces; `component_density=0` emits zero components and LOCAL-only residual service; `component_density=1` emits components only and zero LOCAL traces. A `local_density=0.5` mixed smoke realized total residual service `0.4751` against target `0.4705`.
+- Endpoint requests remain geometry-constrained best-effort density targets rather than new hard coverage floors: the all-LOCAL smoke realized `0.8008` of the `0.9410` requested total without weakening clearance or LOCAL routing grammar.
+
+This change is **promoted**. Exact defaults preserve historical per-seed geometry, while non-default settings expose the new shared residual-fill controls without changing MAIN architecture, route grammar, or clearance rules. **Authoritative renderer SHA-256:** `7fa8219870e537dc45f3238a83d43779f4d8f5032717bddb1447b99af96e8fcb`.
+
+## 2026-08-28 19:35 IST — repository-administration mode — PROMOTED PROCESS CHANGE
+
+The project now has three explicit task modes: **PRODUCTION USE**, **REPOSITORY ADMINISTRATION**, and **DEVELOPMENT**. Pure Git/repository housekeeping on an already-existing state (for example status/diff/history, staging, commit/amend, tagging, ordinary branch/remote operations, fetch/pull/rebase/merge, or push/sync) is REPOSITORY ADMINISTRATION and does **not** automatically invoke the DEVELOPMENT single-canonical-repository guard, release/stress gates, benchmarks, handoff builder, or missed-handoff recovery. If a request includes actual content changes (“fix X, then commit/push”), it remains DEVELOPMENT through qualification and only the final Git operations are administrative. Requests to create competing worktrees are not ordinary exempt administration and remain subject to the single-canonical-state policy.
+
+This is a process/documentation change only. Renderer authority is unchanged at SHA-256 `e06fb338cae6a81ef1249336608ee0dacefafb96e4e5ace4380bb2e01bc3ebd3`. Active manifest SHA-256 after the new workflow regression is `cadf89e8407d5eff510d8dee43dbd6c3b340dc4977bf3ab1a4359a1750b14965`.
+Qualification: **191/191 active release tests PASS**, maintained geometry stress **1/1 PASS**, focused repository-administration routing tests **3/3 PASS**, and the single-canonical-repository guard PASS for this DEVELOPMENT documentation change.
+
+## 2026-08-28 23:40 IST — semantic SVG geometry classification export — PROMOTED
+
+The renderer now exports **classified geometry directly in the final SVG**, not just untyped visual primitives. The root `<svg>` carries `data-schema="pcb-art-semantic-svg"`, `data-schema-version="1.0"`, renderer/version counts, and the existing JSON report is extended with a `semantic_svg` block. Each final group is emitted as a semantic entity (`main-chip`, `main-pathway`, `local-pathway`, `component-group`) and each primitive receives a stable id, CSS class, and machine-readable `data-*` attributes.
+
+For downstream automation this means a second LLM/tool no longer needs to infer whether a polyline belongs to a main launch, a LOCAL filler trace, or a component cluster by raw geometry alone. Main/local traces and their markers are directly labeled in-DOM; pathway markers also expose inferred endpoint roles. Trace primitives carry start/end coordinates, point counts, stroke widths, and parent-entity ownership, which is sufficient for effect passes such as traveling glow particles, branch-local interactions, or selective propagation into nearby components/LOCAL geometry.
+
+Qualification was completed on the promoted source: **190/190 active tests PASS** (executed in batches solely to avoid tooling execution boundaries), maintained geometry stress **1/1 PASS**, canonical single-repo guard PASS, and a direct semantic SVG sample render inspection PASS. **Authoritative renderer SHA-256:** `e06fb338cae6a81ef1249336608ee0dacefafb96e4e5ace4380bb2e01bc3ebd3`.
+
 ## 2026-08-27 21:28 IST — residual-fill spatial mosaic + opportunistic cross-chip semantics promoted
 
 - Closed three user production failures at `1:1 @ 0.35`, chip density `0.25`, run multipliers `0.25/0.5/1.0`. All were the same obsolete validator contract: `cross-chip connection invariant not realized`. Production now requires no board-level cross-chip quota; an already-legal foreign-chip encounter still wins immediately regardless of remaining journey target.
@@ -109,14 +156,14 @@ A plain request to **use/render/generate** with V48 is now explicitly **PRODUCTI
 
 `AGENTS.md` routes this mode **before** DEVELOPMENT instructions, and `docs/PRODUCTION_USE.md` is the concise use contract. `docs/WORKFLOW.md`, repository safety gates, tests, stress, qualification, and handoff rules apply only when the user asks to change/fix/debug/test/validate/benchmark/optimize/audit/qualify/package the repository.
 
-The production-use interface remains unchanged. Production renderer behavior is now authoritative at SHA-256 `9541c2f62cf9afccf3388eac6b929d7dd9437c19d04acb600855e61175bd1b42`. The active DEVELOPMENT release gate is now **178/178**; maintained geometry stress remains **1/1**.
+The production-use interface now also exposes `--local-density` and `--component-density`. Production renderer behavior is authoritative at SHA-256 `7fa8219870e537dc45f3238a83d43779f4d8f5032717bddb1447b99af96e8fcb`. The active DEVELOPMENT release gate is **193/193**; maintained geometry stress is **1/1**.
 
 ## Production authority
 
 - **Active release:** V48.
 - **Renderer:** `pcb_v48_renderer.py` / `V48Renderer`.
-- **Renderer SHA-256:** `586d8b54c8044129bea97088c542654b85a79465b37f1ff5ba8efbef96591c98`.
-- **Mandatory DEVELOPMENT release gate:** **180/180 PASS**, zero failures/errors/skips/xfails.
+- **Renderer SHA-256:** `7fa8219870e537dc45f3238a83d43779f4d8f5032717bddb1447b99af96e8fcb`.
+- **Mandatory DEVELOPMENT release gate:** **193/193 PASS**, zero failures/errors/skips/xfails.
 - **Maintained geometry stress:** **1/1 PASS**.
 - **DEVELOPMENT single-canonical-repository guard:** `tools/assert_single_canonical_repo.py`; never remove or weaken it. It is not run for plain PRODUCTION USE rendering.
 - **Historical V47 authority:** archived under `archive/releases/v47/`.
@@ -485,3 +532,27 @@ Permanent regression coverage includes the explicit old false-safe annulus, dire
 Authoritative renderer SHA is now `d7ac1d9af0286dda86d994a638504fe8ab63521847d9050633fc4d49d0f21745`.
 
 The old wording that "the exact failure cannot be claimed closed because the seed is missing" is superseded. The historical invocation is still unavailable for byte-for-byte replay, but the **causal bug class is reproduced and closed** independently of seed identity.
+## 2026-09-25 — interrupted cluster-distribution fix, recovery checkpoint
+
+The user reports that post-MAIN component and LOCAL gap-filling lines still form the wrong spatial pattern. The requested behavior is an even board-wide distribution of distinct component clusters and distinct LOCAL clusters, with natural variation in cluster size and no mixed in-between regions. The user also requires preservation of the renderer's prior scaling optimizations, especially the removed superlinear wedges. No clustering renderer change has been made in this interrupted turn; `pcb_v48_renderer.py` remains the current production authority and no new candidate has been qualified.
+
+The sole surviving code edit from the interrupted turn is an environment adaptation to `tools/assert_single_canonical_repo.py`: on Windows it scans the containing project directory for duplicate repository identities, and it passes a per-command Git safe-directory setting for ownership-mismatched checkouts. The guard now passes in this Windows checkout. The next step, after this mandatory recovery bundle, is to inspect the residual cluster placement policy, diagnose the spatial mixing, and implement a bounded/local correction with visual, correctness, and scaling verification.
+## 2026-09-25 — cluster composition correction remains OPEN / UNPROMOTED
+
+The user clarified the visual requirement: components and LOCAL gap-filling lines should form evenly distributed, distinct clusters, with natural 1..12-size variation and no mixed in-between. The current production residual planners violate that intent because component anchors are placed first while LOCAL independently parcels every remaining cell and its routes can cross parcel boundaries. The resulting nominal cluster IDs do not create distinct visible territories.
+
+One coherent unpromoted candidate survives at `work/inflight/v48_cluster_ownership_candidate.py` (SHA-256 `721c570422a78b1d94e4512a3c6c3f28a510fdd93d0f9a9cac3a0be9d0d00381`). It adds a shared post-MAIN composition atlas and experiments with component/LOCAL ownership boundaries. The exact current half-tile state is **not a fix**: although fixed seed 102 at square 0.75 and 0.5 meets sampled component/LOCAL service floors, Edge visual review still shows a connected LOCAL web, 27/51 occupied LOCAL half-tiles exceed the 12-root cluster maximum at 0.75, and direct CPU is about 19.56/48.75 s versus production about 7.3/19.8 s. A tighter compact-parcel variant looked more distinct but failed the 0.5 absolute LOCAL hard floor (0.3646355 versus about 0.389); a larger tile variant met the floor but merged multiple source clusters. No candidate has passed the active release or stress gate and production remains SHA-256 `7fa8219870e537dc45f3238a83d43779f4d8f5032717bddb1447b99af96e8fcb`.
+
+The next semantic decision depends on whether the user authorizes lower LOCAL fill in exchange for strict visible cluster separation, or requires the historic 80–90% LOCAL floor and a deeper routing redesign. Do not promote the current candidate. The Windows-only guard, bundle-output, and phase-harness portability edits are tooling/process work; the canonical repository guard passes with both Git-worktree and durable-identity checks. The unchanged production renderer passes the active release gate **193/193**, zero failures/errors/skips/xfails, on this current working state. A fresh handoff must still be built for this DEVELOPMENT response.
+## 2026-09-25 interrupted clustering investigation — mandatory recovery checkpoint
+
+The user clarified that the 80–90% LOCAL target should remain governing while fixing the visual clustering. Production authority is still `pcb_v48_renderer.py` SHA-256 `7fa8219870e537dc45f3238a83d43779f4d8f5032717bddb1447b99af96e8fcb`. The surviving unpromoted candidate is `work/inflight/v48_cluster_ownership_candidate.py` SHA-256 `2d2c908144ac81612ef8f32587a72aa7e3f4166996ca758d13826f810060d232`. It must not be promoted in its current state.
+
+After the prior bundle, compact LOCAL parcels with adaptive 1–12-root allocation reached only 0.57015 normalized LOCAL service at square 0.75 / seed 102, with component service 0.51597 and CPU 15.19 s versus production about 7.30 s. Visual inspection still showed scattered LOCAL lines interleaved around concentrated components. Diagnostics reached 0.80013 LOCAL service only by allowing 16 parcels to exceed 12 roots, up to 28. This demonstrates a capacity problem in the current parcel layout. No adaptive 0.5 qualification or release/stress gate was earned. The next step after the mandatory recovery bundle is to design one coherent alternating cluster scheduler with adequate contiguous LOCAL route area while preserving the 80–90% target, exact geometry, seed totality, and prior near-linear work architecture.
+## 2026-09-25 clustering investigation — current unpromoted result
+
+Production remains `pcb_v48_renderer.py` SHA-256 `7fa8219870e537dc45f3238a83d43779f4d8f5032717bddb1447b99af96e8fcb`. The single surviving candidate is `work/inflight/v48_cluster_ownership_candidate.py` SHA-256 `9f8ed4d11bc4fbc37d8914eb15b7438d0925477e1c40e80f7d2756442768cccb`, unpromoted and failing the exact 0.75 / seed 102 LOCAL hard floor. The user clarified that visual separation should be achieved while retaining the 80–90% LOCAL target.
+
+New capacity evidence: balanced two-way LOCAL rectangles within the shared 14×14 atlas reach only 0.62161 normalized LOCAL service with 497 roots and 13.31 CPU seconds, versus the 0.80 hard floor and about 7.3 CPU seconds in production. Thirty-seven of fifty parcels hit the 12-root cap; unpaid service in capped parcels dwarfs debt in uncapped parcels. A bounded three-strip diagnostic reached 0.68066 with 558 roots and 18.89 CPU seconds, then was reverted. A far-end route-target diagnostic reached only about 0.608 normalized service and was also reverted. The current candidate restores hard-floor failure, enforces the 12-root cap at prebirth, and compiles; no 0.5 qualification or visual success is claimed.
+
+Root diagnosis: production independently places component clusters and then distributes LOCAL roots across all remaining space, so both forms interleave. Simple ownership partitions cannot meet visual separation and the existing fill floor with the current component-first source/routing architecture. The next coherent correction should jointly reserve useful LOCAL route corridors and component-cluster territory before materializing either residual form, or otherwise improve exact legal service per LOCAL cluster without enlarging the 1–12 cluster bound. It must retain MAIN immutability, exact clearances, seed totality, and near-linear per-work scaling. Do not promote the current candidate or weaken the 80% floor.

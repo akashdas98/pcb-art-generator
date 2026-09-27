@@ -19,8 +19,10 @@ Behavior controls:
 
 - `--main-chip-density-multiplier 0.2..2.0` (default `1.0`): scales the stochastic territory-normalized main-chip population; `1.0` is the new approximately-half-density baseline and `2.0` roughly restores the previous density. The physical population has a hard floor of one main chip per valid board, so low values can saturate at one on small territory.
 - `--main-run-length-multiplier 0.2..3.0` (default `1.0`): scales the stochastic whole-route MAIN free-running journey/residency target. It does not override valid inter-chip connections, which remain successful immediately when encountered.
+- `--local-density 0..1` (default `1.0`): scales the total post-MAIN residual-service budget shared by components and LOCAL lines. `0` emits neither residual components nor LOCAL lines; `1` is the historical combined residual-fill amount for that seed.
+- `--component-density 0..1` (default `0.5898123324396783`, about `0.59`): chooses what share of that residual budget is assigned to components. `0` assigns the budget to LOCAL lines and `1` to components. The nominal default is `0.55 / (0.55 + 0.45*0.85)`, derived from the midpoint of the historical `50–60%` component convention followed by `80–90%` LOCAL of the remainder. At exact defaults the legacy per-seed draws and geometry path are preserved.
 
-These are geometry/workload controls only; they do not select alternate routing algorithms or qualification modes.
+These are geometry/workload controls only; they do not select alternate routing algorithms or qualification modes. Residual density requests remain subject to the renderer's exact geometry and clearance rules, so extreme allocations are best-effort density targets rather than permission to relax clearance. The embedded SVG report includes requested and realized combined residual density and component share.
 
 If `--seed` is omitted, leave it omitted. The renderer chooses a random base seed. **Do not replace
 an omitted seed with a reference, maintained, known-good, or "safe" seed.** Seeds are inputs, not
