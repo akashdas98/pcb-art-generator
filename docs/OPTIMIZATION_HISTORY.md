@@ -205,7 +205,7 @@ Future qualification must require predetermined-seed totality, record exact fail
 
 ## 11. Current post-optimization behavior issue
 
-Premature MAIN-line termination is being handled separately from the completed scaling pass. The current V3 candidate is preserved under `work/inflight/` but remains unpromoted and paused. Exact status and metrics are in `CONTEXT.md`.
+Premature MAIN-line termination is being handled separately from the completed scaling pass. The current V3 candidate is preserved under `archive/inflight/` but remains unpromoted and paused. Exact status and metrics are in `CONTEXT.md`.
 
 ## 11. Seed-totality reframing (2026-08-22)
 

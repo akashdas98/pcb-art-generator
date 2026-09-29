@@ -98,7 +98,7 @@ If O(1) lane-head extraction is flat on the long proxy, reject it for MAIN-1 and
 
 ## 2026-08-25 11:41 IST — O(1) lane-head candidate formally rejected
 
-The reconstructed O(1) materialized-lane-head candidate survived at SHA-256 `8ca2b04d63ffd9565c9aa788499e2f4b00973912599f2950ec1ea05282c2ba0f`. The interrupted qualification had in fact completed all 0.75/0.5 production/candidate fixtures; raw records are retained under `work/inflight/evidence/main1_lane_head_formal_2026-08-25_1141IST/`.
+The reconstructed O(1) materialized-lane-head candidate survived at SHA-256 `8ca2b04d63ffd9565c9aa788499e2f4b00973912599f2950ec1ea05282c2ba0f`. The interrupted qualification had in fact completed all 0.75/0.5 production/candidate fixtures; raw records are retained under `archive/inflight/evidence/main1_lane_head_formal_2026-08-25_1141IST/`.
 
 All four outputs are geometry-identical with identical deterministic MAIN work. Aggregate emitted-segment work grows `1833 -> 4610` for both sources. Aggregate MAIN CPU grows `9.791664988 -> 35.865799974 s` in production and `9.859052742 -> 36.118660805 s` in the candidate, giving normalized CPU/work growth `1.456416x` production vs `1.456659x` candidate. The adjacent long proxy had shown only a small `46.08 -> 45.45 s` candidate improvement. Therefore the change is **REJECTED as a meaningful MAIN-1 scaling optimization**: it is valid cleanup but does not improve the formal ordinary curve.
 
@@ -106,7 +106,7 @@ Do not promote this candidate. Continue from the function-level profile toward a
 
 ## 2026-08-25 12:24 IST — interrupted-run instrumentation recovered
 
-The post-11:41 interrupted run left two instrumentation-only sources under `work/inflight/`; production is still unchanged at `d58ee1bf5073dd479e954b922a5fbdec56ef879de10394bf804094752af9c9b0`.
+The post-11:41 interrupted run left two instrumentation-only sources under `archive/inflight/`; production is still unchanged at `d58ee1bf5073dd479e954b922a5fbdec56ef879de10394bf804094752af9c9b0`.
 
 - `main1_conn_count_renderer.py` (`236f3b5299d0879a2d6b0b86c9fc71d47b7dbb15bd859fc925d5646f7dd6e398`) counts forced-close and singleton scan cardinalities, candidate-pair counts, and singleton join-geometry candidate visits.
 - `main1_join_reject_probe_renderer.py` (`da7265215dbe42fa23faa5c65e1a3d3aa179ec9f71a3fc4f750584dd9e234bcc`) counts where singleton head-join candidates are rejected: junction clearance, minimum-leg length, side-A/side-B special clearance, compensating zigzag, or final precise join clearance.
@@ -117,7 +117,7 @@ These are **diagnostic probes, not optimization candidates**. No surviving resul
 
 Production remains unchanged at SHA-256 `d58ee1bf5073dd479e954b922a5fbdec56ef879de10394bf804094752af9c9b0`.
 
-The post-12:24 diagnostic run progressed beyond the connection probes before the prior response ended. The exact scratch tree from that run was not packaged, so the active candidate source in this handoff was **reconstructed from the surviving implementation description against the authoritative production renderer**. Its source is `work/inflight/main1_future_envelope_fallback_renderer.py`, SHA-256 `d2dfd5749bfec421bd88bc2c2670eb33e945a10663c4d6e1e5b5fbfa092100ba`. It is unpromoted.
+The post-12:24 diagnostic run progressed beyond the connection probes before the prior response ended. The exact scratch tree from that run was not packaged, so the active candidate source in this handoff was **reconstructed from the surviving implementation description against the authoritative production renderer**. Its source is `archive/inflight/main1_future_envelope_fallback_renderer.py`, SHA-256 `d2dfd5749bfec421bd88bc2c2670eb33e945a10663c4d6e1e5b5fbfa092100ba`. It is unpromoted.
 
 ### Connection scans were not the main amplifier
 
@@ -183,7 +183,7 @@ The earlier response also noted that the first formal 0.75 gate looked encouragi
 
 ### Next exact step
 
-1. Treat `work/inflight/main1_future_envelope_fallback_renderer.py` as the sole active MAIN-1 candidate; production remains authoritative.
+1. Treat `archive/inflight/main1_future_envelope_fallback_renderer.py` as the sole active MAIN-1 candidate; production remains authoritative.
 2. Re-run the mandated formal ordinary qualification from fresh processes in order: **0.75 first** for seeds 102+104, record categorized + overall BEFORE/AFTER; then **0.5** for seeds 102+104.
 3. Reject immediately if the 0.75 -> 0.5 CPU/work curve regresses, if rollback/recovery work merely moves elsewhere, or if any hard geometry/seed-totality/line-survival invariant fails.
 4. If it passes, run the complete active release/stress gates and explicitly ACCEPT/PROMOTE before changing production.
@@ -195,7 +195,7 @@ The preceding response was interrupted while the user-visible status still said 
 
 ### Original future-envelope current-corridor fallback: REJECTED
 
-`work/inflight/main1_future_envelope_fallback_renderer.py` remains unpromoted and is now rejected as the MAIN-1 scaling candidate. The durable `0.5 / seed 102` records show:
+`archive/inflight/main1_future_envelope_fallback_renderer.py` remains unpromoted and is now rejected as the MAIN-1 scaling candidate. The durable `0.5 / seed 102` records show:
 
 - production MAIN CPU: `39.771783501 s`;
 - candidate MAIN CPU: `40.721836496 s` (+2.39%);
@@ -215,7 +215,7 @@ The implementation history survives as:
 - `main1_joint_future_fallback_cached_renderer.py` — exact per-group memoization of repeated current-pair and future-envelope GEOS predicates;
 - `main1_joint_future_fallback_rawdist_renderer.py` — attempted raw-distance equivalence optimization; rejected below.
 
-The cached version preserves the joint-future routing semantics while reducing search overhead. Its completed 0.75/0.5 seeds-102+104 formal MAIN-only records are under `work/inflight/evidence/main1_joint_cached_formal_2026-08-25_1342IST/`.
+The cached version preserves the joint-future routing semantics while reducing search overhead. Its completed 0.75/0.5 seeds-102+104 formal MAIN-only records are under `archive/inflight/evidence/main1_joint_cached_formal_2026-08-25_1342IST/`.
 
 Aggregate formal comparison, using final emitted MAIN segments as work:
 

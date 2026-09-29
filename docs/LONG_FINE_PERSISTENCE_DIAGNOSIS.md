@@ -175,12 +175,12 @@ There is no surviving v2 source after the reset. Reconstruct v2 only from this r
 
 ## 2026-08-25 01:23 IST — v2 survives and exact seed-1 full board emits
 
-The corrected v2 source now survives in `work/inflight/v48_longfine_totality_v2_renderer.py` (SHA-256 `e8d1874d652e7aa6a7af763ac20b2a97d1367082dc748f61771833be49d16054`). Production remains unchanged and authoritative.
+The corrected v2 source now survives in `archive/inflight/v48_longfine_totality_v2_renderer.py` (SHA-256 `e8d1874d652e7aa6a7af763ac20b2a97d1367082dc748f61771833be49d16054`). Production remains unchanged and authoritative.
 
-Regenerated ordinary screening is retained under `work/inflight/evidence/`: governing 1:1 seeds 102/104 pass at 0.75 and 0.5 with hard MAIN invariants clean. The decisive explicit long/fine repro also now passes at two levels:
+Regenerated ordinary screening is retained under `archive/inflight/evidence/`: governing 1:1 seeds 102/104 pass at 0.75 and 0.5 with hard MAIN invariants clean. The decisive explicit long/fine repro also now passes at two levels:
 
 1. **MAIN-only, exact `1:6 @ 0.35`, base seed 1:** PASS in `320.487 s` MAIN CPU (`323.074 s` total harness CPU), peak RSS `509,292 KiB`; logical seed `7179163421162001120`; all `4,104 / 4,104` launch traces visible; zero short-MAIN, stalled-side, unaccounted-launch, illegal-turn, non-octilinear, clearance, or intersection failures.
-2. **Full board, same requested base seed 1:** PASS. A `10,476,942`-byte SVG and report were emitted with `restart_index=0`, `skipped_logical_indices=[]`, 98 chips, 824 collections, `component_unplaced_count=0`, `route_restarted_for_component_failure=false`, zero hard MAIN/geometry failures, and all `4,104 / 4,104` launch traces visible. The emitted SVG SHA-256 was `b1922ef443581627cb87a1695893cd1baa4a789a230669ea07ab7a7d47297e28`. The retained full report is `work/inflight/evidence/longfine_seed1_full_report.json`.
+2. **Full board, same requested base seed 1:** PASS. A `10,476,942`-byte SVG and report were emitted with `restart_index=0`, `skipped_logical_indices=[]`, 98 chips, 824 collections, `component_unplaced_count=0`, `route_restarted_for_component_failure=false`, zero hard MAIN/geometry failures, and all `4,104 / 4,104` launch traces visible. The emitted SVG SHA-256 was `b1922ef443581627cb87a1695893cd1baa4a789a230669ea07ab7a7d47297e28`. The retained full report is `archive/inflight/evidence/longfine_seed1_full_report.json`.
 
 The full report still records four `pathway_main_free_terminal_under_preferred_visible_trace_count` traces. Under v2 this is deliberately **not a hard validity failure**: those routes cleared the four-module survival floor but did not satisfy the soft six-module preference. This is direct evidence that the soft-vs-hard debt split is operating as intended rather than silently deleting the quality diagnostic.
 
@@ -196,8 +196,8 @@ Exact fixture: `1:6 @ 0.35`, base seed `0`, sample index `0`, one ordinary `gene
 
 Retained evidence:
 
-- `work/inflight/evidence/longfine_seed0_production_phase.json` — SHA-256 `302a51a571c6484bda79bf94efa1fddf8cdfe6f3e9f079306547c09e1835bce0`;
-- `work/inflight/evidence/longfine_seed0_v2_phase.json` — SHA-256 `82bdc3c12da5caff338aafdf1cd89d70805ab9c348e8182b9ecd2d1829b189f4`;
+- `archive/inflight/evidence/longfine_seed0_production_phase.json` — SHA-256 `302a51a571c6484bda79bf94efa1fddf8cdfe6f3e9f079306547c09e1835bce0`;
+- `archive/inflight/evidence/longfine_seed0_v2_phase.json` — SHA-256 `82bdc3c12da5caff338aafdf1cd89d70805ab9c348e8182b9ecd2d1829b189f4`;
 - matching `/usr/bin/time -v` records are retained beside them.
 
 | Metric | Production V48 | v2 candidate | v2 vs prod |

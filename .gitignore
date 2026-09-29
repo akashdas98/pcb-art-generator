@@ -19,7 +19,7 @@ dist/
 output/
 output_*/
 
-# Transient optimization/forensic output belongs outside canonical repo.
+# Transient generated output is ignored; durable evidence belongs in history.
 bench_results/
 bench_variants/
 forensics/
@@ -33,3 +33,6 @@ review_sample_*/
 *.time
 *.stdout
 *.stderr
+
+# Local task scratch survives turns without becoming source history.
+.scratch/

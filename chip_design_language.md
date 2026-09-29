@@ -4028,16 +4028,18 @@ Generation order remains component-first for exact collision ownership; **spatia
    outcomes; small and medium clusters are common; genuinely large clusters of roughly 10--12 remain normal but
    minority outcomes. A connected residual room can and normally should contain several independent clusters rather
    than being represented by one unbounded colony.
-3. **LOCAL groups have varied, physically bounded capacity.** Root counts follow seeded probabilities and feasible
-   route-domain area; they may exceed twelve roots, as explicitly authorized. Each source and descendant retains one
-   connected composition domain. The public area-scaled population ceiling and exact route gates remain governing.
-4. **Cluster size distributes authorized work.** Seeded size targets distribute component opportunities and LOCAL
-   source opportunities according to local feasible capacity. Larger groups do not authorize broader route searches,
-   relaxed constructors, lowered service floors or weaker clearance. Public work ceilings, octilinear grammar and
-   the cached local collision architecture remain governing.
-5. **Completion retains composition ownership.** Component recovery and completion use ordinary seeded 1--12
-   member clusters, canonical constructors and original substantial-region quotas. LOCAL debt sources belong to the
-   same physically bounded domains as ordinary sources; completion may not bypass exact ownership or clearance.
+3. **LOCAL source-cluster cardinality has the same 1--12 support.** A large connected post-component room is divided
+   into compact source parcels. LOCAL source allocation services those parcels rather than allocating only at whole
+   connected-region granularity. A parcel may contain a singular source, a small/medium group, or a large 10--12
+   source group; no ordinary parcel may grow beyond 12 roots.
+4. **Cluster size is composition, not search breadth.** The 1--12 target changes only how already-authorized
+   component opportunities or LOCAL source opportunities are distributed. Exact component placement predicates,
+   LOCAL source clearance, route proposal breadth, octilinear grammar, routing/recovery algorithms, service targets,
+   and collision indexes are unchanged by this requirement.
+5. **Recovery may not recreate megaclusters.** A component that cannot fulfill an existing prepared cluster becomes a
+   singular spill composition unit rather than silently extending that cluster past its target. Exceptional LOCAL
+   debt-completion traces likewise remain independent debt-service units; they may not be accumulated into an
+   unbounded ordinary cluster.
 6. **Mixing is macroscopic, not forced microscopic alternation.** Components and LOCAL lines do not need to alternate
    token-by-token, and exact obstacles may create naturally one-sided pockets. The forbidden outcome is systematic
    board-scale segregation produced by scheduler ownership. On open sparse boards, multiple component and LOCAL
@@ -4052,40 +4054,9 @@ Generation order remains component-first for exact collision ownership; **spatia
    chip connection, when encountered, immediately counts as successful route completion regardless of remaining MAIN
    journey target. A valid board is not required to manufacture at least one foreign-chip encounter. Zero realized
    cross-chip joins is valid when no legal encounter occurs, including sparse/short-run boards.
-10. **Cluster anchors must remain dispersed.** Shared composition uses independent physical x/y parcel counts,
-    with seeded component/LOCAL allocation inside small neighboring parcel groups. This supersedes the fixed 8x8
-    scheduler. Component center cores locate clusters; their selected tiles contain complete canonical glyphs.
-    Prepared and completion placement use cluster-count-first local load. After components freeze, actual cluster
-    hulls remain protected and unused reservation fringe returns to LOCAL routing opportunity.
-
-## 29.25 2026-09-27 ? Shared residual construction and final visible service
-
-This refinement is normative. It preserves MAIN, phase order, exact seed ownership, canonical component grammar,
-octilinearity and every clearance. It supersedes older LOCAL root caps and density-floor wording where stated.
-
-1. **Accounting and opportunity are separate.** The canonical post-MAIN service denominator is immutable. Policy
-   seams and route exclusions may not shrink it. The LOCAL numerator is the union of final emitted flat-cap stroke
-   service ribbons, including only the legitimate exclusion perimeter, sampled at the established 4x4 subcell mask.
-   Planned paths, suppressed traces and markers do not manufacture service. Recount final visible geometry.
-2. **Ordinary construction retains the default language.** LOCAL targets attract less strongly than MAIN; singleton
-   branching uses the public area-scaled population cap. Source/target scheduling uses local chunk pools, heaps and
-   spatial indexes rather than whole-board scans or all-pairs coordination. Raster room labels nominate proposals;
-   exact frame, composition, static, route and marker predicates decide geometric legality.
-3. **Higher requested LOCAL work receives early capacity construction.** Exact legal bent visible packages reserve
-   feasible service before ordinary routes fragment corridors. Seeded ordinary gauge/special draws, compatible
-   affinity, branching and tails realize that capacity through bounded local transactions. A replacement must preserve
-   the original packet's service bits; rejected local replacements retain their certificate. Minimum logical/visible
-   length comparisons use the existing numerical tolerance. Filled certified terminals may reach their proven prefix
-   without a fictitious hollow clip; genuinely hollow markers retain the full clipping reserve.
-4. **Construction and final marker guards share exact circle spacing.** Logical terminal indexes carry centers and
-   radii. Admission uses the same analytic circle predicate as final cleanup; faceted disc distance cannot certify
-   a pair that the final guard would delete. Existing exact static, stroke, marker and ownership gates remain active.
-5. **Density semantics remain explicit.** Exact default mixed settings retain a hard 80% LOCAL remainder floor and
-   seeded 80--90% preference. Nondefault LOCAL floors cap the full-density floor before multiplying by `local_density`.
-   All-LOCAL density 0.9 therefore requires 0.72 absolute service; density 0.5 requires 0.4. Only the exact full-density
-   all-LOCAL endpoint (`local_density=1`, `component_density=0`) uses best-effort 80%: construction must generally reach
-   it and any misses remain close, with true achieved service and shortfall reported. This approval does not weaken
-   reduced-density floors, default floors, geometry or seed ownership. Finite qualification is not seed-totality proof.
-6. **Work must remain proportional to opportunity and visible output.** Preserve cached exact first legs, incremental
-   service masks, bounded spatial queries and chunk scheduling. Do not raise retries, rescore the board per source,
-   repeat full debt campaigns, or add aspect/scale-specific modes to obtain a passing fixture.
+10. **Bounded clusters may not re-coalesce into a macroscopic megacluster.** Capping each logical cluster at 12 is
+   insufficient if many independent clusters are then anchored side-by-side. Prepared and completion component-cluster
+   anchors must be dispersed across a fixed-size board mosaic using normalized local load before connected-region quota
+   chooses exact service cells. Completion fillers therefore form ordinary seeded 1--12-member clusters rather than an
+   unbounded cloud of nominal singleton spill clusters. This is a fixed 8x8 composition scheduler only: exact placement
+   legality, component constructors, region fill quotas, LOCAL routing, and collision/search architecture remain unchanged.

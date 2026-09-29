@@ -1,3 +1,97 @@
+# Changelog
+
+## 2026-09-30 - complete restoration of referenced clean renderer
+
+- At the user's explicit request, restore `pcb_v48_renderer.py` and its design language exactly from `E:/Downloads/pcb-art-generator_V48_CLEAN_2026-09-04_0719IST/pcb_v48_repo`. Renderer SHA-256: `7FA8219870E537DC45F3238A83D43779F4D8F5032717BDDB1447B99AF96E8FCB`.
+- This restores the original seeded legacy-total density scaling and all original component/LOCAL construction, superseding later clustering, scoring and physical-area changes. Production entry point and requirements already match the reference.
+- Preserve the preceding renderer, specification, documentation and superseded renderer tests in `archive/releases/v48_before_complete_reference_restore_2026-09-30`. Retain current project governance and unrelated work. Qualification results are recorded in `CONTEXT.md`.
+
+## 2026-09-30 - restore region-service density with dispersed components
+
+- Restore the connected-region size/quantity component score as the density control after the user confirmed the archived composition looks filled. Keep `local_density` literal and split its service score by `component_density`; do not restore the archive's seeded 0.91-style total multiplier.
+- Freeze components after their regional score reaches its share, then run one LOCAL campaign in their actual remaining space and select whole routed families toward the LOCAL share. Preserve existing dispersed-cluster scheduling, cluster caps, component grammar, MAIN, physical clearances, and indexed work bounds.
+- Label service scores separately from physical area. SVG reports retain independent component enclosure/cluster-interior area and LOCAL line-and-gap area; a 65% service share is not claimed as 65% physical component area.
+- Preserve the preceding unqualified physical-density renderer in `archive/releases/v48_physical_density_before_region_score_2026-09-30`. Qualification and visual findings are recorded in `CONTEXT.md`.
+- Exact three-seed `.5/.75/2/.9/.65` batch scores about `.901` total with `.650` component service share, while independently measured physical component area is only `.194-.203`; reports keep these meanings separate. Component clusters stay within 12 members, and review found no macroscopic colony. Neighboring `.75` density and `.25` component-share renders respond in the intended direction. Final release 234/234 and maintained stress 1/1 pass; `.75->.5` elapsed time grows 2.67x for 2.25x territory on the measured seed.
+
+## 2026-09-29 - actual LOCAL interline gaps and independent allocation targets
+
+- User authorized counting actual designed space between nearby LOCAL lines while leaving isolated empty areas unfilled. Metric v5 retains base half-gap ribbons and adds bounded gaps supported by at least two emitted traces, using the existing independent-source spacing as the locality bound.
+- Track gap support incrementally when provisional route families are retired or selected; final emitted recount uses the same metric. Preserve physical clearance and component accounting.
+- Remove the achieved-component-ratio cap from LOCAL targets: component shortfall no longer reduces the requested `D * (1-q)` allocation.
+- Preserve the predecessor in `archive/releases/v48_before_actual_local_gaps_2026-09-29`. Full release and stress checks pass; independent SVG recount agrees exactly on the measured samples. The exact requested seed reaches only .435894 total occupancy against .9: this accounting correction is not a completed density-construction fix. Visual acceptance and full density attainment remain open in `CONTEXT.md`.
+
+## 2026-09-29 - test restored half-gap LOCAL area credit
+
+- At the user's request, restore the archived pre-doubling LOCAL service width: half the visible stroke plus the larger of half the required line-line gap and half the component-pathway gap on each side. Keep exact physical clearances and component-cluster interior credit unchanged.
+- Preserve the preceding qualified renderer in `archive/releases/v48_before_local_gap_revert_2026-09-29`. Area-measure version advances to 4 because the same SVG receives a different LOCAL numerator.
+- The purpose is a same-seed visual-share experiment. Full density fulfillment remains open; qualification and regenerated results are tracked in `CONTEXT.md`.
+- Focused area tests10/10, full release228/228 and maintained stress1/1 pass. Five exact same-seed SVGs are in `E:/Desktop/pcb_v48_half_gap_same_seeds_2026-09-29`; independent recount agrees with reports and MAIN/chip SVG groups match originals. The renderer places fewer components and more LOCAL traces yet still reports~.65 achieved share; total occupied area drops from .475-.501 to .340-.388, further below requested .75. User visual acceptance remains open.
+
+## 2026-09-29 - protected cluster interiors count toward component area
+
+- User authorized counting the designed empty interior protected within existing component clusters as component area, alongside individual enclosures and spacing. Union on the canonical post-MAIN field once and exclude component-owned samples from LOCAL credit.
+- Preserve current cluster formation, membership/extent limits and spatial distribution; no return of big clusters, no ID merging, no exterior hull buffer.
+- Preserve the predecessor in `archive/releases/v48_individual_component_area_2026-09-29`. Implementation and qualification are tracked in `CONTEXT.md`; the full density-construction task is not declared complete by this accounting correction.
+- Metric v3 passes 228/228 release tests and maintained geometry stress. Independent exact-seed SVG recounts agree within serialization/raster boundary error. Cluster member caps and distribution remain intact; the three samples have at most nine members per cluster, with smaller median spans. Actual total occupancy remains .4301/.4687/.3948 against .9, so the density failure remains open. CPU scaling and the fixed-atlas construction ceiling are recorded in current state; no runtime improvement is claimed.
+
+## 2026-09-29 - actual component-cluster interiors
+
+- Correct an extra .55-cell exterior buffer around component-cluster hulls. Protect actual cluster interiors while retaining exact rendered component-to-LOCAL clearance.
+- Preserve ordinary endpoint reservation along the legal body: terminal backoff can move its dot before materialization.
+- Preserve the preceding source in `archive/releases/v48_component_territory_overbuffered_2026-09-29`. This narrow correction passes full release/stress and exact-seed geometry checks. Complete hard-density fulfillment remains open in `CONTEXT.md`.
+- Correct investigation acceptance criteria: special-trace percentages are seeded soft attempt probabilities, not required realized-output quotas. Component and LOCAL absolute area targets remain unchanged.
+
+## 2026-09-28 - doubled LOCAL gap credit
+
+- Per user direction, double the previously credited spacing around LOCAL lines for canonical occupied-area accounting. The LOCAL service ribbon now uses the full line-line or component-pathway clearance on each side, whichever is larger, plus half the visible stroke. Union overlapping ribbons and exclude component-owned samples as before. Report area-measure version 2 for this changed metric.
+- Keep component enclosure accounting, visible geometry, physical clearances, and MAIN unchanged. The change applies uniformly across density controls; it is not a `.9/.6` exception.
+- Preserve the preceding renderer in `archive/releases/v48_before_double_local_gap_2026-09-28`. Qualification and measured density effects are tracked in `CONTEXT.md`.
+- Exact `.5/.75/2/.9/.6` sample totals rose to .366/.389/.372, still below the requested .9. This is an accounting change, not completion of the open density-construction correction.
+
+## 2026-09-27 - common-area soft-density behavior rejected
+
+- User rejected the preceding area-share release: requested total post-MAIN occupancy .9 and component share .6 yielded only .265-.280 total occupancy on three exact samples. A correct ratio with large blank regions does not satisfy either control's joint contract.
+- Root cause in that version is a fixed, incomplete ordinary LOCAL atlas that only loses route families as components are admitted; its initial .149 LOCAL area on sample 0 bounds exact-.6 total area to .372 even before conflict retirement. Endpoint outputs do not establish a physical capacity bound.
+- Preserved the exact rejected renderer in archive/releases/v48_area_share_soft_density_rejected_2026-09-27. Corrective implementation and qualification are active in CONTEXT.md; this entry does not claim a replacement is finished.
+
+- Subsequent root-cause work found special singleton LOCAL proposal/logical checks reserving an ordinary endpoint dot that the round-cap/negative-hole renderer never draws. The in-progress correction unifies physical endpoint envelopes; ordinary/MAIN marker laws remain unchanged. It is not a completed density overhaul and remains unqualified in CONTEXT.md.
+
+## 2026-09-27 - common component/LOCAL occupied-area allocation
+
+- Replace sparse component region-credit versus LOCAL-ribbon ratios with a common post-MAIN area raster; component enclosures, interiors and surrounding spacing count.
+- Build one complete ordinary LOCAL certificate pool after required prepared components, then admit additional components only while sufficient route capacity survives. Select complete route families toward the requested split and report physical-density shortfall.
+- Apply area semantics to all parameter settings, including exact defaults; retain MAIN and geometry safeguards. Preceding source preserved in archive/releases/v48_debt_fair_selection_2026-09-27.
+- Implementation and qualification status are recorded in CONTEXT.md.
+
+## 2026-09-27 - top-heavy LOCAL debt construction correction
+
+- Provenance on the newly rejected batch showed every deterministic minimum debt path in the top quarter; ordinary paths remained balanced. The global-floor sweep sorted equal debt by y then x.
+- Decoupled coherent finite geometric capacity planning from seeded round-robin selection of the required visible packets across existing local chunks; retire all unused provisional ownership before emission.
+- Added bounded indexed continuation of completed reserve packets, preserving every original visible-service bit and every exact physical/clearance gate; failed or budget-ineligible continuation retains the proven packet.
+- Continuation accounting uses emitted ribbons, not logical segment ledger changes. Density controls and the ordinary router remain governing.
+- Preserved the preceding technically qualified but visually rejected source in archive/releases/v48_scheduler_boundary_2026-09-27. Verification and visual status are recorded in CONTEXT.md.
+
+## 2026-09-27 - residual scheduling boundary correction
+
+- Diagnosed exclusive component cores/tiles and eroded LOCAL owner domains as artificial modality barriers.
+- Made component parcels distribute local cluster load without clipping canonical glyphs; gave compact LOCAL source groups overlapping bounded routing envelopes.
+- Preserved exact component/hull protection, MAIN, seed ownership, density floors, final visible-service accounting and packet grammar.
+- Archived the visually rejected preceding renderer; added regressions for cross-seam glyph capacity and complete LOCAL opportunity with bounded overlap.
+- Qualification and visual status are recorded in CONTEXT.md; reproducible comparison evidence is in docs/RESIDUAL_CLUSTER_DISTRIBUTION.md.
+
+## 2026-09-27 - persistent Codex project-state architecture
+
+- Retired ZIP/export delivery, missed-handoff recovery, repository identity and recursive worktree/copy guards, and NORMAL/NIGHTLY stopping modes by explicit user instruction.
+- Centralized live state, queued tasks and user decisions in CONTEXT.md, checkpointed after meaningful changes; added focused session-start context routing and one process source.
+- Allowed scoped Git worktrees, ordinary reviewed changes and ignored local scratch while preserving previous renderer versions and source-oriented archive/history.
+- Preserved former process/state in archive/project_state/2026-09-27 and moved inactive experiments intact to archive/inflight; removed duplicated live inflight status.
+- Replaced workflow prose locks with route/state architecture checks; current suite counts come from runners/manifest. Renderer and behavior specification unchanged. Verification result is recorded in CONTEXT.md.
+
+## 2026-09-27 - residual clustering visual outcome rejected
+
+User reports the installed last fix made components and tiny LOCAL lines MORE clustered/compartmentalised. Visual completion was withdrawn despite prior technical qualification. Corrective work is deferred in CONTEXT.md until the user returns to it; no renderer rollback or new diagnosis was implemented.
+
 ## 2026-09-27 ? shared residual cluster distribution ? PROMOTED
 
 - Coordinate component and LOCAL opportunity through shared physical composition parcels; preserve distinct seeded cluster sizes and allow larger physically bounded LOCAL groups.
@@ -143,12 +237,12 @@ This change is **promoted**. Exact defaults preserve historical per-seed geometr
 - No SVG/report or JSON summary was emitted before external termination because the CLI writes each SVG/report only after the whole logical sample returns and prints its batch JSON only after the requested batch completes.
 - This is consistent with the already-qualified expensive-but-finite long/fine regime (~10.5 min / ~785 MiB class on exact seed 0; ~320.5 s MAIN alone on exact seed 1), and is **not evidence that the promoted persistence-totality fix regressed**.
 - Seed-totality remains promoted/closed. Long/fine runtime/RSS remains an open optimization target; CLI progress observability is a separate tooling opportunity.
-- Raw logs retained at `work/inflight/evidence/0341_user_raw_logs/`. Production renderer code is unchanged.
+- Raw logs retained at `archive/inflight/evidence/0341_user_raw_logs/`. Production renderer code is unchanged.
 
 ## 2026-08-25 01:23 IST — long/fine totality v2 seed-1 full-board PASS (UNPROMOTED)
 
 - Production V48 remains unchanged at `ac53e1d1fae493beb55ab8dc05c0ba7d3053add19a1c6b71cb52ce926738fb79`.
-- Recovered surviving v2 candidate: `work/inflight/v48_longfine_totality_v2_renderer.py`, SHA-256 `e8d1874d652e7aa6a7af763ac20b2a97d1367082dc748f61771833be49d16054`.
+- Recovered surviving v2 candidate: `archive/inflight/v48_longfine_totality_v2_renderer.py`, SHA-256 `e8d1874d652e7aa6a7af763ac20b2a97d1367082dc748f61771833be49d16054`.
 - Exact `1:6 @ 0.35`, base seed 1 MAIN-only repro now PASSes: 4,104/4,104 launch traces visible, zero hard MAIN/geometry failures, ~320.49 MAIN CPU-s, ~497 MiB RSS.
 - Stronger exact-seed full-board run also PASSes: SVG/report emitted with `restart_index=0`, no skipped logical index, 98 chips, 824 collections, zero unplaced components, no route restart, and clean hard MAIN/geometry counters.
 - Four routes remain under the soft six-module preferred visible target; v2 intentionally retains that quality diagnostic without treating it as hard rejection because they satisfy the four-module survival floor.
@@ -193,7 +287,7 @@ This is the compact current-era changelog. Complete historical source snapshots 
 ## Unreleased — structural first-rebase anti-starvation candidate — 2026-08-24
 
 - Traced the dominant young-line corpse mechanism to same-round conflict starvation: viable branch-stage-0 structural children can repeatedly lose their mandatory first rebase, then cycle through rollback/recovery until they become 6–14-module corpses.
-- Current best unpromoted candidate lets such a viable newborn HOLD on a first-rebase conflict and grants one-round anti-starvation fairness only after it has already been held once; fairness resets immediately after the first rebase commits. At the time the exact candidate delta was preserved under `work/inflight/`; that experiment artifact was retired after promotion. Durable findings are in `docs/LINE_MURDER_PROMOTION_HISTORY.md`.
+- Current best unpromoted candidate lets such a viable newborn HOLD on a first-rebase conflict and grants one-round anti-starvation fairness only after it has already been held once; fairness resets immediately after the first rebase commits. At the time the exact candidate delta was preserved under `archive/inflight/`; that experiment artifact was retired after promotion. Durable findings are in `docs/LINE_MURDER_PROMOTION_HISTORY.md`.
 - Behavior evidence: at 0.75, <=8-module corpses fall `13->5` (seed101), `3->2` (seed102), `2->0` (seed104); at 0.5 they fall `21->11` (seed102) and `17->9` (seed104), with corresponding reductions in <=14 corpses and mostly better completion metrics.
 - Candidate is not promotable: clean paired normalized 0.75->0.5 CPU/work growth worsens about `1.373x -> 1.469x` despite lower absolute CPU at both scales. Fine-scale traceback segments rise (`2323->2797` seed102; `1865->2279` seed104) and conflict-combination work can rise.
 - Rejected broad zero-future bans, two-step lookahead, short-rebase rescue, broad atomic birth, unconditional newborn priority, greedy HOLD, depth-1-only variants, post-rebase grace, fragile-only thresholds, and pairwise-conflict memoization. The completed decision ledger is now summarized in `docs/LINE_MURDER_PROMOTION_HISTORY.md`.
@@ -251,7 +345,7 @@ This is the compact current-era changelog. Complete historical source snapshots 
 - Removed canonical copies of transient optimization debris: profiler/forensic trees, benchmark JSON streams, acceptance output directories, logs, copied renderer-variant forests, redundant dated status/handoff/manifests, and generated experiment outputs.
 - Consolidated durable V47 optimization conclusions into `docs/OPTIMIZATION_HISTORY.md`.
 - Preserved `tools/assert_single_canonical_repo.py` unchanged as the hard anti-multi-worktree / duplicate-canonical-state gate.
-- At this checkpoint the unpromoted line-murder V3 source was preserved under `work/inflight/`; it was later superseded and retired after the 2026-08-24 promotion.
+- At this checkpoint the unpromoted line-murder V3 source was preserved under `archive/inflight/`; it was later superseded and retired after the 2026-08-24 promotion.
 - Moved the single V44 reference-report dependency used by active tests into `tests/fixtures/` and updated the stress probe to import the active V47 renderer instead of relying on a root-level V45 copy.
 - Added V45 and V46 source-oriented snapshots to `archive/releases/` and pruned generated example payloads from archived V40–V44 snapshots.
 - Replaced repository-mutating handoff metadata/checksum generation with a lean bundle builder that packages/verifies the repository without generating artifact clutter inside it.
@@ -360,7 +454,7 @@ Source snapshots V34–V44 are under `archive/releases/`. V4–V33 changelog rec
 - v2: `614.485 s` CPU / `614.630 s` wall / `804,192 KiB` peak RSS.
 - Production MAIN/LOCAL-gap CPU: `352.985 / 220.395 s`; v2: `338.407 / 215.606 s`.
 - Conclusion: the reported ~9+ minute / ~745 MB seed-0 behavior is a real **pre-existing long/fine performance cost**, but the exact seed is finite and valid; v2 does not cause the high-RSS regime and is slightly faster in this paired run.
-- Evidence retained under `work/inflight/evidence/longfine_seed0_*`. Promotion still requires the full active release/stress and final qualification gates.
+- Evidence retained under `archive/inflight/evidence/longfine_seed0_*`. Promotion still requires the full active release/stress and final qualification gates.
 
 ## Unreleased — long/fine v2 fine-scale scaling blocker — 2026-08-25 03:12 IST
 
@@ -396,7 +490,7 @@ Source snapshots V34–V44 are under `archive/releases/`. V4–V33 changelog rec
 
 ## 2026-08-25 05:34 IST — LOCAL-2 inflight checkpoint (unpromoted)
 
-- Preserved the current LOCAL-2 candidate (`d58ee1bf...9c9b0`) in `work/inflight/`.
+- Preserved the current LOCAL-2 candidate (`d58ee1bf...9c9b0`) in `archive/inflight/`.
 - Rejected debt-proportional cap and monotonic-cell-frontier variants because they did not remove the repeated-wave work mechanism.
 - Retained a one-campaign rescue scheduler plus deterministic exact first-leg legality cache.
 - Ordinary 0.75 -> 0.5 normalized LOCAL CPU/work improves ~`1.105x -> 1.042x`; whole-render CPU/work improves ~`1.292x -> 1.271x`.

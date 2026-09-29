@@ -10,7 +10,7 @@ import xml.etree.ElementTree as ET
 import unittest
 from unittest import mock
 from pathlib import Path
-from shapely.geometry import LineString, Point, box
+from shapely.geometry import LineString, Point
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from pcb_v48_renderer import DEFAULT_COMPONENT_DENSITY, DEFAULT_LOCAL_DENSITY, V48Renderer, BundleGesturePlanner, SplitMix64, sample_seed, chip_seed, collection_seed, placement_seed, retry_seed, nearest_dir_index, exact_dir8_index, nearest_point_on_polyline_segments, point_bounds_distance, point_along_dir, SIDE_TO_DIR, dir_vec, Group, SpatialHash, prim_rect_fill, prim_circle, prim_polyline
@@ -1761,15 +1761,11 @@ class V48RendererTests(unittest.TestCase):
 
     def test_v46_local_target_work_is_chunk_bounded_not_aspect_triggered(self):
         src=(Path(__file__).resolve().parents[2]/'pcb_v48_renderer.py').read_text()
-        target_start=src.index('    def _local_gap_target(')
-        target=src[target_start:src.index('\n    def ',target_start+1)]
         self.assertNotIn('tall_area_scale() > 1.25 and len(pool)',src)
         self.assertIn('self.local_gap_chunk_span=6',src)
         self.assertIn('def _local_gap_target_chunk(',src)
         self.assertIn('for step in range(1,5):',src)
-        self.assertIn('_local_gap_target_chunk(center,rid,hint)',target)
-        self.assertRegex(target,r'eval_pool=list\(self\._local_gap_extreme_shortlist\((?:None|rid),targetable,hint,96\)\)')
-        self.assertIn('for gx,gy in eval_pool:',target)
+        self.assertIn('_local_gap_extreme_shortlist(None,targetable,hint,96)',src)
         self.assertNotIn('heapq.nlargest(512,pool',src)
 
     def test_v46_local_branch_trace_cap_is_stationary_per_territory(self):
@@ -2082,7 +2078,6 @@ class V48RendererTests(unittest.TestCase):
         p=BundleGesturePlanner(r,44007,[])
         cells={(10,10),(11,10)}
         p.local_gap_open_cells=set(cells)
-        p.local_gap_route_cells=set(cells)
         p.local_gap_regions=[dict(id=0,cells=set(cells),cell_count=2,center=(0,0),width=1,height=1,
                                   short_span=1,long_span=2,dir=0,size='small')]
         p.local_gap_region_by_cell={c:0 for c in cells}
@@ -2472,12 +2467,7 @@ class V48RendererTests(unittest.TestCase):
         src=(Path(__file__).resolve().parents[2]/'pcb_v48_renderer.py').read_text()
         self.assertNotIn('saved_segments=[dict(rec) for rec in self.path_segments]',src)
         self.assertNotIn('viable=[r for r in eligible',src)
-        launch=src[src.index('    def _launch_local_gap_fronts('):src.index('    def _branch_local_singleton(',src.index('    def _launch_local_gap_fronts('))]
-        heap_name='alloc_heap' if 'alloc_heap=[]' in launch else 'heap'
-        self.assertIn(f'{heap_name}=[]',launch)
-        self.assertIn(f'heapq.heappush({heap_name},',launch)
-        self.assertIn(f'heapq.heappop({heap_name})',launch)
-        self.assertIn('candidates_by_cluster.get(wanted_cluster,',launch)
+        self.assertIn('alloc_heap=[]',src)
         self.assertIn('quota_heap=[]',src)
         self.assertIn('region_priority_heap=[]',src)
         self.assertIn('_region_rank_heap=[]',src)
@@ -3037,13 +3027,10 @@ class V48RendererTests(unittest.TestCase):
     def test_v47_gesture_clear_uses_record_specific_path_bounds_broadphase(self):
         r=V48Renderer(seed=47201)
         p=BundleGesturePlanner(r,sample_seed(r.seed,0),[])
-        p._residual_gap_cells()
         f=self._planner_front(p,472011,(200.0,200.0),0)
         f['local_gap']=True
-        f['local_fill_cluster_id']=p.local_gap_route_domain_by_cell[p._gap_cell((200.0,200.0))]
         other=self._planner_front(p,472012,(200.0,260.0),0)
         other['local_gap']=True
-        other['local_fill_cluster_id']=p.local_gap_route_domain_by_cell[p._gap_cell((200.0,260.0))]
         og=p._corridor_geom(other,(200.0,260.0),(700.0,260.0))
         rec=dict(geom=og,front=other['id'],root=(0,'right',0),chip=0,
                  start=(200.0,260.0),end=(700.0,260.0),round_index=0,
@@ -3313,256 +3300,22 @@ class V48RendererTests(unittest.TestCase):
         self.assertEqual(report.get('pathway_main_short_termination_trace_count'),0)
 
     def test_v48_local_residual_first_wave_spreads_across_compact_parcels(self):
-        """An all-LOCAL room distributes sources without artificial routing walls."""
+        """A large connected room is many LOCAL clusters, not one line-only territory."""
         r=V48Renderer(seed=27004,scale=1.0)
         p=BundleGesturePlanner(r,sample_seed(r.seed,0),[])
         p.local_gap_open_cells=p._residual_gap_cells()
         p.local_gap_service_denominator_cell_count=len(p.local_gap_open_cells)
         p.local_gap_target_fraction=.40
         p.local_gap_target_count=int(.40*len(p.local_gap_open_cells))
-        self.assertEqual(p.local_gap_route_cells,p.local_gap_open_cells)
-        self.assertEqual(len(p.local_route_clusters),1)
+        self.assertGreater(len(p.local_fill_cluster_meta),12)
+        targets=[m['target_sources'] for m in p.local_fill_cluster_meta.values()]
+        self.assertTrue(all(1<=v<=12 for v in targets))
         spawned=p._launch_local_gap_fronts(source_cap=12)
         roots=[f for f in p.fronts.values() if f.get('local_gap') and f.get('parent') is None]
         cluster_ids=[f.get('local_fill_cluster_id') for f in roots]
         self.assertEqual(spawned,12)
-        self.assertTrue(all(cid in p.local_route_clusters for cid in cluster_ids))
-        sectors={(min(7,int(8*f['path'][0][0]/r.W)),
-                  min(7,int(8*f['path'][0][1]/r.H))) for f in roots}
-        self.assertGreaterEqual(len(sectors),8)
-
-
-    def test_v48_local_density_scales_capped_floor_and_endpoint_policy(self):
-        sseed=sample_seed(102,0)
-        for density in (0.0,.5,.9,1.0):
-            r=V48Renderer(seed=102,component_density=0.0,local_density=density)
-            budget=r.residual_density_budget(sseed)
-            self.assertAlmostEqual(budget['local_floor_absolute_budget'],.8*density)
-            r._active_residual_density_budget=budget
-            captured=[]
-            def capture(planner,*args):
-                captured.append(planner)
-                return [],dict(pathway_local_gap_fill_actual=planner.local_gap_hard_floor_absolute)
-            with mock.patch.object(BundleGesturePlanner,'run_local_after_components',new=capture):
-                _groups,report=r.generate_local_gap_pathways(sseed,[],[],[],0.0,100)
-            self.assertEqual(len(captured),1)
-            p=captured[0]
-            self.assertEqual(p.local_gap_best_effort_full_endpoint,density==1.0)
-            self.assertAlmostEqual(report['pathway_local_gap_hard_floor_absolute'],.8*density)
-        r=V48Renderer(seed=102)
-        r._active_residual_density_budget=r.residual_density_budget(sseed)
-        with mock.patch.object(BundleGesturePlanner,'run_local_after_components',new=capture):
-            r.generate_local_gap_pathways(sseed,[],[],[],.55,100)
-        self.assertFalse(captured[-1].local_gap_best_effort_full_endpoint)
-        self.assertFalse(captured[-1].local_gap_capacity_first)
-        self.assertAlmostEqual(captured[-1].local_gap_hard_floor_absolute,.45*.8)
-
-    def test_v48_all_local_floor_counts_final_visible_service(self):
-        import shapely
-        from shapely.strtree import STRtree
-        r=V48Renderer('1:1',.75,102,component_density=0.0)
-        captured=[]
-        original=BundleGesturePlanner.run_local_after_components
-        def capture(planner,*args,**kwargs):
-            result=original(planner,*args,**kwargs)
-            captured.append(planner)
-            return result
-        with mock.patch.object(BundleGesturePlanner,'run_local_after_components',new=capture):
-            _groups,report=r.generate_sample()
-        self.assertEqual(len(captured),1)
-        p=captured[0]
-        ribbons=[]
-        for rec in p.trace_records:
-            if not rec.get('local_gap'):
-                continue
-            thickness=rec['primitive'].svg['stroke_width']
-            half=.5*thickness+max(.75*thickness,r.component_pathway_clearance)
-            # Independently union final emitted flat-cap service ribbons. Markers and
-            # nonemitted logical routes cannot contribute to this measurement.
-            for a,b in zip(rec['points'],rec['points'][1:]):
-                if a!=b:
-                    ribbons.append(LineString([a,b]).buffer(half,cap_style=2))
-        self.assertTrue(ribbons)
-        nx,ny=r.local_gap_grid_shape()
-        points=shapely.points([
-            ((gx+(sx+.5)/4)*r.W/nx,(gy+(sy+.5)/4)*r.H/ny)
-            for gx,gy in sorted(p.local_gap_open_cells)
-            for sy in range(4) for sx in range(4)])
-        # GEOS polygon boundaries and arithmetic projection can disagree for sample
-        # points exactly on a flat cap. Bound that numerical case geometrically.
-        denom=16*p.local_gap_service_denominator_cell_count
-        lower=STRtree([g.buffer(-1e-9) for g in ribbons]).query(points,predicate='covered_by')
-        upper=STRtree([g.buffer(1e-9) for g in ribbons]).query(points,predicate='covered_by')
-        lower_actual=len(set(lower[0]))/denom
-        upper_actual=len(set(upper[0]))/denom
-        self.assertGreaterEqual(lower_actual,.8-1e-9)
-        reported=report['pathway_local_gap_fill_actual']
-        self.assertGreaterEqual(reported,lower_actual-1e-9)
-        self.assertLessEqual(reported,upper_actual+1e-9)
-        self.assertEqual(report['component_residual_gap_total_component_count'],0)
-        visible=[rec for rec in p.trace_records if rec.get('local_gap')]
-        self.assertGreater(len({round(rec['primitive'].svg['stroke_width'],8)
-                                for rec in visible}),2)
-        self.assertTrue(any(len(rec['points'])>=4 for rec in visible))
-        self.assertGreater(report['pathway_local_gap_bundle_pair_count'],0)
-
-    def test_v48_local_settlement_accepts_numerical_length_boundary(self):
-        for shortfall,expected in ((1e-12,'terminated'),(1e-4,'abandoned_short')):
-            with self.subTest(shortfall=shortfall):
-                r=V48Renderer(seed=27009,component_density=0.0)
-                p=BundleGesturePlanner(r,sample_seed(r.seed,0),[])
-                length=3.0*p.module-shortfall
-                f=self._planner_front(p,17,(400.0,400.0),0)
-                f.update(local_gap=True,local_gap_special=True,fan_pending=False,
-                         path=[(400.0,400.0),(400.0+length,400.0)],travel=length,
-                         gestures=2,local_gestures=2,max_gestures=100,
-                         local_gap_min_terminal_modules=3.0)
-                p._local_gap_capacity_realizing=True
-                with mock.patch.object(p,'_propose',return_value=None), \
-                     mock.patch.object(p,'_local_gap_target',return_value=None):
-                    p._run_local_gap_fast_rounds(round_budget=5)
-                self.assertEqual(f['status'],expected)
-
-    def test_v48_local_visible_floor_accepts_numerical_length_boundary(self):
-        module=sys.modules[BundleGesturePlanner.__module__]
-        for shortfall,emitted in ((1e-12,True),(1e-4,False)):
-            with self.subTest(shortfall=shortfall):
-                r=V48Renderer(seed=27010,component_density=0.0)
-                p=BundleGesturePlanner(r,sample_seed(r.seed,0),[])
-                p.local_gap_open_cells=p._residual_gap_cells()
-                # Choose the normal filled/filled style so the constructed physical
-                # line, rather than an unrelated marker clip, exercises the floor.
-                for tid in range(256):
-                    rng=SplitMix64(module.mix_once(p.sseed ^ (tid+1)*0x9E3779B97F4A7C15))
-                    if rng.random()<.55 and rng.random()<.55:
-                        break
-                p.next_trace_id=tid
-                length=2.75*p.module-shortfall
-                f=self._planner_front(p,17,(400.0,400.0),0)
-                f.update(local_gap=True,local_fill_cluster_id=0,local_gap_region_id=0,
-                         path=[(400.0,400.0),(400.0+length,400.0)],travel=length,
-                         status='terminated',termination_reason='local_gap_wave_limit',
-                         gestures=1,local_gestures=1,fan_pending=False)
-                p._record_segment(f,f['path'][0],f['path'][1],p._corridor_geom(f,*f['path']))
-                p._materialize()
-                self.assertEqual(any(rec['tid']==tid for rec in p.trace_records),emitted)
-                self.assertEqual(p.stats['pathway_tiny_termination_trace_count'],0)
-
-    def test_v48_certified_filled_terminal_can_reach_its_visible_prefix(self):
-        module=sys.modules[BundleGesturePlanner.__module__]
-        for filled in (True,False):
-            with self.subTest(filled=filled):
-                r=V48Renderer(seed=27011,component_density=0.0)
-                p=BundleGesturePlanner(r,sample_seed(r.seed,0),[])
-                for tid in range(256):
-                    rng=SplitMix64(module.mix_once(p.sseed ^ (tid+1)*0x9E3779B97F4A7C15))
-                    rng.random()
-                    if (rng.random()<.55)==filled:
-                        break
-                p.next_trace_id=tid
-                start=(400.0,400.0); end=(400.0+4*p.module,400.0)
-                f=self._planner_front(p,17,start,0)
-                f.update(local_gap=True,status='terminated',path=[start,end],
-                         _local_capacity_visible_floor=3.5*p.module)
-                t=f['thicknesses'][tid]
-                clip=r._termination_dot_radius(t)+.5*r.termination_dot_hollow_stroke
-                outer=clip+r.pathway_terminal_head_keepout
-                certified_x=start[0]+f['_local_capacity_visible_floor']
-                # A nearby foreign route blocks all existing worst-case-hollow
-                # choices, while the certified filled endpoint is exactly safe.
-                wall=box(certified_x+outer+.2*clip,400.0-2*outer,
-                         certified_x+outer+.2*clip+.1*r.U,400.0+2*outer)
-                p.path_index.insert(dict(front=-1,geom=wall),wall.bounds)
-                points,back=p._backoff_terminal_points(f,tid,[start,end])
-                if filled:
-                    self.assertAlmostEqual(points[-1][0],certified_x,places=8)
-                    self.assertAlmostEqual(back,.5*p.module,places=8)
-                    self.assertFalse(Point(points[-1]).buffer(outer,quad_segs=8).intersects(wall))
-                else:
-                    self.assertGreaterEqual(points[-1][0]+1e-9,certified_x+clip)
-                    self.assertLessEqual(back,.5*p.module-clip+1e-9)
-
-    def test_v48_local_singleton_branch_uses_stationary_population_cap(self):
-        r=V48Renderer(seed=27008,component_density=0.0)
-        p=BundleGesturePlanner(r,sample_seed(r.seed,0),[])
-        p.local_gap_open_cells=p._residual_gap_cells()
-        f=self._planner_front(p,23,(400.0,400.0),0)
-        f.update(local_gap=True,local_fill_cluster_id=0,local_gap_region_id=0,
-                 path=[(350.0,400.0),(400.0,400.0)],gestures=2,local_gestures=2,
-                 fan_pending=False)
-        p.stats['pathway_local_gap_trace_count']=64
-        self.assertGreater(r.local_gap_trace_population_cap(),64)
-        with mock.patch.object(r,'local_gap_trace_population_cap',return_value=64):
-            self.assertEqual(p._branch_local_singleton(f),[])
-        children=p._branch_local_singleton(f)
-        self.assertEqual(len(children),1)
-        self.assertEqual(children[0]['parent'],f['id'])
-        self.assertEqual(children[0]['local_fill_cluster_id'],f['local_fill_cluster_id'])
-        self.assertEqual(p.stats['pathway_local_gap_trace_count'],65)
-
-    def test_v48_local_target_attraction_is_weaker_than_main(self):
-        r=V48Renderer(seed=27007)
-        p=BundleGesturePlanner(r,sample_seed(r.seed,0),[])
-        start=(400.0,400.0)
-        end=(start[0]+p.module,start[1])
-        def attraction(local):
-            scores=[]
-            for target in (None,(800.0,400.0)):
-                f=self._planner_front(p,17,start,0)
-                f.update(local_gap=local,target=target,intent='explore')
-                scores.append(p._score_candidate(f,0,1,end))
-            return scores[1]-scores[0]
-        local=attraction(True)
-        main=attraction(False)
-        self.assertGreater(local,0.0)
-        self.assertLess(local,main)
-
-    def test_v48_local_policy_domains_preserve_physical_service_denominator(self):
-        r=V48Renderer(seed=27005)
-        p=BundleGesturePlanner(r,sample_seed(r.seed,0),[])
-        nx,ny=r.local_gap_grid_shape()
-        def install_owners(open_cells):
-            p.local_macro_geoms={0:box(0,0,.45*r.W,r.H),
-                                 1:box(.55*r.W,0,r.W,r.H)}
-            p.local_macro_by_cell={c:int(c[0]>=nx//2) for c in open_cells}
-            p.local_macro_allowed_cells={c for c in open_cells
-                if c[0]<int(.45*nx) or c[0]>=math.ceil(.55*nx)}
-        with mock.patch.object(p,'_init_local_route_composition',side_effect=install_owners):
-            physical=p._residual_gap_cells()
-        p.local_gap_open_cells=physical
-        p.local_gap_service_denominator_cell_count=len(physical)
-        self.assertEqual(len(physical),nx*ny)
-        self.assertLess(len(p.local_gap_route_cells),len(physical))
-        self.assertEqual(len(p.local_route_clusters),2)
-        rng=SplitMix64(27005)
-        for cid,domain in p.local_route_clusters.items():
-            target=p._local_gap_target(domain['anchor'],rng,cluster_id=cid)
-            self.assertEqual(p.local_gap_route_domain_by_cell[p._gap_cell(target)],cid)
-        self.assertEqual(p.local_gap_service_denominator_cell_count,nx*ny)
-
-    def test_v48_visible_local_recount_discards_nonemitted_service(self):
-        r=V48Renderer(seed=27006)
-        p=BundleGesturePlanner(r,sample_seed(r.seed,0),[])
-        p.local_gap_open_cells=p._residual_gap_cells()
-        p.local_gap_service_denominator_cell_count=len(p.local_gap_open_cells)
-        t=1.9*r.U
-        stroke={'ids':(0,), 'thicknesses':{0:t}}
-        visible=[(300.0,300.0),(450.0,300.0)]
-        invisible=[(700.0,700.0),(900.0,700.0)]
-        p._mark_local_gap_segment_coverage(*visible,stroke)
-        expected=dict(p.local_gap_coverage_mask_by_cell)
-        p._mark_local_gap_segment_coverage(*invisible,stroke)
-        self.assertGreater(p.local_gap_served_subcell_count,sum(v.bit_count() for v in expected.values()))
-        record=dict(tid=0,local_gap=True,points=visible,
-                    primitive=prim_polyline(visible,t,r.FG))
-        p._recount_visible_local_gap_service([record])
-        self.assertEqual(p.local_gap_coverage_mask_by_cell,expected)
-        self.assertEqual(p.local_gap_served_subcell_count,sum(v.bit_count() for v in expected.values()))
-        self.assertEqual(p.local_gap_untouched_cells,p.local_gap_route_cells-set(expected))
-        self.assertEqual(p.stats['pathway_local_gap_fill_actual'],p._local_gap_service_fraction())
-        p._recount_visible_local_gap_service([])
-        self.assertEqual(p.local_gap_served_subcell_count,0)
-        self.assertEqual(p.local_gap_untouched_cells,p.local_gap_route_cells)
+        self.assertEqual(len(set(cluster_ids)),12)
+        self.assertTrue(all(cid in p.local_fill_cluster_meta for cid in cluster_ids))
 
 
 class SemanticSvgExportTests(unittest.TestCase):
@@ -3686,35 +3439,43 @@ class ProductionUseContractTests(unittest.TestCase):
             self.assertNotIn(forbidden, source)
 
 
-    def test_repository_administration_mode_is_not_development_guarded(self):
-        root = Path(__file__).resolve().parents[2]
-        admin = (root / 'docs' / 'REPOSITORY_ADMINISTRATION.md').read_text(encoding='utf-8')
-        self.assertIn('commit', admin)
-        self.assertIn('push', admin)
-        self.assertIn('does **not** automatically run', admin)
-        self.assertIn('tools/assert_single_canonical_repo.py', admin)
-        self.assertIn('DEVELOPMENT missed-handoff recovery', admin)
-        self.assertIn('fix X, then commit and push', admin)
+    @staticmethod
+    def _local_markdown_targets(document):
+        import re
+        from urllib.parse import unquote
 
-    def test_agent_use_mode_precedes_development_and_forbids_repository_gates(self):
+        text = document.read_text(encoding='utf-8')
+        targets = []
+        for raw in re.findall(r'\[[^\]]*\]\(([^)]+)\)', text):
+            target = raw.strip().strip('<>')
+            if re.match(r'[a-zA-Z][a-zA-Z0-9+.-]*:', target) or target.startswith('#'):
+                continue
+            target = unquote(target.split('#', 1)[0])
+            if target:
+                targets.append((document.parent / target).resolve())
+        return targets
+
+    def test_active_context_routes_resolve_to_existing_project_files(self):
         root = Path(__file__).resolve().parents[2]
-        agents = (root / 'AGENTS.md').read_text(encoding='utf-8')
-        use_at = agents.index('### PRODUCTION USE mode')
-        admin_at = agents.index('### REPOSITORY ADMINISTRATION mode')
-        dev_at = agents.index('### DEVELOPMENT mode')
-        self.assertLess(use_at, admin_at)
-        self.assertLess(admin_at, dev_at)
-        use = agents[use_at:admin_at]
-        admin = agents[admin_at:dev_at]
-        self.assertIn('python generate_pcb.py', use)
-        self.assertIn('DO NOT run `tools/assert_single_canonical_repo.py`', use)
-        self.assertIn('DO NOT run release tests, stress tests', use)
-        self.assertIn('DO NOT run `tools/build_handoff_bundle.py`', use)
-        self.assertIn('leave it omitted', use)
-        self.assertIn('commit', admin)
-        self.assertIn('push', admin)
-        self.assertIn('DO NOT run `tools/assert_single_canonical_repo.py`', admin)
-        self.assertIn('DO NOT run release tests, stress tests', admin)
-        self.assertIn('DO NOT run', admin)
-        self.assertIn('tools/build_handoff_bundle.py', admin)
-        self.assertIn('does **not** trigger DEVELOPMENT handoff/recovery rules', admin)
+        agents = root / 'AGENTS.md'
+        routing = root / 'docs' / 'CONTEXT_ROUTING.md'
+        self.assertIn(routing.resolve(), self._local_markdown_targets(agents))
+        for document in (agents, routing, root / 'CONTEXT.md'):
+            with self.subTest(document=document.relative_to(root)):
+                targets = self._local_markdown_targets(document)
+                self.assertTrue(targets, f'{document.name} must expose navigable context routes')
+                for target in targets:
+                    self.assertTrue(target.is_relative_to(root), f'Route escapes project: {target}')
+                    self.assertTrue(target.is_file(), f'Missing context route: {target}')
+
+    def test_current_state_has_one_source_and_retired_workflow_files_are_absent(self):
+        root = Path(__file__).resolve().parents[2]
+        current_state = (root / 'CONTEXT.md').resolve()
+        for document in (root / 'AGENTS.md', root / 'docs' / 'CONTEXT_ROUTING.md',
+                         root / 'work' / 'inflight' / 'README.md'):
+            with self.subTest(document=document.relative_to(root)):
+                self.assertIn(current_state, self._local_markdown_targets(document))
+        for retired in ('tools/assert_single_canonical_repo.py', 'tools/build_handoff_bundle.py',
+                        '.pcb_repo_identity.json', 'work/inflight/STATUS.md'):
+            with self.subTest(retired=retired):
+                self.assertFalse((root / retired).exists(), f'Retired workflow artifact remains: {retired}')

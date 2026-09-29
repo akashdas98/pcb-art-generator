@@ -1,5 +1,3 @@
-# Inflight worksets
+# Active experiments
 
-No active renderer candidate. Residual cluster distribution is promoted in pcb_v48_renderer.py.
-
-See [STATUS.md](STATUS.md) and [durable distribution evidence](../../docs/RESIDUAL_CLUSTER_DISTRIBUTION.md). Historical evidence is not renderer authority.
+Only unfinished experimental work belongs here. The sole live task status, candidate path/baseline and next step are in [current project state](../../CONTEXT.md). Completed or rejected work worth preserving goes to archive with a history summary. Prior experiments are in [archive/inflight](../../archive/inflight/README.md).

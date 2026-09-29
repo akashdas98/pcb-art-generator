@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Optional current-policy V48 stress runner. Separate from the mandatory 168-test release gate."""
+"""Optional current-policy V48 stress runner. Separate from the mandatory active release gate."""
 import unittest
 from pathlib import Path
 ROOT=Path(__file__).resolve().parent

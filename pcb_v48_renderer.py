@@ -691,11 +691,6 @@ class BundleGesturePlanner:
         self.cols=[g for g in placed if g.structural.get('placement_kind')=='collection']
         self.isolated=[g for g in placed if g.structural.get('placement_kind')=='isolated']
         self.static=self.chips+self.cols+self.isolated
-        # LOCAL composition excludes the interior of each already placed component
-        # cluster.  This is built only for the post-component planner; MAIN has no
-        # component territory to reserve.
-        self.local_component_cluster_territory=[]
-        self.local_component_cluster_territory_index=None
         # V37 local routing may start after dozens of components already exist.  Keep a spatial
         # broad-phase for static obstacles so exact component geometry is tested only nearby.
         self.static_index=SpatialHash(max(80.0*self.U,4.0*renderer.component_pathway_clearance))
@@ -762,15 +757,13 @@ class BundleGesturePlanner:
         self.coverage_cells=set()
         self.coverage_cell_counts={}
         self.local_gap_open_cells=set()
-        # Physical service and route opportunity are different fields.  Policy seams and
-        # component-cluster interiors restrict route construction, not the service audit.
-        self.local_gap_route_cells=set()
-        self.local_gap_route_domain_by_cell={}
         self.local_gap_regions=[]
         self.local_gap_region_by_cell={}
-        self.local_fill_cluster_root_counts={}
-        # Route ownership is fixed by connected physical rooms and composition owners.
-        self.local_route_clusters={}
+        # V48 residual-fill composition mosaic.  These are spatial ownership parcels only;
+        # component placement and LOCAL routing retain their existing exact legality engines.
+        self.local_fill_cluster_by_cell={}
+        self.local_fill_cluster_meta={}
+        self.local_fill_cluster_cells={}
         # Four immutable projection orders per residual region.  Dynamic coverage only removes
         # eligibility, so these arrays stay valid and let large-room targeting inspect bounded
         # geometric extremes instead of rescanning every cell for every trace decision.
@@ -784,7 +777,6 @@ class BundleGesturePlanner:
         self.local_gap_chunk_key_by_cell={}
         self.local_gap_untouched_by_chunk={}
         self.local_gap_chunk_cycle_by_region={}
-        self.local_gap_retarget_chunk_epoch={}
         self.local_gap_coverage_cells=set()
         self.local_gap_coverage_touched_cells=set()
         self.local_gap_coverage_mask_by_cell={}
@@ -1146,15 +1138,10 @@ class BundleGesturePlanner:
         candidates.sort(key=lambda x:(x[0],x[1],x[2]))
         return candidates[0][3]
 
-    def _local_route_cluster_for_source(self,p,create=False):
-        """Assign a LOCAL root to one precomputed connected route domain."""
-        return self.local_gap_route_domain_by_cell.get(self._gap_cell(p))
-
     def _make_front(self, *, ids, chip, side, side_index, path, direction, offsets,
                     thicknesses, prefixes, rng, depth=0, intent=None, target=None,
                     parent=None, branch_turn=None, fan_group=None,
-                    forced_straight_modules=None,forced_turn_modules=None,
-                    local_cluster_id=None):
+                    forced_straight_modules=None,forced_turn_modules=None):
         fid=self.next_front_id; self.next_front_id+=1
         if intent is None:
             intent,target=self._sample_intent(rng,path[-1],direction)
@@ -1194,19 +1181,6 @@ class BundleGesturePlanner:
             young_defer_count=0, launch_yield_requests=0,
         )
         self.fronts[fid]=f
-        if parent is not None and parent in self.fronts and self.fronts[parent].get('local_gap'):
-            f['local_gap']=True
-            f['local_fill_cluster_id']=self.fronts[parent].get('local_fill_cluster_id')
-            f['local_fill_route_tile']=self.fronts[parent].get('local_fill_route_tile')
-        elif side=='local':
-            f['local_gap']=True
-            f['local_fill_cluster_id']=(local_cluster_id if local_cluster_id is not None else
-                                        self._local_route_cluster_for_source(path[-1],create=False))
-            f['local_fill_route_tile']=None
-        if f.get('local_gap') and parent is None:
-            cid=f.get('local_fill_cluster_id')
-            if cid is not None:
-                self.local_fill_cluster_root_counts[cid]=self.local_fill_cluster_root_counts.get(cid,0)+1
         self.fronts_by_side.setdefault((chip,side_index,side),set()).add(fid)
         if parent is not None: self.children_by_parent.setdefault(parent,set()).add(fid)
         return f
@@ -1214,11 +1188,6 @@ class BundleGesturePlanner:
     def _drop_front(self,fid):
         f=self.fronts.pop(fid,None)
         if f is None: return None
-        if f.get('local_gap') and f.get('parent') is None:
-            cid=f.get('local_fill_cluster_id')
-            if cid is not None:
-                self.local_fill_cluster_root_counts[cid]=max(0,self.local_fill_cluster_root_counts.get(cid,0)-1)
-                # The immutable route domain survives failed trial fronts.
         parent=f.get('parent')
         if parent is not None:
             kids=self.children_by_parent.get(parent)
@@ -1444,7 +1413,7 @@ class BundleGesturePlanner:
                 return True
         return False
 
-    def _interroute_gap_for_fronts(self,f,g=None,other_thickness=None,other_local=False,other_cluster_id=None):
+    def _interroute_gap_for_fronts(self,f,g=None,other_thickness=None,other_local=False):
         gap=self.r.pathway_interroute_keepout
         local=bool(f.get('local_gap')) or bool(g and g.get('local_gap')) or bool(other_local)
         if not local:
@@ -1455,8 +1424,7 @@ class BundleGesturePlanner:
         else:
             t2=float(other_thickness if other_thickness is not None else t1)
         mean=.5*(t1+t2)
-        gap=max(gap,self.r.local_gap_line_edge_gap_factor*mean)
-        return gap
+        return max(gap,self.r.local_gap_line_edge_gap_factor*mean)
 
     def _proposal_conflict_geom(self,p,f):
         cached=p.get('_conflict_geom')
@@ -2043,45 +2011,6 @@ class BundleGesturePlanner:
         return (min(nx-1,max(0,int(nx*x/max(self.W,1e-9)))),
                 min(ny-1,max(0,int(ny*y/max(self.H,1e-9)))))
 
-    def _build_local_component_cluster_territory(self,nx,ny,cw,ch):
-        """Reserve compact placed-component cluster interiors for LOCAL composition.
-
-        The exact component moat remains the legality authority.  This additional
-        raster/geometry ownership boundary prevents an otherwise legal LOCAL route
-        from threading the empty space *inside* a group of components.  Every
-        Construction follows component population and protected raster area
-        rather than component pairs, regardless of cluster member count.
-        """
-        members={}
-        for g in self.cols+self.isolated:
-            cid=g.structural.get('residual_fill_cluster_id')
-            if cid is not None:
-                members.setdefault(cid,[]).append(g)
-        territory=[]
-        margin=.55*max(cw,ch)
-        for cid,groups in sorted(members.items()):
-            # A singleton receives only a compact breathing envelope.  Two or
-            # more members reserve their common convex interior as one cluster.
-            hull=unary_union([g.collision_geom.convex_hull for g in groups]).convex_hull
-            if not hull.is_empty:
-                territory.append((cid,hull.buffer(margin,quad_segs=4)))
-        self.local_component_cluster_territory=territory
-        index=SpatialHash(max(2.0*max(cw,ch),1e-6))
-        blocked=set()
-        for cid,geom in territory:
-            index.insert((cid,geom),geom.bounds)
-            x0,y0,x1,y1=geom.bounds
-            gx0=max(0,int(math.floor(x0/cw-.5))); gx1=min(nx-1,int(math.ceil(x1/cw-.5)))
-            gy0=max(0,int(math.floor(y0/ch-.5))); gy1=min(ny-1,int(math.ceil(y1/ch-.5)))
-            for gy in range(gy0,gy1+1):
-                for gx in range(gx0,gx1+1):
-                    if geom.covers(Point((gx+.5)*cw,(gy+.5)*ch)):
-                        blocked.add((gx,gy))
-        self.local_component_cluster_territory_index=index
-        self.local_component_cluster_territory_cells=blocked
-        self.stats['pathway_local_component_territory_cluster_count']=len(territory)
-        self.stats['pathway_local_component_territory_cell_count']=len(blocked)
-
     def _residual_gap_regions(self):
         """Measure connected residual regions after the main network is frozen.
 
@@ -2092,7 +2021,6 @@ class BundleGesturePlanner:
         """
         nx,ny=self.r.local_gap_grid_shape()
         cw=self.W/nx; ch=self.H/ny
-        self._build_local_component_cluster_territory(nx,ny,cw,ch)
         open_cells=set()
         for gy in range(ny):
             for gx in range(nx):
@@ -2115,60 +2043,34 @@ class BundleGesturePlanner:
                 for rec in self.path_index.query(expand_bounds(probe.bounds,.12*self.module)):
                     if probe.intersects(rec['geom']): blocked=True; break
                 if not blocked: open_cells.add((gx,gy))
-        # The physical field is the service numerator's raster.  Build the ownership
-        # atlas separately; a policy seam cannot erase physical residual service.
-        self._init_local_route_composition(open_cells)
-        protected=self.local_component_cluster_territory_cells
-        route_cells=set()
-        for gx,gy in open_cells:
-            cell=(gx,gy)
-            if cell in protected or cell not in self.local_macro_allowed_cells:
-                continue
-            mid=self.local_macro_by_cell.get(cell)
-            owner=self.local_macro_geoms.get(mid)
-            if owner is not None and owner.covers(Point((gx+.5)*cw,(gy+.5)*ch)):
-                route_cells.add(cell)
-        self.local_gap_route_cells=route_cells
-        regions=[]; by_cell={}; unseen=set(route_cells); rid=0
-        # A gx-major grid walk preserves the former min(unseen) seed order in linear work.
-        # Four-neighbour connectivity keeps diagonally touching pockets separate.
-        for seed_gx in range(nx):
-            for seed_gy in range(ny):
-                seed=(seed_gx,seed_gy)
-                if seed not in unseen: continue
-                stack=[seed]; unseen.remove(seed); cells=[]
-                while stack:
-                    c=stack.pop(); cells.append(c); x,y=c
-                    for nb in ((x-1,y),(x+1,y),(x,y-1),(x,y+1)):
-                        if nb in unseen and self.local_macro_by_cell.get(nb)==self.local_macro_by_cell.get(c):
-                            unseen.remove(nb); stack.append(nb)
-                xs=[c[0] for c in cells]; ys=[c[1] for c in cells]
-                cx=sum((x+.5)*cw for x,_ in cells)/len(cells)
-                cy=sum((y+.5)*ch for _,y in cells)/len(cells)
-                w=(max(xs)-min(xs)+1)*cw; h=(max(ys)-min(ys)+1)*ch
-                pts=[((x+.5)*cw,(y+.5)*ch) for x,y in cells]
-                sxx=sum((x-cx)**2 for x,y in pts); syy=sum((y-cy)**2 for x,y in pts); sxy=sum((x-cx)*(y-cy) for x,y in pts)
-                angle=.5*math.atan2(2*sxy,sxx-syy) if len(cells)>1 else 0.0
-                vx,vy=math.cos(angle),math.sin(angle)
-                d=nearest_dir_index(vx,vy)
-                short=min(w,h); long=max(w,h)
-                size='small' if len(cells)<10 or short<1.8*self.module else ('medium' if len(cells)<28 else 'large')
-                rec=dict(id=rid,cells=set(cells),cell_count=len(cells),center=(cx,cy),width=w,height=h,
-                         short_span=short,long_span=long,dir=d,size=size,
-                         macro_id=self.local_macro_by_cell.get(seed))
-                regions.append(rec)
-                for c in cells: by_cell[c]=rid
-                rid+=1
+        regions=[]; by_cell={}; unseen=set(open_cells); rid=0
+        # 4-neighbour connectivity avoids diagonally touching pockets being treated as one room.
+        while unseen:
+            seed=min(unseen); stack=[seed]; unseen.remove(seed); cells=[]
+            while stack:
+                c=stack.pop(); cells.append(c); x,y=c
+                for nb in ((x-1,y),(x+1,y),(x,y-1),(x,y+1)):
+                    if nb in unseen:
+                        unseen.remove(nb); stack.append(nb)
+            if len(cells)<2: continue
+            xs=[c[0] for c in cells]; ys=[c[1] for c in cells]
+            cx=sum((x+.5)*cw for x,_ in cells)/len(cells)
+            cy=sum((y+.5)*ch for _,y in cells)/len(cells)
+            w=(max(xs)-min(xs)+1)*cw; h=(max(ys)-min(ys)+1)*ch
+            # Principal direction from covariance of cell centres.
+            pts=[((x+.5)*cw,(y+.5)*ch) for x,y in cells]
+            sxx=sum((x-cx)**2 for x,y in pts); syy=sum((y-cy)**2 for x,y in pts); sxy=sum((x-cx)*(y-cy) for x,y in pts)
+            angle=.5*math.atan2(2*sxy,sxx-syy) if len(cells)>1 else 0.0
+            vx,vy=math.cos(angle),math.sin(angle)
+            d=nearest_dir_index(vx,vy)
+            short=min(w,h); long=max(w,h)
+            size='small' if len(cells)<10 or short<1.8*self.module else ('medium' if len(cells)<28 else 'large')
+            rec=dict(id=rid,cells=set(cells),cell_count=len(cells),center=(cx,cy),width=w,height=h,
+                     short_span=short,long_span=long,dir=d,size=size)
+            regions.append(rec)
+            for c in cells: by_cell[c]=rid
+            rid+=1
         self.local_gap_regions=regions; self.local_gap_region_by_cell=by_cell
-        self.local_gap_route_domain_by_cell=by_cell
-        self.local_route_clusters={}
-        self.local_fill_cluster_root_counts={}
-        for region in regions:
-            cid=region['id']
-            self.local_route_clusters[cid]=dict(anchor=region['center'],
-                target_sources=max(1,self.r.local_gap_region_source_cap(region['cell_count'])),
-                target_cells=frozenset(region['cells']),macro_id=region['macro_id'])
-            self.local_fill_cluster_root_counts[cid]=0
         # Immutable per-region projection orders for bounded targeting in genuinely huge rooms.
         # The exact scoring function below is unchanged; this is only the broad phase.  Four
         # projections cover the eight octilinear extrema (each list can be read from either end).
@@ -2197,167 +2099,87 @@ class BundleGesturePlanner:
             self.local_gap_chunk_cells_by_region[r['id']]={k:frozenset(v) for k,v in chunks.items()}
         # V44: materialize the targetable complement once.  A cell leaves these sets exactly
         # when its legitimate 4x4 service mask receives its first covered subcell.
-        self.local_gap_untouched_cells=set(route_cells)
+        self.local_gap_untouched_cells=set(open_cells)
         self.local_gap_untouched_by_region={r['id']:set(r['cells']) for r in regions}
         self.local_gap_region_touch_version={r['id']:0 for r in regions}
         self._reset_local_gap_chunk_state()
+        self._build_local_fill_clusters(open_cells,regions)
         self.stats['pathway_local_gap_region_count']=len(regions)
-        self.stats['pathway_local_gap_route_cell_count']=len(route_cells)
+        self.stats['pathway_local_gap_fill_cluster_count']=len(self.local_fill_cluster_meta)
+        if self.local_fill_cluster_meta:
+            targets=[m['target_sources'] for m in self.local_fill_cluster_meta.values()]
+            self.stats['pathway_local_gap_fill_cluster_target_min']=min(targets)
+            self.stats['pathway_local_gap_fill_cluster_target_max']=max(targets)
         return open_cells
 
-    def _init_local_route_composition(self,open_cells):
-        """Measure the shared C/LOCAL field and grow route-capable LOCAL territories."""
-        self.local_sector_open={}
-        self.local_sector_components={}
-        nx,ny=self.r.local_gap_grid_shape()
-        for gx,gy in open_cells:
-            key=(min(3,4*gx//nx),min(3,4*gy//ny))
-            self.local_sector_open[key]=self.local_sector_open.get(key,0)+1
-        for g in self.cols+self.isolated:
-            x,y=bounds_center(g.bounds)
-            key=(min(3,max(0,int(4*x/self.W))),min(3,max(0,int(4*y/self.H))))
-            self.local_sector_components[key]=self.local_sector_components.get(key,0)+1
-        self._plan_local_route_territories(open_cells)
+    def _build_local_fill_clusters(self,open_cells,regions):
+        """Partition the post-component residual field into compact seeded LOCAL parcels.
 
-    def _plan_local_route_territories(self,open_cells):
-        """Plan paired macro C/LOCAL territory while retaining every service cell.
-
-        The lattice was chosen after MAIN and before component placement.  LOCAL
-        microclusters remain varied, but their visible routes share a larger lobe.
-        Compact C cores and seams are route boundaries, not denominator changes.
+        The parcels are a composition scheduler only.  Exact LOCAL source clearance, gesture
+        legality, targeting score, collision handling and routing remain unchanged.  A parcel's
+        target is the desired number of independent LOCAL roots in that visual cluster and has
+        the same 1..12 design-language support as component clusters.
         """
-        nx,ny=self.r.local_gap_grid_shape(); cw=self.W/nx; ch=self.H/ny
-        fallback_n=int(getattr(self.r,'_residual_macro_lattice_n',5))
-        mx,my=getattr(self.r,'_residual_macro_grid_shape',(fallback_n,fallback_n))
-        mx=max(1,int(mx)); my=max(1,int(my))
-        planned_cowners=getattr(self.r,'_residual_component_macro_owners',{})
-        # Components have now frozen.  Keep each actual cluster's buffered
-        # territory inside its planned C owner and return unused planned fringe
-        # to LOCAL opportunity.  The physical service denominator is untouched;
-        # component geometry and its cluster hull remain exact route obstacles.
-        cowners={}
-        # Cluster territories already include their .55-cell breathing envelope.
-        # The LOCAL owner gets its own 10U outer erosion below; another module
-        # of C buffering here would reserve the same moat a third time.
-        buffered_clusters={cid:territory for cid,territory in self.local_component_cluster_territory}
-        for key,planned in planned_cowners.items():
-            occupied=[buffered_clusters[cid]
-                      for cid,_territory in self.local_component_cluster_territory_index.query(
-                          planned.bounds)
-                      if buffered_clusters[cid].intersects(planned)]
-            if occupied:
-                retained=unary_union(occupied).intersection(planned)
-                if not retained.is_empty:
-                    cowners[key]=retained
-        self.stats['pathway_local_planned_component_owner_count']=len(planned_cowners)
-        self.stats['pathway_local_retained_component_owner_count']=len(cowners)
-        self._local_effective_cowners=cowners
-        if not cowners:
-            # An all-LOCAL budget has one unseamed routing field.  Natural physical
-            # obstacles still divide it into connected route domains below.
-            self.local_macro_geoms={0:box(0.0,0.0,self.W,self.H)}
-            self.local_macro_by_cell={(gx,gy):0 for gy in range(ny) for gx in range(nx)}
-            self.local_macro_allowed_cells=set(self.local_macro_by_cell)
-            self.local_territory_by_cell=None
-            self.stats['pathway_local_macro_count']=1
+        self.local_fill_cluster_by_cell={}
+        self.local_fill_cluster_meta={}
+        self.local_fill_cluster_cells={}
+        if not open_cells or not regions:
             return
-        # Component cores are selected by seeded density, not checkerboard parity.  An
-        # actual unowned macro tile is a LOCAL anchor; cells outside a C core inherit
-        # the nearest such anchor.  Query the anchor STRtree once per macro tile, then
-        # assign each service cell by O(1) lookup rather than scanning all anchors.
-        open_macro_keys=set(); free_macro_keys=set()
-        for gx,gy in open_cells:
-            key=(min(mx-1,int(mx*(gx+.5)/nx)),min(my-1,int(my*(gy+.5)/ny)))
-            open_macro_keys.add(key)
-            owner=cowners.get(key)
-            if owner is None or not owner.covers(Point((gx+.5)*cw,(gy+.5)*ch)):
-                free_macro_keys.add(key)
-        anchor_keys=sorted(key for key in open_macro_keys if key not in cowners)
-        if not anchor_keys:
-            # A high C share can select every macro tile while leaving a legitimate
-            # physical LOCAL shell outside the compact core in each one.
-            anchor_keys=sorted(free_macro_keys)
-        lseeds=[(ix,iy,((ix+.5)*self.W/mx,(iy+.5)*self.H/my))
-                for ix,iy in anchor_keys]
-        if not lseeds:
-            self.local_macro_geoms={}; self.local_macro_by_cell={}
-            self.local_macro_allowed_cells=set(); self.local_territory_by_cell=None
-            self.stats['pathway_local_macro_count']=0
-            return
-        anchor_tree=STRtree([Point(pt) for _ix,_iy,pt in lseeds])
-        # Join adjacent LOCAL anchors before eroding their outer boundary.  Eroding
-        # each tile separately makes an artificial wall through one physical room.
-        # Seeded small connected groups keep the composition varied without letting
-        # a chain of LOCAL tiles percolate into a board-scale owner.
-        remaining=set(anchor_keys)
-        anchor_group={}
-        group_rng=SplitMix64(mix_once(self.sseed ^ 0x4C4F43414C434F4C))
-        group_sizes=(1,2,2,3,3,3,4,4,5,6)
-        group_id=0
-        for seed in anchor_keys:
-            if seed not in remaining:
-                continue
-            remaining.remove(seed)
-            members=[seed]
-            frontier=set()
-            limit=group_sizes[group_rng.next_u64()%len(group_sizes)]
-            while len(members)<limit:
-                for tx,ty in members:
-                    for nb in ((tx-1,ty),(tx+1,ty),(tx,ty-1),(tx,ty+1)):
-                        if nb in remaining:
-                            frontier.add(nb)
-                if not frontier:
+        crng=SplitMix64(mix_once(self.sseed ^ 0xA24BAED4963EE407))
+        cid=0
+        for region in regions:
+            remaining=set(region['cells'])
+            # A shuffled seed stream avoids a deterministic upper-left peeling pattern while
+            # each individual parcel is still grown by 4-neighbour adjacency.
+            seed_order=list(remaining); crng.shuffle(seed_order); cursor=0
+            while remaining:
+                while cursor<len(seed_order) and seed_order[cursor] not in remaining:
+                    cursor+=1
+                seed=(seed_order[cursor] if cursor<len(seed_order) else min(remaining))
+                requested=self.r.residual_fill_cluster_member_target(crng)
+                # Historical region source capacity is about one independent root per 16 service
+                # cells.  Use that same density to give the visual cluster enough physical room;
+                # this changes no source/routing cap outside the composition parcel itself.
+                desired_cells=max(8,16*requested)
+                cells=[]; q=deque([seed]); queued={seed}
+                while q and len(cells)<desired_cells:
+                    c=q.popleft()
+                    if c not in remaining:
+                        continue
+                    remaining.remove(c); cells.append(c)
+                    x,y=c
+                    nbs=[(x-1,y),(x+1,y),(x,y-1),(x,y+1)]
+                    crng.shuffle(nbs)
+                    for nb in nbs:
+                        if nb in remaining and nb not in queued:
+                            queued.add(nb); q.append(nb)
+                # A narrow articulation can exhaust the local BFS before the target size while
+                # disconnectedness is impossible inside one measured region.  Continue from the
+                # nearest remaining cell only when necessary to consume a compact remainder.
+                if len(cells)<desired_cells and remaining:
+                    cx=sum(c[0] for c in cells)/max(1,len(cells)); cy=sum(c[1] for c in cells)/max(1,len(cells))
+                    while remaining and len(cells)<desired_cells:
+                        seed2=min(remaining,key=lambda c:(c[0]-cx)**2+(c[1]-cy)**2)
+                        q=deque([seed2]); queued={seed2}
+                        while q and len(cells)<desired_cells:
+                            c=q.popleft()
+                            if c not in remaining: continue
+                            remaining.remove(c); cells.append(c); x,y=c
+                            for nb in ((x-1,y),(x+1,y),(x,y-1),(x,y+1)):
+                                if nb in remaining and nb not in queued:
+                                    queued.add(nb); q.append(nb)
+                if not cells:
                     break
-                ordered=sorted(frontier)
-                nb=ordered[group_rng.next_u64()%len(ordered)]
-                frontier.remove(nb)
-                remaining.remove(nb)
-                members.append(nb)
-            for key in members:
-                anchor_group[key]=group_id
-            group_id+=1
-        macro_owner={}
-        for ty in range(my):
-            for tx in range(mx):
-                q=Point((tx+.5)*self.W/mx,(ty+.5)*self.H/my)
-                nearest=min(int(i) for i in anchor_tree.query_nearest(q,all_matches=True))
-                macro_owner[(tx,ty)]=anchor_group[anchor_keys[nearest]]
-        macro_cells={i:[] for i in range(group_id)}; by_cell={}; allowed_cells=set()
-        for gy in range(ny):
-            for gx in range(nx):
-                x=(gx+.5)*cw; y=(gy+.5)*ch
-                tx=min(mx-1,max(0,int(mx*x/self.W)))
-                ty=min(my-1,max(0,int(my*y/self.H)))
-                mid=macro_owner[(tx,ty)]
-                by_cell[(gx,gy)]=mid
-                owner=cowners.get((tx,ty))
-                if owner is None or not owner.covers(Point(x,y)):
-                    macro_cells[mid].append(box(gx*cw,gy*ch,(gx+1)*cw,(gy+1)*ch))
-                    allowed_cells.add((gx,gy))
-        seam=10.0*self.U
-        self.local_macro_geoms={i:unary_union(cells).buffer(-seam,join_style=2)
-                                for i,cells in macro_cells.items() if cells}
-        self.local_macro_by_cell=by_cell
-        self.local_macro_allowed_cells={c for c in allowed_cells
-            if by_cell[c] in self.local_macro_geoms and
-            self.local_macro_geoms[by_cell[c]].covers(Point((c[0]+.5)*cw,(c[1]+.5)*ch))}
-        self.local_territory_by_cell=None
-        self.stats['pathway_local_macro_count']=len(self.local_macro_geoms)
-
-    def _expand_local_fill_debt_targets(self):
-        """Let unpaid domains spend additional ordinary source opportunity."""
-        expanded=0
-        for cid,meta in self.local_route_clusters.items():
-            if any(self.local_gap_coverage_mask_by_cell.get(c,0).bit_count()<13
-                   for c in meta['target_cells']):
-                target=max(meta['target_sources'],self.local_fill_cluster_root_counts.get(cid,0)+
-                    self.r.local_gap_region_source_cap(len(meta['target_cells'])))
-                if target>meta['target_sources']:
-                    meta['target_sources']=target; expanded+=1
-        self.stats['pathway_local_gap_debt_expanded_cluster_count']=expanded
-        self.stats['pathway_local_gap_debt_target_sum']=sum(
-            int(meta['target_sources']) for meta in self.local_route_clusters.values())
-
+                capacity=max(1,int(math.ceil(len(cells)/16.0)))
+                target=max(1,min(12,requested,capacity))
+                frozen=frozenset(cells)
+                self.local_fill_cluster_cells[cid]=frozen
+                for c in cells: self.local_fill_cluster_by_cell[c]=cid
+                self.local_fill_cluster_meta[cid]=dict(id=cid,region_id=region['id'],
+                    target_sources=int(target),requested_sources=int(requested),cell_count=len(cells),
+                    anchor_cell=min(cells,key=lambda c:((c[0]-sum(z[0] for z in cells)/len(cells))**2+
+                                                        (c[1]-sum(z[1] for z in cells)/len(cells))**2)))
+                cid+=1
 
     def _residual_gap_cells(self):
         return self._residual_gap_regions()
@@ -2459,7 +2281,6 @@ class BundleGesturePlanner:
         """Reset mutable LOCAL-1A chunk state from immutable residual-room membership."""
         self.local_gap_untouched_by_chunk={}
         self.local_gap_chunk_cycle_by_region={}
-        self.local_gap_retarget_chunk_epoch={}
         for rid,chunks in self.local_gap_chunk_cells_by_region.items():
             self.local_gap_chunk_cycle_by_region[rid]=deque(sorted(chunks))
             for ck,cells in chunks.items():
@@ -2538,15 +2359,6 @@ class BundleGesturePlanner:
         # The front has serviced its immediate chunk neighbourhood. Rotate through the still-live
         # chunks of this same measured room rather than rescanning the room to discover one.
         q=self.local_gap_chunk_cycle_by_region.get(rid)
-        if not q and self.local_gap_retarget_cells:
-            epoch=id(self.local_gap_retarget_cells)
-            if self.local_gap_retarget_chunk_epoch.get(rid)!=epoch:
-                keys={self.local_gap_chunk_key_by_cell[c][1]
-                      for c in self.local_gap_retarget_cells
-                      if self.local_gap_region_by_cell.get(c)==rid}
-                q=deque(sorted(keys))
-                self.local_gap_chunk_cycle_by_region[rid]=q
-                self.local_gap_retarget_chunk_epoch[rid]=epoch
         if q:
             checks=len(q)
             for _ in range(checks):
@@ -2564,7 +2376,7 @@ class BundleGesturePlanner:
     def _local_gap_targetable_cells(self,rid=None):
         """Cells currently eligible for ordinary local targeting.
 
-        This is set-equivalent to ``route_cells - touched_route_cells`` but uses the
+        This is set-equivalent to ``open_cells - _local_gap_covered_cells()`` but uses the
         incrementally maintained untouched complement.  During the hard-floor-only partial
         reserve, partially served retarget cells are unioned back in exactly as before.
         """
@@ -2585,7 +2397,10 @@ class BundleGesturePlanner:
         # Targeting uses every cell already touched by a legitimate service ribbon so later
         # waves seek genuinely untouched rooms instead of spawning beside earlier fillers.
         # The *coverage percentage* remains the exact served-area fraction below.
-        covered=self.local_gap_coverage_touched_cells & self.local_gap_open_cells
+        if self.local_gap_untouched_cells or self.local_gap_open_cells:
+            covered=self.local_gap_open_cells-self.local_gap_untouched_cells
+        else:
+            covered=self.local_gap_coverage_touched_cells & self.local_gap_open_cells
         if self.local_gap_retarget_cells:
             covered=covered-self.local_gap_retarget_cells
         return covered
@@ -2600,44 +2415,6 @@ class BundleGesturePlanner:
         # post-component field.  Dividing by the original post-MAIN residual cell count keeps
         # component and LOCAL service in the same units, as required by the V36+ contract.
         return min(1.0,self.local_gap_served_subcell_count/max(int(denom)*16,1))
-
-    def _recount_visible_local_gap_service(self,trace_records):
-        """Replace planned service with the exact raster of emitted LOCAL strokes."""
-        if not self.local_gap_open_cells:
-            return
-        self.local_gap_coverage_mask_by_cell={}
-        self.local_gap_coverage_cells=set()
-        self.local_gap_coverage_touched_cells=set()
-        self.local_gap_served_subcell_count=0
-        self.local_gap_retarget_cells=set()
-        self.local_gap_untouched_cells=set(self.local_gap_route_cells)
-        self.local_gap_untouched_by_region={r['id']:set(r['cells']) for r in self.local_gap_regions}
-        self._reset_local_gap_chunk_state()
-        for rec in trace_records:
-            if not rec.get('local_gap'):
-                continue
-            tid=rec['tid']
-            thickness=float(rec['primitive'].svg['stroke_width'])
-            stroke=dict(ids=(tid,),thicknesses={tid:thickness})
-            for a,b in zip(rec['points'],rec['points'][1:]):
-                self._mark_local_gap_segment_coverage(a,b,stroke)
-        self.stats['pathway_local_gap_covered_cell_count']=len(self.local_gap_coverage_touched_cells)
-        self.stats['pathway_local_gap_fill_actual']=self._local_gap_service_fraction()
-
-    def _settle_local_nonemittable_fronts(self):
-        """Retire LOCAL segments that final materialization would omit."""
-        victims=[]
-        for f in self.fronts.values():
-            if not f.get('local_gap'):
-                continue
-            if (f.get('status')=='abandoned_short' or
-                    (f.get('status')=='terminated' and f.get('travel',0.0)+1e-9<2.75*self.module)):
-                if f.get('status')!='abandoned_short':
-                    f['status']='abandoned_short'
-                    f['termination_reason']='local_nonemittable_short'
-                    f['lifecycle']='TERMINAL'
-                victims.append(f['id'])
-        return self._prune_abandoned_local_segments(victims)
 
     def _local_gap_physical_post_component_service_fraction(self):
         """Diagnostic: LOCAL service as a fraction of the physical post-component open field."""
@@ -2689,30 +2466,27 @@ class BundleGesturePlanner:
                 if len(out)>=limit: break
         return out
 
-    def _local_gap_target(self,center,rng,turn_hint=0,cluster_id=None):
+    def _local_gap_target(self,center,rng,turn_hint=0):
         """Choose an uncovered target through LOCAL-1A's bounded residual-chunk state."""
         self.stats.setdefault('pathway_local_gap_target_call_count',0)
         self.stats['pathway_local_gap_target_call_count']+=1
-        here=self._gap_cell(center)
-        rid=(cluster_id if cluster_id in self.local_route_clusters
-             else self.local_gap_region_by_cell.get(here))
-        if rid is None:
-            return center
+        here=self._gap_cell(center); rid=self.local_gap_region_by_cell.get(here)
         hint=turn_hint if isinstance(turn_hint,int) and 0<=turn_hint<8 else None
-        cluster=self.local_route_clusters.get(cluster_id)
-        own=cluster['target_cells'] if cluster is not None else None
         eval_pool=None
         if rid is not None:
             _ck,chunk_cells=self._local_gap_target_chunk(center,rid,hint)
             if chunk_cells:
                 # Chunk membership is bounded (<= 6x6), so sorting is constant-sized and gives
                 # an explicit deterministic candidate order across Python processes.
-                eval_pool=sorted(c for c in chunk_cells if own is None or c in own)
+                eval_pool=sorted(chunk_cells)
         if not eval_pool:
-            targetable=self._local_gap_targetable_cells(rid)
+            # A local region can become completely serviced while its traveller is still alive.
+            # Preserve the historical ability to seek another residual room, but keep this rare
+            # fallback bounded instead of rescanning the whole board.
+            targetable=self._local_gap_targetable_cells()
             if not targetable:
-                return center
-            eval_pool=list(self._local_gap_extreme_shortlist(rid,targetable,hint,96))
+                return self._underused_target(center,rng)
+            eval_pool=list(self._local_gap_extreme_shortlist(None,targetable,hint,96))
         nx,ny=self.r.local_gap_grid_shape(); cw=self.W/nx; ch=self.H/ny
         maps=getattr(self,'_local_gap_congestion_cell_maps',None)
         map_sig=(nx,ny,cw,ch)
@@ -2729,9 +2503,6 @@ class BundleGesturePlanner:
             if d<min_target_distance: continue
             evaluated+=1
             score=.55*d/module_denom-1.15*self._congestion_at_cell(xmap[gx],ymap[gy])
-            if cluster is not None:
-                ax,ay=cluster['anchor']
-                score-=.25*math.hypot(x-ax,y-ay)/module_denom
             if hint is not None:
                 score+=2.4*(dx*vx+dy*vy)/max(d,1e-9)
             key=(-score,rng.random())
@@ -2740,60 +2511,13 @@ class BundleGesturePlanner:
         self.stats.setdefault('pathway_local_gap_target_cell_evaluation_count',0)
         self.stats['pathway_local_gap_target_cell_evaluation_count']+=evaluated
         if best_point is None:
-            return center
+            return self._underused_target(center,rng)
         return best_point
 
-    def _local_component_territory_clear(self,geom,extra=0.0):
-        index=self.local_component_cluster_territory_index
-        if index is None:
-            return True
-        for _cid,protected in index.query(expand_bounds(geom.bounds,extra)):
-            if geom.intersects(protected) or (extra>0.0 and geom.distance(protected)<extra):
-                return False
-        return True
-
-    def _local_fill_parcel_clear(self,f,geom,extra=0.0):
-        cid=f.get('local_fill_cluster_id')
-        meta=self.local_route_clusters.get(cid)
-        if meta is None:
-            return False
-        macro_id=meta.get('macro_id')
-        macro_geom=getattr(self,'local_macro_geoms',{}).get(macro_id)
-        if macro_geom is not None:
-            probe=geom.buffer(extra,quad_segs=4) if extra>0.0 else geom
-            if not macro_geom.covers(probe):
-                self.stats['pathway_local_macro_boundary_reject_count']=self.stats.get('pathway_local_macro_boundary_reject_count',0)+1
-                return False
-        return True
-
-    def _local_macro_endpoint_excluded(self,f,p):
-        """Reject only an endpoint provably outside its exact owner geometry."""
-        meta=self.local_route_clusters.get(f.get('local_fill_cluster_id'))
-        if meta is None or meta.get('macro_id') not in self.local_macro_geoms:
-            return True
-        # Physical cell-centre sampling defines source/target opportunity, not a
-        # geometric wall.  Subcell endpoints can be legal even when their sampled
-        # cell is absent from the connected route field.  The exact owner and the
-        # subsequent corridor/obstacle checks remain the authority.
-        return not self.local_macro_geoms[meta['macro_id']].covers(Point(p))
-
-    def _local_gap_source_clearance(self,p,half_width,marker_extent=None,cluster_id=None):
+    def _local_gap_source_clearance(self,p,half_width,marker_extent=None):
         """Conservative clearance for an interior local-network source."""
-        cid=(cluster_id if cluster_id is not None else
-             self._local_route_cluster_for_source(p,create=False))
-        if cid is None or self.local_gap_route_domain_by_cell.get(self._gap_cell(p))!=cid:
-            return False
         q=Point(p)
         extent=max(half_width,float(marker_extent if marker_extent is not None else half_width))
-        # The rendered source dot uses sixteen arc segments per quadrant.  The old
-        # six-segment probe was inscribed and could admit a dot across a concave
-        # parcel edge even though its centre and first stroke were contained.
-        visible_disc=q.buffer(extent,quad_segs=16)
-        if not self._local_component_territory_clear(visible_disc):
-            return False
-        if cid is not None and not self._local_fill_parcel_clear(
-                {'local_fill_cluster_id':cid},visible_disc):
-            return False
         required=max(self.r.pathway_static_keepout,extent+1.5*self.U)
         reach=max(self.r.pathway_main_chip_keepout,self.r.component_pathway_clearance)+extent
         qb=(p[0]-reach,p[1]-reach,p[0]+reach,p[1]+reach)
@@ -2805,9 +2529,8 @@ class BundleGesturePlanner:
         # local-gap roots are proposed.  Give source markers and the initial bundle envelope
         # breathing room rather than spawning directly beside an occupied trace.
         probe=q.buffer(half_width+max(2.0*self.U,.22*self.module),quad_segs=8)
-        for rec in self.path_index.query(expand_bounds(probe.bounds,self.r.pathway_interroute_keepout+self.U)):
-            gap=self.r.pathway_interroute_keepout
-            if probe.intersects(rec['geom']) or probe.distance(rec['geom'])<gap:
+        for rec in self.path_index.query(expand_bounds(probe.bounds,self.r.pathway_interroute_keepout)):
+            if probe.intersects(rec['geom']) or probe.distance(rec['geom'])<self.r.pathway_interroute_keepout:
                 return False
         return True
 
@@ -2833,12 +2556,9 @@ class BundleGesturePlanner:
         offsets={i:(i-(count-1)/2.0)*pitch for i in range(count)}
         return thicks,offsets,pitch
 
-    def _local_gap_initial_clear(self,center,direction,offsets,thicknesses,cluster_id=None):
+    def _local_gap_initial_clear(self,center,direction,offsets,thicknesses):
         ids=list(range(len(thicknesses)))
         temp=dict(id=-1,ids=ids,chip=len(self.chips)+100000,side='local',side_index=-1,
-                  local_gap=True,
-                  local_fill_cluster_id=cluster_id,
-                  local_fill_route_tile=None,
                   path=[tuple(center)],dir=direction,initial_dir=direction,offsets=dict(offsets),
                   thicknesses={i:thicknesses[i] for i in ids},prefixes={i:[] for i in ids},
                   parent=None,branch_parent=None,fan_group=None,branch_stage=None,fan_pending=False,
@@ -2886,16 +2606,20 @@ class BundleGesturePlanner:
             return 0
 
         region_source_counts={r['id']:0 for r in self.local_gap_regions}
-        cluster_source_counts=dict(self.local_fill_cluster_root_counts)
-        sector_root_counts={}
+        cluster_source_counts={cid:0 for cid in self.local_fill_cluster_meta}
         for f in self.fronts.values():
             if f.get('local_gap') and f.get('parent') is None and f.get('local_gap_region_id') is not None:
                 rid0=f.get('local_gap_region_id')
                 region_source_counts[rid0]=region_source_counts.get(rid0,0)+1
-                x0,y0=f['path'][0]
-                sector=(min(3,max(0,int(4*x0/self.W))),min(3,max(0,int(4*y0/self.H))))
-                sector_root_counts[sector]=sector_root_counts.get(sector,0)+1
+                cid0=f.get('local_fill_cluster_id')
+                if cid0 in cluster_source_counts:
+                    cluster_source_counts[cid0]=cluster_source_counts.get(cid0,0)+1
         region_uncovered_counts={r['id']:len(self._local_gap_targetable_cells(r['id'])) for r in self.local_gap_regions}
+        all_targetable=self._local_gap_targetable_cells()
+        cluster_uncovered_counts={
+            cid:sum(1 for c in cells if c in all_targetable)
+            for cid,cells in self.local_fill_cluster_cells.items()
+        }
 
         margin=max(2.0*self.module,55.0*self.U)
         candidates=[]
@@ -2956,18 +2680,17 @@ class BundleGesturePlanner:
 
         for (gx,gy,x,y),static_clear,path_clear in zip(raw,static_dists,path_dists):
             cell=(gx,gy); rid=self.local_gap_region_by_cell.get(cell)
-            cid=self._local_route_cluster_for_source((x,y),create=False)
+            cid=self.local_fill_cluster_by_cell.get(cell)
             region=self.local_gap_regions[rid] if rid is not None and rid < len(self.local_gap_regions) else None
             region_need=(region_uncovered_counts.get(rid,1) if region else 1)
             existing=region_source_counts.get(rid,0)
+            cneed=cluster_uncovered_counts.get(cid,1)
+            cexisting=cluster_source_counts.get(cid,0)
             score=static_clear+1.55*path_clear-.45*self._congestion_at((x,y))*self.module
+            # Preserve the historical region score, then add only composition-parcel debt.
+            # This changes where otherwise-equivalent LOCAL sources are born, not route legality.
             score+=1.35*self.module*math.log1p(region_need)/(1.0+.65*existing)
-            sector=(min(3,max(0,int(4*x/self.W))),min(3,max(0,int(4*y/self.H))))
-            open_mass=max(1,self.local_sector_open.get(sector,0))
-            # Normalize both populations by genuinely available post-component
-            # floor in this sector.  Static clearance still decides the source.
-            score-=self.module*(8.0*sector_root_counts.get(sector,0)+
-                2.0*self.local_sector_components.get(sector,0))/open_mass
+            score+=.85*self.module*math.log1p(cneed)/(1.0+.75*cexisting)
             if region is not None and region['size']!='small':
                 rvx,rvy=dir_vec(region['dir'])
                 proj=abs((x-region['center'][0])*rvx+(y-region['center'][1])*rvy)
@@ -2981,8 +2704,10 @@ class BundleGesturePlanner:
         # order *within each region* once, rather than rescanning the whole board for every
         # planned source.  Candidate ids replace O(N) middle-list deletion.
         candidates_by_region={}
+        candidates_by_cluster={}
         for candidate_id,rec in enumerate(candidates):
             candidates_by_region.setdefault(rec[3],[]).append((candidate_id,)+rec)
+            candidates_by_cluster.setdefault(rec[4],[]).append((candidate_id,)+rec)
         selected_candidate_ids=set()
 
         # V33: local traces are born independently. Source count is driven by residual area,
@@ -2994,7 +2719,7 @@ class BundleGesturePlanner:
         normal_target=max(min_wave_sources,min(wave_source_cap,int(math.ceil(needed/1.35))))
         if source_cap is not None:
             normal_target=max(1,min(normal_target,int(source_cap)))
-        remaining_trace_capacity=max(0,self.r.local_gap_trace_population_cap()-self._local_gap_realized_trace_count())
+        remaining_trace_capacity=max(0,self.r.local_gap_trace_population_cap()-self.stats.get('pathway_local_gap_trace_count',0))
         normal_target=min(normal_target,remaining_trace_capacity)
         if normal_target<=0:
             return 0
@@ -3002,95 +2727,77 @@ class BundleGesturePlanner:
             self.local_gap_special_probability=rng.uniform(.15,.26)
         special_probability=self.local_gap_special_probability
 
-        # Connected route domains are immutable.  Build each source pool in one
-        # pass from the already-ranked candidates; no foreign-domain candidate
-        # can be nominated and rejected later by the macro geometry gate.
+        # Residual-mosaic allocation.  Region caps remain authoritative, but source planning is
+        # now performed at compact 1..12 composition parcels inside each connected room.  This
+        # prevents a single large residual room from becoming one LOCAL-line country while the
+        # component phase owns another.  The allocation changes only source geography/count;
+        # exact source clearance and all subsequent route algorithms are unchanged.
         caps={r['id']:(max(self.r.local_gap_region_source_cap(r['cell_count']),
                            region_source_counts.get(r['id'],0)+normal_target) if allow_region_overflow
                            else self.r.local_gap_region_source_cap(r['cell_count']))
               for r in self.local_gap_regions}
-        candidates_by_cluster={}
-        cluster_caps={}
-        cluster_region={}
-        for candidate_id,rec in enumerate(candidates):
-            cid=rec[4]
-            if cid in self.local_route_clusters:
-                candidates_by_cluster.setdefault(cid,[]).append((candidate_id,)+rec)
-        for cid,meta in self.local_route_clusters.items():
-            have=cluster_source_counts.get(cid,0)
-            cap=(max(int(meta['target_sources']),have+normal_target) if allow_region_overflow
-                 else int(meta['target_sources']))
-            if have>=cap:
-                continue
-            pool=candidates_by_cluster.get(cid,[])
-            if not pool:
-                continue
-            cluster_caps[cid]=cap
-            cluster_region[cid]=cid
-
-        # Candidate pools outlive source quotas across successive waves.  Only active
-        # domains enter capacity accounting and allocation; a spent domain has a
-        # pool but no cap, so retaining it here both miscounts and raises KeyError.
-        candidates_by_cluster={cid:pool for cid,pool in candidates_by_cluster.items()
-                               if cid in cluster_caps and
-                               region_source_counts.get(cid,0)<caps.get(cid,0)}
-
-        capacity=sum(min(cluster_caps[cid]-cluster_source_counts.get(cid,0),
-                         len(pool)) for cid,pool in candidates_by_cluster.items())
-        normal_target=min(normal_target,capacity)
+        cluster_caps={cid:max(1,min(12,int(m.get('target_sources',1))))
+                      for cid,m in self.local_fill_cluster_meta.items()}
+        remaining_cluster_capacity=sum(max(0,cluster_caps.get(cid,0)-cluster_source_counts.get(cid,0))
+                                       for cid in cluster_caps if candidates_by_cluster.get(cid))
+        normal_target=min(normal_target,remaining_cluster_capacity)
         if normal_target<=0:
             return 0
 
-        alloc={cid:0 for cid in candidates_by_cluster}
+        eligible=[cid for cid,m in self.local_fill_cluster_meta.items()
+                  if candidates_by_cluster.get(cid)
+                  and cluster_uncovered_counts.get(cid,0)>0
+                  and cluster_source_counts.get(cid,0)<cluster_caps.get(cid,1)
+                  and region_source_counts.get(m.get('region_id'),0)<caps.get(m.get('region_id'),1)]
+        alloc={cid:0 for cid in eligible}
         planned_region={r['id']:0 for r in self.local_gap_regions}
-        heap=[]
-        for cid,pool in candidates_by_cluster.items():
-            rid=cluster_region[cid]
-            if region_source_counts.get(rid,0)>=caps.get(rid,1):
-                continue
-            need=sum(16-self.local_gap_coverage_mask_by_cell.get(
-                self._gap_cell(rec[3]),0).bit_count() for rec in pool)
-            weight=need/(1.0+cluster_source_counts.get(cid,0))
-            heapq.heappush(heap,(-weight,cid,need))
         remaining=normal_target
-        while remaining>0 and heap:
-            _weight,cid,need=heapq.heappop(heap)
-            rid=cluster_region[cid]
-            if (cluster_source_counts.get(cid,0)+alloc[cid]>=cluster_caps[cid] or
-                    alloc[cid]>=len(candidates_by_cluster[cid]) or
-                    region_source_counts.get(rid,0)+planned_region.get(rid,0)>=caps.get(rid,1)):
+        # First representation pass: one source per parcel where the enclosing region still has
+        # capacity.  Largest unpaid parcels go first; seeded geometry already determines parcel
+        # layout, so no canvas-order bias is introduced here.
+        for cid in sorted(eligible,key=lambda z:(-cluster_uncovered_counts.get(z,0),z)):
+            if remaining<=0: break
+            rid=self.local_fill_cluster_meta[cid].get('region_id')
+            if region_source_counts.get(rid,0)+planned_region.get(rid,0)>=caps.get(rid,1):
                 continue
             alloc[cid]+=1; planned_region[rid]=planned_region.get(rid,0)+1; remaining-=1
-            if cluster_source_counts.get(cid,0)+alloc[cid]<cluster_caps[cid]:
-                heapq.heappush(heap,(-need/(1.0+cluster_source_counts.get(cid,0)+alloc[cid]),cid,need))
-        ordered_cids=[cid for cid,q in alloc.items() if q]
-        rng.shuffle(ordered_cids)
-        plans=[]
-        for cid in ordered_cids:
-            plans.extend((rng.random()<special_probability,1,cluster_region[cid],cid)
-                         for _ in range(alloc[cid]))
 
+        # Additional roots are distributed by unpaid parcel area per existing+planned source.
+        # Heap updates are O(log parcels); there is no board-wide rescoring per source.
+        alloc_heap=[]
+        for cid in eligible:
+            rid=self.local_fill_cluster_meta[cid].get('region_id')
+            if (cluster_source_counts.get(cid,0)+alloc[cid] < cluster_caps.get(cid,1) and
+                    region_source_counts.get(rid,0)+planned_region.get(rid,0) < caps.get(rid,1)):
+                ratio=cluster_uncovered_counts.get(cid,0)/(1.0+cluster_source_counts.get(cid,0)+alloc[cid])
+                heapq.heappush(alloc_heap,(-ratio,cid))
+        while remaining>0 and alloc_heap:
+            _neg,cid=heapq.heappop(alloc_heap)
+            rid=self.local_fill_cluster_meta[cid].get('region_id')
+            if region_source_counts.get(rid,0)+planned_region.get(rid,0)>=caps.get(rid,1):
+                continue
+            alloc[cid]+=1; planned_region[rid]=planned_region.get(rid,0)+1; remaining-=1
+            if cluster_source_counts.get(cid,0)+alloc[cid] < cluster_caps.get(cid,1):
+                ratio=cluster_uncovered_counts.get(cid,0)/(1.0+cluster_source_counts.get(cid,0)+alloc[cid])
+                heapq.heappush(alloc_heap,(-ratio,cid))
+
+        planned_cids=[]
+        for cid,q in sorted(alloc.items(),key=lambda kv:kv[0]):
+            planned_cids.extend([cid]*q)
+        rng.shuffle(planned_cids)
+        plans=[]
+        for cid in planned_cids:
+            rid=self.local_fill_cluster_meta[cid].get('region_id')
+            plans.append((rng.random()<special_probability,1,rid,cid))
 
         used_points=[]
         used_point_index=SpatialHash(max(2.20*self.module,1e-6))
         local_index=self.stats['pathway_local_gap_source_count']; normal_spawned=0; special_spawned=0
         spawned=0
         source_sep=2.20*self.module
-        # A rejected source can only become harder to admit within this wave:
-        # accepted roots add separation, while static/route obstacles persist.
-        # Keep a cursor for each domain and stroke mode so later plans do not
-        # repeatedly rescan its already tried prefix.
-        source_cursor={}
         for special,count,wanted_rid,wanted_cluster in plans:
             chosen=None
-            cursor_key=(wanted_cluster,bool(special))
-            pool=candidates_by_cluster.get(wanted_cluster,())
-            cursor=source_cursor.get(cursor_key,0)
-            while cursor<len(pool):
-                candidate_id,score,_,center,rid,_candidate_cid=pool[cursor]
-                cursor+=1
-                source_cursor[cursor_key]=cursor
-                cid=wanted_cluster
+            for candidate_id,score,_,center,rid,cid in candidates_by_cluster.get(wanted_cluster,()):
                 if candidate_id in selected_candidate_ids:
                     continue
                 cx,cy=center
@@ -3110,16 +2817,15 @@ class BundleGesturePlanner:
                 half=max((abs(offsets.get(i,0.0))+.5*thicks[i] for i in range(count)),default=.5*thicks[0])
                 marker_extent=(half if special else
                                self.r._termination_dot_radius(max(thicks))+.5*self.r.termination_dot_hollow_stroke)
-                if not self._local_gap_source_clearance(center,half,marker_extent=marker_extent,
-                                                        cluster_id=cid):
+                if not self._local_gap_source_clearance(center,half,marker_extent=marker_extent):
                     continue
                 dirs=list(range(8)); rng.shuffle(dirs)
                 scored=[]
                 for d in dirs:
-                    if not self._local_gap_initial_clear(center,d,offsets,thicks,cluster_id=cid):
+                    if not self._local_gap_initial_clear(center,d,offsets,thicks):
                         continue
                     p2=point_along_dir(center,d,2.5*self.module)
-                    tgt=self._local_gap_target(center,rng,d,cluster_id=cid)
+                    tgt=self._local_gap_target(center,rng,d)
                     before=math.hypot(tgt[0]-center[0],tgt[1]-center[1])
                     after=math.hypot(tgt[0]-p2[0],tgt[1]-p2[1])
                     scored.append((self._congestion_at(p2)-1.8*(before-after)/max(self.module,1e-9),
@@ -3145,11 +2851,11 @@ class BundleGesturePlanner:
             root=self._make_front(ids=ids,chip=synthetic_chip,side='local',side_index=local_index,
                                   path=[center],direction=direction,offsets=omap,
                                   thicknesses=tmap,prefixes=prefixes,rng=frng,
-                                  intent='explore',target=target,forced_straight_modules=2,
-                                  local_cluster_id=cid)
+                                  intent='explore',target=target,forced_straight_modules=2)
             root['local_gap']=True; root['local_gap_special']=bool(special); root['fan_pending']=False
             root['local_gap_region_id']=rid
-            root['local_fill_cluster_target']=cluster_caps[cid]
+            root['local_fill_cluster_id']=cid
+            root['local_fill_cluster_target']=int(cluster_caps.get(cid,1))
             cluster_source_counts[cid]=cluster_source_counts.get(cid,0)+1
             root['local_gap_turn_count']=0
             root['local_gap_turn_due_straights']=1+int(rng.random()*3)
@@ -3473,7 +3179,7 @@ class BundleGesturePlanner:
         """
         if (not f.get('local_gap') or f.get('local_gap_special') or len(f.get('ids',()))!=1 or
                 f.get('local_gap_branch_count',0)>=1 or f.get('depth',0)>=2 or f.get('gestures',0)<2 or
-                self._local_gap_realized_trace_count()>=self.r.local_gap_trace_population_cap()):
+                self.stats.get('pathway_local_gap_trace_count',0)>=64):
             return []
         head=f['path'][-1]; parent_tid=f['ids'][0]
         candidates=[]
@@ -3484,8 +3190,7 @@ class BundleGesturePlanner:
             child=self._make_front(ids=[tid],chip=f['chip'],side=f['side'],side_index=f['side_index'],
                                    path=[head],direction=d,offsets={tid:0.0},thicknesses={tid:t},prefixes={tid:[]},
                                    rng=SplitMix64(f['rng'].next_u64()),depth=f.get('depth',0)+1,intent='explore',
-                                   target=self._local_gap_target(head,f['rng'],d,
-                                       cluster_id=f.get('local_fill_cluster_id')),parent=f['id'])
+                                   target=self._local_gap_target(head,f['rng'],d),parent=f['id'])
             child['local_gap']=True; child['local_gap_special']=False; child['fan_pending']=False
             child['local_gap_region_id']=f.get('local_gap_region_id')
             child['local_gap_turn_count']=0
@@ -3552,8 +3257,7 @@ class BundleGesturePlanner:
                 # the residual-gap field, not left as a same-direction topological split.
                 branch_turn=1 if pi==0 else -1
                 intent='explore'
-                target=self._local_gap_target((cx,cy),f['rng'],(f['dir']+branch_turn)%8,
-                    cluster_id=f.get('local_fill_cluster_id'))
+                target=self._local_gap_target((cx,cy),f['rng'],(f['dir']+branch_turn)%8)
             elif pi==0:
                 branch_turn=1
                 intent,target=f['intent'],f['target']
@@ -3566,8 +3270,7 @@ class BundleGesturePlanner:
                     f.get('straight_since_turn',0)<2):
                 branch_turn=0
                 if f.get('local_gap'):
-                    target=self._local_gap_target((cx,cy),f['rng'],f['dir'],
-                        cluster_id=f.get('local_fill_cluster_id'))
+                    target=self._local_gap_target((cx,cy),f['rng'],f['dir'])
             child=self._make_front(ids=ids,chip=f['chip'],side=f['side'],side_index=f['side_index'],
                                    path=[(cx,cy)],direction=f['dir'],offsets=offsets,
                                    thicknesses={i:f['thicknesses'][i] for i in ids},
@@ -3582,9 +3285,7 @@ class BundleGesturePlanner:
                 chosen_turn=None
                 for turn in (preferred,-preferred,0):
                     child['branch_turn']=turn; child['branch_stage']=0
-                    child['target']=self._local_gap_target((cx,cy),child['rng'],
-                        (f['dir']+turn)%8 if turn else f['dir'],
-                        cluster_id=child.get('local_fill_cluster_id'))
+                    child['target']=self._local_gap_target((cx,cy),child['rng'],(f['dir']+turn)%8 if turn else f['dir'])
                     if self._child_birth_viable(child):
                         chosen_turn=turn; break
                 if chosen_turn is None:
@@ -3721,7 +3422,7 @@ class BundleGesturePlanner:
         if len(f['ids'])<=1:
             if (not is_local or f.get('local_gap_special') or f.get('depth',0)>=2 or
                     f.get('local_gap_branch_count',0)>=1 or f.get('gestures',0)<2 or
-                    f.get('straight_since_turn',0)<1 or self._local_gap_realized_trace_count()>=self.r.local_gap_trace_population_cap()):
+                    f.get('straight_since_turn',0)<1 or self.stats.get('pathway_local_gap_trace_count',0)>=64):
                 return False
             boost=float(f.get('local_gap_branch_boost',4.0))
             return f['rng'].random()<min(.30,.055*boost)
@@ -3875,8 +3576,7 @@ class BundleGesturePlanner:
             if f.get('local_bundle_until',-1) <= round_index or peer is None:
                 self.stats['pathway_local_gap_bundle_release_count']+=1
                 f['local_bundle_peer']=None; f['local_bundle_until']=-1; f['local_bundle_dir']=None
-                f['target']=self._local_gap_target(f['path'][-1],f['rng'],f['dir'],
-                    cluster_id=f.get('local_fill_cluster_id'))
+                f['target']=self._local_gap_target(f['path'][-1],f['rng'],f['dir'])
         free=[f for f in locals_ if f.get('local_bundle_peer') is None and f.get('local_bundle_times',0)<1]
         candidates=[]
         # Pairing is intrinsically local (same residual region, <=3.2 modules).  V45 still
@@ -4166,21 +3866,6 @@ class BundleGesturePlanner:
         gb=geom.bounds
         if len(gb)!=4 or not all(math.isfinite(float(v)) for v in gb):
             return False
-        if f.get('local_gap'):
-            cid=f.get('local_fill_cluster_id')
-            if self._local_macro_endpoint_excluded(f,b):
-                self.stats['pathway_local_macro_boundary_reject_count']=self.stats.get('pathway_local_macro_boundary_reject_count',0)+1
-                self.stats['pathway_local_macro_endpoint_fast_reject_count']=self.stats.get('pathway_local_macro_endpoint_fast_reject_count',0)+1
-                return False
-            thick=max(f.get('thicknesses',{}).values(),default=0.0)
-            marker=self.r._termination_dot_radius(thick)+.5*self.r.termination_dot_hollow_stroke
-            # Flat corridor caps do not extend toward a parcel boundary at an
-            # endpoint.  Reserve the full eventual visible terminal dot.
-            extra=marker
-            if (not self._local_component_territory_clear(geom,max(marker,.5*thick)) or
-                    not self._local_fill_parcel_clear(f,geom,extra) or
-                    not self._local_fill_parcel_clear(f,Point(b).buffer(marker,quad_segs=16))):
-                return False
         # V39 hard proposal grammar: the candidate segment itself must be exactly horizontal,
         # vertical or 45-degree diagonal.  Nearest-octant quantization is diagnostic only and
         # can no longer legalize an arbitrary segment.  Adjacent headings are 0/+/-45 only.
@@ -4230,7 +3915,7 @@ class BundleGesturePlanner:
             new_t=max((f['thicknesses'][i] for i in f.get('ids',())),default=2.55*self.U)
             if f.get('local_gap'):
                 query_reach=max(1.1*self.U,self.r.pathway_interroute_keepout,
-                                self.r.local_gap_line_edge_gap_factor*.5*(new_t+self.max_committed_path_thickness))+self.U
+                                self.r.local_gap_line_edge_gap_factor*.5*(new_t+self.max_committed_path_thickness))
             else:
                 query_reach=max(1.1*self.U,self.r.pathway_interroute_keepout)
             path_records=self.path_index.query(expand_bounds(geom.bounds,query_reach))
@@ -4280,8 +3965,7 @@ class BundleGesturePlanner:
                     if nd_exact==f['dir'] and self._same_fan_rebase_compatible(f,rec['front'],rec):
                         continue
                     candidate_probe=trimmed_probe() if own_history else geom
-                    gap=self._interroute_gap_for_fronts(f,other_thickness=rec.get('max_thickness'),
-                        other_local=rec.get('local_gap',False),other_cluster_id=rec.get('local_fill_cluster_id'))
+                    gap=self._interroute_gap_for_fronts(f,other_thickness=rec.get('max_thickness'),other_local=rec.get('local_gap',False))
                     # Exact negative broad phase: the path-index query uses a conservative reach based
                     # on the thickest committed LOCAL lane.  Most returned records are thinner.
                     # If the two exact corridor AABBs cannot come within this record's actual required
@@ -4303,14 +3987,6 @@ class BundleGesturePlanner:
                     if candidate_probe.intersects(other) or candidate_probe.distance(other)<self.r.pathway_interroute_keepout:
                         if self._capture_gesture_failure_cert:
                             self._last_gesture_failure_cert=('extra',None)
-                        return False
-        if f.get('local_gap'):
-            capacity_heads=getattr(self,'_local_capacity_head_index',None)
-            if capacity_heads is not None:
-                for old in capacity_heads.query(geom.bounds):
-                    if old.get('released') or old['front']==f['id'] or old['front'] in self._ancestor_front_ids(f):
-                        continue
-                    if geom.intersects(old['geom']):
                         return False
         if not local_grammar_prechecked and not self._local_visible_candidate_ok(f,b):
             return False
@@ -4437,7 +4113,7 @@ class BundleGesturePlanner:
                 # target progress so strongly that a long open room overwhelmingly selected the
                 # same heading until termination.  Main routes retain their old target behavior;
                 # local fillers trade some beeline progress for deliberate exploration.
-                target_weight=1.4 if f.get('local_gap') else 2.8
+                target_weight=3.0 if f.get('local_gap') else 2.8
                 score+=target_weight*(before-after)/max(self.module,1e-9)
             if f.get('local_gap'):
                 if f.get('local_bundle_peer') is not None and direction==f.get('local_bundle_dir'):
@@ -4832,14 +4508,13 @@ class BundleGesturePlanner:
             self.stats['pathway_minimum_segment_exception_count']+=1
         rec=dict(geom=geom,front=f['id'],root=(f['chip'],f['side'],f['side_index']),chip=f['chip'],start=a,end=b,
                  round_index=int(f.get('_routing_round',-1)),local_gap=bool(f.get('local_gap')),
-                 local_fill_cluster_id=f.get('local_fill_cluster_id'),
                  max_thickness=max((f['thicknesses'][i] for i in f.get('ids',())),default=2.55*self.U))
         self.path_segments.append(rec)
         self.path_segments_by_front.setdefault(f['id'],[]).append(rec)
         rec['_path_index_oid']=self.path_index.insert(rec,geom.bounds); self._grid_add_segment(a,b)
         self._lane_cache_version+=1
         self.max_committed_path_thickness=max(self.max_committed_path_thickness,float(rec.get('max_thickness',0.0)))
-        if f.get('local_gap') and not f.get('_defer_local_service_mark'):
+        if f.get('local_gap'):
             self._mark_local_gap_segment_coverage(a,b,f)
         if normal:
             f['normal_segment_lengths'].append(L)
@@ -4915,7 +4590,7 @@ class BundleGesturePlanner:
             # field before replaying committed local segments.  A rollback/rebuild can make a
             # previously touched cell untouched again; leaving it absent here would silently
             # starve later targeting even though the 16-subcell audit had been reset.
-            self.local_gap_untouched_cells=set(self.local_gap_route_cells)
+            self.local_gap_untouched_cells=set(self.local_gap_open_cells)
             self.local_gap_untouched_by_region={r['id']:set(r['cells']) for r in self.local_gap_regions}
             self.local_gap_region_touch_version={r['id']:0 for r in self.local_gap_regions}
             self._reset_local_gap_chunk_state()
@@ -5286,13 +4961,6 @@ class BundleGesturePlanner:
                 gb=geom.bounds
                 if len(gb)!=4 or not all(math.isfinite(float(v)) for v in gb):
                     return False
-                if f.get('local_gap'):
-                    thick=max(f.get('thicknesses',{}).values(),default=0.0)
-                    marker=self.r._termination_dot_radius(thick)+.5*self.r.termination_dot_hollow_stroke
-                    extra=marker
-                    if (not self._local_component_territory_clear(geom,max(marker,.5*thick)) or
-                            not self._local_fill_parcel_clear(f,geom,extra)):
-                        return False
                 static_reach=max(self.r.pathway_main_chip_keepout,self.r.component_pathway_clearance)
                 for gi,g in self.static_index.query(expand_bounds(gb,static_reach)):
                     if self._own_source_egress_exempt(f,a,b,gi):
@@ -5909,7 +5577,10 @@ class BundleGesturePlanner:
                 def futures_compatible(combo):
                     for i,(oa,ca) in enumerate(zip(combo,children)):
                         for ob,cb in zip(combo[i+1:],children[i+1:]):
-                            gap=max(self.r.pathway_interroute_keepout,self._interroute_gap_for_fronts(ca,cb))
+                            gap=max(self.r.pathway_interroute_keepout,
+                                    self._interroute_gap_for_fronts(
+                                        ca,other_thickness=max(cb['thicknesses'].values()),
+                                        other_local=bool(cb.get('local_gap'))))
                             for ga in (oa[0]['geom'],oa[1]['geom']):
                                 for gb in (ob[0]['geom'],ob[1]['geom']):
                                     if ga.intersects(gb) or ga.distance(gb)<gap:
@@ -6245,23 +5916,10 @@ class BundleGesturePlanner:
         # V33: render-time terminal clearance is cosmetic only.  It may never visually
         # amputate a mature main-chip route back below the protected launch-survival floor.
         visible_floor=(self._main_terminal_visible_floor_modules(f,tid) if not f.get('local_gap') else 2.75)*self.module
-        visible_floor=max(visible_floor,float(f.get('_local_capacity_visible_floor',0.0)))
         max_back=max(0.0,total-(visible_floor+marker_clip))
         # Search the whole legal excess tail in bounded increments; no route search is involved.
         n=max(1,min(14,int(math.ceil(max_back/max(.14*self.module,1e-9)))))
         steps=[0.0]+[(k/n)*max_back for k in range(1,n+1)] if max_back>1e-9 else [0.0]
-        # A certified filled LOCAL endpoint does not consume hollow-marker
-        # clipping. Preserve ordinary candidates/order, then include its exact
-        # already-proven visible-prefix endpoint as a legal final settlement.
-        if f.get('_local_capacity_visible_floor') is not None:
-            crng=SplitMix64(mix_once(self.sseed ^ (tid+1)*0x9E3779B97F4A7C15))
-            special=bool(f.get('local_gap_special'))
-            if not special and f.get('parent') is None:
-                crng.random()
-            if special or crng.random()<.55:
-                certified_back=max(0.0,total-visible_floor)
-                if certified_back>max_back+1e-9:
-                    steps.append(certified_back)
         best_marker_safe=None
         for back in steps:
             cand=self._clip_polyline_end(points,back) if back>1e-9 else list(points)
@@ -6386,17 +6044,16 @@ class BundleGesturePlanner:
                 f['failures']=0
                 f['reroute_attempts']=min(f.get('reroute_attempts',0),max(0,self.profile['reroute_budget']-3))
                 f['quality_repair_pending']=True; f['quality_repair_reason']='local_gap_region_persistence'; f['lifecycle']='RECOVERING'
-                f['target']=self._local_gap_target(f['path'][-1],f['rng'],f['dir'],
-                    cluster_id=f.get('local_fill_cluster_id'))
+                f['target']=self._local_gap_target(f['path'][-1],f['rng'],f['dir'])
                 return
         # Local fillers and already-mature main routes retain the ordinary tiny-stub rule.
-        if min_lane+1e-9<2.75*self.module and f.get('young_defer_count',0)<2:
+        if min_lane<2.75*self.module and f.get('young_defer_count',0)<2:
             f['young_defer_count']=f.get('young_defer_count',0)+1
             f['max_gestures']=max(f['max_gestures'],f['gestures']+3); f['failures']=0
             f['reroute_attempts']=min(f.get('reroute_attempts',0),max(0,self.profile['reroute_budget']-2))
             f['quality_repair_pending']=True; f['quality_repair_reason']='young_persistence'; f['lifecycle']='RECOVERING'
             return
-        if min_lane+1e-9<2.75*self.module:
+        if min_lane<2.75*self.module:
             f['status']='abandoned_short'; f['termination_reason']=reason; f['lifecycle']='TERMINAL'
             return
         f['status']='terminated'; f['termination_reason']=reason
@@ -7149,8 +6806,7 @@ class BundleGesturePlanner:
                 synthetic_chip=len(self.chips)+100000+self.stats.get('pathway_local_gap_source_count',0)+made
                 f=self._make_front(ids=[tid],chip=synthetic_chip,side='local',side_index=synthetic_chip,
                                    path=[a2],direction=d,offsets={tid:0.0},thicknesses={tid:t},prefixes={tid:[]},
-                                   rng=SplitMix64(rng.next_u64()),intent='explore',target=b2,
-                                   local_cluster_id=r['id'])
+                                   rng=SplitMix64(rng.next_u64()),intent='explore',target=b2)
                 f['local_gap']=True; f['local_gap_special']=False; f['fan_pending']=False
                 f['local_gap_region_id']=r['id']; f['local_gap_branch_boost']=rng.uniform(*self.r.local_gap_branch_boost_range)
                 f['local_gap_exit_allowed']=False
@@ -7163,8 +6819,7 @@ class BundleGesturePlanner:
                     self.stats.setdefault('pathway_local_gap_direct_failure_cert_hit_count',0)
                     self.stats['pathway_local_gap_direct_failure_cert_hit_count']+=1
                     self._drop_front(f['id']); note_direct_run_failure(run_family_key); continue
-                if not self._local_gap_source_clearance(a2,half,marker_extent=marker_extent,
-                                                        cluster_id=r['id']):
+                if not self._local_gap_source_clearance(a2,half,marker_extent=marker_extent):
                     self._local_direct_failure_cert_record(direct_failure_width,source_key,t)
                     self._drop_front(f['id']); note_direct_run_failure(run_family_key); continue
 
@@ -7236,8 +6891,7 @@ class BundleGesturePlanner:
                     # Give the cheap tail one to three normal exploratory continuations.  The
                     # local scoring profile now wants another turn after its cooldown when room
                     # permits, so large spaces often become 2-3-bend paths rather than L-shapes.
-                    f['target']=self._local_gap_target(end2,f['rng'],d2,
-                        cluster_id=f.get('local_fill_cluster_id'))
+                    f['target']=self._local_gap_target(end2,f['rng'],d2)
                     extra_steps=1+int(rng.random()*3)
                     for _ in range(extra_steps):
                         q=self._propose(f)
@@ -7320,8 +6974,7 @@ class BundleGesturePlanner:
                 rescue_attempts+=1
                 t=rng.uniform(1.85,2.75)*self.U
                 half=.5*t; marker_extent=self.r._termination_dot_radius(t)+.5*self.r.termination_dot_hollow_stroke
-                if not self._local_gap_source_clearance(center,half,marker_extent=marker_extent,
-                                                        cluster_id=r['id']): continue
+                if not self._local_gap_source_clearance(center,half,marker_extent=marker_extent): continue
                 # V39 fragmented-space rescue may approach the pocket from any octilinear
                 # heading, still requiring the second leg to turn exactly +/-45.  V38 only
                 # tried the region's principal axis and its reverse, which became unnecessarily
@@ -7354,8 +7007,7 @@ class BundleGesturePlanner:
                     synthetic_chip=len(self.chips)+200000+self.stats.get('pathway_local_gap_source_count',0)+made
                     f=self._make_front(ids=[tid],chip=synthetic_chip,side='local',side_index=synthetic_chip,
                                        path=[center],direction=d0,offsets={tid:0.0},thicknesses={tid:t},prefixes={tid:[]},
-                                       rng=SplitMix64(rng.next_u64()),intent='explore',target=end,
-                                       local_cluster_id=r['id'])
+                                       rng=SplitMix64(rng.next_u64()),intent='explore',target=end)
                     f['local_gap']=True; f['local_gap_special']=False; f['fan_pending']=False
                     f['local_gap_region_id']=r['id']; f['local_gap_branch_boost']=rng.uniform(*self.r.local_gap_branch_boost_range)
                     f['local_gap_exit_allowed']=False; f['local_gap_min_terminal_modules']=3.5
@@ -7372,8 +7024,7 @@ class BundleGesturePlanner:
                     self._accept(f,p1,defer_post=True); self._accept(f,p2,defer_post=True)
                     # One optional continuation gives the rescue enough area efficiency without
                     # turning it into another expensive search phase.
-                    f['target']=self._local_gap_target(end,f['rng'],d1,
-                        cluster_id=f.get('local_fill_cluster_id'))
+                    f['target']=self._local_gap_target(end,f['rng'],d1)
                     q=self._propose(f)
                     if q is not None: self._accept(f,q,defer_post=True)
                     f['status']='terminated'; f['termination_reason']='local_gap_mopup_bent_rescue'; f['lifecycle']='TERMINAL'
@@ -7517,8 +7168,7 @@ class BundleGesturePlanner:
                 center=((gx+.5)*cw,(gy+.5)*ch)
                 t=rng.uniform(1.85,2.85)*self.U
                 marker_extent=self.r._termination_dot_radius(t)+.5*self.r.termination_dot_hollow_stroke
-                if not self._local_gap_source_clearance(center,.5*t,marker_extent=marker_extent,
-                                                        cluster_id=rid):
+                if not self._local_gap_source_clearance(center,.5*t,marker_extent=marker_extent):
                     mark_attempted(cell); continue
                 base=region['dir'] if region is not None else int(rng.random()*8)
                 starts=[base,(base+4)%8,(base+1)%8,(base-1)%8]; rng.shuffle(starts)
@@ -7527,8 +7177,7 @@ class BundleGesturePlanner:
                     synthetic_chip=len(self.chips)+300000+self.stats.get('pathway_local_gap_source_count',0)+made
                     f=self._make_front(ids=[tid],chip=synthetic_chip,side='local',side_index=synthetic_chip,
                                        path=[center],direction=d0,offsets={tid:0.0},thicknesses={tid:t},prefixes={tid:[]},
-                                       rng=SplitMix64(rng.next_u64()),intent='explore',target=None,
-                                       local_cluster_id=rid)
+                                       rng=SplitMix64(rng.next_u64()),intent='explore',target=None)
                     f['local_gap']=True; f['local_gap_special']=False; f['fan_pending']=False
                     f['local_gap_region_id']=rid; f['local_gap_branch_boost']=rng.uniform(*self.r.local_gap_branch_boost_range)
                     f['local_gap_exit_allowed']=False; f['local_gap_min_terminal_modules']=3.0
@@ -7611,8 +7260,7 @@ class BundleGesturePlanner:
         for round_index in range(max(1,int(round_budget))):
             active=[f for f in self.fronts.values() if f.get('local_gap') and f.get('status')=='active']
             if not active: break
-            if (not getattr(self,'_local_gap_capacity_realizing',False) and
-                    self._local_gap_service_fraction()+1e-9 >= self.local_gap_target_fraction): break
+            if self._local_gap_service_fraction()+1e-9 >= self.local_gap_target_fraction: break
             rounds+=1
             newly_abandoned=[]
             for f in active:
@@ -7679,10 +7327,9 @@ class BundleGesturePlanner:
                 if f['local_fast_blocked_rounds']>=2:
                     f['reroute_mode_rounds']=2
                     f['reroute_avoid_dir']=f['dir']
-                    f['target']=self._local_gap_target(f['path'][-1],f['rng'],f['dir'],
-                        cluster_id=f.get('local_fill_cluster_id'))
+                    f['target']=self._local_gap_target(f['path'][-1],f['rng'],f['dir'])
                 if f['local_fast_blocked_rounds']>=5:
-                    if self._minimum_materialized_lane_length(f)+1e-9>=float(f.get('local_gap_min_terminal_modules',3.5))*self.module:
+                    if self._minimum_materialized_lane_length(f)>=float(f.get('local_gap_min_terminal_modules',3.5))*self.module:
                         f['status']='terminated'; f['termination_reason']='local_gap_fast_blocked'; f['lifecycle']='TERMINAL'
                     else:
                         f['status']='abandoned_short'; f['termination_reason']='local_gap_fast_blocked'; f['lifecycle']='TERMINAL'; newly_abandoned.append(f['id'])
@@ -7690,7 +7337,7 @@ class BundleGesturePlanner:
             # Region-scaled journey limits; large rooms already received longer budgets at spawn.
             for f in active:
                 if f.get('status')=='active' and f.get('gestures',0)>=f.get('max_gestures',12):
-                    if self._minimum_materialized_lane_length(f)+1e-9>=float(f.get('local_gap_min_terminal_modules',3.5))*self.module:
+                    if self._minimum_materialized_lane_length(f)>=float(f.get('local_gap_min_terminal_modules',3.5))*self.module:
                         f['status']='terminated'; f['termination_reason']='local_gap_region_limit'; f['lifecycle']='TERMINAL'
                     else:
                         # A short line in a large room gets one last pivot window, not immediate death.
@@ -7698,8 +7345,7 @@ class BundleGesturePlanner:
                             f['local_fast_limit_extension']=True
                             f['max_gestures']=f.get('gestures',0)+4
                             f['reroute_mode_rounds']=2; f['reroute_avoid_dir']=f['dir']
-                            f['target']=self._local_gap_target(f['path'][-1],f['rng'],f['dir'],
-                                cluster_id=f.get('local_fill_cluster_id'))
+                            f['target']=self._local_gap_target(f['path'][-1],f['rng'],f['dir'])
                         else:
                             f['status']='abandoned_short'; f['termination_reason']='local_gap_region_limit'; f['lifecycle']='TERMINAL'; newly_abandoned.append(f['id'])
 
@@ -7712,14 +7358,13 @@ class BundleGesturePlanner:
 
             # Make the advertised 3–5x local branching real, but keep it capacity-bounded.  At
             # most two singleton branches are born in one tick and no line branches twice.
-            if (getattr(self,'_local_gap_capacity_realizing',False) or
-                    self._local_gap_service_fraction()+1e-9 < self.local_gap_target_fraction):
+            if self._local_gap_service_fraction()+1e-9 < self.local_gap_target_fraction:
                 branchable=[f for f in active if f.get('status')=='active' and f.get('gestures',0)>=2 and
                             not f.get('local_gap_special') and f.get('local_gap_branch_count',0)<1]
                 branchable.sort(key=lambda f:(-self._local_space_capacity(f,f['path'][-1],f['dir']),f['id']))
                 made=0; branch_tick_cap=self.r.local_branch_birth_cap()
                 for f in branchable:
-                    if made>=branch_tick_cap or self._local_gap_realized_trace_count()>=self.r.local_gap_trace_population_cap(): break
+                    if made>=branch_tick_cap or self.stats.get('pathway_local_gap_trace_count',0)>=self.r.local_gap_trace_population_cap(): break
                     boost=float(f.get('local_gap_branch_boost',4.0))
                     if f['rng'].random() < min(.28,.055*boost):
                         if self._branch_local_singleton(f): made+=1
@@ -7728,7 +7373,7 @@ class BundleGesturePlanner:
         # unusably short lines are pruned and cannot count as service/obstacles.
         abandoned=[]
         for f in [x for x in self.fronts.values() if x.get('local_gap') and x.get('status')=='active']:
-            if self._minimum_materialized_lane_length(f)+1e-9>=float(f.get('local_gap_min_terminal_modules',3.5))*self.module:
+            if self._minimum_materialized_lane_length(f)>=float(f.get('local_gap_min_terminal_modules',3.5))*self.module:
                 f['status']='terminated'; f['termination_reason']='local_gap_wave_limit'; f['lifecycle']='TERMINAL'
             else:
                 f['status']='abandoned_short'; f['termination_reason']='local_gap_wave_limit'; f['lifecycle']='TERMINAL'; abandoned.append(f['id'])
@@ -7905,8 +7550,7 @@ class BundleGesturePlanner:
                     if self._persistence_work_debt(f) and len(f.get('ids',()))>1:
                         if f.get('local_gap'):
                             f['intent']='explore'
-                            f['target']=self._local_gap_target(f['path'][-1],f['rng'],f['dir'],
-                                cluster_id=f.get('local_fill_cluster_id'))
+                            f['target']=self._local_gap_target(f['path'][-1],f['rng'],f['dir'])
                             f['max_gestures']=max(f['max_gestures'],f['gestures']+4)
                         else:
                             if f.get('intent')!='exit':
@@ -8822,10 +8466,6 @@ class BundleGesturePlanner:
         """
         if primitive is None or primitive.geom is None or primitive.geom.is_empty:
             return True
-        # Markers and round end caps are finalized after gesture routing.  Enforce
-        # composition ownership on the exact visible primitives as well.
-        if not self._local_component_territory_clear(primitive.geom):
-            return False
         reach=max(self.r.pathway_main_chip_keepout,self.r.component_pathway_clearance)
         for gi,obj in self.static_index.query(expand_bounds(primitive.geom.bounds,reach)):
             keep=(self.r.pathway_main_chip_keepout if gi < len(self.chips) else self.r.component_pathway_clearance)
@@ -8988,7 +8628,7 @@ class BundleGesturePlanner:
         prunable={
             f['id'] for f in all_leaves
             if f['status']=='terminated'
-            and f.get('travel',0.0)+1e-9<2.75*self.module
+            and f.get('travel',0.0)<2.75*self.module
             and (f.get('local_gap') or f.get('termination_reason') in ('hard_stop_exhausted','round_limit','coordinated_persistence_limit'))
         }
         leaves=[f for f in all_leaves if f['id'] not in prunable]
@@ -9103,16 +8743,6 @@ class BundleGesturePlanner:
                         else:
                             pts=clipped
                     marker=prim_circle(x,y,radius,self.r.FG,filled,stroke)
-                # Once component-first LOCAL routing has been exactly materialized,
-                # its emitted packages are fixed while the debt pass adds later
-                # traces.  Re-running cosmetic backoff against those later paths
-                # can otherwise silently shorten old visible service even though
-                # the debt router keeps their actual heads clear.
-                frozen=getattr(self,'_local_frozen_visible_packets',{}).get(tid)
-                if frozen is not None:
-                    pts=list(frozen['points'])
-                    source_marker=frozen['source_marker']
-                    marker=frozen['terminal_marker']
                 if len(pts)<2:
                     continue
                 # The current renderer hardens the *rendered* no-tiny-death invariant. Source/terminal marker
@@ -9120,7 +8750,7 @@ class BundleGesturePlanner:
                 # audit the visible polyline here for every terminated trace, not only locals.
                 if f['status']=='terminated':
                     visible_len=sum(math.hypot(b[0]-a[0],b[1]-a[1]) for a,b in zip(pts,pts[1:]))
-                    if visible_len+1e-9 < 2.75*self.module:
+                    if visible_len < 2.75*self.module:
                         self.stats['pathway_abandoned_short_trace_count']+=1
                         continue
                 # Offset/fragment materialization can expose a short A→B→A lateral twitch even
@@ -9148,9 +8778,6 @@ class BundleGesturePlanner:
                         visible_static_prims.append(source_marker)
                     if marker is not None:
                         visible_static_prims.append(marker)
-                    if any((not self._local_component_territory_clear(vp.geom) or
-                            not self._local_fill_parcel_clear(f,vp.geom)) for vp in visible_static_prims):
-                        raise RuntimeError('visible LOCAL primitive escaped its route cluster')
                     if any(not self._local_visible_primitive_static_clear(vp) for vp in visible_static_prims):
                         self.stats.setdefault('pathway_static_clearance_trace_cleanup_count',0)
                         self.stats['pathway_static_clearance_trace_cleanup_count']+=1
@@ -9192,8 +8819,7 @@ class BundleGesturePlanner:
                         # Never admit a later trace that violates the line-to-line moat.
                         gap=self._interroute_gap_for_fronts(
                             f,other_thickness=old.get('thickness',old['primitive'].svg.get('stroke_width',0.0)),
-                            other_local=old.get('local_gap',False),
-                            other_cluster_id=old.get('local_fill_cluster_id'))
+                            other_local=old.get('local_gap',False))
                         ga=prim.geom; gb=old['primitive'].geom
                         if allowed is not None:
                             jr=max(self._connection_joint_radius(f['thicknesses'][tid],old.get('thickness',old['primitive'].svg.get('stroke_width',0.0))),4.0*gap)
@@ -9225,7 +8851,7 @@ class BundleGesturePlanner:
                         self.stats['pathway_intersection_trace_cleanup_count']+=1
                         self.stats.setdefault('pathway_intersection_cleanup_pairs',[]).append(cleanup_pair)
                     continue
-                render_item=dict(tid=tid,line=line,primitive=prim,chip=f['chip'],side_index=f.get('side_index'),side=f.get('side'),front=f['id'],parent=f.get('parent'),family=self._launch_family_key(f),status=f.get('status'),termination_reason=f.get('termination_reason'),thickness=f['thicknesses'][tid],local_gap=bool(f.get('local_gap') or f['chip']>=len(self.chips)),local_fill_cluster_id=f.get('local_fill_cluster_id'),render_order=render_order)
+                render_item=dict(tid=tid,line=line,primitive=prim,chip=f['chip'],side_index=f.get('side_index'),side=f.get('side'),front=f['id'],parent=f.get('parent'),family=self._launch_family_key(f),status=f.get('status'),termination_reason=f.get('termination_reason'),thickness=f['thicknesses'][tid],local_gap=bool(f.get('local_gap') or f['chip']>=len(self.chips)),render_order=render_order)
                 render_order+=1
                 self._render_line_index_insert(render_line_index,render_item,pts)
                 render_line_max_thickness=max(render_line_max_thickness,float(f['thicknesses'][tid]))
@@ -9246,13 +8872,12 @@ class BundleGesturePlanner:
                         if not f.get('local_gap') and f.get('chip',len(self.chips))<len(self.chips):
                             self.stats.setdefault('pathway_main_source_marker_count',0)
                             self.stats['pathway_main_source_marker_count']+=1
-                trace_records.append(dict(tid=tid,front=f['id'],chip=f['chip'],root=key,status=f['status'],termination_reason=f.get('termination_reason'),points=pts,primitive=prim,source_marker=source_marker,terminal_marker=marker,local_gap=bool(f.get('local_gap') or f['chip']>=len(self.chips)),local_gap_special=special_local,local_fill_cluster_id=f.get('local_fill_cluster_id')))
+                trace_records.append(dict(tid=tid,front=f['id'],chip=f['chip'],root=key,status=f['status'],termination_reason=f.get('termination_reason'),points=pts,primitive=prim,local_gap=bool(f.get('local_gap') or f['chip']>=len(self.chips)),local_gap_special=special_local))
                 root_meta[key]['trace_ids'].add(tid)
                 root_meta[key]['dirs'].extend(self._turn_directions(pts))
                 if marker is not None:
                     root_prims[key].append(marker)
-                    render_marker_index.insert(dict(geom=marker.geom,mid=len(render_marker_index.objects),
-                                                    front=f['id'],tid=tid),marker.geom.bounds)
+                    render_marker_index.insert(dict(geom=marker.geom,mid=len(render_marker_index.objects)),marker.geom.bounds)
         if preflight_trial:
             return self._finish_main_preflight_trial_stats(
                 trace_records,root_prims,hard_baseline=preflight_trial_hard_baseline)
@@ -9290,7 +8915,6 @@ class BundleGesturePlanner:
                 groups.append(Group(f'pathway-local-gap-{side_index}',prims,dict(
                     placement_kind='pathway',pathway=True,local_gap_pathway=True,
                     local_gap_special=bool(local_root and local_root.get('local_gap_special')),
-                    local_fill_cluster_id=(local_root.get('local_fill_cluster_id') if local_root else None),
                     planner_mode='route_first_family_protected_transactional_parallel',launch_line_count=trace_count,
                     bundle_spacing=(sum(spacing)/len(spacing) if spacing else 0.0),
                     segment_direction_indices=root_meta[key]['dirs'])))
@@ -9417,7 +9041,7 @@ class BundleGesturePlanner:
         self.stats['pathway_main_stalled_side_count']=stalled
         self.stats['pathway_main_stalled_side_details']=stalled_details
         self.stats['pathway_tiny_termination_trace_count']=sum(1 for rec,length in zip(trace_records,lengths)
-                                                               if rec['status']=='terminated' and length+1e-9<2.75*self.module)
+                                                               if rec['status']=='terminated' and length<2.75*self.module)
         board_scale=sum(length>=.30*math.hypot(self.W,self.H) for length in lengths)
         self.stats['pathway_board_scale_trace_count']=board_scale
         self.stats['pathway_board_scale_trace_fraction']=board_scale/len(lengths) if lengths else 0.0
@@ -9508,9 +9132,6 @@ class BundleGesturePlanner:
         self.stats['pathway_unmarked_overlap_count']=accidental
         self.stats['pathway_collapsed_overlap_count']=collapsed
         self.stats['pathway_overlap_event_count']=accidental
-        self._local_render_marker_records=list(render_marker_index.objects.values())
-        self._local_render_line_records=list(getattr(self,'frozen_main_render_records',()))+list(trace_records)
-        self._recount_visible_local_gap_service(trace_records)
         return groups,self.stats
 
     def _terminal_marker_discs(self,f):
@@ -10030,7 +9651,6 @@ class BundleGesturePlanner:
         # Local-gap networks are optional fillers.  If an otherwise irreparable doubled-dot
         # conflict involves one of them, discard that local terminal cohort instead of leaving
         # a hard visual violation or perturbing the already-good main network.
-        final_local_victims=[]
         for _ in range(8):
             terms=[f for f in self.fronts.values() if f.get('status')=='terminated']
             discs=[]
@@ -10042,9 +9662,6 @@ class BundleGesturePlanner:
             if not locals_: break
             victim=sorted({f['id']:f for f in locals_}.values(),key=lambda f:(f.get('travel',0.0),len(f.get('ids',())),f['id']))[0]
             victim['status']='abandoned_short'; victim['termination_reason']='local_marker_conflict'
-            final_local_victims.append(victim['id'])
-        if final_local_victims:
-            self._prune_abandoned_local_segments(final_local_victims)
 
         # Report any conflict that genuinely has no legal local repair.
         terms=[f for f in self.fronts.values() if f.get('status')=='terminated']
@@ -10772,178 +10389,6 @@ class BundleGesturePlanner:
         self.stats['pathway_local_gap_frozen_main_retained_segment_buffer_count']=0
         self.stats['pathway_local_gap_frozen_main_render_primitive_count']=len(rendered)
 
-    def _local_gap_realized_trace_count(self):
-        """Ordinary population excludes dormant, exact service certificates."""
-        return max(0,self.stats.get('pathway_local_gap_trace_count',0)-
-                   getattr(self,'_local_gap_dormant_trace_count',0))
-
-    def _local_capacity_service_mask(self,points,thickness):
-        """Bounded exact service bits for one packet, without mutating live coverage."""
-        nx,ny=self.r.local_gap_grid_shape(); cw=self.W/nx; ch=self.H/ny
-        half=self._local_gap_service_halfwidth(dict(ids=(0,),thicknesses={0:thickness}))
-        result={}
-        for a,b in zip(points,points[1:]):
-            vx=b[0]-a[0]; vy=b[1]-a[1]; ll=vx*vx+vy*vy
-            if ll<=1e-12: continue
-            for gy in range(max(0,int(math.floor((min(a[1],b[1])-half)/ch))),
-                            min(ny-1,int(math.floor((max(a[1],b[1])+half)/ch)))+1):
-                for gx in range(max(0,int(math.floor((min(a[0],b[0])-half)/cw))),
-                                min(nx-1,int(math.floor((max(a[0],b[0])+half)/cw)))+1):
-                    cell=(gx,gy)
-                    if cell not in self.local_gap_open_cells: continue
-                    mask=result.get(cell,0)
-                    for sy in range(4):
-                        py=(gy+(sy+.5)/4)*ch
-                        for sx in range(4):
-                            bit=1<<(sy*4+sx)
-                            if mask&bit: continue
-                            px=(gx+(sx+.5)/4)*cw
-                            u=((px-a[0])*vx+(py-a[1])*vy)/ll
-                            if 0<=u<=1 and (px-a[0]-u*vx)**2+(py-a[1]-u*vy)**2<=half*half+1e-12:
-                                mask|=bit
-                    if mask: result[cell]=mask
-        return result
-
-    def _prepare_local_gap_capacity(self,round_budget):
-        """Reserve exact visible service before ordinary routes fragment the field.
-
-        Certificates are dormant fallback packets.  A seeded ordinary singleton may
-        take ownership only after its complete wider visible prefix passes exact
-        geometry and preserves every certificate service bit.  Realized roots then
-        receive the ordinary affinity, branching and independent tail lifecycle.
-        """
-        if not self.local_gap_open_cells:
-            self.local_gap_open_cells=self._residual_gap_cells()
-        self.local_gap_target_fraction=float(getattr(self,'local_gap_absolute_target_fraction',
-            self.r.local_gap_fill_range[0]))
-        service_cells=max(1,int(self.local_gap_service_denominator_cell_count or len(self.local_gap_open_cells)))
-        self.local_gap_target_count=int(round(service_cells*self.local_gap_target_fraction))
-        self.stats['pathway_local_gap_fill_target_fraction']=self.local_gap_target_fraction
-        self.stats['pathway_local_gap_open_cell_count']=len(self.local_gap_open_cells)
-        self.stats['pathway_local_gap_target_cell_count']=self.local_gap_target_count
-        hard=float(getattr(self,'local_gap_hard_floor_absolute',
-            self.r.local_gap_fill_range[0]*getattr(self,'local_gap_remaining_service_fraction',1.0)))
-        if not self.local_gap_open_cells or hard<=0:
-            return 0
-        self._materialize()
-        self._local_gap_deterministic_debt_completion(hard)
-        self._materialize()
-        packets={rec['tid']:rec for rec in self.trace_records if rec.get('local_gap')}
-        self._local_frozen_visible_packets=dict(packets)
-        self._local_gap_dormant_trace_count=len(packets)
-        self.stats['pathway_local_gap_capacity_reserved_trace_count']=len(packets)
-        self.stats['pathway_local_gap_capacity_reserved_service']=self._local_gap_service_fraction()
-
-        # Every index is built once. Replacements retire only their owned entries.
-        line_index=SpatialHash(max(70*self.U,2*self.module))
-        marker_index=SpatialHash(max(30*self.U,self.module))
-        logical_index=SpatialHash(max(30*self.U,self.module))
-        self._local_capacity_head_index=SpatialHash(max(30*self.U,self.module))
-        entries={}; heads={}
-        def insert_packet(rec):
-            tid=rec['tid']; f=self.fronts.get(rec['front']); refs=[]
-            pts=rec['points']; t=rec['primitive'].svg['stroke_width']
-            item=dict(rec,line=LineString(pts),thickness=t,render_order=tid)
-            for bounds in self._polyline_spatial_chunk_bounds(pts,line_index.cell_size):
-                refs.append((line_index,line_index.insert(item,bounds)))
-            if f is not None and f.get('local_gap'):
-                terminal=rec.get('terminal_marker')
-                if terminal is not None:
-                    obj=dict(geom=terminal.geom,front=f['id'],tid=tid)
-                    refs.append((marker_index,marker_index.insert(obj,obj['geom'].bounds)))
-                radius=self.r._termination_dot_radius(t)+.5*self.r.termination_dot_hollow_stroke
-                disc=Point(f['path'][-1]).buffer(radius,quad_segs=12)
-                obj=dict(geom=disc,front=f['id'],tid=tid,
-                         point=f['path'][-1],radius=radius)
-                refs.append((logical_index,logical_index.insert(obj,disc.bounds)))
-                end=(tuple(terminal.geom.centroid.coords[0]) if terminal is not None else pts[-1])
-                head=LineString([end,f['path'][-1]]).buffer(radius+self.r.pathway_terminal_head_keepout,quad_segs=8)
-                obj=dict(geom=head,front=f['id'],tid=tid,released=False)
-                refs.append((self._local_capacity_head_index,self._local_capacity_head_index.insert(obj,head.bounds)))
-                heads[tid]=obj
-            entries[tid]=refs
-        for rec in self.trace_records:
-            insert_packet(rec)
-        rng=SplitMix64(local_pathway_seed(self.sseed)^0x4341504143495459)
-        self.local_gap_special_probability=rng.uniform(.15,.26)
-        tids=sorted(packets); rng.shuffle(tids)
-        realized=0; special_realized=0
-        for tid in tids:
-            if self._local_gap_realized_trace_count()>=self.r.local_gap_trace_population_cap(): break
-            rec=packets[tid]; f=self.fronts[rec['front']]
-            if len(f['path'])!=3: continue
-            special=rng.random()<self.local_gap_special_probability
-            thickness=self._local_gap_bundle_spec(rng,1,special)[0][0]
-            rid=f.get('local_gap_region_id')
-            region=self.local_gap_regions[rid] if rid is not None and rid<len(self.local_gap_regions) else None
-            if region is not None:
-                thickness*=.78 if region['size']=='small' else (1.0 if region['size']=='medium' else 1.08)
-            tf=dict(f); tf['thicknesses']={tid:thickness}; tf['local_gap_special']=special
-            for index,oid in entries.pop(tid): index.remove(oid)
-            old_segments=list(self.path_segments_by_front.get(f['id'],()))
-            for old in old_segments: self._retire_path_record_incremental(old)
-            center,pivot,end=f['path']
-            package=self._local_debt_visible_package(tf,center,pivot,end,marker_index,logical_index,line_index)
-            if package is not None:
-                d0=exact_dir8_index(pivot[0]-center[0],pivot[1]-center[1])
-                sf=dict(tf,path=[center],dir=d0,gestures=0,local_gestures=0)
-                g1=self._corridor_geom(sf,center,pivot)
-                first_clear=self._gesture_clear(sf,center,pivot,g1,allow_outside=False)
-                sf.update(path=[center,pivot],gestures=1,local_gestures=1)
-                g2=self._corridor_geom(sf,pivot,end)
-                if not first_clear or not self._gesture_clear(sf,pivot,end,g2,allow_outside=False,extra_segments=(g1,)):
-                    package=None
-            if package is not None and not self._local_gap_source_clearance(
-                    center,.5*thickness,marker_extent=(.5*thickness if special else
-                    self.r._termination_dot_radius(thickness)+.5*self.r.termination_dot_hollow_stroke),
-                    cluster_id=f.get('local_fill_cluster_id')):
-                package=None
-            if package is not None:
-                old_mask=self._local_capacity_service_mask(rec['points'],rec['primitive'].svg['stroke_width'])
-                new_mask=self._local_capacity_service_mask(package[0],thickness)
-                if any(bits&~new_mask.get(cell,0) for cell,bits in old_mask.items()): package=None
-            if package is None:
-                self.path_segments_by_front[f['id']]=[]
-                for old in old_segments:
-                    self._record_segment(f,old['start'],old['end'],old['geom'],normal=False)
-                insert_packet(rec)
-                continue
-            f['thicknesses']={tid:thickness}; f['local_gap_special']=special
-            self.path_segments_by_front[f['id']]=[]
-            for a,b in zip(f['path'],f['path'][1:]):
-                self._record_segment(f,a,b,self._corridor_geom(f,a,b),normal=False)
-            pts,terminal_geom,_logical,prim,_line=package
-            updated=dict(rec,points=pts,primitive=prim)
-            # Active roots release their former terminal; no marker remains mid-line.
-            updated['terminal_marker']=None if special else Primitive('circle',terminal_geom,{}, {})
-            insert_packet(updated)
-            # Retain the certificate's old head envelope as a local rollback
-            # reserve. Its owner/descendants may continue through it; unrelated
-            # ordinary routes cannot consume its already-proven terminal room.
-            f['_local_capacity_visible_floor']=sum(math.hypot(b[0]-a[0],b[1]-a[1]) for a,b in zip(pts,pts[1:]))
-            self._local_frozen_visible_packets.pop(tid,None)
-            self._local_gap_dormant_trace_count-=1
-            f['status']='active'; f['lifecycle']='ACTIVE'; f['termination_reason']=None
-            f['local_gap_turn_due_straights']=1+int(rng.random()*3)
-            f['local_gap_branch_boost']=rng.uniform(*self.r.local_gap_branch_boost_range)
-            f['local_gap_exit_allowed']=rng.random()<self.r.local_gap_exit_probability_factor
-            f['target']=self._local_gap_target(end,f['rng'],f['dir'],cluster_id=f.get('local_fill_cluster_id'))
-            size=region['size'] if region is not None else 'medium'
-            f['max_gestures']=(7+int(rng.random()*6) if size=='small' else
-                               14+int(rng.random()*9) if size=='medium' else 22+int(rng.random()*11))
-            f['base_max_gestures']=f['max_gestures']
-            realized+=1; special_realized+=int(special)
-        self._compact_retired_path_records()
-        self.stats['pathway_local_gap_capacity_realized_trace_count']=realized
-        self.stats['pathway_local_gap_special_thick_trace_count']+=special_realized
-        self.stats['pathway_local_gap_capacity_special_realized_trace_count']=special_realized
-        self._local_gap_capacity_realizing=True
-        try:
-            rounds=self._run_local_gap_fast_rounds(round_budget=round_budget) if realized else 0
-        finally:
-            self._local_gap_capacity_realizing=False
-        return rounds
-
     def run_local_after_components(self,frozen_main_pathways):
         """Fill the post-component residual field with the existing local-line language.
 
@@ -10957,197 +10402,169 @@ class BundleGesturePlanner:
         self.stats['pathway_local_gap_round_budget']=local_round_budget
         self.profile['max_rounds']=local_round_budget
         self.profile['persistence_tail_rounds']=7
-        capacity_first=bool(getattr(self,'local_gap_capacity_first',False))
-        total_local_rounds=(self._prepare_local_gap_capacity(local_round_budget) if capacity_first else 0)
-        if not capacity_first:
-            source_cap=None; previous_covered=0.0
-            wave_cap=3
-            self.stats['pathway_local_gap_wave_work_cap']=wave_cap
-            for _wave in range(wave_cap):
-                spawned=self._launch_local_gap_fronts(source_cap=source_cap)
-                if not spawned:
-                    break
-                if any(f.get('local_gap') and f.get('status')=='active' for f in self.fronts.values()):
-                    total_local_rounds+=self._run_local_gap_fast_rounds(round_budget=local_round_budget)
-                covered=self._local_gap_covered_cells()
-                self.stats['pathway_local_gap_covered_cell_count']=len(covered)
-                actual=self._local_gap_service_fraction()
-                self.stats['pathway_local_gap_fill_actual']=actual
-                if actual+1e-9>=self.local_gap_target_fraction:
-                    break
-                service_cells=max(1,int(self.local_gap_service_denominator_cell_count or len(self.local_gap_open_cells)))
-                gain=max(.25,(actual*service_cells)-previous_covered)
-                previous_covered=actual*service_cells
-                deficit=max(0.0,(self.local_gap_target_fraction-actual)*service_cells)
-                cells_per_source=max(.35,gain/max(1,spawned))
-                min_wave_sources=max(1,int(getattr(self,'local_gap_min_wave_sources',6)))
-                source_cap=max(min_wave_sources,min(self.r.local_wave_source_cap(),int(math.ceil(1.15*deficit/cells_per_source))))
+        total_local_rounds=0
+        source_cap=None; previous_covered=0.0
+        wave_cap=3
+        self.stats['pathway_local_gap_wave_work_cap']=wave_cap
+        for _wave in range(wave_cap):
+            spawned=self._launch_local_gap_fronts(source_cap=source_cap)
+            if not spawned:
+                break
+            if any(f.get('local_gap') and f.get('status')=='active' for f in self.fronts.values()):
+                total_local_rounds+=self._run_local_gap_fast_rounds(round_budget=local_round_budget)
+            covered=self._local_gap_covered_cells()
+            self.stats['pathway_local_gap_covered_cell_count']=len(covered)
+            actual=self._local_gap_service_fraction()
+            self.stats['pathway_local_gap_fill_actual']=actual
+            if actual+1e-9>=self.local_gap_target_fraction:
+                break
+            service_cells=max(1,int(self.local_gap_service_denominator_cell_count or len(self.local_gap_open_cells)))
+            gain=max(.25,(actual*service_cells)-previous_covered)
+            previous_covered=actual*service_cells
+            deficit=max(0.0,(self.local_gap_target_fraction-actual)*service_cells)
+            cells_per_source=max(.35,gain/max(1,spawned))
+            min_wave_sources=max(1,int(getattr(self,'local_gap_min_wave_sources',6)))
+            source_cap=max(min_wave_sources,min(self.r.local_wave_source_cap(),int(math.ceil(1.15*deficit/cells_per_source))))
+        if self._local_gap_service_fraction()+1e-9 < self.local_gap_target_fraction:
+            # Keep the established 96-line direct mop-up as the first bounded late pass on every
+            # canvas. Extended territory receives additional stationary articulated/ordinary
+            # opportunities below; no aspect-specific visual mode is introduced here.
+            mopup_cap=self.r.local_direct_mopup_cap()
+            self.stats['pathway_local_gap_mopup_work_cap']=mopup_cap
+            self._local_gap_direct_mopup(max_lines=mopup_cap)
             if self._local_gap_service_fraction()+1e-9 < self.local_gap_target_fraction:
-                self._expand_local_fill_debt_targets()
-            if self._local_gap_service_fraction()+1e-9 < self.local_gap_target_fraction:
-                # Keep the established 96-line direct mop-up as the first bounded late pass on every
-                # canvas. Extended territory receives additional stationary articulated/ordinary
-                # opportunities below; no aspect-specific visual mode is introduced here.
-                mopup_cap=self.r.local_direct_mopup_cap()
-                self.stats['pathway_local_gap_mopup_work_cap']=mopup_cap
-                self._local_gap_direct_mopup(max_lines=mopup_cap)
-                if self._local_gap_service_fraction()+1e-9 < self.local_gap_target_fraction:
-                    # Additional opportunity is derived only from normalized territory.  On a square
-                    # the caps are zero; on any extended orientation they scale identically with T.
-                    fragment_cap=self.r.local_fragment_mopup_cap()
-                    self.stats['pathway_local_gap_fragment_mopup_work_cap']=fragment_cap
-                    if fragment_cap>0:
-                        self._local_gap_fragment_mopup(max_lines=fragment_cap)
-                    # Once the hard 80% residual-service contract is already satisfied, do not
-                    # open additional ordinary waves merely to chase the sampled 80-90% preference.
-                    # The sampled point is explicitly best-effort; every value at/above the 80% floor
-                    # remains inside the governing visual range.
-                    hard_floor_now=float(getattr(self,'local_gap_hard_floor_absolute', self.r.local_gap_fill_range[0]*float(getattr(self,'local_gap_remaining_service_fraction',1.0))))
-                    late_wave_cap=(self.r.local_late_wave_cap()
-                                   if self._local_gap_service_fraction()+1e-9 < hard_floor_now else 0)
-                    self.stats['pathway_local_gap_late_wave_work_cap']=late_wave_cap
-                    stagnant=0; prev=self._local_gap_service_fraction()
-                    for _late in range(late_wave_cap):
-                        if self._local_gap_service_fraction()+1e-9 >= self.local_gap_target_fraction: break
-                        spawned=self._launch_local_gap_fronts(source_cap=self.r.local_wave_source_cap())
-                        if not spawned: break
-                        if any(f.get('local_gap') and f.get('status')=='active' for f in self.fronts.values()):
-                            total_local_rounds+=self._run_local_gap_fast_rounds(round_budget=local_round_budget)
-                        now=self._local_gap_service_fraction()
-                        if now-prev < 0.0025: stagnant+=1
-                        else: stagnant=0
-                        prev=now
-                        if stagnant>=2: break
-            # Hard-floor reserve: an ordinary execution cap is never allowed to be the sole reason
-            # a geometrically valid board stops below the normative 80%-of-remainder floor.  Use
-            # only the ordinary local router; no special geometry or relaxed clearance is introduced.
-            remaining=float(getattr(self,'local_gap_remaining_service_fraction',1.0))
-            hard_floor_abs=float(getattr(self,'local_gap_hard_floor_absolute', self.r.local_gap_fill_range[0]*remaining))
-            # Two broad untouched-cell rescue opportunities are enough to exploit ordinary
-            # spatial spread.  Remaining hard-floor deficit is a subcell service-debt problem and
-            # proceeds to the debt-aware direct/fragment reserve below instead of opening another
-            # whole-field binary wave.
-            rescue_cap=min(2,self.r.local_hard_floor_rescue_cap())
-            self.stats['pathway_local_gap_hard_floor_rescue_wave_cap']=rescue_cap
-            rescue_count=0
-            while (self._local_gap_service_fraction()+1e-9 < hard_floor_abs and rescue_count<rescue_cap):
-                spawned=self._launch_local_gap_fronts(source_cap=self.r.local_wave_source_cap(),allow_region_overflow=True)
-                if not spawned: break
-                if any(f.get('local_gap') and f.get('status')=='active' for f in self.fronts.values()):
-                    total_local_rounds+=self._run_local_gap_fast_rounds(round_budget=local_round_budget)
-                rescue_count+=1
-                # Do not collapse a territory-scaled reserve because one wave happened to add no
-                # measured service.  Later ordinary waves consume different deterministic source/
-                # routing opportunities and remain legal until the bounded cap is exhausted.
-            self.stats['pathway_local_gap_hard_floor_rescue_wave_count']=rescue_count
+                # Additional opportunity is derived only from normalized territory.  On a square
+                # the caps are zero; on any extended orientation they scale identically with T.
+                fragment_cap=self.r.local_fragment_mopup_cap()
+                self.stats['pathway_local_gap_fragment_mopup_work_cap']=fragment_cap
+                if fragment_cap>0:
+                    self._local_gap_fragment_mopup(max_lines=fragment_cap)
+                # Once the hard 80% residual-service contract is already satisfied, do not
+                # open additional ordinary waves merely to chase the sampled 80-90% preference.
+                # The sampled point is explicitly best-effort; every value at/above the 80% floor
+                # remains inside the governing visual range.
+                hard_floor_now=float(getattr(self,'local_gap_hard_floor_absolute', self.r.local_gap_fill_range[0]*float(getattr(self,'local_gap_remaining_service_fraction',1.0))))
+                late_wave_cap=(self.r.local_late_wave_cap()
+                               if self._local_gap_service_fraction()+1e-9 < hard_floor_now else 0)
+                self.stats['pathway_local_gap_late_wave_work_cap']=late_wave_cap
+                stagnant=0; prev=self._local_gap_service_fraction()
+                for _late in range(late_wave_cap):
+                    if self._local_gap_service_fraction()+1e-9 >= self.local_gap_target_fraction: break
+                    spawned=self._launch_local_gap_fronts(source_cap=self.r.local_wave_source_cap())
+                    if not spawned: break
+                    if any(f.get('local_gap') and f.get('status')=='active' for f in self.fronts.values()):
+                        total_local_rounds+=self._run_local_gap_fast_rounds(round_budget=local_round_budget)
+                    now=self._local_gap_service_fraction()
+                    if now-prev < 0.0025: stagnant+=1
+                    else: stagnant=0
+                    prev=now
+                    if stagnant>=2: break
+        # Hard-floor reserve: an ordinary execution cap is never allowed to be the sole reason
+        # a geometrically valid board stops below the normative 80%-of-remainder floor.  Use
+        # only the ordinary local router; no special geometry or relaxed clearance is introduced.
+        remaining=float(getattr(self,'local_gap_remaining_service_fraction',1.0))
+        hard_floor_abs=float(getattr(self,'local_gap_hard_floor_absolute', self.r.local_gap_fill_range[0]*remaining))
+        # Two broad untouched-cell rescue opportunities are enough to exploit ordinary
+        # spatial spread.  Remaining hard-floor deficit is a subcell service-debt problem and
+        # proceeds to the debt-aware direct/fragment reserve below instead of opening another
+        # whole-field binary wave.
+        rescue_cap=min(2,self.r.local_hard_floor_rescue_cap())
+        self.stats['pathway_local_gap_hard_floor_rescue_wave_cap']=rescue_cap
+        rescue_count=0
+        while (self._local_gap_service_fraction()+1e-9 < hard_floor_abs and rescue_count<rescue_cap):
+            spawned=self._launch_local_gap_fronts(source_cap=self.r.local_wave_source_cap(),allow_region_overflow=True)
+            if not spawned: break
+            if any(f.get('local_gap') and f.get('status')=='active' for f in self.fronts.values()):
+                total_local_rounds+=self._run_local_gap_fast_rounds(round_budget=local_round_budget)
+            rescue_count+=1
+            # Do not collapse a territory-scaled reserve because one wave happened to add no
+            # measured service.  Later ordinary waves consume different deterministic source/
+            # routing opportunities and remain legal until the bounded cap is exhausted.
+        self.stats['pathway_local_gap_hard_floor_rescue_wave_count']=rescue_count
 
-            # Area-aligned final reserve.  The service invariant is measured at 16 subcells per
-            # residual cell, while ordinary targeting intentionally treats any touched cell as
-            # covered to avoid visual clustering.  If that binary targeting convention alone leaves
-            # the board below the hard 80% service floor after all untouched-cell rescue waves,
-            # temporarily retarget only cells that are still <80% serviced and run the SAME ordinary
-            # local router with the same geometry/probabilities.  This is universal, target-gated,
-            # and bounded; it is not an aspect-ratio mode.
-            # Canonical service-debt reserve.  Ordinary LOCAL targeting intentionally retires a
-            # cell after its first legitimate touch so successive waves spread across the board.
-            # The hard service invariant, however, is area/subcell based.  If untouched-cell routing
-            # stalls below the 80%-of-remainder floor, reuse the established exact bent/fragment
-            # grammars against partially serviced cells before spawning more short ordinary fronts.
-            # This keeps the visual grammar and exact clearance rules unchanged while making the
-            # reserve operate on the same service debt that the contract measures.
-            if self._local_gap_service_fraction()+1e-9 < hard_floor_abs:
-                self.local_gap_retarget_cells={
-                    c for c in self.local_gap_route_cells
-                    if 0 < self.local_gap_coverage_mask_by_cell.get(c,0).bit_count() < 13
-                }
-                debt_mopup_cap=max(24,int(math.ceil(24.0*self.r.design_detail_area_scale())))
-                self.stats['pathway_local_gap_service_debt_mopup_work_cap']=debt_mopup_cap
-                # This reserve exists only because the board is below the normative 80% floor.
-                # Normal cleanup may pursue the sampled 80-90% preference, but emergency debt work
-                # must not keep generating geometry toward that optional preference after the hard
-                # invariant has already been satisfied.  Temporarily make the hard floor the direct/
-                # fragment stop target, then restore the sampled target for reporting/downstream use.
-                _saved_local_target=self.local_gap_target_fraction
-                self.local_gap_target_fraction=hard_floor_abs
-                _debt_by_region={}
-                for _c in self._local_gap_targetable_cells():
-                    _rid=self.local_gap_region_by_cell.get(_c)
-                    if _rid is None: continue
-                    _bits=self.local_gap_coverage_mask_by_cell.get(_c,0).bit_count()
-                    _debt_by_region[_rid]=_debt_by_region.get(_rid,0.0)+max(0,13-_bits)/13.0
-                self._local_gap_service_debt_priority_by_region=_debt_by_region
-                try:
-                    direct_before=self.stats.get('pathway_local_gap_mopup_trace_count',0)
-                    self._local_gap_direct_mopup(max_lines=debt_mopup_cap)
-                    self.stats['pathway_local_gap_service_debt_direct_trace_count']=max(
-                        0,self.stats.get('pathway_local_gap_mopup_trace_count',0)-direct_before)
-                    if self._local_gap_service_fraction()+1e-9 < hard_floor_abs:
-                        fragment_before=self.stats.get('pathway_local_gap_fragment_mopup_trace_count',0)
-                        self._local_gap_fragment_mopup(max_lines=debt_mopup_cap)
-                        self.stats['pathway_local_gap_service_debt_fragment_trace_count']=max(
-                            0,self.stats.get('pathway_local_gap_fragment_mopup_trace_count',0)-fragment_before)
-                finally:
-                    self._local_gap_service_debt_touch_capture=None
-                    self.local_gap_target_fraction=_saved_local_target
-                    self._local_gap_service_debt_priority_by_region=None
-                self.local_gap_retarget_cells=set()
-
-            partial_cap=self.r.local_hard_floor_rescue_cap()
-            partial_count=0
-            partial_candidate_cap=self.r.local_partial_service_candidate_work_cap()
-            partial_candidate_tokens=0
-            self.stats['pathway_local_gap_partial_service_rescue_wave_cap']=partial_cap
-            self.stats['pathway_local_gap_partial_service_candidate_work_cap_per_wave']=partial_candidate_cap
-            # LOCAL-2: the former reserve reopened the same whole debt field up to three times.
-            # Treat that as one monotonic debt campaign instead: preserve the exact total source
-            # opportunity (partial_cap * ordinary wave source cap), but score/jitter the unpaid field
-            # once.  The ordinary local router, candidate ranking, exact geometry and hard-floor
-            # deterministic completion remain unchanged; only the redundant global campaign restart
-            # disappears.
-            if self._local_gap_service_fraction()+1e-9 < hard_floor_abs:
-                self.local_gap_retarget_cells={
-                    c for c in self.local_gap_route_cells
-                    if 0 < self.local_gap_coverage_mask_by_cell.get(c,0).bit_count() < 13
-                }
-                if self.local_gap_retarget_cells:
-                    _before_partial_attempts=self.stats.get('pathway_local_gap_spawn_attempt_count',0)
-                    total_source_opportunity=partial_cap*self.r.local_wave_source_cap()
-                    spawned=self._launch_local_gap_fronts(source_cap=total_source_opportunity,allow_region_overflow=True,
-                                                          candidate_work_cap=partial_candidate_cap,prefer_service_debt=True,
-                                                          wave_source_cap_override=total_source_opportunity)
-                    partial_candidate_tokens += max(0,self.stats.get('pathway_local_gap_spawn_attempt_count',0)-_before_partial_attempts)
-                    if spawned:
-                        if any(f.get('local_gap') and f.get('status')=='active' for f in self.fronts.values()):
-                            total_local_rounds+=self._run_local_gap_fast_rounds(round_budget=local_round_budget)
-                        partial_count=1
+        # Area-aligned final reserve.  The service invariant is measured at 16 subcells per
+        # residual cell, while ordinary targeting intentionally treats any touched cell as
+        # covered to avoid visual clustering.  If that binary targeting convention alone leaves
+        # the board below the hard 80% service floor after all untouched-cell rescue waves,
+        # temporarily retarget only cells that are still <80% serviced and run the SAME ordinary
+        # local router with the same geometry/probabilities.  This is universal, target-gated,
+        # and bounded; it is not an aspect-ratio mode.
+        # Canonical service-debt reserve.  Ordinary LOCAL targeting intentionally retires a
+        # cell after its first legitimate touch so successive waves spread across the board.
+        # The hard service invariant, however, is area/subcell based.  If untouched-cell routing
+        # stalls below the 80%-of-remainder floor, reuse the established exact bent/fragment
+        # grammars against partially serviced cells before spawning more short ordinary fronts.
+        # This keeps the visual grammar and exact clearance rules unchanged while making the
+        # reserve operate on the same service debt that the contract measures.
+        if self._local_gap_service_fraction()+1e-9 < hard_floor_abs:
+            self.local_gap_retarget_cells={
+                c for c in self.local_gap_open_cells
+                if 0 < self.local_gap_coverage_mask_by_cell.get(c,0).bit_count() < 13
+            }
+            debt_mopup_cap=max(24,int(math.ceil(24.0*self.r.design_detail_area_scale())))
+            self.stats['pathway_local_gap_service_debt_mopup_work_cap']=debt_mopup_cap
+            # This reserve exists only because the board is below the normative 80% floor.
+            # Normal cleanup may pursue the sampled 80-90% preference, but emergency debt work
+            # must not keep generating geometry toward that optional preference after the hard
+            # invariant has already been satisfied.  Temporarily make the hard floor the direct/
+            # fragment stop target, then restore the sampled target for reporting/downstream use.
+            _saved_local_target=self.local_gap_target_fraction
+            self.local_gap_target_fraction=hard_floor_abs
+            _debt_by_region={}
+            for _c in self._local_gap_targetable_cells():
+                _rid=self.local_gap_region_by_cell.get(_c)
+                if _rid is None: continue
+                _bits=self.local_gap_coverage_mask_by_cell.get(_c,0).bit_count()
+                _debt_by_region[_rid]=_debt_by_region.get(_rid,0.0)+max(0,13-_bits)/13.0
+            self._local_gap_service_debt_priority_by_region=_debt_by_region
+            try:
+                direct_before=self.stats.get('pathway_local_gap_mopup_trace_count',0)
+                self._local_gap_direct_mopup(max_lines=debt_mopup_cap)
+                self.stats['pathway_local_gap_service_debt_direct_trace_count']=max(
+                    0,self.stats.get('pathway_local_gap_mopup_trace_count',0)-direct_before)
+                if self._local_gap_service_fraction()+1e-9 < hard_floor_abs:
+                    fragment_before=self.stats.get('pathway_local_gap_fragment_mopup_trace_count',0)
+                    self._local_gap_fragment_mopup(max_lines=debt_mopup_cap)
+                    self.stats['pathway_local_gap_service_debt_fragment_trace_count']=max(
+                        0,self.stats.get('pathway_local_gap_fragment_mopup_trace_count',0)-fragment_before)
+            finally:
+                self._local_gap_service_debt_touch_capture=None
+                self.local_gap_target_fraction=_saved_local_target
+                self._local_gap_service_debt_priority_by_region=None
             self.local_gap_retarget_cells=set()
-            self.stats['pathway_local_gap_partial_service_rescue_wave_count']=partial_count
-            self.stats['pathway_local_gap_partial_service_candidate_work_token_count']=partial_candidate_tokens
-        self._settle_local_nonemittable_fronts()
-        self._repair_terminal_marker_conflicts()
-        self._settle_local_nonemittable_fronts()
-        _pre_groups,_pre_stats=self._materialize()
-        visible_ids={rec['tid'] for rec in self.trace_records if rec.get('local_gap')}
-        invisible_fronts=[]
-        for f in self.fronts.values():
-            if (f.get('local_gap') and f.get('status') in ('terminated','escaped','connected','component')
-                    and any(tid not in visible_ids for tid in f.get('ids',()))):
-                f['status']='abandoned_short'
-                f['termination_reason']='local_nonemittable_visible_package'
-                f['lifecycle']='TERMINAL'
-                invisible_fronts.append(f['id'])
-        if invisible_fronts:
-            self._prune_abandoned_local_segments(invisible_fronts)
-            self._recount_visible_local_gap_service([
-                rec for rec in self.trace_records if rec.get('front') not in invisible_fronts])
-        self._local_frozen_visible_packets={
-            rec['tid']:rec for rec in self.trace_records
-            if rec.get('local_gap') and rec.get('front') not in invisible_fronts}
-        self.stats['pathway_local_gap_predebt_nonemittable_front_count']=len(invisible_fronts)
-        hard_floor_abs=float(getattr(self,'local_gap_hard_floor_absolute',
-            self.r.local_gap_fill_range[0]*float(getattr(self,'local_gap_remaining_service_fraction',1.0))))
-        best_effort=bool(getattr(self,'local_gap_best_effort_full_endpoint',False))
-        if not best_effort and self._local_gap_service_fraction()+1e-9 < hard_floor_abs:
+
+        partial_cap=self.r.local_hard_floor_rescue_cap()
+        partial_count=0
+        partial_candidate_cap=self.r.local_partial_service_candidate_work_cap()
+        partial_candidate_tokens=0
+        self.stats['pathway_local_gap_partial_service_rescue_wave_cap']=partial_cap
+        self.stats['pathway_local_gap_partial_service_candidate_work_cap_per_wave']=partial_candidate_cap
+        # LOCAL-2: the former reserve reopened the same whole debt field up to three times.
+        # Treat that as one monotonic debt campaign instead: preserve the exact total source
+        # opportunity (partial_cap * ordinary wave source cap), but score/jitter the unpaid field
+        # once.  The ordinary local router, candidate ranking, exact geometry and hard-floor
+        # deterministic completion remain unchanged; only the redundant global campaign restart
+        # disappears.
+        if self._local_gap_service_fraction()+1e-9 < hard_floor_abs:
+            self.local_gap_retarget_cells={
+                c for c in self.local_gap_open_cells
+                if 0 < self.local_gap_coverage_mask_by_cell.get(c,0).bit_count() < 13
+            }
+            if self.local_gap_retarget_cells:
+                _before_partial_attempts=self.stats.get('pathway_local_gap_spawn_attempt_count',0)
+                total_source_opportunity=partial_cap*self.r.local_wave_source_cap()
+                spawned=self._launch_local_gap_fronts(source_cap=total_source_opportunity,allow_region_overflow=True,
+                                                      candidate_work_cap=partial_candidate_cap,prefer_service_debt=True,
+                                                      wave_source_cap_override=total_source_opportunity)
+                partial_candidate_tokens += max(0,self.stats.get('pathway_local_gap_spawn_attempt_count',0)-_before_partial_attempts)
+                if spawned:
+                    if any(f.get('local_gap') and f.get('status')=='active' for f in self.fronts.values()):
+                        total_local_rounds+=self._run_local_gap_fast_rounds(round_budget=local_round_budget)
+                    partial_count=1
+        self.local_gap_retarget_cells=set()
+        self.stats['pathway_local_gap_partial_service_rescue_wave_count']=partial_count
+        self.stats['pathway_local_gap_partial_service_candidate_work_token_count']=partial_candidate_tokens
+        if self._local_gap_service_fraction()+1e-9 < hard_floor_abs:
             self._local_gap_deterministic_debt_completion(hard_floor_abs)
         self.stats['pathway_local_gap_fill_actual']=self._local_gap_service_fraction()
         self.stats['pathway_decision_round_count']=total_local_rounds
@@ -11162,96 +10579,21 @@ class BundleGesturePlanner:
         if (stats.get('pathway_illegal_turn_count',0) or stats.get('pathway_non_octilinear_segment_count',0) or
                 stats.get('pathway_curved_primitive_count',0)):
             raise RuntimeError('hard exact-octilinear / <=45-degree local-turn invariant violated')
-        # Keep the governing 80%-of-remainder service floor under route ownership.
+        # The sampled 80-90% value is a best-effort target, never permission to violate hard
+        # geometry.  With V39's stricter junction and rendered-clearance rules a fragmented field
+        # can exhaust every legal bent candidate slightly below its sampled target.  Preserve the
+        # actual design contract as a hard 80% floor of the post-component remainder; record any
+        # sampled-target shortfall rather than manufacturing an illegal line to hit the draw.
         actual_abs=stats.get('pathway_local_gap_fill_actual',0.0)
         remaining=float(getattr(self,'local_gap_remaining_service_fraction',1.0))
         hard_floor_abs=float(getattr(self,'local_gap_hard_floor_absolute', self.r.local_gap_fill_range[0]*remaining))
         stats['pathway_local_gap_hard_floor_absolute']=hard_floor_abs
         stats['pathway_local_gap_sampled_target_shortfall']=max(0.0,self.local_gap_target_fraction-actual_abs)
-        stats['pathway_local_gap_80pct_shortfall_absolute']=max(0.0,hard_floor_abs-actual_abs)
-        stats['pathway_local_gap_fill_cluster_root_max']=max(self.local_fill_cluster_root_counts.values(),default=0)
-        stats['pathway_local_gap_fill_cluster_root_cap_hits']=sum(
-            self.local_fill_cluster_root_counts.get(cid,0)>=meta['target_sources']
-            for cid,meta in self.local_route_clusters.items())
-        stats['pathway_local_gap_fill_cluster_count']=len(self.local_route_clusters)
-        stats['pathway_local_gap_fill_cluster_target_sum']=sum(
-            meta['target_sources'] for meta in self.local_route_clusters.values())
-        targets=[meta['target_sources'] for meta in self.local_route_clusters.values()]
-        stats['pathway_local_gap_fill_cluster_target_min']=min(targets,default=0)
-        stats['pathway_local_gap_fill_cluster_target_max']=max(targets,default=0)
-        stats['pathway_local_gap_unowned_visible_root_count']=sum(
-            g.structural.get('local_fill_cluster_id') is None for g in groups
-            if g.structural.get('local_gap_pathway'))
+        if actual_abs+1e-9 < hard_floor_abs:
+            raise RuntimeError('post-component local-gap requested hard floor not realized: '+str(actual_abs))
         stats['pathway_local_gap_denominator']='canonical_post_main_residual_service_field'
         stats['pathway_local_gap_phase']='after_components'
-        stats['pathway_local_gap_capacity_first']=capacity_first
-        stats['pathway_local_gap_full_endpoint_best_effort']=best_effort
-        if not best_effort and actual_abs+1e-9 < hard_floor_abs:
-            raise RuntimeError(
-                f'LOCAL service below hard floor: {actual_abs:.6f} < {hard_floor_abs:.6f}')
         return groups,stats
-
-    def _local_debt_visible_package(self,f,center,pivot,end,marker_index,logical_marker_index,line_index):
-        """Preflight one completion trace as the normal materializer will render it."""
-        tid=f['ids'][0]; thickness=f['thicknesses'][tid]
-        tf=dict(f); tf['path']=[center,pivot,end]; tf['status']='terminated'
-        pts=[center,pivot,end]
-        mrng=SplitMix64(mix_once(self.sseed ^ (tid+1)*0x9E3779B97F4A7C15))
-        special=bool(f.get('local_gap_special'))
-        radius=self.r._termination_dot_radius(thickness)
-        source_filled=True if special else mrng.random()<.55
-        source_stroke=0.0 if source_filled else self.r.termination_dot_hollow_stroke
-        source_marker=prim_circle(center[0],center[1],radius,self.r.FG,source_filled,source_stroke)
-        if not source_filled:
-            pts=self._clip_polyline_start(pts,radius+.5*source_stroke)
-        pts,component_backoff=(pts,0.0) if special else self._backoff_local_terminal_from_components(pts,thickness)
-        if component_backoff is None:
-            return None
-        pts,_backoff=self._backoff_terminal_points(tf,tid,pts,marker_index)
-        if len(pts)<2:
-            return None
-        terminal_filled=True if special else mrng.random()<.55
-        terminal_stroke=0.0 if terminal_filled else self.r.termination_dot_hollow_stroke
-        terminal=pts[-1]
-        if not terminal_filled:
-            clipped=self._clip_polyline_end(pts,radius+.5*terminal_stroke)
-            clipped_len=sum(math.hypot(b[0]-a[0],b[1]-a[1]) for a,b in zip(clipped,clipped[1:])) if len(clipped)>=2 else 0.0
-            if (len(clipped)<2 or
-                    math.hypot(clipped[-1][0]-clipped[-2][0],clipped[-1][1]-clipped[-2][1])<.10*self.module-1e-9):
-                terminal_filled=True; terminal_stroke=0.0
-            else:
-                pts=clipped
-        if len(pts)<2 or sum(math.hypot(b[0]-a[0],b[1]-a[1]) for a,b in zip(pts,pts[1:]))+1e-9<2.75*self.module:
-            return None
-        prim=prim_polyline(pts,thickness,self.r.FG,round_caps=special)
-        terminal_marker=prim_circle(terminal[0],terminal[1],.5*thickness if special else radius,self.r.FG,terminal_filled,terminal_stroke)
-        for visible in ((prim,) if special else (prim,source_marker,terminal_marker)):
-            if (not self._local_component_territory_clear(visible.geom) or
-                    not self._local_fill_parcel_clear(tf,visible.geom) or
-                    not self._local_visible_primitive_static_clear(visible)):
-                return None
-        logical_radius=radius+.5*self.r.termination_dot_hollow_stroke
-        logical_disc=Point(end).buffer(logical_radius,quad_segs=12)
-        for old in logical_marker_index.query(expand_bounds(logical_disc.bounds,self.r.termination_dot_min_gap)):
-            # Match the final logical-marker guard exactly. Faceted GEOS discs
-            # can admit a near-tangent pair whose true circles violate the gap.
-            if self._terminal_record_conflict(
-                    (None,tid,end,logical_disc,logical_radius),
-                    (None,old.get('tid'),old['point'],old['geom'],old['radius'])):
-                return None
-        line=LineString(pts)
-        for old in self._render_line_index_query(line_index,pts,max(
-                2.0*self.module,self.r.pathway_interroute_keepout+thickness)):
-            old_line=old['line']
-            if not line.intersection(old_line).is_empty or not prim.geom.intersection(old['primitive'].geom).is_empty:
-                return None
-            gap=self._interroute_gap_for_fronts(
-                tf,other_thickness=old.get('thickness',old['primitive'].svg.get('stroke_width',0.0)),
-                other_local=old.get('local_gap',False),
-                other_cluster_id=old.get('local_fill_cluster_id'))
-            if prim.geom.distance(old['primitive'].geom)<gap-1e-7:
-                return None
-        return pts,terminal_marker.geom,logical_disc,prim,line
 
     def _local_gap_deterministic_debt_completion(self, hard_floor_abs):
         """Finite exact-legal completion of remaining LOCAL service debt.
@@ -11274,49 +10616,17 @@ class BundleGesturePlanner:
         # exact checks and first-success semantics remain byte-for-byte equivalent.
         first_leg_cache={}
         first_leg_cache_hits=0; first_leg_cache_misses=0
-        marker_index=SpatialHash(max(30*self.U,self.module))
-        head_index=SpatialHash(max(30*self.U,self.module))
-        for rec in getattr(self,'_local_render_marker_records',()):
-            owner=self.fronts.get(rec.get('front'))
-            if owner is not None and owner.get('status')!='abandoned_short':
-                marker_index.insert(rec,rec['geom'].bounds)
-                t=owner['thicknesses'][rec['tid']]
-                reach=(self.r._termination_dot_radius(t)+.5*self.r.termination_dot_hollow_stroke+
-                       self.r.pathway_terminal_head_keepout)
-                rendered=tuple(rec['geom'].centroid.coords[0])
-                logical=self._materialized_paths(owner)[rec['tid']][-1]
-                head=LineString([rendered,logical]).buffer(reach,quad_segs=8)
-                head_index.insert(dict(geom=head),head.bounds)
-        logical_marker_index=SpatialHash(max(30*self.U,self.module))
-        for old in self.fronts.values():
-            if old.get('status')!='terminated':
-                continue
-            for _tid,_p,disc,_radius in self._terminal_marker_discs(old):
-                logical_marker_index.insert(dict(geom=disc,tid=_tid,point=_p,radius=_radius),disc.bounds)
-        line_index=SpatialHash(max(70*self.U,2*self.module))
-        render_order=0
-        for old in getattr(self,'_local_render_line_records',()):
-            owner=self.fronts.get(old.get('front'))
-            if owner is not None and owner.get('status')=='abandoned_short':
-                continue
-            pts=old.get('points')
-            if pts is None:
-                pts=list(old.get('line',LineString()).coords)
-            item=dict(tid=old['tid'],line=old.get('line',LineString(pts)),primitive=old['primitive'],
-                      thickness=old.get('thickness',old['primitive'].svg.get('stroke_width',0.0)),
-                      local_gap=old.get('local_gap',False),
-                      local_fill_cluster_id=old.get('local_fill_cluster_id'),render_order=render_order)
-            self._render_line_index_insert(line_index,item,pts)
-            render_order+=1
-        cells=sorted(self.local_gap_route_cells,
+        cells=sorted(self.local_gap_open_cells,
                      key=lambda c:(self.local_gap_coverage_mask_by_cell.get(c,0).bit_count(),c[1],c[0]))
 
         def in_region_segment(a,b,region):
-            # The board rectangle is convex: endpoints certify a straight leg.
-            # Exact gesture/static/macro gates govern the stroke; raster region
-            # cells nominate work and are not additional geometric walls.
-            return (0<=a[0]<=self.W and 0<=a[1]<=self.H and
-                    0<=b[0]<=self.W and 0<=b[1]<=self.H)
+            L=math.hypot(b[0]-a[0],b[1]-a[1])
+            samples=max(2,int(math.ceil(L/max(step,1e-9))))
+            for k in range(1,samples+1):
+                u=k/samples; q=(a[0]+(b[0]-a[0])*u,a[1]+(b[1]-a[1])*u)
+                if not (0<=q[0]<=self.W and 0<=q[1]<=self.H): return False
+                if region is not None and self._gap_cell(q) not in region['cells']: return False
+            return True
 
         for cell in cells:
             if self._local_gap_service_fraction()+1e-9 >= hard_floor_abs:
@@ -11332,8 +10642,7 @@ class BundleGesturePlanner:
                 center=(base[0]+ox,base[1]+oy)
                 t=1.90*self.U
                 marker_extent=self.r._termination_dot_radius(t)+.5*self.r.termination_dot_hollow_stroke
-                if not self._local_gap_source_clearance(center,.5*t,marker_extent=marker_extent,
-                                                        cluster_id=rid):
+                if not self._local_gap_source_clearance(center,.5*t,marker_extent=marker_extent):
                     continue
                 for d0 in range(8):
                     for m1 in (2.5,2.0,1.5):
@@ -11349,8 +10658,7 @@ class BundleGesturePlanner:
                                 synthetic_chip=len(self.chips)+400000+self.stats.get('pathway_local_gap_source_count',0)+made
                                 f=self._make_front(ids=[tid],chip=synthetic_chip,side='local',side_index=synthetic_chip,
                                                    path=[center],direction=d0,offsets={tid:0.0},thicknesses={tid:t},prefixes={tid:[]},
-                                                   rng=SplitMix64(local_pathway_seed(self.sseed)^tid),intent='explore',target=end,
-                                                   local_cluster_id=rid)
+                                                   rng=SplitMix64(local_pathway_seed(self.sseed)^tid),intent='explore',target=end)
                                 f['local_gap']=True; f['local_gap_special']=False; f['fan_pending']=False
                                 f['local_gap_region_id']=rid; f['local_gap_exit_allowed']=False
                                 f['local_gap_min_terminal_modules']=3.0
@@ -11374,43 +10682,10 @@ class BundleGesturePlanner:
                                 g2=self._corridor_geom(tf,pivot,end)
                                 if not self._gesture_clear(tf,pivot,end,g2,allow_outside=False,extra_segments=(g1,)):
                                     self._drop_front(f['id']); continue
-                                # A later stroke inside a previously accepted terminal head's
-                                # visual keepout would make final materialization back that
-                                # earlier head off, invalidating its service preflight.
-                                head_blocked=False
-                                for route_geom in (g1,g2):
-                                    for old in head_index.query(route_geom.bounds):
-                                        if route_geom.intersects(old['geom']):
-                                            head_blocked=True; break
-                                    if head_blocked: break
-                                if head_blocked:
-                                    self._drop_front(f['id']); continue
-                                package=self._local_debt_visible_package(
-                                    f,center,pivot,end,marker_index,logical_marker_index,line_index)
-                                if package is None:
-                                    self._drop_front(f['id']); continue
                                 p1=dict(front=f['id'],start=center,end=pivot,dir=d0,modules=max(1,int(round(m1))),geom=g1,score=0.0)
                                 p2=dict(front=f['id'],start=pivot,end=end,dir=d1,modules=max(1,int(round(m2))),geom=g2,score=0.0)
-                                f['_defer_local_service_mark']=True
                                 self._accept(f,p1,defer_post=True); self._accept(f,p2,defer_post=True)
-                                f.pop('_defer_local_service_mark',None)
                                 f['status']='terminated'; f['termination_reason']='local_gap_deterministic_debt_completion'; f['lifecycle']='TERMINAL'
-                                visible_pts,terminal_geom,logical_disc,visible_prim,visible_line=package
-                                for a,b in zip(visible_pts,visible_pts[1:]):
-                                    self._mark_local_gap_segment_coverage(a,b,f)
-                                marker_index.insert(dict(geom=terminal_geom,front=f['id'],tid=tid),terminal_geom.bounds)
-                                head_reach=(self.r._termination_dot_radius(t)+.5*self.r.termination_dot_hollow_stroke+
-                                            self.r.pathway_terminal_head_keepout)
-                                head=LineString([tuple(terminal_geom.centroid.coords[0]),end]).buffer(
-                                    head_reach,quad_segs=8)
-                                head_index.insert(dict(geom=head),head.bounds)
-                                logical_marker_index.insert(dict(geom=logical_disc,tid=tid,point=end,
-                                    radius=self.r._termination_dot_radius(t)+.5*self.r.termination_dot_hollow_stroke),logical_disc.bounds)
-                                render_item=dict(tid=tid,line=visible_line,primitive=visible_prim,
-                                    thickness=t,local_gap=True,local_fill_cluster_id=rid,
-                                    render_order=render_order)
-                                self._render_line_index_insert(line_index,render_item,visible_pts)
-                                render_order+=1
                                 self.next_trace_id+=1; made+=1
                                 self.stats['pathway_bundle_count']+=1; self.stats['pathway_local_gap_source_count']+=1
                                 self.stats['pathway_local_gap_trace_count']+=1; self.stats['pathway_local_gap_independent_source_count']+=1
@@ -11584,10 +10859,8 @@ class V48Renderer:
             # Knob targets remain preferences; exact geometry is never relaxed to reach them.
             component_floor=(component_target*self.residual_gap_fill_range[0]/max(legacy_component,1e-9)
                              if component_target>0.0 else 0.0)
-            full_local_budget=legacy_total*(1.0-self.component_density)
-            full_local_floor=min(full_local_budget, self.local_gap_fill_range[0],
-                                 full_local_budget*self.local_gap_fill_range[0]/max(legacy_local,1e-9))
-            local_floor_abs=self.local_density*full_local_floor
+            local_floor_abs=(local_budget*self.local_gap_fill_range[0]/max(legacy_local,1e-9)
+                             if local_budget>0.0 else 0.0)
             # Density above the historical phase range is a best-effort visual target, not a
             # license to turn the old 50% component / 80%-of-remainder LOCAL hard floors into
             # expensive new 90%+ construction invariants.  Scale floors downward with density,
@@ -13227,12 +12500,6 @@ class V48Renderer:
         planner.local_gap_absolute_target_fraction=absolute_target
         planner.local_gap_hard_floor_absolute=hard_floor_abs
         planner.local_gap_min_wave_sources=(6 if budget is None or budget.get('legacy_exact') else 1)
-        legacy_local_abs=(float(budget['legacy_total_target'])-float(budget['legacy_component_target'])
-                          if budget is not None else absolute_target)
-        planner.local_gap_capacity_first=(budget is not None and not budget.get('legacy_exact') and
-                                          float(budget['local_absolute_budget'])>legacy_local_abs+1e-12)
-        planner.local_gap_best_effort_full_endpoint=(abs(self.local_density-1.0)<=1e-15 and
-                                                    abs(self.component_density)<=1e-15)
         groups,stats=planner.run_local_after_components(frozen_main_pathways)
         absolute=stats.get('pathway_local_gap_fill_actual',0.0)
         physical=planner._local_gap_physical_post_component_service_fraction()
@@ -13575,8 +12842,6 @@ class V48Renderer:
         b=cand.bounds; edge=self.component_edge_clearance
         if b[0] < edge or b[1] < edge or self.W-b[2] < edge or self.H-b[3] < edge:
             return False
-        if attachment_point is None and not self._residual_composition_component_geometry_owned(cand):
-            return False
         # Chip/component clearance is an exact Euclidean invariant.  A finite-segment round
         # buffer at the *nominal* gap is an inscribed approximation and historically left a thin
         # false-safe annulus that could survive until final validation as ``pair_chip_isolated``.
@@ -13649,8 +12914,6 @@ class V48Renderer:
         b=cand.bounds; edge=self.component_edge_clearance
         if b[0] < edge or b[1] < edge or self.W-b[2] < edge or self.H-b[3] < edge:
             return False
-        if not self._residual_composition_component_geometry_owned(cand):
-            return False
         nearby=(accepted_index.query(expand_bounds(cand.bounds,self.component_component_clearance))
                 if accepted_index is not None else accepted)
         for other in nearby:
@@ -13702,165 +12965,6 @@ class V48Renderer:
             return 7+int(rng.random()*3)
         return 10+int(rng.random()*3)
 
-    def _build_residual_composition_ownership(self,open_cells,regions,rng):
-        """Plan paired C cores and LOCAL lobes on the post-MAIN service field.
-
-        Compact feasible cores own component centers; their selected physical
-        tiles contain complete glyphs. Prepared, recovery and completion
-        candidates share these gates. The canonical service field is unchanged.
-        """
-        nx,ny=self.component_gap_grid_shape()
-        # A parcel is about fifteen service cells on either physical axis.  One scalar
-        # lattice count made a 1:6 tile six times taller than it was wide, while its C
-        # owner remained a short-axis square and lost most of its useful capacity.
-        pitch=math.sqrt(165.0)
-        mx=max(1,int(round(nx/pitch)))
-        my=max(1,int(round(ny/pitch)))
-        self._residual_macro_grid_shape=(mx,my)
-        self._residual_macro_lattice_n=mx  # compatibility with older diagnostics
-        cw=self.W/nx; ch=self.H/ny
-        component_target=max(0.0,float(getattr(self,'_active_component_fill_target',0.0)))
-        budget=getattr(self,'_active_residual_density_budget',{}) or {}
-        local_budget=max(0.0,float(budget.get('local_absolute_budget',0.0)))
-        share=(component_target/(component_target+local_budget)
-               if component_target+local_budget>1e-12 else 0.0)
-        # A 2x2 physical parcel group is the smallest composition unit. Seeded
-        # selection varies the shape of neighbouring C/LOCAL clusters while
-        # keeping each modality spread over the board. Literal endpoints reserve
-        # no territory for the absent modality.
-        selected=set()
-        for by in range(0,my,2):
-            for bx in range(0,mx,2):
-                keys=[(x,y) for y in range(by,min(my,by+2))
-                      for x in range(bx,min(mx,bx+2))]
-                rng.shuffle(keys)
-                exact=len(keys)*share
-                count=min(len(keys),int(math.floor(exact))+
-                          int(rng.random()<exact-math.floor(exact)))
-                selected.update(keys[:count])
-        buckets={}
-        for c in open_cells:
-            key=(min(mx-1,mx*c[0]//nx),min(my-1,my*c[1]//ny))
-            if key in selected:
-                buckets.setdefault(key,[]).append(c)
-        owners={}; eligible=set(); by_cell={}; capacity={}
-        clearance=getattr(self,'_component_gap_clearance',{})
-        # About half the truly feasible C-tile cells must remain eligible to
-        # supply the component capacity floor.  A weak tile still receives a
-        # useful minimum quota; the total automatically follows residual work.
-        total_tile_cells=sum(len(cells) for cells in buckets.values())
-        desired_total=int(math.ceil((1.0 if local_budget<=1e-12 else .48)*total_tile_cells))
-        for key,cells in sorted(buckets.items()):
-            gx0=(key[0]*nx+mx-1)//mx; gx1=((key[0]+1)*nx+mx-1)//mx-1
-            gy0=(key[1]*ny+my-1)//my; gy1=((key[1]+1)*ny+my-1)//my-1
-            width=gx1-gx0+1; height=gy1-gy0+1
-            available=set(cells)
-            prefix=[[0]*(width+1) for _ in range(height+1)]
-            for gy in range(gy0,gy1+1):
-                row=0
-                for gx in range(gx0,gx1+1):
-                    row+=int((gx,gy) in available)
-                    prefix[gy-gy0+1][gx-gx0+1]=prefix[gy-gy0][gx-gx0+1]+row
-            def count_rect(x0,y0,x1,y1):
-                a=x0-gx0; b=y0-gy0; c=x1-gx0+1; d=y1-gy0+1
-                return prefix[d][c]-prefix[b][c]-prefix[d][a]+prefix[b][a]
-            goal=min(len(cells),max(1,int(math.ceil(desired_total*len(cells)/max(1,total_tile_cells)))))
-            tx=(key[0]+.5)*self.W/mx; ty=(key[1]+.5)*self.H/my
-            tile=box(key[0]*self.W/mx,key[1]*self.H/my,
-                     (key[0]+1)*self.W/mx,(key[1]+1)*self.H/my)
-            chosen=None
-            for fraction in ((.5,) if local_budget<=1e-12 else (.31,.35,.39,.43,.47)):
-                radius_x=fraction*self.W/mx
-                radius_y=fraction*self.H/my
-                best=None
-                for gy in range(gy0,gy1+1):
-                    for gx in range(gx0,gx1+1):
-                        sx=(gx+.5)*cw; sy=(gy+.5)*ch
-                        x0=max(gx0,int(math.ceil((sx-radius_x)/cw-.5)))
-                        x1=min(gx1,int(math.floor((sx+radius_x)/cw-.5)))
-                        y0=max(gy0,int(math.ceil((sy-radius_y)/ch-.5)))
-                        y1=min(gy1,int(math.floor((sy+radius_y)/ch-.5)))
-                        if x0>x1 or y0>y1: continue
-                        count=count_rect(x0,y0,x1,y1)
-                        rank=(count,-math.hypot(sx-tx,sy-ty),
-                              float(clearance.get((gx,gy),0.0)),-gy,-gx)
-                        if best is None or rank>best[0]:
-                            best=(rank,sx,sy)
-                if best is None: continue
-                chosen=(best[1],best[2],radius_x,radius_y)
-                if best[0][0]>=goal: break
-            if chosen is None: continue
-            sx,sy,radius_x,radius_y=chosen
-            owner=box(sx-radius_x,sy-radius_y,sx+radius_x,sy+radius_y).intersection(tile)
-            owned=[c for c in cells if owner.covers(Point((c[0]+.5)*cw,(c[1]+.5)*ch))]
-            if not owned: continue
-            # The fitted core owns cluster centers; the selected composition
-            # tile owns complete canonical glyphs. Conflating these footprints
-            # strands legal constructor capacity at the core boundary.
-            owners[key]=tile; capacity[key]=len(owned)
-            eligible.update(owned)
-            for c in owned: by_cell[c]=key
-        self._residual_component_macro_owners=owners
-        self._residual_local_macro_keys={(x,y) for y in range(my) for x in range(mx)}-set(owners)
-        self._residual_component_macro_by_cell=by_cell
-        self._residual_component_macro_capacity_cells=capacity
-        self._residual_composition_component_cells=eligible
-        self._residual_composition_component_tiles=None
-        self._residual_composition_parcels={}
-        self._residual_composition_parcel_by_cell={}
-        self._residual_composition_grid_shape=(nx,ny)
-
-    def _residual_composition_component_center(self,p):
-        cells=getattr(self,'_residual_composition_component_cells',None)
-        if cells is None:
-            return True
-        nx,ny=self._residual_composition_grid_shape
-        gx=min(nx-1,max(0,int(p[0]*nx/max(self.W,1e-9))))
-        gy=min(ny-1,max(0,int(p[1]*ny/max(self.H,1e-9))))
-        return (gx,gy) in cells
-
-    def _residual_composition_component_geometry_owned(self,cand):
-        owners=getattr(self,'_residual_component_macro_owners',None)
-        if owners is not None:
-            cx,cy=bounds_center(cand.bounds)
-            nx,ny=self._residual_composition_grid_shape
-            c=(min(nx-1,max(0,int(cx*nx/max(self.W,1e-9)))),
-               min(ny-1,max(0,int(cy*ny/max(self.H,1e-9)))))
-            key=self._residual_component_macro_by_cell.get(c)
-            if key is None:
-                return False
-            x0,y0,x1,y1=owners[key].bounds
-            a0,b0,a1,b1=cand.collision_geom.bounds
-            # Each owner is an axis-aligned rectangle clipped by its tile, so
-            # AABB containment is an exact positive and negative geometry test.
-            return x0<=a0 and y0<=b0 and a1<=x1 and b1<=y1
-        tiles=getattr(self,'_residual_composition_component_tiles',None)
-        if tiles is None:
-            return True
-        nx,ny=self._residual_composition_grid_shape
-        span=self._residual_composition_tile_span
-        cw=self.W/nx; ch=self.H/ny
-        tw=span*cw; th=span*ch
-        halo=.5*self.component_component_clearance
-        b=cand.bounds
-        tx0=max(0,int(math.floor((b[0]-halo)/tw)))
-        tx1=min((nx-1)//span,int(math.floor((b[2]+halo)/tw)))
-        ty0=max(0,int(math.floor((b[1]-halo)/th)))
-        ty1=min((ny-1)//span,int(math.floor((b[3]+halo)/th)))
-        foreign=[]
-        for ty in range(ty0,ty1+1):
-            for tx in range(tx0,tx1+1):
-                if (tx,ty) not in tiles:
-                    foreign.append((tx,ty))
-        if not foreign:
-            return True
-        geom=cand.collision_geom
-        for tx,ty in foreign:
-            limit=box(tx*tw,ty*th,min(self.W,(tx+1)*tw),min(self.H,(ty+1)*th))
-            if geom.intersects(limit) or geom.distance(limit)<halo:
-                return False
-        return True
-
     def _component_clustered_gap_sites(self, regions, open_cells, clearance, rng, count, component_count):
         """Plan spatially distributed component-cluster opportunities in O(cells + sites).
 
@@ -13909,66 +13013,41 @@ class V48Renderer:
         # Large requested clusters get first choice of physical room, but region load is
         # normalized by already-planned membership so no one room monopolizes the board.
         order=sorted(range(nclusters),key=lambda cid:(-targets[cid],prng.random(),cid))
-        region_heap=[(-r['cell_count'],r['id']) for r in regions]
-        heapq.heapify(region_heap)
         for cid in order:
-            _score,rid=heapq.heappop(region_heap)
+            rid=max((r['id'] for r in regions),
+                    key=lambda rid:(region_map[rid]['cell_count']/(1.0+region_members[rid]),-rid))
             cluster_region[cid]=rid
             region_members[rid]+=targets[cid]
-            heapq.heappush(region_heap,(-region_map[rid]['cell_count']/(1.0+region_members[rid]),rid))
 
-        # Plan anchors jointly over residual rooms and fixed board sectors.  A sector
-        # receives no territory reservation: its load only determines where the next
-        # compact component group starts.  A room may span many sectors, so region-only
-        # shuffling would repeatedly pick one part of that room.
-        nx,ny=getattr(self,'_component_gap_grid_shape',self.component_gap_grid_shape())
-        def sector(c):
-            return (min(7,8*c[0]//max(1,nx)),min(7,8*c[1]//max(1,ny)))
-        sector_cells={}
-        for reg in regions:
-            rid=reg['id']
-            for c in reg['cells']:
-                sector_cells.setdefault((rid,sector(c)),[]).append(c)
-        for cells in sector_cells.values():
-            cells.sort(key=lambda c:(-float(clearance.get(c,0.0)),prng.random(),c[1],c[0]))
-        region_sectors={rid:[] for rid in region_map}
-        for rid,sec in sector_cells:
-            region_sectors[rid].append(sec)
-        sector_load={}; anchor_index=SpatialHash(max(2.0,float(max(nx,ny)//8)))
+        # One shuffled cell stream per region plus a grid-space anchor index gives bounded
+        # anchor selection.  Anchor spacing scales with cells/cluster, never canvas aspect.
+        cells_by_region={}
+        for r in regions:
+            cells=list(r['cells']); prng.shuffle(cells); cells_by_region[r['id']]=cells
         anchor_sep=max(2,int(round(.62*math.sqrt(max(1.0,len(open_cells)/max(1,nclusters))))))
-        anchors={}
+        anchor_index=SpatialHash(max(1.0,float(anchor_sep)))
+        anchors={}; region_cursor={rid:0 for rid in cells_by_region}
         for cid in order:
-            rid=cluster_region[cid]
-            choices=region_sectors[rid]
-            def sector_rank(sec):
-                sx,sy=sec
-                macro_nx,macro_ny=getattr(
-                    self,'_residual_macro_grid_shape',
-                    (max(1,int(round(nx/math.sqrt(165.0)))),
-                     max(1,int(round(ny/math.sqrt(165.0))))))
-                macro_x=min(macro_nx-1,int(macro_nx*(sx+.5)/8))
-                macro_y=min(macro_ny-1,int(macro_ny*(sy+.5)/8))
-                paired_owner=(macro_x+macro_y)%2
-                neighbours=sum(sector_load.get((sx+dx,sy+dy),0)
-                               for dx in (-1,0,1) for dy in (-1,0,1)
-                               if dx or dy)
-                return (paired_owner,sector_load.get(sec,0),neighbours,
-                        -len(sector_cells[(rid,sec)]),sec[1],sec[0])
-            selected_sector=min(choices,key=sector_rank)
-            cells=sector_cells[(rid,selected_sector)]
-            chosen=None
-            for c in cells[:min(len(cells),32)]:
-                x,y=c
+            rid=cluster_region[cid]; cells=cells_by_region[rid]; chosen=None
+            start=region_cursor[rid]
+            # A bounded pass through the region's one shuffled stream; accepted anchors are
+            # normally found quickly.  If the residual room is genuinely tight, use the next
+            # available cell rather than inventing a placement failure.
+            limit=min(len(cells),start+max(32,8*anchor_sep))
+            for j in range(start,limit):
+                c=cells[j]; x,y=c
                 near=anchor_index.query((x-anchor_sep,y-anchor_sep,x+anchor_sep,y+anchor_sep))
-                if all((x-a[0])**2+(y-a[1])**2>=anchor_sep*anchor_sep for a in near):
-                    chosen=c; break
+                if all(math.hypot(x-a[0],y-a[1])>=anchor_sep for a in near):
+                    chosen=c; region_cursor[rid]=j+1; break
             if chosen is None:
-                chosen=cells[0]
+                if start<len(cells):
+                    chosen=cells[start]; region_cursor[rid]=start+1
+                else:
+                    chosen=min(region_map[rid]['cells'])
             anchors[cid]=chosen
-            sector_load[selected_sector]=sector_load.get(selected_sector,0)+targets[cid]
             anchor_index.insert(chosen,(chosen[0],chosen[1],chosen[0],chosen[1]))
-        self._component_gap_planned_sector_load=dict(sector_load)
 
+        nx,ny=getattr(self,'_component_gap_grid_shape',self.component_gap_grid_shape())
         cw=self.W/max(1,nx); ch=self.H/max(1,ny)
         used_cells=set(); sites=[]; site_cids=[]; meta={}
         for cid in range(nclusters):
@@ -14009,10 +13088,10 @@ class V48Renderer:
                     if len(selected)>=want:
                         break
             anchor_pt=((ax+.5)*cw,(ay+.5)*ch)
-            meta[cid]=dict(id=cid,region_id=reg.get('parent_region_id',rid),target_members=int(targets[cid]),
+            meta[cid]=dict(id=cid,region_id=rid,target_members=int(targets[cid]),
                            anchor_cell=(ax,ay),anchor=anchor_pt,site_count=len(selected))
             for gx,gy in selected:
-                sites.append(((gx+.5)*cw,(gy+.5)*ch,reg.get('parent_region_id',rid))); site_cids.append(cid)
+                sites.append(((gx+.5)*cw,(gy+.5)*ch,rid)); site_cids.append(cid)
 
         # If an exceptionally tight residual field yielded fewer site tokens than the historical
         # denominator requested, fill only the missing *opportunities* from still-open cells.
@@ -14105,7 +13184,6 @@ class V48Renderer:
         self._component_gap_clearance=dict(clearance)
         self._component_gap_grid_shape=(nx,ny)
         self._component_gap_grid_n=max(nx,ny)  # legacy diagnostic compatibility only
-        self._build_residual_composition_ownership(open_cells,regions,rng)
         if not regions or requested_count<=0:
             self._component_gap_cluster_meta={}
             self._component_gap_site_cluster_ids=[]
@@ -14115,17 +13193,8 @@ class V48Renderer:
         if component_count is None:
             component_count=getattr(self,'_component_gap_planned_component_count',None)
         if component_count is not None:
-            component_cells=self._residual_composition_component_cells
-            owned_regions=[]
-            for reg in regions:
-                cells=reg['cells'] & component_cells
-                if not cells: continue
-                xs=[c[0] for c in cells]; ys=[c[1] for c in cells]
-                owned_regions.append(dict(reg,cells=cells,cell_count=len(cells),
-                    width=(max(xs)-min(xs)+1)*cw,height=(max(ys)-min(ys)+1)*ch,
-                    parent_region_id=reg['id']))
             return self._component_clustered_gap_sites(
-                owned_regions,component_cells,clearance,rng,count,max(1,int(component_count)))
+                regions,open_cells,clearance,rng,count,max(1,int(component_count)))
         total=sum(r['cell_count'] for r in regions)
         # First guarantee representation of the largest connected rooms until they account for
         # roughly 90% of residual area. Remaining slots are then distributed by area. This makes
@@ -14315,26 +13384,6 @@ class V48Renderer:
             residual_compound=False,residual_micro=True,residual_gap_size='micro',
             residual_gap_scale_P=max(bounds_w_h(Group('tmp',ps,{}).bounds))))
 
-    def _make_compact_residual_compound(self,rng,idx,parent_size):
-        """Construct a canonical two-family collection for a tight site in a larger room."""
-        anchor='ic' if rng.random()<.52 else 'dense'
-        family=rng.weighted([('capacitor_circle',.32),('square',.17),
-                             ('circle',.17),('dot',.17),('dash',.17)])
-        border_probability=.92 if parent_size=='large' else .82
-        border=rng.random()<border_probability
-        assignment=dict(families=[anchor,family],border=border,family_count=2,
-                        complexity=.5,tier=2)
-        collection=self._make_collection_once(rng,10000+idx,assignment)
-        if collection is None:
-            collection=self._construct_collection_fallback(
-                rng.state,10000+idx,assignment,planning=_BOUNDS_ONLY)
-        collection.name=f'residual-assembly-{idx}'
-        collection.structural.update(dict(
-            isolated=True,residual_filler=True,residual_compound=True,residual_micro=False,
-            residual_gap_size=parent_size,residual_compact_fit=True,
-            residual_assembly_border=border,residual_assembly_family_count=2))
-        return collection
-
     def _make_residual_compound_component(self,rng,idx,region):
         """Build a coherent multi-family residual assembly using the established collection grammar.
 
@@ -14346,12 +13395,10 @@ class V48Renderer:
         size=self._component_residual_size_class(region)
         if size=='micro':
             return self._make_residual_micro_component(rng,idx)
-        if region.get('compact_local_opportunity',False) and size in ('medium','large'):
-            return self._make_compact_residual_compound(rng,idx,size)
 
         # A small residual room may legitimately want one capacitor, but otherwise every
         # non-micro recovery object is a compound assembly with at least two entity families.
-        if size=='small' and not region.get('require_compound',False) and rng.random()<.34:
+        if size=='small' and rng.random()<.34:
             ps,meta=self._capacitor_entity_primitives(rng,0.0,0.0)
             return Group(f"residual-capacitor-{idx}",ps,dict(
                 family='capacitor_circle',entity_count=1,isolated=True,residual_filler=True,
@@ -14498,10 +13545,6 @@ class V48Renderer:
         # Fit larger objects first so capacitors naturally mop up smaller residual pockets.
         gap_objects.sort(key=lambda kg:(bounds_w_h(kg[1].bounds)[0]*bounds_w_h(kg[1].bounds)[1]),reverse=True)
         target=(rng.uniform(*self.residual_gap_fill_range) if target is None else float(target))
-        # Direct placement callers supply the same component service obligation as
-        # the full pipeline.  Ownership must use that obligation even when no
-        # enclosing generate_sample call installed the density budget.
-        self._active_component_fill_target=target
         site_count=self._residual_gap_site_count(len(gap_objects),target)
         # Preserve the historical overridable _find_residual_gap_sites(chips,pathways,rng,count)
         # contract used by deterministic recovery fixtures.  Base production reads this transient
@@ -14580,26 +13623,18 @@ class V48Renderer:
         exact_candidates_per_site=4
         local_site_fail_budget=4
 
-        def _region_fit_variant(kind,obj,ow,oh,reg,sx,sy):
-            """Choose a prepared scale that fits its actual C owner at this site."""
+        def _region_fit_variant(kind,obj,ow,oh,reg):
+            """Largest grammar-preserving scale that is locally plausible for this territory."""
             scales=(1.0,.90,.82,.75,.68,.62) if kind=='collection' else (1.0,)
-            nx,ny=self._residual_composition_grid_shape
-            c=(min(nx-1,max(0,int(sx*nx/max(self.W,1e-9)))),
-               min(ny-1,max(0,int(sy*ny/max(self.H,1e-9)))))
-            owner_key=self._residual_component_macro_by_cell.get(c)
-            owner=self._residual_component_macro_owners.get(owner_key)
-            if owner is None:
-                return None
-            ob=owner.bounds; b=obj.bounds
-            # The connected parent room may cross several disconnected C cores; its bounding
-            # box is not a fit certificate for any particular site.  This cheap per-core AABB
-            # preflight avoids spending exact geometry work on impossible prepared candidates.
-            rw=.98*max(reg.get('width',0.0),1e-9) if reg is not None else float('inf')
-            rh=.98*max(reg.get('height',0.0),1e-9) if reg is not None else float('inf')
+            if reg is None:
+                return 1.0
+            # Region dimensions are a cheap locality gate only; exact geometry below remains the
+            # authority.  A small margin avoids choosing an assembly whose AABB already consumes
+            # the complete connected-room envelope.
+            rw=.98*max(reg.get('width',0.0),1e-9)
+            rh=.98*max(reg.get('height',0.0),1e-9)
             for scale in scales:
-                if (ow*scale<=rw and oh*scale<=rh and
-                        ob[0]<=sx+b[0]*scale and sx+b[2]*scale<=ob[2] and
-                        ob[1]<=sy+b[1]*scale and sy+b[3]*scale<=ob[3]):
+                if ow*scale<=rw and oh*scale<=rh:
                     return scale
             return None
 
@@ -14648,7 +13683,7 @@ class V48Renderer:
                     continue
                 kind,obj,ow,oh,_area=object_records[oid]
                 metadata_used+=1; scheduler_metadata_probe_count+=1
-                scale=_region_fit_variant(kind,obj,ow,oh,reg,sx,sy)
+                scale=_region_fit_variant(kind,obj,ow,oh,reg)
                 if scale is None:
                     held.append((neg_area,oid))
                     continue
@@ -14710,7 +13745,7 @@ class V48Renderer:
                     if cid is not None and cluster_success_count.get(cid,0)>=cluster_target_count.get(cid,12):
                         continue
                     reg=region_map.get(rid)
-                    scale=_region_fit_variant(kind,obj,ow,oh,reg,sx,sy)
+                    scale=_region_fit_variant(kind,obj,ow,oh,reg)
                     if scale is None:
                         continue
                     cand=_try_local_site(kind,obj,scale,sx,sy,3)
@@ -14733,8 +13768,6 @@ class V48Renderer:
                     for _ in range(budget):
                         scheduler_recovery_attempt_count+=1
                         x=rng.uniform(l,r); y=rng.uniform(t,b)
-                        if not self._residual_composition_component_center((x,y)):
-                            continue
                         if accepted and self._component_sentinel_rejects_accepted(sobj,x,y,accepted_index,component_sentinel_cache):
                             continue
                         probe=sobj.transformed_geometry_only(x,y)
@@ -14763,8 +13796,7 @@ class V48Renderer:
                         seen_centers.add(key); deterministic_centers.append((sx,sy,rid))
                 # Site sampling can be intentionally sparse.  Add every residual service-cell
                 # center so the completion path covers the actual finite residual field.
-                ocells=sorted(getattr(self,'_component_gap_open_cells',set()) &
-                              getattr(self,'_residual_composition_component_cells',set()))
+                ocells=sorted(getattr(self,'_component_gap_open_cells',set()))
                 gx,gy=getattr(self,'_component_gap_grid_shape',self.component_gap_grid_shape())
                 gcw=self.W/max(1,gx); gch=self.H/max(1,gy)
                 cmap=getattr(self,'_component_gap_region_by_cell',{})
@@ -14825,8 +13857,7 @@ class V48Renderer:
         extra_fillers=[]; attempted_cells=set()
         compound_fillers=[]; micro_fillers=[]; singleton_fillers=[]
         filler_static_clearance_certificate_hits=0
-        open_cells=set(getattr(self,'_component_gap_open_cells',set())) & set(
-            getattr(self,'_residual_composition_component_cells',set()))
+        open_cells=set(getattr(self,'_component_gap_open_cells',set()))
         region_map={r['id']:r for r in regs}; cell_region=getattr(self,'_component_gap_region_by_cell',{})
         nxreg,nyreg=getattr(self,'_component_gap_grid_shape',self.component_gap_grid_shape()); cw=self.W/max(1,nxreg); ch=self.H/max(1,nyreg)
         fill_goal=max(0.0,min(1.0,float(target)))
@@ -14858,16 +13889,14 @@ class V48Renderer:
         completion_cluster_active=None
         completion_cluster_serial=0
         component_cluster_tile_counts={}
-        _existing_cluster_centres={}
+        _seen_existing_cluster_anchors=set()
         for _g in accepted:
             _cid=_g.structural.get('residual_fill_cluster_id')
-            if _cid is None:
+            if _cid is None or _cid in _seen_existing_cluster_anchors:
                 continue
+            _seen_existing_cluster_anchors.add(_cid)
             _cx,_cy=bounds_center(_g.bounds)
-            _sx,_sy,_n=_existing_cluster_centres.get(_cid,(0.0,0.0,0))
-            _existing_cluster_centres[_cid]=(_sx+_cx,_sy+_cy,_n+1)
-        for _sx,_sy,_n in _existing_cluster_centres.values():
-            _mk=_component_mosaic_key_xy(_sx/_n,_sy/_n)
+            _mk=_component_mosaic_key_xy(_cx,_cy)
             component_cluster_tile_counts[_mk]=component_cluster_tile_counts.get(_mk,0)+1
         def _completion_cluster_radius(target):
             # Bounded in the 1..12 design language.  This is composition locality, not search
@@ -15006,25 +14035,12 @@ class V48Renderer:
                     out.append(c)
                 j+=1
             return out
-        macro_nx,macro_ny=self._residual_macro_grid_shape
-        macro_owner_keys=tuple(getattr(self,'_residual_component_macro_owners',{}))
-        parcel_pitch=min(self.W/macro_nx,self.H/macro_ny)
-        tile_nearest_c={}
-        for mk in _tile_open_count:
-            x=(mk[0]+.5)*self.W/mosaic_nx; y=(mk[1]+.5)*self.H/mosaic_ny
-            tile_nearest_c[mk]=min(
-                ((x-(ix+.5)*self.W/macro_nx)**2+
-                 (y-(iy+.5)*self.H/macro_ny)**2 for ix,iy in macro_owner_keys),
-                default=float('inf'))
         def _component_tile_rank(mk):
             denom=max(1,_tile_open_count.get(mk,0))
-            cluster_count=component_cluster_tile_counts.get(mk,0)
             anchor_density=component_cluster_tile_counts.get(mk,0)/denom
             capacity_density=component_tile_capacity_units.get(mk,0.0)/denom
             availability=_tile_available_count.get(mk,0)/denom
-            return (cluster_count,
-                    int(tile_nearest_c.get(mk,float('inf'))/(.22*parcel_pitch)**2),
-                    anchor_density,capacity_density,-availability,mk[1],mk[0])
+            return (anchor_density,capacity_density,-availability,mk[1],mk[0])
         # A large residual room must contain multiple size-appropriate component units.  Raw
         # component count is a secondary density floor; the primary ~90% metric is the
         # area-weighted fulfilment of those per-region capacity requirements.
@@ -15085,37 +14101,14 @@ class V48Renderer:
                 # cells with a planning pass: only locally tight rooms enter this preflight.
                 # The thresholds are expressed solely in canonical component units and depend
                 # on the existing residual size class, never on canvas aspect ratio or scale.
-                static_clear=float(getattr(self,'_component_gap_clearance',{}).get(cell,max(cw,ch)))
-                sx=(gx+.5)*cw; sy=(gy+.5)*ch
-                owner_key=self._residual_component_macro_by_cell.get(cell)
-                owner=self._residual_component_macro_owners.get(owner_key)
-                if owner is None:
-                    attempted_cells.add(cell); _mark_component_cell_unavailable(cell)
-                    continue
-                ox0,oy0,ox1,oy1=owner.bounds
-                owner_clear=max(0.0,min(sx-ox0,ox1-sx,sy-oy0,oy1-sy))
-                local_clear=min(static_clear,owner_clear)
-                # A large connected parent room can contain a small remaining
-                # component opportunity. Measure accepted geometry locally before
-                # choosing the assembly size; the parent room still owns its
-                # original service quota and tiny motifs stay micro-room only.
-                if accepted and local_clear>0.0:
-                    search=local_clear+self.component_component_clearance
-                    point=Point(sx,sy)
-                    near=accepted_index.query((sx-search,sy-search,sx+search,sy+search))
-                    for other in near:
-                        local_clear=min(local_clear,max(0.0,
-                            point.distance(other.collision_geom)-self.component_component_clearance))
-                fit_region=reg
-                if reg is not None and self._component_residual_size_class(reg) in ('medium','large') and local_clear<40.0*self.U:
-                    fit_region=dict(reg,compact_local_opportunity=True,require_compound=True)
+                local_clear=float(getattr(self,'_component_gap_clearance',{}).get(cell,max(cw,ch)))
                 filler=None
                 risk_limit=None
                 # The widest preflight band is 40U.  Most ordinary/easy-board cells are wider
                 # than that and stay on the historical direct-construction path without even
                 # paying a residual-size classification call.
                 if local_clear < 40.0*self.U:
-                    size_class=self._component_residual_size_class(fit_region)
+                    size_class=self._component_residual_size_class(reg)
                     if size_class=='large': risk_limit=40.0*self.U
                     elif size_class=='medium': risk_limit=22.0*self.U
                     else: risk_limit=14.0*self.U
@@ -15123,7 +14116,7 @@ class V48Renderer:
                     filler_rng_state=rng.state
                     plan_rng=SplitMix64(filler_rng_state)
                     with bounds_only_mode(True):
-                        filler_plan=self._make_residual_filler_component(plan_rng,len(extra_fillers),fit_region)
+                        filler_plan=self._make_residual_filler_component(plan_rng,len(extra_fillers),reg)
                     planned_post_state=plan_rng.state
                     plan_micro=bool(filler_plan.structural.get('residual_micro'))
                     plan_compound=bool(filler_plan.structural.get('residual_compound'))
@@ -15144,12 +14137,12 @@ class V48Renderer:
                         attempted_cells.add(cell); _mark_component_cell_unavailable(cell)
                         continue
                     exact_rng=SplitMix64(filler_rng_state)
-                    filler=self._make_residual_filler_component(exact_rng,len(extra_fillers),fit_region)
+                    filler=self._make_residual_filler_component(exact_rng,len(extra_fillers),reg)
                     if exact_rng.state != planned_post_state:
                         raise RuntimeError('residual filler risk preflight RNG replay diverged')
                     rng.state=planned_post_state
                 else:
-                    filler=self._make_residual_filler_component(rng,len(extra_fillers),fit_region)
+                    filler=self._make_residual_filler_component(rng,len(extra_fillers),reg)
                 is_micro=bool(filler.structural.get('residual_micro'))
                 is_compound=bool(filler.structural.get('residual_compound'))
                 if is_micro and len(micro_fillers)>=self.component_micro_filler_limit:
@@ -15170,6 +14163,7 @@ class V48Renderer:
                         continue
                     filler=filler.transformed(scale=needed)
                     filler.structural['residual_gap_clearance_scaled']=True
+                sx=(gx+.5)*cw; sy=(gy+.5)*ch
                 for attempt in range(5):
                     if attempt==0: x,y=sx,sy
                     else:
@@ -15214,27 +14208,18 @@ class V48Renderer:
                     id=_cid,target=int(_target),count=0,
                     anchor_cell=chosen_cell,region_id=cell_region.get(chosen_cell),
                     radius=_completion_cluster_radius(_target),
-                    center_sum_x=0.0,center_sum_y=0.0,mosaic_key=None,
                 )
+                _mk=_component_mosaic_key_cell(chosen_cell)
+                component_cluster_tile_counts[_mk]=component_cluster_tile_counts.get(_mk,0)+1
             _cluster=completion_cluster_active
             placed.structural['residual_fill_cluster_id']=int(_cluster['id'])
             placed.structural['residual_fill_cluster_target']=int(_cluster['target'])
             placed.structural['residual_fill_cluster_completion']=True
             _cluster['count']+=1
-            accepted.append(placed); accepted_index.insert(placed,placed.bounds); extra_fillers.append(placed)
-            _pcx,_pcy=bounds_center(placed.bounds); _pmk=_component_mosaic_key_xy(_pcx,_pcy)
-            _cluster['center_sum_x']+=_pcx; _cluster['center_sum_y']+=_pcy
-            _new_cluster_mk=_component_mosaic_key_xy(
-                _cluster['center_sum_x']/_cluster['count'],
-                _cluster['center_sum_y']/_cluster['count'])
-            _old_cluster_mk=_cluster['mosaic_key']
-            if _new_cluster_mk!=_old_cluster_mk:
-                if _old_cluster_mk is not None:
-                    component_cluster_tile_counts[_old_cluster_mk]-=1
-                component_cluster_tile_counts[_new_cluster_mk]=component_cluster_tile_counts.get(_new_cluster_mk,0)+1
-                _cluster['mosaic_key']=_new_cluster_mk
             if _cluster['count']>=_cluster['target']:
                 completion_cluster_active=None
+            accepted.append(placed); accepted_index.insert(placed,placed.bounds); extra_fillers.append(placed)
+            _pcx,_pcy=bounds_center(placed.bounds); _pmk=_component_mosaic_key_xy(_pcx,_pcy)
             component_mosaic_counts[_pmk]=component_mosaic_counts.get(_pmk,0)+1
             component_tile_capacity_units[_pmk]=component_tile_capacity_units.get(_pmk,0.0)+self._component_group_capacity_units(placed)
             if placed.structural.get('residual_compound'):
